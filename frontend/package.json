@@ -1,0 +1,29 @@
+{
+  "name": "fishery-college-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Fishery College Jabalpur website",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.1",
+    "axios": "^1.6.2",
+    "react-hook-form": "^7.48.2",
+    "react-hot-toast": "^2.4.1",
+    "lucide-react": "^0.294.0",
+    "@headlessui/react": "^1.7.17"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "tailwindcss": "^4.1.11",
+    "vite": "^5.0.0"
+  }
+}
