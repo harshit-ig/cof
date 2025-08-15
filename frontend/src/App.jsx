@@ -28,7 +28,16 @@ import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
+import Departments from './pages/Departments'
+import Publications from './pages/Publications'
 import NotFound from './pages/NotFound'
+import Workshop from './pages/Workshop'
+import Achievements from './pages/Achievements'
+import Media from './pages/Media'
+import Library from './pages/Library'
+import NoticeBoard from './pages/NoticeBoard'
+import StudentCorner from './pages/StudentCorner'
+import Academics from './pages/Academics'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -53,7 +62,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/programs" element={<Programs />} />
               <Route path="/programs/:id" element={<ProgramDetail />} />
-              <Route path="/faculty" element={<Faculty />} />
+                            <Route path="/faculty" element={<Faculty />} />
               <Route path="/faculty/:id" element={<FacultyDetail />} />
               <Route path="/research" element={<Research />} />
               <Route path="/research/:id" element={<ResearchDetail />} />
@@ -63,12 +72,21 @@ function App() {
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/students" element={<Students />} />
               <Route path="/news" element={<News />} />
-               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/departments" element={<Departments />} />
+              <Route path="/publications" element={<Publications />} />
+              <Route path="/workshop" element={<Workshop />} />
+              <Route path="/achievements" element={<Achievements />} />
+              <Route path="/media" element={<Media />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/notice-board" element={<NoticeBoard />} />
+              <Route path="/student-corner" element={<StudentCorner />} />
+              <Route path="/academics" element={<Academics />} />
               
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />

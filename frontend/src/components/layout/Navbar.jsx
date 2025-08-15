@@ -11,55 +11,74 @@ const Navbar = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     {
-      name: 'About',
+      name: 'About CoF',
       href: '/about',
       dropdown: [
-        { name: 'History', href: '/about', section: 'history' },
-        { name: 'Vision & Mission', href: '/about', section: 'vision' },
+        { name: 'About College', href: '/about' },
         { name: 'Dean\'s Message', href: '/about', section: 'dean-message' },
-        { name: 'Structure', href: '/about', section: 'structure' },
-        { name: 'Governing Body', href: '/about', section: 'governing-body' }
+        { name: 'Faculty', href: '/faculty' },
+        { name: 'Infrastructure', href: '/infrastructure' }
       ]
     },
     {
-      name: 'Academics',
-      href: '/programs',
+      name: 'Academic',
+      href: '/academics',
       dropdown: [
-        { name: 'Programs', href: '/programs' },
-        { name: 'Faculty', href: '/faculty' },
-        { name: 'Departments', href: '/academics', section: 'departments' },
-        { name: 'Calendar', href: '/academics', section: 'calendar' },
-        { name: 'Curriculum', href: '/academics', section: 'curriculum' },
-        { name: 'Research', href: '/research' },
+        { name: 'Academic Programs', href: '/programs' },
+        { name: 'Departments', href: '/departments' },
+        { name: 'Academic Regulations', href: '/academics', section: 'regulations' },
+        { name: 'Academic Calendar', href: '/academics', section: 'calendar' },
+        { name: 'Admission Process', href: '/academics', section: 'admission' },
+        { name: 'Admission Capacity', href: '/academics', section: 'capacity' },
+        { name: 'Fee Structure', href: '/academics', section: 'fees' }
+      ]
+    },
+    {
+      name: 'Student Corner',
+      href: '/student-corner',
+      dropdown: [
+        { name: 'Student Information', href: '/student-corner' },
+        { name: 'Time Table', href: '/student-corner', section: 'timetable' },
+        { name: 'Examination Schedule', href: '/student-corner', section: 'examinations' },
+        { name: 'List of Students', href: '/student-corner', section: 'students' },
+        { name: 'Student Welfare', href: '/students' },
+        { name: 'Hostel Facilities', href: '/students', section: 'hostels' },
+        { name: 'Sports & Cultural', href: '/students', section: 'sports' }
+      ]
+    },
+    { name: 'Notice Board', href: '/notice-board' },
+    {
+      name: 'Research & Extension',
+      href: '/research',
+      dropdown: [
+        { name: 'Research Projects', href: '/research' },
+        { name: 'Extension Activities', href: '/extension' },
+        { name: 'Publications', href: '/publications' },
         { name: 'Collaborations', href: '/collaborations' }
       ]
     },
+    { name: 'Library', href: '/library' },
     {
-      name: 'Campus',
+      name: 'Facilities',
       href: '/infrastructure',
       dropdown: [
         { name: 'Infrastructure', href: '/infrastructure' },
-        { name: 'Incubation Centre', href: '/incubation' },
-        { name: 'Extension & Outreach', href: '/extension' },
-        { name: 'Latest News', href: '/news' },
-        { name: 'Events', href: '/events' },
-        { name: 'Gallery', href: '/gallery' },
-        { name: 'Press Releases', href: '/news', section: 'press' }
+        { name: 'Incubation Center', href: '/incubation' },
+        { name: 'Gallery', href: '/gallery' }
       ]
     },
     {
-      name: 'Students',
-      href: '/students',
+      name: 'Activities',
+      href: '/events',
       dropdown: [
-        { name: 'Admissions', href: '/students', section: 'admission' },
-        { name: 'Scholarships', href: '/students', section: 'scholarships' },
-        { name: 'Clubs', href: '/students', section: 'clubs' },
-        { name: 'Alumni', href: '/students', section: 'alumni' },
-        { name: 'Placements', href: '/students', section: 'placement' }
+        { name: 'Events', href: '/events' },
+        { name: 'Workshop', href: '/workshop' },
+        { name: 'News', href: '/news' },
+        { name: 'Achievements', href: '/achievements' },
+        { name: 'Media', href: '/media' }
       ]
     },
-    // Moved news under About to reduce top-level items
-    { name: 'Contact', href: '/contact' }
+    { name: 'Contact Us', href: '/contact' }
   ]
 
   const isActive = (href) => {
@@ -132,12 +151,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 flex-shrink-0 mr-auto">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-primary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-base lg:text-lg">FC</span>
+            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-700 to-green-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-base lg:text-lg">CoF</span>
             </div>
             <div className="hidden md:block">
-              <h1 className="text-base lg:text-lg font-bold text-gray-900 leading-tight">Fishery College</h1>
-              <p className="text-[10px] lg:text-xs text-gray-600 -mt-0.5 lg:-mt-1">Jabalpur</p>
+              <h1 className="text-base lg:text-lg font-bold text-gray-900 leading-tight">College of Fisheries</h1>
+              <p className="text-[10px] lg:text-xs text-gray-600 -mt-0.5 lg:-mt-1">Kishanganj, Bihar</p>
             </div>
           </Link>
 
@@ -157,8 +176,8 @@ const Navbar = () => {
                     <button
                       className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center ${
                         isActive(item.href)
-                          ? 'text-primary-600 bg-primary-50'
-                          : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                          ? 'text-green-700 bg-green-50'
+                          : 'text-gray-700 hover:text-green-700 hover:bg-gray-50'
                       }`}
                       aria-haspopup="true"
                       aria-expanded={activeDropdown === index}
@@ -182,7 +201,7 @@ const Navbar = () => {
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150"
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-colors duration-150"
                           >
                             {dropdownItem.name}
                           </button>
@@ -195,8 +214,8 @@ const Navbar = () => {
                     onClick={() => handleNavClick(item)}
                     className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
                       isActive(item.href)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                        ? 'text-green-700 bg-green-50'
+                        : 'text-gray-700 hover:text-green-700 hover:bg-gray-50'
                     }`}
                   >
                     {item.name}
@@ -210,7 +229,7 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-green-500"
             >
               {isOpen ? (
                 <X className="block h-6 w-6" />
@@ -230,7 +249,7 @@ const Navbar = () => {
                   <div>
                     <button
                       onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+                      className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-700 hover:text-green-700 hover:bg-gray-50 rounded-md"
                     >
                       {item.name}
                       <ChevronDown
@@ -246,7 +265,7 @@ const Navbar = () => {
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded-md"
+                            className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-green-700 hover:bg-gray-50 rounded-md"
                           >
                             {dropdownItem.name}
                           </button>
@@ -259,8 +278,8 @@ const Navbar = () => {
                     onClick={() => handleNavClick(item)}
                     className={`block w-full text-left px-3 py-2 text-base font-medium rounded-md ${
                       isActive(item.href)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                        ? 'text-green-700 bg-green-50'
+                        : 'text-gray-700 hover:text-green-700 hover:bg-gray-50'
                     }`}
                   >
                     {item.name}
