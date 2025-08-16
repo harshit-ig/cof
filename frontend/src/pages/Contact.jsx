@@ -54,9 +54,9 @@ const Contact = () => {
       icon: MapPin,
       title: 'Address',
       details: [
-        'College of Fisheries, Kishanganj',
-        'DKAC Campus, Arrabari',
-        'Kishanganj-855107, Bihar'
+        'College of Fisheries, Jabalpur',
+        'Nanaji Deshmukh Veterinary Science University',
+        'Jabalpur, Madhya Pradesh'
       ],
       description: 'Main campus location'
     },
@@ -123,7 +123,7 @@ const Contact = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Get in touch with us for any queries, collaborations, or information. 
-              We're here to help you connect with College of Fisheries, Kishanganj.
+              We're here to help you connect with College of Fisheries, Jabalpur.
             </p>
           </div>
         </div>
@@ -338,9 +338,9 @@ const Contact = () => {
                   <div className="flex items-start space-x-3">
                     <MapPin className="w-5 h-5 text-primary-600 mt-1 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-gray-900">College of Fisheries, Kishanganj</p>
-                      <p className="text-gray-600">DKAC Campus, Arrabari</p>
-                      <p className="text-gray-600">Kishanganj-855107, Bihar, India</p>
+                      <p className="font-medium text-gray-900">College of Fisheries, Jabalpur</p>
+                      <p className="text-gray-600">Nanaji Deshmukh Veterinary Science University</p>
+                      <p className="text-gray-600">Jabalpur, Madhya Pradesh, India</p>
                     </div>
                   </div>
                   
@@ -361,21 +361,21 @@ const Contact = () => {
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">By Road</h4>
                     <p className="text-gray-600 text-sm">
-                      Well-connected by state highways. Regular bus services from major cities in Bihar.
+                      Well-connected by state highways. Regular bus services from major cities in Madhya Pradesh.
                     </p>
                   </div>
                   
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">By Rail</h4>
                     <p className="text-gray-600 text-sm">
-                      Kishanganj Railway Station is the nearest railhead, approximately 5 km from campus.
+                      Jabalpur Railway Station is the nearest railhead, providing excellent connectivity.
                     </p>
                   </div>
                   
                   <div>
                     <h4 className="font-medium text-gray-900 mb-2">By Air</h4>
                     <p className="text-gray-600 text-sm">
-                      Bagdogra Airport (West Bengal) is the nearest airport, about 80 km from campus.
+                      Jabalpur Airport (Dumna Airport) is the nearest airport, providing good connectivity.
                     </p>
                   </div>
                 </div>
@@ -388,7 +388,7 @@ const Contact = () => {
                 <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-600 mb-2">Interactive Map</h3>
                 <p className="text-gray-500 text-sm">
-                  Map integration will be added here showing the exact location of College of Fisheries, Kishanganj
+                  Map integration will be added here showing the exact location of College of Fisheries, Jabalpur
                 </p>
                 <div className="mt-4 p-3 bg-white rounded-lg">
                   <p className="text-sm text-gray-600">

@@ -8,9 +8,9 @@ const HeroSlideshow = () => {
     {
       id: 1,
       image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      title: 'College of Fisheries, Kishanganj',
+      title: 'College of Fisheries, Jabalpur',
       subtitle: 'Excellence in Fisheries Education & Research',
-      description: 'Leading institution in Bihar for fisheries science education, established to nurture future professionals in aquaculture and fisheries management.',
+      description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fisheries science education, committed to nurturing future professionals in aquaculture and fisheries management.',
       cta: 'Learn More',
       link: '/about'
     },
@@ -92,7 +92,7 @@ const HeroSlideshow = () => {
               <div className="max-w-3xl">
                 <div className="mb-4">
                   <span className="inline-block bg-yellow-400 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">
-                    Government of Bihar
+                    Government of Madhya Pradesh
                   </span>
                 </div>
                 <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">

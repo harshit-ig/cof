@@ -231,7 +231,7 @@ const StudentCorner = () => {
         <div className="text-center">
           <div className="mb-4">
             <span className="inline-block bg-yellow-400 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">
-              Government of Bihar
+              Government of Madhya Pradesh
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Student Corner</h1>
@@ -263,6 +263,12 @@ const StudentCorner = () => {
           })}
         </div>
       </Section>
+
+      {/* Navigation Anchors */}
+      <div id="scholarships"></div>
+      <div id="clubs"></div>
+      <div id="alumni"></div>
+      <div id="placement"></div>
 
       {/* Content */}
       <Section className="py-16">
