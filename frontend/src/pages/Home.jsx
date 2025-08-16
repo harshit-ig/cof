@@ -117,8 +117,8 @@ const Home = () => {
                   <h2 className="text-2xl font-bold text-gray-900">About CoF</h2>
                 </div>
                 <p className="text-gray-700 leading-relaxed mb-4">
-                  The College of Fisheries, Kishanganj was incorporated in the Bihar Animal Sciences University Act as one of its constituent college. 
-                  This College is situated on the banks of river Mahananda in the campus of Dr. Kalam Agriculture College at Arrabari in Kishanganj district of Bihar.
+                  The College of Fisheries, Jabalpur is a constituent college of Nanaji Deshmukh Veterinary Science University. 
+                  This College offers quality fisheries education and is committed to excellence in teaching, research, and extension activities.
                 </p>
                 <p className="text-gray-700 leading-relaxed mb-4">
                   This college offers a credible fisheries education institution that nurtures the next-generation of professionals and entrepreneurs in the fisheries sector 
@@ -183,16 +183,16 @@ const Home = () => {
                   <h3 className="text-lg font-semibold text-gray-900">Student Corner</h3>
                 </div>
                 <div className="space-y-3">
-                  <Link to="/students#admission" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                  <Link to="/student-corner" className="block p-2 rounded hover:bg-gray-50 transition-colors">
                     <span className="text-gray-700">Admission Guidelines</span>
                   </Link>
-                  <Link to="/students#hostels" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                  <Link to="/infrastructure#hostels" className="block p-2 rounded hover:bg-gray-50 transition-colors">
                     <span className="text-gray-700">Hostel Facilities</span>
                   </Link>
-                  <Link to="/students#sports" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Sports Facilities</span>
+                  <Link to="/student-corner#clubs" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                    <span className="text-gray-700">Student Clubs</span>
                   </Link>
-                  <Link to="/students#placement" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                  <Link to="/student-corner#placement" className="block p-2 rounded hover:bg-gray-50 transition-colors">
                     <span className="text-gray-700">Placement Cell</span>
                   </Link>
                 </div>
@@ -245,14 +245,14 @@ const Home = () => {
                   <h3 className="text-lg font-semibold text-gray-900">Publication</h3>
                 </div>
                 <div className="space-y-3">
-                  <Link to="/publications" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Extension Leaflets</span>
+                  <Link to="/research#publications" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                    <span className="text-gray-700">Publications & Journals</span>
                   </Link>
                   <Link to="/research" className="block p-2 rounded hover:bg-gray-50 transition-colors">
                     <span className="text-gray-700">Research Papers</span>
                   </Link>
-                  <Link to="/publications" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Annual Reports</span>
+                  <Link to="/extension" className="block p-2 rounded hover:bg-gray-50 transition-colors">
+                    <span className="text-gray-700">Extension Materials</span>
                   </Link>
                 </div>
               </Card>
@@ -262,7 +262,7 @@ const Home = () => {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
                 <div className="space-y-3">
                   <Link
-                    to="/students#admission"
+                    to="/student-corner"
                     className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
                   >
                     <span className="text-gray-700">Admission Guidelines</span>
@@ -278,10 +278,10 @@ const Home = () => {
                   </Link>
                   
                   <Link
-                    to="/students#fees"
+                    to="/student-corner#scholarships"
                     className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
                   >
-                    <span className="text-gray-700">Fees Structure</span>
+                    <span className="text-gray-700">Scholarships & Fellowships</span>
                     <ChevronRight className="h-4 w-4 text-gray-400" />
                   </Link>
                   
@@ -358,7 +358,7 @@ const Home = () => {
               </div>
               
               <blockquote className="text-lg text-gray-700 leading-relaxed italic">
-                "Welcome to College of Fisheries, Kishanganj, where we are committed to excellence 
+                "Welcome to College of Fisheries, Jabalpur, where we are committed to excellence 
                 in fisheries education and research. Our mission is to develop skilled 
                 professionals who will contribute to sustainable aquaculture and fisheries 
                 management for the benefit of society."
@@ -366,7 +366,7 @@ const Home = () => {
               
               <div>
                 <p className="font-semibold text-gray-900">Dr. Shashikant Mahajan</p>
-                <p className="text-gray-600">Dean, College of Fisheries, Kishanganj</p>
+                <p className="text-gray-600">Dean, College of Fisheries, Jabalpur</p>
               </div>
               
               <Link
@@ -412,7 +412,7 @@ const Home = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Us</h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Discover what makes College of Fisheries, Kishanganj the premier choice for fisheries education
+              Discover what makes College of Fisheries, Jabalpur the premier choice for fisheries education
             </p>
           </div>
           
@@ -439,9 +439,9 @@ const Home = () => {
               <MapPin className="w-8 h-8 mx-auto mb-4 text-accent-400" />
               <h3 className="text-xl font-semibold mb-2">Address</h3>
               <p className="text-blue-100">
-                College of Fisheries, Kishanganj<br />
-                DKAC Campus, Arrabari<br />
-                Kishanganj-855107, Bihar
+                College of Fisheries, Jabalpur<br />
+                Nanaji Deshmukh Veterinary Science University<br />
+                Jabalpur, Madhya Pradesh
               </p>
             </div>
             

@@ -20,22 +20,14 @@ import Extension from './pages/Extension'
 import Infrastructure from './pages/Infrastructure'
 import InfrastructureDetail from './pages/InfrastructureDetail'
 import Incubation from './pages/Incubation'
-import Students from './pages/Students'
 import News from './pages/News'
 import NewsDetail from './pages/NewsDetail'
 import Events from './pages/Events'
 import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
-import Gallery from './pages/Gallery'
 import Departments from './pages/Departments'
-import Publications from './pages/Publications'
 import NotFound from './pages/NotFound'
-import Workshop from './pages/Workshop'
-import Achievements from './pages/Achievements'
-import Media from './pages/Media'
-import Library from './pages/Library'
-import NoticeBoard from './pages/NoticeBoard'
 import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
 
@@ -60,9 +52,11 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/academics" element={<Academics />} />
               <Route path="/programs" element={<Programs />} />
               <Route path="/programs/:id" element={<ProgramDetail />} />
-                            <Route path="/faculty" element={<Faculty />} />
+              <Route path="/departments" element={<Departments />} />
+              <Route path="/faculty" element={<Faculty />} />
               <Route path="/faculty/:id" element={<FacultyDetail />} />
               <Route path="/research" element={<Research />} />
               <Route path="/research/:id" element={<ResearchDetail />} />
@@ -70,23 +64,13 @@ function App() {
               <Route path="/infrastructure" element={<Infrastructure />} />
               <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
               <Route path="/incubation" element={<Incubation />} />
-              <Route path="/students" element={<Students />} />
+              <Route path="/student-corner" element={<StudentCorner />} />
               <Route path="/news" element={<News />} />
-              <Route path="/gallery" element={<Gallery />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/departments" element={<Departments />} />
-              <Route path="/publications" element={<Publications />} />
-              <Route path="/workshop" element={<Workshop />} />
-              <Route path="/achievements" element={<Achievements />} />
-              <Route path="/media" element={<Media />} />
-              <Route path="/library" element={<Library />} />
-              <Route path="/notice-board" element={<NoticeBoard />} />
-              <Route path="/student-corner" element={<StudentCorner />} />
-              <Route path="/academics" element={<Academics />} />
               
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />

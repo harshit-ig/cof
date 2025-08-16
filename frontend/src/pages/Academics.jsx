@@ -369,7 +369,7 @@ const Academics = () => {
         <div className="text-center">
           <div className="mb-4">
             <span className="inline-block bg-yellow-400 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">
-              Government of Bihar
+              Government of Madhya Pradesh
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Academics</h1>
@@ -403,11 +403,15 @@ const Academics = () => {
       </Section>
 
       {/* Content */}
-      <Section className="py-16">
+      <Section id="regulations" className="py-16">
         <div className="max-w-6xl mx-auto">
           {renderContent()}
         </div>
       </Section>
+
+      {/* Additional Sections for Navigation */}
+      <div id="calendar"></div>
+      <div id="curriculum"></div>
     </div>
   )
 }

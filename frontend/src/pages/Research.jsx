@@ -308,6 +308,12 @@ const Research = () => {
         </div>
       </section>
 
+      {/* Navigation Anchors */}
+      <div id="publications"></div>
+      <div id="student-research"></div>
+      <div id="collaborations"></div>
+      <div id="facilities"></div>
+
       {/* Research Areas */}
       {activeTab === 'areas' && (
         <section className="section-padding bg-gray-50">
@@ -522,7 +528,7 @@ const Research = () => {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">Impact Factor: {pub.impact}</span>
                   <Link
-                    to="/publications"
+                    to="/research#publications"
                     className="text-primary-600 hover:text-primary-700 text-sm font-medium"
                   >
                     View Details
@@ -553,7 +559,7 @@ const Research = () => {
             </Link>
             
             <Link
-              to="/publications"
+              to="/research#publications"
               className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
             >
               View Publications

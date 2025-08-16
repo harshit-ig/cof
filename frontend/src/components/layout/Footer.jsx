@@ -15,21 +15,21 @@ const Footer = () => {
   ]
 
   const academicLinks = [
-    { name: 'Admission Eligibility', href: '/students#admission' },
-    { name: 'Admission Process', href: '/students#admission' },
-    { name: 'Fees Structure', href: '/students#fees' },
+    { name: 'Admission Guidelines', href: '/student-corner' },
+    { name: 'Scholarships & Fellowships', href: '/student-corner#scholarships' },
     { name: 'Academic Regulations', href: '/academics#regulations' },
     { name: 'Academic Calendar', href: '/academics#calendar' },
-    { name: 'Placement', href: '/students#placement' }
+    { name: 'Course Curriculum', href: '/academics#curriculum' },
+    { name: 'Internship & Placement', href: '/student-corner#placement' }
   ]
 
   const researchLinks = [
-    { name: 'Research Projects', href: '/research' },
-    { name: 'Publications', href: '/publications' },
-    { name: 'Extension Leaflets', href: '/publications#extension-leaflet' },
-    { name: 'Workshop', href: '/workshop' },
-    { name: 'Video/Documentary', href: '/media' },
-    { name: 'Achievements', href: '/achievements' }
+    { name: 'Ongoing Projects', href: '/research' },
+    { name: 'Publications and Journals', href: '/research#publications' },
+    { name: 'Student Research', href: '/research#student-research' },
+    { name: 'Research Collaborations', href: '/research#collaborations' },
+    { name: 'Research Facilities', href: '/research#facilities' },
+    { name: 'Extension Activities', href: '/extension' }
   ]
 
   const relatedLinks = [
@@ -53,13 +53,13 @@ const Footer = () => {
                 <span className="text-white font-bold text-lg">CoF</span>
               </div>
               <div>
-                <h3 className="text-lg font-bold">College of Fisheries</h3>
-                <p className="text-gray-400 text-sm">Kishanganj, Bihar</p>
+                <h3 className="text-lg font-bold">College of Fisheries, Jabalpur</h3>
+                <p className="text-gray-400 text-sm">(nanaji deshmukh veterinary science university)</p>
               </div>
             </div>
             
             <p className="text-gray-300 text-sm leading-relaxed">
-              The College of Fisheries, Kishanganj was incorporated in the Bihar Animal Sciences University Act as one of its constituent college. 
+              The College of Fisheries, Jabalpur is a constituent college of Nanaji Deshmukh Veterinary Science University. 
               This College offers a credible fisheries education institution that nurtures the next-generation of professionals and entrepreneurs in the fisheries sector.
             </p>
             
@@ -67,9 +67,9 @@ const Footer = () => {
               <div className="flex items-center space-x-3 text-sm">
                 <MapPin className="h-4 w-4 text-primary-400 flex-shrink-0" />
                 <span className="text-gray-300">
-                  College of Fisheries, Kishanganj<br />
-                  DKAC Campus, Arrabari<br />
-                  Kishanganj-855107, Bihar
+                  College of Fisheries, Jabalpur<br />
+                  Nanaji Deshmukh Veterinary Science University<br />
+                  Jabalpur, Madhya Pradesh
                 </span>
               </div>
               
@@ -185,7 +185,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} College of Fisheries, Kishanganj. All rights reserved.
+              © {currentYear} College of Fisheries, Jabalpur. All rights reserved.
             </div>
             
             <div className="flex space-x-6 text-sm">

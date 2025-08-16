@@ -91,9 +91,9 @@ const About = () => {
       icon: MapPin,
       title: 'Address',
       details: [
-        'College of Fisheries, Kishanganj',
-        'DKAC Campus, Arrabari',
-        'Kishanganj-855107, Bihar'
+        'College of Fisheries, Jabalpur',
+        'Nanaji Deshmukh Veterinary Science University',
+        'Jabalpur, Madhya Pradesh'
       ],
       description: 'Main campus location'
     },
@@ -111,7 +111,7 @@ const About = () => {
       <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">About College of Fisheries</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">About College of Fisheries, Jabalpur</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Discover our rich history, vision, and commitment to excellence in fisheries education and research
             </p>
@@ -176,16 +176,16 @@ const About = () => {
               </div>
               
               <blockquote className="text-lg text-gray-700 leading-relaxed italic">
-                "Welcome to College of Fisheries, Kishanganj, where we are committed to excellence 
+                "Welcome to College of Fisheries, Jabalpur, where we are committed to excellence 
                 in fisheries education and research. Our mission is to develop skilled 
                 professionals who will contribute to sustainable aquaculture and fisheries 
                 management for the benefit of society."
               </blockquote>
               
               <p className="text-gray-700 leading-relaxed">
-                The College of Fisheries, Kishanganj was incorporated in the Bihar Animal Sciences University Act 
-                as one of its constituent colleges. This College is situated on the banks of river Mahananda in 
-                the campus of Dr. Kalam Agriculture College at Arrabari in Kishanganj district of Bihar.
+                The College of Fisheries, Jabalpur is a constituent college of Nanaji Deshmukh Veterinary Science University. 
+                This College is committed to providing quality fisheries education and conducting research that contributes 
+                to the advancement of aquaculture and fisheries management.
               </p>
               
               <p className="text-gray-700 leading-relaxed">
@@ -197,7 +197,7 @@ const About = () => {
               
               <div>
                 <p className="font-semibold text-gray-900">Dr. Shashikant Mahajan</p>
-                <p className="text-gray-600">Dean, College of Fisheries, Kishanganj</p>
+                <p className="text-gray-600">Dean, College of Fisheries, Jabalpur</p>
               </div>
             </div>
           </div>
@@ -221,8 +221,8 @@ const About = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">2018 - Foundation</h3>
                   <p className="text-gray-700">
-                    The Hon'ble Chief Minister of Bihar, Shri Nitish Kumar formally inaugurated and announced 
-                    the start of first academic session of this college on 29th August 2018.
+                    The college was established under Nanaji Deshmukh Veterinary Science University to provide 
+                    quality fisheries education and research opportunities.
                   </p>
                 </div>
               </div>
@@ -234,8 +234,8 @@ const About = () => {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">Strategic Location</h3>
                   <p className="text-gray-700">
-                    Situated on the banks of river Mahananda in the campus of Dr. Kalam Agriculture College 
-                    at Arrabari in Kishanganj district of Bihar, providing an ideal environment for fisheries studies.
+                    Located in Jabalpur under Nanaji Deshmukh Veterinary Science University, 
+                    providing an ideal environment for fisheries studies and research.
                   </p>
                 </div>
               </div>
@@ -258,7 +258,7 @@ const About = () => {
       </section>
 
       {/* Vision & Mission */}
-      <section id="vision" className="section-padding bg-gray-50">
+      <section id="mission" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Vision & Mission</h2>
@@ -395,6 +395,17 @@ const About = () => {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Governing Body */}
+      <section id="governing-body" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Governing Body</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+          </div>
+          <p className="text-gray-600 text-center">Information about the college governing body will be displayed here.</p>
         </div>
       </section>
 
