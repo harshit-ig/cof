@@ -8,58 +8,67 @@ const Navbar = () => {
   const location = useLocation()
   const navigate = useNavigate()
 
+  // Updated navigation structure to match cofbasu-edu.in
   const navigation = [
     { name: 'Home', href: '/' },
     {
-      name: 'About',
+      name: 'About CoF',
       href: '/about',
       dropdown: [
-        { name: 'History', href: '/about', section: 'history' },
-        { name: 'Vision & Mission', href: '/about', section: 'vision' },
-        { name: 'Dean\'s Message', href: '/about', section: 'dean-message' },
-        { name: 'Structure', href: '/about', section: 'structure' },
-        { name: 'Governing Body', href: '/about', section: 'governing-body' }
+        { name: 'Dean', href: '/about', section: 'dean-message' },
+        { name: 'Teaching Faculty', href: '/faculty' },
+        { name: 'Non-Teaching', href: '/about', section: 'non-teaching' },
+        { name: 'Important Contact', href: '/contact' }
       ]
     },
     {
-      name: 'Academics',
+      name: 'Academic',
       href: '/programs',
       dropdown: [
-        { name: 'Programs', href: '/programs' },
-        { name: 'Faculty', href: '/faculty' },
-        { name: 'Departments', href: '/academics', section: 'departments' },
-        { name: 'Calendar', href: '/academics', section: 'calendar' },
-        { name: 'Curriculum', href: '/academics', section: 'curriculum' },
-        { name: 'Research', href: '/research' },
-        { name: 'Collaborations', href: '/collaborations' }
+        { name: 'Academic Programmes', href: '/programs' },
+        { name: 'Admission Eligibility', href: '/students', section: 'admission' },
+        { name: 'Admission Process', href: '/students', section: 'admission' },
+        { name: 'Admission Capacity', href: '/students', section: 'admission' },
+        { name: 'Fees Structure', href: '/students', section: 'fees' },
+        { name: 'Academic Regulations', href: '/academics', section: 'regulations' },
+        { name: 'Academic Calendar', href: '/academics', section: 'calendar' }
       ]
     },
     {
-      name: 'Campus',
-      href: '/infrastructure',
+      name: 'Departments',
+      href: '/departments',
       dropdown: [
-        { name: 'Infrastructure', href: '/infrastructure' },
-        { name: 'Incubation Centre', href: '/incubation' },
-        { name: 'Extension & Outreach', href: '/extension' },
-        { name: 'Latest News', href: '/news' },
-        { name: 'Events', href: '/events' },
-        { name: 'Gallery', href: '/gallery' },
-        { name: 'Press Releases', href: '/news', section: 'press' }
+        { name: 'Aquaculture', href: '/departments/aquaculture' },
+        { name: 'Aquatic Animal Health Management', href: '/departments/health-management' },
+        { name: 'Aquatic Environment Management', href: '/departments/environment' },
+        { name: 'Fish Biotechnology', href: '/departments/biotechnology' },
+        { name: 'Fish Breeding & Genetics', href: '/departments/breeding-genetics' },
+        { name: 'Fish Nutrition & Feed Technology', href: '/departments/nutrition' },
+        { name: 'Fish Physiology & Biochemistry', href: '/departments/physiology' },
+        { name: 'Fish Processing Technology', href: '/departments/processing' },
+        { name: 'Fisheries Economics & Statistics', href: '/departments/economics' },
+        { name: 'Fisheries Extension', href: '/departments/extension' },
+        { name: 'Fisheries Resource Management', href: '/departments/resource-management' }
       ]
     },
+    { name: 'Library', href: '/library' },
     {
-      name: 'Students',
+      name: 'Students Welfare',
       href: '/students',
       dropdown: [
-        { name: 'Admissions', href: '/students', section: 'admission' },
-        { name: 'Scholarships', href: '/students', section: 'scholarships' },
-        { name: 'Clubs', href: '/students', section: 'clubs' },
-        { name: 'Alumni', href: '/students', section: 'alumni' },
-        { name: 'Placements', href: '/students', section: 'placement' }
+        { name: 'Hostels Facilities', href: '/students', section: 'hostels' },
+        { name: 'Sports Facilities', href: '/students', section: 'sports' },
+        { name: 'Cultural Centre', href: '/students', section: 'cultural' },
+        { name: 'Placement', href: '/students', section: 'placement' },
+        { name: 'NSS', href: '/students', section: 'nss' }
       ]
     },
-    // Moved news under About to reduce top-level items
-    { name: 'Contact', href: '/contact' }
+    { name: 'Research Projects', href: '/research' },
+    { name: 'Publications', href: '/publications' },
+    { name: 'Workshop', href: '/workshops' },
+    { name: 'Video/Documentary', href: '/videos' },
+    { name: 'Achievements', href: '/achievements' },
+    { name: 'Contact Us', href: '/contact' }
   ]
 
   const isActive = (href) => {
@@ -73,7 +82,7 @@ const Navbar = () => {
     setTimeout(() => {
       const element = document.getElementById(sectionId)
       if (element) {
-        const headerOffset = 80
+        const headerOffset = 120 // Increased offset for new header height
         const elementPosition = element.getBoundingClientRect().top
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
@@ -127,151 +136,159 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 flex-shrink-0 mr-auto">
-            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-primary-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-base lg:text-lg">FC</span>
+    <div className="sticky top-0 z-50">
+      {/* College Name Header - Above Navbar */}
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-center items-center py-4">
+            <div className="text-center">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                College of Fisheries, Jabalpur
+              </h1>
+              <p className="text-sm md:text-base text-gray-600 mt-1">
+                (Nanaji Deshmukh Veterinary Science University, Jabalpur)
+              </p>
             </div>
-            <div className="hidden md:block">
-              <h1 className="text-base lg:text-lg font-bold text-gray-900 leading-tight">Fishery College</h1>
-              <p className="text-[10px] lg:text-xs text-gray-600 -mt-0.5 lg:-mt-1">Jabalpur</p>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item, index) => (
-              <div
-                key={item.name}
-                className="relative"
-                onMouseEnter={() => openDropdown(index)}
-                onMouseLeave={scheduleClose}
-                onFocus={() => openDropdown(index)}
-                onBlur={scheduleClose}
-              >
-                {item.dropdown ? (
-                  <div>
-                    <button
-                      className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center ${
-                        isActive(item.href)
-                          ? 'text-primary-600 bg-primary-50'
-                          : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
-                      }`}
-                      aria-haspopup="true"
-                      aria-expanded={activeDropdown === index}
-                    >
-                      {item.name}
-                      <ChevronDown className={`ml-1 h-3 w-3 transition-transform duration-200 ${
-                        activeDropdown === index ? 'rotate-180' : ''
-                      }`} />
-                    </button>
-                    
-                    {/* Dropdown Menu */}
-                    <div
-                      className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transform transition-all duration-200 ${
-                        activeDropdown === index
-                          ? 'opacity-100 visible translate-y-0'
-                          : 'opacity-0 invisible -translate-y-2'
-                      }`}
-                    >
-                      <div className="py-1">
-                        {item.dropdown.map((dropdownItem) => (
-                          <button
-                            key={dropdownItem.name}
-                            onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150"
-                          >
-                            {dropdownItem.name}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => handleNavClick(item)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                      isActive(item.href)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-            >
-              {isOpen ? (
-                <X className="block h-6 w-6" />
-              ) : (
-                <Menu className="block h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`}>
-          <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-            {navigation.map((item, index) => (
-              <div key={item.name}>
-                {item.dropdown ? (
-                  <div>
-                    <button
-                      onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md"
-                    >
-                      {item.name}
-                      <ChevronDown
-                        className={`h-4 w-4 transition-transform duration-200 ${
-                          activeDropdown === index ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
-                    
-                    {activeDropdown === index && (
-                      <div className="mt-1 ml-4 space-y-1">
-                        {item.dropdown.map((dropdownItem) => (
-                          <button
-                            key={dropdownItem.name}
-                            onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-600 hover:text-primary-600 hover:bg-gray-50 rounded-md"
-                          >
-                            {dropdownItem.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => handleNavClick(item)}
-                    className={`block w-full text-left px-3 py-2 text-base font-medium rounded-md ${
-                      isActive(item.href)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </div>
-    </nav>
+
+      {/* Navigation Bar - Dark Blue */}
+      <nav className="bg-blue-800 shadow-lg">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-14">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-1">
+              {navigation.map((item, index) => (
+                <div
+                  key={item.name}
+                  className="relative"
+                  onMouseEnter={() => openDropdown(index)}
+                  onMouseLeave={scheduleClose}
+                  onFocus={() => openDropdown(index)}
+                  onBlur={scheduleClose}
+                >
+                  {item.dropdown ? (
+                    <div>
+                      <button
+                        className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 flex items-center ${
+                          isActive(item.href)
+                            ? 'text-white bg-blue-700'
+                            : 'text-blue-100 hover:text-white hover:bg-blue-700'
+                        }`}
+                        aria-haspopup="true"
+                        aria-expanded={activeDropdown === index}
+                      >
+                        {item.name}
+                        <ChevronDown className={`ml-1 h-3 w-3 transition-transform duration-200 ${
+                          activeDropdown === index ? 'rotate-180' : ''
+                        }`} />
+                      </button>
+                      
+                      {/* Dropdown Menu */}
+                      <div
+                        className={`absolute top-full left-0 mt-1 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transform transition-all duration-200 ${
+                          activeDropdown === index
+                            ? 'opacity-100 visible translate-y-0'
+                            : 'opacity-0 invisible -translate-y-2'
+                        }`}
+                      >
+                        <div className="py-1">
+                          {item.dropdown.map((dropdownItem) => (
+                            <button
+                              key={dropdownItem.name}
+                              onClick={() => handleNavClick(dropdownItem)}
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-800 transition-colors duration-150"
+                            >
+                              {dropdownItem.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleNavClick(item)}
+                      className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                        isActive(item.href)
+                          ? 'text-white bg-blue-700'
+                          : 'text-blue-100 hover:text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="lg:hidden">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-blue-200 hover:text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              >
+                {isOpen ? (
+                  <X className="block h-6 w-6" />
+                ) : (
+                  <Menu className="block h-6 w-6" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`}>
+            <div className="px-2 pt-2 pb-3 space-y-1 border-t border-blue-700">
+              {navigation.map((item, index) => (
+                <div key={item.name}>
+                  {item.dropdown ? (
+                    <div>
+                      <button
+                        onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
+                        className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-blue-100 hover:text-white hover:bg-blue-700 rounded-md"
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`h-4 w-4 transition-transform duration-200 ${
+                            activeDropdown === index ? 'rotate-180' : ''
+                          }`}
+                        />
+                      </button>
+                      
+                      {activeDropdown === index && (
+                        <div className="mt-1 ml-4 space-y-1">
+                          {item.dropdown.map((dropdownItem) => (
+                            <button
+                              key={dropdownItem.name}
+                              onClick={() => handleNavClick(dropdownItem)}
+                              className="block w-full text-left px-3 py-2 text-sm text-blue-200 hover:text-white hover:bg-blue-700 rounded-md"
+                            >
+                              {dropdownItem.name}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleNavClick(item)}
+                      className={`block w-full text-left px-3 py-2 text-base font-medium rounded-md ${
+                        isActive(item.href)
+                          ? 'text-white bg-blue-700'
+                          : 'text-blue-100 hover:text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
   )
 }
 
