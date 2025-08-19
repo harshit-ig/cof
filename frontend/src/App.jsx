@@ -20,15 +20,16 @@ import Extension from './pages/Extension'
 import Infrastructure from './pages/Infrastructure'
 import InfrastructureDetail from './pages/InfrastructureDetail'
 import Incubation from './pages/Incubation'
-import Students from './pages/Students'
 import News from './pages/News'
 import NewsDetail from './pages/NewsDetail'
 import Events from './pages/Events'
 import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
-import Gallery from './pages/Gallery'
+import Departments from './pages/Departments'
 import NotFound from './pages/NotFound'
+import StudentCorner from './pages/StudentCorner'
+import Academics from './pages/Academics'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -51,8 +52,10 @@ function App() {
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/academics" element={<Academics />} />
               <Route path="/programs" element={<Programs />} />
               <Route path="/programs/:id" element={<ProgramDetail />} />
+              <Route path="/departments" element={<Departments />} />
               <Route path="/faculty" element={<Faculty />} />
               <Route path="/faculty/:id" element={<FacultyDetail />} />
               <Route path="/research" element={<Research />} />
@@ -61,9 +64,8 @@ function App() {
               <Route path="/infrastructure" element={<Infrastructure />} />
               <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
               <Route path="/incubation" element={<Incubation />} />
-              <Route path="/students" element={<Students />} />
+              <Route path="/student-corner" element={<StudentCorner />} />
               <Route path="/news" element={<News />} />
-               <Route path="/gallery" element={<Gallery />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />

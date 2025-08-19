@@ -1,74 +1,86 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube } from 'lucide-react'
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, ExternalLink } from 'lucide-react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
 
   const quickLinks = [
-    { name: 'About Us', href: '/about' },
-    { name: 'Programs', href: '/programs' },
+    { name: 'About CoF', href: '/about' },
+    { name: 'Academic Programmes', href: '/programs' },
+    { name: 'Departments', href: '/departments' },
     { name: 'Faculty', href: '/faculty' },
-    { name: 'Research', href: '/research' },
-    { name: 'Infrastructure', href: '/infrastructure' },
+    { name: 'Research Projects', href: '/research' },
     { name: 'Contact Us', href: '/contact' }
   ]
 
   const academicLinks = [
-    { name: 'Admission Guidelines', href: '/students#admission' },
+    { name: 'Admission Guidelines', href: '/student-corner' },
+    { name: 'Scholarships & Fellowships', href: '/student-corner#scholarships' },
+    { name: 'Academic Regulations', href: '/academics#regulations' },
     { name: 'Academic Calendar', href: '/academics#calendar' },
     { name: 'Course Curriculum', href: '/academics#curriculum' },
-    { name: 'Academic Regulations', href: '/academics#regulations' },
-    { name: 'Scholarships', href: '/students#scholarships' },
-    { name: 'Placement Cell', href: '/students#placement' }
+    { name: 'Internship & Placement', href: '/student-corner#placement' }
   ]
 
   const researchLinks = [
-    { name: 'Research Projects', href: '/research' },
-    { name: 'Publications', href: '/research#publications' },
-    { name: 'Collaborations', href: '/collaborations' },
-    { name: 'Research Facilities', href: '/research#facilities' },
+    { name: 'Ongoing Projects', href: '/research' },
+    { name: 'Publications and Journals', href: '/research#publications' },
     { name: 'Student Research', href: '/research#student-research' },
-    { name: 'Incubation Centre', href: '/incubation' }
+    { name: 'Research Collaborations', href: '/research#collaborations' },
+    { name: 'Research Facilities', href: '/research#facilities' },
+    { name: 'Extension Activities', href: '/extension' }
+  ]
+
+  const relatedLinks = [
+    { name: 'ICAR', href: 'https://icar.org.in', external: true },
+    { name: 'ICAR-NBFGR', href: 'https://nbfgr.res.in', external: true },
+    { name: 'ICAR-CIFRI', href: 'https://cifri.icar.gov.in', external: true },
+    { name: 'ICAR-CIFE', href: 'https://cife.edu.in', external: true },
+    { name: 'ICAR-CIBA', href: 'https://ciba.icar.gov.in', external: true },
+    { name: 'ICAR-CMFRI', href: 'https://cmfri.org.in', external: true },
+    { name: 'ICAR-DCFR', href: 'https://dcfr.res.in', external: true }
   ]
 
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container-max section-padding">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* College Info */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-2">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">FC</span>
+                <span className="text-white font-bold text-lg">CoF</span>
               </div>
               <div>
-                <h3 className="text-lg font-bold">Fishery College</h3>
-                <p className="text-gray-400 text-sm">Jabalpur</p>
+                <h3 className="text-lg font-bold">College of Fisheries, Jabalpur</h3>
+                <p className="text-gray-400 text-sm">(nanaji deshmukh veterinary science university)</p>
               </div>
             </div>
             
             <p className="text-gray-300 text-sm leading-relaxed">
-              Leading institution in fisheries education, research, and extension services. 
-              Committed to excellence in aquaculture and fisheries science education.
+              The College of Fisheries, Jabalpur is a constituent college of Nanaji Deshmukh Veterinary Science University. 
+              This College offers a credible fisheries education institution that nurtures the next-generation of professionals and entrepreneurs in the fisheries sector.
             </p>
             
             <div className="space-y-2">
               <div className="flex items-center space-x-3 text-sm">
                 <MapPin className="h-4 w-4 text-primary-400 flex-shrink-0" />
                 <span className="text-gray-300">
-                  Fishery College Campus, Jabalpur, Madhya Pradesh, India
+                  College of Fisheries, Jabalpur<br />
+                  Nanaji Deshmukh Veterinary Science University<br />
+                  Jabalpur, Madhya Pradesh
                 </span>
               </div>
               
               <div className="flex items-center space-x-3 text-sm">
                 <Phone className="h-4 w-4 text-primary-400 flex-shrink-0" />
-                <span className="text-gray-300">+91 761 XXXXXXX</span>
+                <span className="text-gray-300">0645-231375</span>
               </div>
               
               <div className="flex items-center space-x-3 text-sm">
                 <Mail className="h-4 w-4 text-primary-400 flex-shrink-0" />
-                <span className="text-gray-300">info@fisherycollegejabalpur.edu.in</span>
+                <span className="text-gray-300">deancof_basu_bih@gov.in</span>
               </div>
             </div>
             
@@ -124,7 +136,7 @@ const Footer = () => {
 
           {/* Academic Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Academics</h4>
+            <h4 className="text-lg font-semibold mb-4">Academic</h4>
             <ul className="space-y-2">
               {academicLinks.map((link) => (
                 <li key={link.name}>
@@ -139,18 +151,30 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Research Links */}
+          {/* Related Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">Research</h4>
+            <h4 className="text-lg font-semibold mb-4">Related Links</h4>
             <ul className="space-y-2">
-              {researchLinks.map((link) => (
+              {relatedLinks.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    to={link.href}
-                    className="text-gray-300 hover:text-primary-400 transition-colors text-sm"
-                  >
-                    {link.name}
-                  </Link>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-primary-400 transition-colors text-sm flex items-center"
+                    >
+                      {link.name}
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </a>
+                  ) : (
+                    <Link
+                      to={link.href}
+                      className="text-gray-300 hover:text-primary-400 transition-colors text-sm"
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -161,7 +185,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} Fishery College Jabalpur. All rights reserved.
+              © {currentYear} College of Fisheries, Jabalpur. All rights reserved.
             </div>
             
             <div className="flex space-x-6 text-sm">
