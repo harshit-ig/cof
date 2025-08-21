@@ -320,7 +320,9 @@ const Faculty = () => {
                   <img
                     src={faculty.image}
                     alt={faculty.name}
-                    className="w-32 h-40 object-cover rounded-lg mx-auto mb-4 shadow-md"
+                    className="w-32 h-40 md:w-36 md:h-44 lg:w-40 lg:h-48 object-cover rounded-lg mx-auto mb-4 shadow-md"
+                    sizes="(max-width: 768px) 128px, (max-width: 1024px) 144px, 160px"
+                    loading="lazy"
                   />
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{faculty.name}</h3>
                   <p className="text-primary-600 font-medium mb-1">{faculty.designation}</p>

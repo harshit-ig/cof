@@ -14,33 +14,16 @@ import {
   LogOut,
   Menu,
   X,
-  User,
-  Upload,
-  Shield,
-  BarChart3,
-  Activity,
-  Search,
-  Monitor
+  User
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI } from '../../services/api'
 import LoadingSpinner from '../common/LoadingSpinner'
 
 import ProgramsManagement from './ProgramsManagement'
-import NewsManagement from './NewsManagementNew'
-import FacultyManagement from './FacultyManagementNew'
+import NewsManagement from './NewsManagement'
+import FacultyManagement from './FacultyManagement'
 import ContentManagement from './ContentManagement'
-import FileUploadDemo from './FileUploadDemo'
-import EventsManagement from './EventsManagement'
-import ResearchManagement from './ResearchManagement'
-import InfrastructureManagement from './InfrastructureManagement'
-import CollaborationsManagement from './CollaborationsManagement'
-import AdminSettings from './AdminSettings'
-import UserManagement from './UserManagement'
-import Analytics from './Analytics'
-import ActivityLogs from './ActivityLogs'
-import SeoManagement from './SeoManagement'
-import SystemMonitoring from './SystemMonitoring'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -157,6 +140,107 @@ const DashboardHome = () => {
   )
 }
 
+// Placeholder components for remaining sections
+const EventsManagement = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Events management functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Events Management</h1>
+    <p className="text-gray-600">This section will allow you to manage events, seminars, and workshops.</p>
+  </div>
+)
+
+const ResearchManagement = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Research management functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Research Management</h1>
+    <p className="text-gray-600">This section will allow you to manage research projects and publications.</p>
+  </div>
+)
+
+const InfrastructureManagement = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Infrastructure management functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Infrastructure Management</h1>
+    <p className="text-gray-600">This section will allow you to manage infrastructure and facilities information.</p>
+  </div>
+)
+
+const CollaborationsManagement = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Collaborations management functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Collaborations Management</h1>
+    <p className="text-gray-600">This section will allow you to manage institutional collaborations and partnerships.</p>
+  </div>
+)
+
+const AdminSettings = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Admin settings functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Settings</h1>
+    <p className="text-gray-600">This section will allow you to manage admin settings and configuration.</p>
+  </div>
+)
+
 const AdminDashboard = () => {
   const { admin, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -167,17 +251,11 @@ const AdminDashboard = () => {
     { name: 'Programs', href: '/admin/programs', icon: BookOpen },
     { name: 'Faculty', href: '/admin/faculty', icon: Users },
     { name: 'News', href: '/admin/news', icon: Newspaper },
-    { name: 'File Upload', href: '/admin/uploads', icon: Upload },
     { name: 'Events', href: '/admin/events', icon: Calendar },
     { name: 'Research', href: '/admin/research', icon: FileText },
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'Collaborations', href: '/admin/collaborations', icon: Briefcase },
     { name: 'Content', href: '/admin/content', icon: FileText },
-    { name: 'User Management', href: '/admin/users', icon: Shield },
-    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-    { name: 'Activity Logs', href: '/admin/logs', icon: Activity },
-    { name: 'SEO Management', href: '/admin/seo', icon: Search },
-    { name: 'System Monitor', href: '/admin/monitoring', icon: Monitor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -362,17 +440,11 @@ const AdminDashboard = () => {
                 <Route path="/programs" element={<ProgramsManagement />} />
                 <Route path="/faculty" element={<FacultyManagement />} />
                 <Route path="/news" element={<NewsManagement />} />
-                <Route path="/uploads" element={<FileUploadDemo />} />
                 <Route path="/events" element={<EventsManagement />} />
                 <Route path="/research" element={<ResearchManagement />} />
                 <Route path="/infrastructure" element={<InfrastructureManagement />} />
                 <Route path="/collaborations" element={<CollaborationsManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
-                <Route path="/users" element={<UserManagement />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/logs" element={<ActivityLogs />} />
-                <Route path="/seo" element={<SeoManagement />} />
-                <Route path="/monitoring" element={<SystemMonitoring />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>

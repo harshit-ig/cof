@@ -133,44 +133,4 @@ export const uploadAPI = {
   }
 }
 
-export const adminAPI = {
-  // Existing admin functions
-  getStats: () => api.get('/admin/stats'),
-  clearCache: () => api.post('/admin/clear-cache'),
-  exportData: (collections) => api.post('/admin/export-data', { collections }),
-  backupDatabase: () => api.post('/admin/backup-database'),
-  getHealth: () => api.get('/admin/health'),
-  optimize: () => api.post('/admin/optimize'),
-  
-  // User Management
-  getUsers: (params) => api.get('/admin/users', { params }),
-  createUser: (data) => api.post('/admin/users', data),
-  updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
-  deleteUser: (id) => api.delete(`/admin/users/${id}`),
-  updateUserStatus: (id, status) => api.put(`/admin/users/${id}`, { status }),
-  exportUsers: () => api.get('/admin/users/export'),
-  
-  // Analytics
-  getAnalytics: (params) => api.get('/admin/analytics', { params }),
-  exportAnalytics: (params) => api.get('/admin/analytics/export', { params }),
-  
-  // Activity Logs
-  getActivityLogs: (params) => api.get('/admin/activity-logs', { params }),
-  exportActivityLogs: (params) => api.get('/admin/activity-logs/export', { params }),
-  clearOldLogs: (params) => api.delete('/admin/activity-logs', { params }),
-  
-  // SEO Management
-  getSeoSettings: () => api.get('/admin/seo-settings'),
-  updateSeoSettings: (data) => api.put('/admin/seo-settings', data),
-  updatePageSeo: (id, data) => api.put(`/admin/seo-settings/pages/${id}`, data),
-  generateSitemap: () => api.post('/admin/seo-settings/sitemap'),
-  analyzeSeo: () => api.post('/admin/seo-settings/analyze'),
-  
-  // System Monitoring
-  getSystemHealth: () => api.get('/admin/system-health'),
-  restartService: (service) => api.post(`/admin/system-health/restart/${service}`),
-  clearSystemLogs: () => api.delete('/admin/system-health/logs'),
-  exportSystemReport: () => api.get('/admin/system-health/report'),
-}
-
 export default api

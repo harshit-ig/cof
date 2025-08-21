@@ -49,7 +49,13 @@ const News = () => {
               return (
                 <div key={n._id} className="bg-white rounded-lg shadow-md overflow-hidden">
                   {src && (
-                    <img src={src} alt={n.title} className="w-full h-40 object-cover" />
+                    <img 
+                  src={src} 
+                  alt={n.title} 
+                  className="w-full h-40 md:h-48 lg:h-56 object-cover" 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  loading="lazy"
+                />
                   )}
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-900 mb-1">{n.title}</h3>

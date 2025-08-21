@@ -1,281 +1,642 @@
-import React, { useState } from 'react'
-import { Clock, Calendar, Users, FileText, Download, Search } from 'lucide-react'
-import Section from '../components/common/Section'
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { GraduationCap, Award, Users, Star, Briefcase, FileText, Calendar, Mail, Phone, MapPin, ChevronRight, Download } from 'lucide-react'
+import Card from '../components/common/Card'
 
 const StudentCorner = () => {
-  const [activeTab, setActiveTab] = useState('timetable')
-
-  const timeTable = [
+  const admissionGuidelines = [
     {
-      semester: '1st Semester',
-      schedule: [
-        { day: 'Monday', time: '9:00-10:00', subject: 'Mathematics', faculty: 'Dr. A. Kumar' },
-        { day: 'Monday', time: '10:00-11:00', subject: 'Physics', faculty: 'Dr. B. Singh' },
-        { day: 'Monday', time: '11:30-12:30', subject: 'Chemistry', faculty: 'Dr. C. Sharma' },
-        { day: 'Tuesday', time: '9:00-10:00', subject: 'Biology', faculty: 'Dr. D. Patel' },
-        { day: 'Tuesday', time: '10:00-11:00', subject: 'English', faculty: 'Dr. E. Gupta' }
+      category: 'Eligibility Criteria',
+      description: 'Academic qualifications and requirements for admission to B.F.Sc and M.F.Sc programs.',
+      guidelines: [
+        'B.F.Sc: 10+2 with Physics, Chemistry, Biology/Mathematics (50% marks)',
+        'M.F.Sc: B.F.Sc or equivalent degree (55% marks)',
+        'Age limit: 17-25 years for UG, 21-35 years for PG',
+        'Relaxation in marks and age as per Government norms',
+        'Valid entrance test score (AUAT/NET/GATE as applicable)'
       ]
     },
     {
-      semester: '3rd Semester',
-      schedule: [
-        { day: 'Monday', time: '9:00-10:00', subject: 'Aquaculture', faculty: 'Dr. P. Yadav' },
-        { day: 'Monday', time: '10:00-11:00', subject: 'Fish Nutrition', faculty: 'Dr. Q. Mishra' },
-        { day: 'Monday', time: '11:30-12:30', subject: 'Fish Genetics', faculty: 'Dr. R. Jha' },
-        { day: 'Tuesday', time: '9:00-10:00', subject: 'Fish Pathology', faculty: 'Dr. S. Kumar' },
-        { day: 'Tuesday', time: '10:00-11:00', subject: 'Biochemistry', faculty: 'Dr. T. Singh' }
+      category: 'Application Process',
+      description: 'Step-by-step procedure for submitting admission applications.',
+      guidelines: [
+        'Online application through university portal',
+        'Upload required documents in prescribed format',
+        'Payment of application fee through online mode',
+        'Print application form after successful submission',
+        'Submit hard copy with documents at college office'
+      ]
+    },
+    {
+      category: 'Required Documents',
+      description: 'List of documents to be submitted along with the application form.',
+      guidelines: [
+        'Mark sheets and certificates of qualifying examination',
+        'Transfer certificate and migration certificate',
+        'Character certificate from head of last institution',
+        'Caste certificate (if applicable)',
+        'Income certificate (for fee concession)',
+        'Medical fitness certificate',
+        'Recent passport size photographs'
+      ]
+    },
+    {
+      category: 'Important Dates',
+      description: 'Key dates and deadlines for admission process.',
+      guidelines: [
+        'Application Start Date: May 15, 2025',
+        'Last Date for Application: June 15, 2025',
+        'Entrance Test Date: June 25, 2025',
+        'Merit List Publication: July 5, 2025',
+        'Counseling and Admission: July 10-20, 2025',
+        'Commencement of Classes: August 1, 2025'
       ]
     }
   ]
 
-  const examSchedule = [
+  const scholarshipsFellowships = [
     {
-      exam: 'Mid-Semester Examination',
-      semester: '1st & 3rd Semester',
-      startDate: '2025-09-15',
-      endDate: '2025-09-25',
-      status: 'Upcoming'
+      name: 'Merit-cum-Means Scholarship',
+      eligibility: 'Students with >75% marks and annual family income <₹2 lakh',
+      amount: '₹12,000 per year',
+      duration: 'Throughout the course',
+      description: 'Government scholarship for meritorious students from economically weaker sections.',
+      benefits: [
+        'Tuition fee waiver',
+        'Maintenance allowance',
+        'Book allowance',
+        'Hostel fee concession'
+      ]
     },
     {
-      exam: 'Final Examination',
-      semester: '1st & 3rd Semester',
-      startDate: '2025-12-10',
-      endDate: '2025-12-20',
-      status: 'Scheduled'
+      name: 'SC/ST Scholarship',
+      eligibility: 'Students belonging to SC/ST category',
+      amount: '₹15,000 per year',
+      duration: 'Throughout the course',
+      description: 'Special scholarship scheme for scheduled caste and scheduled tribe students.',
+      benefits: [
+        'Complete fee waiver',
+        'Monthly stipend',
+        'Hostel accommodation',
+        'Medical assistance'
+      ]
+    },
+    {
+      name: 'Research Fellowship (PG)',
+      eligibility: 'M.F.Sc students with >60% marks',
+      amount: '₹8,000 per month',
+      duration: '2 years',
+      description: 'Fellowship for postgraduate students engaged in research activities.',
+      benefits: [
+        'Monthly stipend',
+        'Research contingency',
+        'Conference participation support',
+        'Publication assistance'
+      ]
+    },
+    {
+      name: 'Girl Child Incentive',
+      eligibility: 'Female students with >65% marks',
+      amount: '₹10,000 per year',
+      duration: 'Throughout the course',
+      description: 'Special incentive scheme to promote higher education among girls.',
+      benefits: [
+        'Financial assistance',
+        'Priority in hostel allocation',
+        'Safety and security measures',
+        'Career guidance support'
+      ]
     }
   ]
 
-  const students = [
+  const studentCouncilClubs = [
     {
-      rollNo: 'COF/2024/001',
-      name: 'Aarav Sharma',
-      semester: '1st Semester',
-      batch: '2024-28',
-      email: 'aarav.sharma@cofbasu.edu.in'
+      name: 'Student Council',
+      role: 'Student Governance',
+      description: 'Representative body for student welfare and academic matters.',
+      activities: [
+        'Student grievance redressal',
+        'Academic and administrative liaison',
+        'Cultural and sports event organization',
+        'Student welfare initiatives',
+        'Discipline and conduct management'
+      ],
+      positions: ['President', 'Vice-President', 'Secretary', 'Cultural Secretary', 'Sports Secretary']
     },
     {
-      rollNo: 'COF/2024/002',
-      name: 'Priya Singh',
-      semester: '1st Semester',
-      batch: '2024-28',
-      email: 'priya.singh@cofbasu.edu.in'
+      name: 'Aquaculture Club',
+      role: 'Technical Activities',
+      description: 'Club focused on practical aspects of aquaculture and fisheries management.',
+      activities: [
+        'Technical workshops and seminars',
+        'Field visits to fish farms',
+        'Hands-on training programs',
+        'Research project discussions',
+        'Industry interaction sessions'
+      ],
+      positions: ['President', 'Secretary', 'Technical Coordinator', 'Event Manager']
     },
     {
-      rollNo: 'COF/2022/001',
-      name: 'Rahul Kumar',
-      semester: '5th Semester',
-      batch: '2022-26',
-      email: 'rahul.kumar@cofbasu.edu.in'
+      name: 'Cultural Club',
+      role: 'Cultural Activities',
+      description: 'Organizing cultural events, festivals, and artistic activities on campus.',
+      activities: [
+        'Annual cultural festival',
+        'Traditional and modern dance performances',
+        'Music and drama competitions',
+        'Art and craft exhibitions',
+        'Inter-college cultural competitions'
+      ],
+      positions: ['Cultural Secretary', 'Dance Coordinator', 'Music Coordinator', 'Drama Coordinator']
     },
     {
-      rollNo: 'COF/2022/002',
-      name: 'Anita Patel',
-      semester: '5th Semester',
-      batch: '2022-26',
-      email: 'anita.patel@cofbasu.edu.in'
+      name: 'Sports Club',
+      role: 'Sports & Recreation',
+      description: 'Promoting sports activities and physical fitness among students.',
+      activities: [
+        'Inter-college sports competitions',
+        'Annual sports meet',
+        'Fitness and health awareness programs',
+        'Sports equipment management',
+        'Coaching and training sessions'
+      ],
+      positions: ['Sports Secretary', 'Indoor Games Coordinator', 'Outdoor Games Coordinator']
+    },
+    {
+      name: 'Literary Society',
+      role: 'Academic & Literary',
+      description: 'Encouraging literary activities, debates, and academic discussions.',
+      activities: [
+        'Debates and elocution competitions',
+        'Essay writing competitions',
+        'Book reading sessions',
+        'Academic seminars',
+        'College magazine publication'
+      ],
+      positions: ['Editor', 'Literary Secretary', 'Debate Coordinator', 'Publication Head']
     }
   ]
 
-  const quickLinks = [
-    { name: 'RRI PG', description: 'Rules, Regulations & Instructions for PG', file: 'PG-RRI.pdf' },
-    { name: 'RRI UG', description: 'Rules, Regulations & Instructions for UG', file: 'UG-RRI.pdf' },
-    { name: 'Academic Leave Form', description: 'Application form for academic leave', file: 'Academic-Leave-Form.pdf' }
-  ]
-
-  const tabs = [
-    { id: 'timetable', name: 'Time Table', icon: Clock },
-    { id: 'examinations', name: 'Examinations', icon: Calendar },
-    { id: 'students', name: 'List of Students', icon: Users },
-    { id: 'quicklinks', name: 'Quick Links', icon: FileText }
-  ]
-
-  const renderTimeTable = () => (
-    <div className="space-y-6">
-      {timeTable.map((semester, idx) => (
-        <div key={idx} className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="bg-green-600 text-white px-6 py-4">
-            <h3 className="text-lg font-semibold">{semester.semester}</h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Day</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Faculty</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {semester.schedule.map((item, itemIdx) => (
-                  <tr key={itemIdx}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.day}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.time}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.subject}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.faculty}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-
-  const renderExaminations = () => (
-    <div className="space-y-6">
-      {examSchedule.map((exam, idx) => (
-        <div key={idx} className="bg-white rounded-lg shadow-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-semibold text-gray-900">{exam.exam}</h3>
-            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-              exam.status === 'Upcoming' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
-            }`}>
-              {exam.status}
-            </span>
-          </div>
-          <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
-            <div>
-              <span className="font-medium">Semester:</span> {exam.semester}
-            </div>
-            <div>
-              <span className="font-medium">Start Date:</span> {new Date(exam.startDate).toLocaleDateString()}
-            </div>
-            <div>
-              <span className="font-medium">End Date:</span> {new Date(exam.endDate).toLocaleDateString()}
-            </div>
-          </div>
-          <div className="mt-4 flex gap-3">
-            <button className="inline-flex items-center px-4 py-2 bg-blue-700 text-white text-sm font-medium rounded-lg hover:bg-blue-800 transition-colors">
-              <Download className="h-4 w-4 mr-2" />
-              Download Schedule
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-
-  const renderStudents = () => (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-      <div className="px-6 py-4 bg-green-600 text-white">
-        <h3 className="text-lg font-semibold">List of Students</h3>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Roll No.</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Semester</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Batch</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {students.map((student, idx) => (
-              <tr key={idx}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{student.rollNo}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.semester}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.batch}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">
-                  <a href={`mailto:${student.email}`}>{student.email}</a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  )
-
-  const renderQuickLinks = () => (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {quickLinks.map((link, idx) => (
-        <div key={idx} className="bg-white rounded-lg shadow-lg p-6">
-          <div className="flex items-center mb-4">
-            <FileText className="h-8 w-8 text-green-600 mr-3" />
-            <h3 className="text-lg font-semibold text-gray-900">{link.name}</h3>
-          </div>
-          <p className="text-gray-600 mb-4">{link.description}</p>
-          <button className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors">
-            <Download className="h-4 w-4 mr-2" />
-            Download
-          </button>
-        </div>
-      ))}
-    </div>
-  )
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'timetable':
-        return renderTimeTable()
-      case 'examinations':
-        return renderExaminations()
-      case 'students':
-        return renderStudents()
-      case 'quicklinks':
-        return renderQuickLinks()
-      default:
-        return renderTimeTable()
+  const alumniTestimonials = [
+    {
+      name: 'Dr. Rahul Sharma',
+      batch: '2015-19',
+      currentPosition: 'Aquaculture Officer, MP Fisheries Department',
+      photo: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
+      testimonial: 'My time at College of Fisheries, Jabalpur was transformative. The practical exposure to modern aquaculture techniques and guidance from experienced faculty prepared me well for my career in government service.',
+      achievements: [
+        'Selected as Aquaculture Officer in MP Civil Services',
+        'Implemented 5 successful aquaculture projects',
+        'Trained over 500 farmers in modern techniques',
+        'Received State Award for Excellence in Fisheries'
+      ],
+      contact: 'rahul.sharma@mpgov.in'
+    },
+    {
+      name: 'Ms. Priya Verma',
+      batch: '2017-21',
+      currentPosition: 'Research Scientist, ICAR-CIFA',
+      photo: '/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg',
+      testimonial: 'The research-oriented curriculum and state-of-the-art laboratories at COF provided excellent foundation for my research career. The faculty mentorship was exceptional.',
+      achievements: [
+        'Selected as Scientist in ICAR-CIFA through NET',
+        'Published 12 research papers in international journals',
+        'Awarded Young Scientist Fellowship',
+        'Leading biofloc technology research project'
+      ],
+      contact: 'priya.verma@icar.gov.in'
+    },
+    {
+      name: 'Mr. Anil Kumar Patel',
+      batch: '2014-18',
+      currentPosition: 'Entrepreneur, AquaTech Solutions',
+      photo: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
+      testimonial: 'The entrepreneurship development programs and industry exposure helped me start my own aquaculture consultancy. Today, our company serves farmers across three states.',
+      achievements: [
+        'Founded successful aquaculture consultancy',
+        'Serves 1000+ farmers across MP, CG, UP',
+        'Annual turnover of ₹2 crores',
+        'Created employment for 25 youth'
+      ],
+      contact: 'anil@aquatechsolutions.com'
+    },
+    {
+      name: 'Dr. Sunita Singh',
+      batch: '2016-20',
+      currentPosition: 'Assistant Professor, College of Fisheries, Raipur',
+      photo: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
+      testimonial: 'The academic excellence and research culture at COF inspired me to pursue higher studies and academic career. The institution shaped my passion for teaching and research.',
+      achievements: [
+        'Completed Ph.D. from ICAR-CIFE, Mumbai',
+        'Appointed as Assistant Professor at age 26',
+        'Published 8 research papers',
+        'Guiding 6 M.F.Sc students'
+      ],
+      contact: 'sunita.singh@cofr.edu.in'
     }
-  }
+  ]
+
+  const internshipPlacement = [
+    {
+      category: 'Internship Opportunities',
+      description: 'Mandatory internship programs for practical exposure and skill development.',
+      details: [
+        'Duration: 6 months for final year students',
+        'Placement in government departments, research institutes, private companies',
+        'Stipend range: ₹5,000 - ₹15,000 per month',
+        'Industry mentorship and project-based learning',
+        'Evaluation and grading based on performance'
+      ],
+      partners: [
+        'ICAR Research Institutes',
+        'State Fisheries Departments',
+        'Private Aquaculture Companies',
+        'Fish Processing Industries',
+        'NGOs and Development Organizations'
+      ]
+    },
+    {
+      category: 'Placement Statistics (2023-24)',
+      description: 'Comprehensive placement support with excellent industry connections.',
+      details: [
+        'Overall Placement Rate: 85%',
+        'Average Package: ₹4.5 LPA',
+        'Highest Package: ₹12 LPA',
+        'Government Job Selections: 35%',
+        'Private Sector Placements: 50%'
+      ],
+      partners: [
+        'Godrej Agrovet Limited',
+        'Avanti Feeds Limited',
+        'CP Aquaculture',
+        'Growel Feeds',
+        'Various State Governments'
+      ]
+    },
+    {
+      category: 'Career Services',
+      description: 'Comprehensive support for career development and job placement.',
+      details: [
+        'Resume building and interview preparation',
+        'Industry interaction and guest lectures',
+        'Job portal access and application support',
+        'Soft skills and personality development',
+        'Entrepreneurship development programs'
+      ],
+      partners: [
+        'Placement Cell Office',
+        'Career Counseling Services',
+        'Industry Mentorship Program',
+        'Alumni Network Support',
+        'Professional Development Workshops'
+      ]
+    },
+    {
+      category: 'Top Recruiters',
+      description: 'Leading organizations that regularly recruit from our college.',
+      details: [
+        'Government Sectors: State Fisheries Departments, ICAR Institutes',
+        'Private Companies: Godrej, Avanti, CP Aquaculture, Growel',
+        'Research Organizations: CIFA, CIFRI, NBFGR, CMFRI',
+        'International Organizations: WorldFish, FAO projects',
+        'Startups and Consulting Firms in aquaculture sector'
+      ],
+      partners: [
+        'Recruitment drives: 2-3 times per year',
+        'Pre-placement talks and company presentations',
+        'On-campus interviews and selection process',
+        'Industry-specific skill assessment tests',
+        'Follow-up support for placed students'
+      ]
+    }
+  ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <Section className="bg-gradient-to-r from-blue-800 to-green-700 text-white py-20">
-        <div className="text-center">
-          <div className="mb-4">
-            <span className="inline-block bg-yellow-400 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">
-              Government of Madhya Pradesh
-            </span>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+        <div className="container-max section-padding">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Students Corner</h1>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Your comprehensive guide to admissions, scholarships, student life, alumni experiences, 
+              and career opportunities at College of Fisheries, Jabalpur.
+            </p>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Student Corner</h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-            Access all student-related information, schedules, and resources in one place
+        </div>
+      </section>
+
+      {/* Quick Navigation */}
+      <section className="section-padding bg-white border-b">
+        <div className="container-max">
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href="#admission-guidelines" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Admission Guidelines
+            </a>
+            <a href="#scholarships" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Scholarships & Fellowships
+            </a>
+            <a href="#student-council" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Student Council / Clubs
+            </a>
+            <a href="#alumni-testimonials" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Alumni Testimonials
+            </a>
+            <a href="#internship-placement" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Internship & Placement
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Admission Guidelines */}
+      <section id="admission-guidelines" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Admission Guidelines</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Complete information about admission process, eligibility criteria, required documents, 
+              and important dates for B.F.Sc and M.F.Sc programs.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {admissionGuidelines.map((guideline, index) => (
+              <Card key={index} className="p-6">
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+                  {guideline.category.includes('Eligibility') ? 
+                    <GraduationCap className="w-6 h-6 text-primary-600" /> :
+                    guideline.category.includes('Process') ?
+                    <FileText className="w-6 h-6 text-primary-600" /> :
+                    guideline.category.includes('Documents') ?
+                    <FileText className="w-6 h-6 text-primary-600" /> :
+                    <Calendar className="w-6 h-6 text-primary-600" />
+                  }
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{guideline.category}</h3>
+                <p className="text-gray-700 mb-4">{guideline.description}</p>
+                
+                <div>
+                  <ul className="space-y-2">
+                    {guideline.guidelines.map((item, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <div className="w-2 h-2 bg-primary-500 rounded-full mr-3 mt-2"></div>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Scholarships & Fellowships */}
+      <section id="scholarships" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Scholarships & Fellowships</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Financial assistance programs to support deserving students through scholarships, 
+              fellowships, and incentive schemes for academic excellence.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {scholarshipsFellowships.map((scholarship, index) => (
+              <Card key={index} className="p-6">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <Award className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{scholarship.name}</h3>
+                    <div className="grid grid-cols-1 gap-2 text-sm text-gray-600 mb-3">
+                      <div>
+                        <span className="font-medium">Amount:</span> {scholarship.amount}
+                      </div>
+                      <div>
+                        <span className="font-medium">Duration:</span> {scholarship.duration}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 mb-4">{scholarship.description}</p>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-900 mb-2">Eligibility</h4>
+                  <p className="text-sm text-gray-700">{scholarship.eligibility}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">Benefits</h4>
+                  <ul className="space-y-2">
+                    {scholarship.benefits.map((benefit, idx) => (
+                      <li key={idx} className="flex items-center text-sm text-gray-700">
+                        <ChevronRight className="w-4 h-4 text-yellow-600 mr-2" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Student Council / Clubs */}
+      <section id="student-council" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Student Council / Clubs</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Active student organizations fostering leadership, technical skills, cultural activities, 
+              and overall personality development through various clubs and societies.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {studentCouncilClubs.map((club, index) => (
+              <Card key={index} className="p-6">
+                <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-secondary-600" />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{club.name}</h3>
+                <p className="text-sm text-secondary-600 mb-3 font-medium">{club.role}</p>
+                <p className="text-gray-700 mb-4">{club.description}</p>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-900 mb-3">Activities</h4>
+                  <ul className="space-y-2">
+                    {club.activities.map((activity, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <div className="w-2 h-2 bg-secondary-500 rounded-full mr-3 mt-2"></div>
+                        {activity}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Key Positions</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {club.positions.map((position, idx) => (
+                      <span key={idx} className="px-2 py-1 bg-secondary-100 text-secondary-800 text-xs rounded">
+                        {position}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Alumni Testimonials */}
+      <section id="alumni-testimonials" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Alumni Testimonials</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Success stories and experiences from our distinguished alumni who are making 
+              significant contributions in various sectors of fisheries and aquaculture.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {alumniTestimonials.map((alumni, index) => (
+              <Card key={index} className="p-6">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                    <Star className="w-8 h-8 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900">{alumni.name}</h3>
+                    <p className="text-sm text-gray-600">Batch: {alumni.batch}</p>
+                    <p className="text-sm text-green-600 font-medium">{alumni.currentPosition}</p>
+                  </div>
+                </div>
+                
+                <blockquote className="text-gray-700 italic mb-4">
+                  "{alumni.testimonial}"
+                </blockquote>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-900 mb-3">Key Achievements</h4>
+                  <ul className="space-y-2">
+                    {alumni.achievements.map((achievement, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <Star className="w-4 h-4 text-green-600 mr-2 mt-1" />
+                        {achievement}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div className="pt-4 border-t border-gray-200">
+                  <p className="text-sm text-gray-600">
+                    <Mail className="w-4 h-4 inline mr-1" />
+                    Contact: {alumni.contact}
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Internship & Placement */}
+      <section id="internship-placement" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Internship & Placement</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Comprehensive placement support with excellent industry connections, internship opportunities, 
+              and career development services for students.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {internshipPlacement.map((placement, index) => (
+              <Card key={index} className="p-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <Briefcase className="w-6 h-6 text-blue-600" />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{placement.category}</h3>
+                <p className="text-gray-700 mb-4">{placement.description}</p>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-900 mb-3">Key Details</h4>
+                  <ul className="space-y-2">
+                    {placement.details.map((detail, idx) => (
+                      <li key={idx} className="flex items-start text-sm text-gray-700">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2"></div>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">
+                    {placement.category.includes('Opportunities') ? 'Partner Organizations' :
+                     placement.category.includes('Statistics') ? 'Major Recruiters' :
+                     placement.category.includes('Services') ? 'Support Services' :
+                     'Recruitment Process'}
+                  </h4>
+                  <ul className="space-y-2">
+                    {placement.partners.map((partner, idx) => (
+                      <li key={idx} className="flex items-center text-sm text-gray-700">
+                        <ChevronRight className="w-4 h-4 text-blue-600 mr-2" />
+                        {partner}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="section-padding bg-primary-600 text-white">
+        <div className="container-max text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Join Our Student Community?</h2>
+          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+            Explore admission opportunities, connect with current students, and start your journey 
+            towards a successful career in fisheries science and aquaculture.
           </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="btn-accent"
+            >
+              Contact Admission Office
+            </Link>
+            
+            <Link
+              to="/academics"
+              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+            >
+              Explore Programs
+            </Link>
+          </div>
         </div>
-      </Section>
-
-      {/* Navigation Tabs */}
-      <Section className="py-8 bg-white shadow-sm">
-        <div className="flex flex-wrap justify-center gap-4">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-6 py-3 rounded-lg font-medium transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Icon className="h-5 w-5 mr-2" />
-                {tab.name}
-              </button>
-            )
-          })}
-        </div>
-      </Section>
-
-      {/* Navigation Anchors */}
-      <div id="scholarships"></div>
-      <div id="clubs"></div>
-      <div id="alumni"></div>
-      <div id="placement"></div>
-
-      {/* Content */}
-      <Section className="py-16">
-        <div className="max-w-6xl mx-auto">
-          {renderContent()}
-        </div>
-      </Section>
+      </section>
     </div>
   )
 }

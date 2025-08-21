@@ -85,7 +85,7 @@ const Navbar = () => {
         { name: 'Seminars & Conferences', href: '/events' },
         { name: 'Workshops and Training', href: '/events', section: 'workshops' },
         { name: 'Field Visits & Exposure Trips', href: '/events', section: 'visits' },
-        { name: 'Photo Gallery', href: '/events', section: 'gallery' },
+        { name: 'Photo Gallery', href: '/gallery' },
         { name: 'Press Releases', href: '/news' }
       ]
     },

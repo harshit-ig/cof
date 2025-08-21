@@ -61,7 +61,6 @@ app.use('/api/collaborations', require('./routes/collaborations'));
 app.use('/api/content', require('./routes/content'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/proxy', require('./routes/proxy'));
-app.use('/api/admin', require('./routes/admin'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

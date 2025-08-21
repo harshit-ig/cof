@@ -1,247 +1,254 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { FlaskConical, Users, Award, BookOpen, Globe, Microscope, Leaf, Fish, Building, ChevronRight, Calendar, MapPin, Phone, Mail } from 'lucide-react'
+import { FlaskConical, Users, Award, BookOpen, Globe, ChevronRight, Building, Fish, Microscope } from 'lucide-react'
 import Card from '../components/common/Card'
 
 const Research = () => {
-  const [activeTab, setActiveTab] = useState('areas')
-
-  const researchAreas = [
-    {
-      title: 'Aquaculture & Fisheries',
-      icon: Fish,
-      description: 'Advanced research in sustainable aquaculture practices and fisheries management',
-      projects: [
-        'Sustainable fish farming techniques',
-        'Integrated aquaculture systems',
-        'Fish breeding and genetics',
-        'Aquaculture nutrition and feed'
-      ],
-      facilities: [
-        'Hatchery units',
-        'Pond systems',
-        'Feed analysis lab',
-        'Water quality monitoring'
-      ]
-    },
-    {
-      title: 'Fish Health & Disease Management',
-      icon: Microscope,
-      description: 'Research on aquatic animal health, disease prevention, and treatment',
-      projects: [
-        'Disease diagnosis and prevention',
-        'Vaccine development',
-        'Pathogen identification',
-        'Health monitoring systems'
-      ],
-      facilities: [
-        'Pathology laboratory',
-        'Microbiology lab',
-        'Diagnostic equipment',
-        'Quarantine facilities'
-      ]
-    },
-    {
-      title: 'Aquatic Environment & Ecology',
-      icon: Globe,
-      description: 'Study of aquatic ecosystems, water quality, and environmental impact',
-      projects: [
-        'Water quality assessment',
-        'Ecosystem monitoring',
-        'Environmental impact studies',
-        'Climate change adaptation'
-      ],
-      facilities: [
-        'Environmental lab',
-        'GIS facilities',
-        'Monitoring equipment',
-        'Field research tools'
-      ]
-    },
-    {
-      title: 'Fish Processing & Technology',
-      icon: Building,
-      description: 'Research on fish preservation, processing, and value addition',
-      projects: [
-        'Processing technology development',
-        'Quality control systems',
-        'Value addition techniques',
-        'Food safety protocols'
-      ],
-      facilities: [
-        'Processing unit',
-        'Quality control lab',
-        'Cold storage facilities',
-        'Packaging equipment'
-      ]
-    },
-    {
-      title: 'Fisheries Economics & Extension',
-      icon: BookOpen,
-      description: 'Research on economic aspects and extension services in fisheries',
-      projects: [
-        'Economic analysis of fisheries',
-        'Market research studies',
-        'Extension program evaluation',
-        'Policy impact assessment'
-      ],
-      facilities: [
-        'Computer lab',
-        'Statistical software',
-        'Survey tools',
-        'Extension units'
-      ]
-    },
-    {
-      title: 'Biotechnology & Genetics',
-      icon: FlaskConical,
-      description: 'Application of biotechnological tools in fisheries science',
-      projects: [
-        'Genetic improvement programs',
-        'Molecular biology research',
-        'Biotechnology applications',
-        'Breeding technology'
-      ],
-      facilities: [
-        'Molecular biology lab',
-        'Tissue culture facility',
-        'PCR equipment',
-        'Genetic analysis tools'
-      ]
-    }
-  ]
 
   const ongoingProjects = [
     {
-      title: 'Sustainable Aquaculture Development',
+      title: 'Development of Sustainable Aquaculture Practices for Climate Resilience',
       principal: 'Dr. Rajesh Kumar',
       duration: '2023-2026',
       funding: 'ICAR',
       amount: '₹45 Lakhs',
-      description: 'Development of sustainable aquaculture practices for small-scale farmers',
-      status: 'In Progress',
-      progress: 65
-    },
-    {
-      title: 'Fish Disease Prevention Strategies',
-      principal: 'Dr. Priya Sharma',
-      duration: '2023-2025',
-      funding: 'DBT',
-      amount: '₹32 Lakhs',
-      description: 'Research on preventive measures for common fish diseases',
-      status: 'In Progress',
-      progress: 45
-    },
-    {
-      title: 'Water Quality Management',
-      principal: 'Dr. Amit Patel',
-      duration: '2024-2026',
-      funding: 'MoEFCC',
-      amount: '₹28 Lakhs',
-      description: 'Study of water quality parameters in aquaculture systems',
-      status: 'In Progress',
-      progress: 25
-    }
-  ]
-
-  const completedProjects = [
-    {
-      title: 'Integrated Fish Farming Systems',
-      principal: 'Dr. Meera Singh',
-      duration: '2020-2023',
-      funding: 'ICAR',
-      amount: '₹38 Lakhs',
-      description: 'Development of integrated farming systems for better productivity',
-      status: 'Completed',
-      outcomes: [
-        'Increased fish production by 40%',
-        'Reduced feed costs by 25%',
-        'Published 8 research papers',
-        'Technology transferred to 50 farmers'
+      description: 'Research on climate-smart aquaculture technologies and practices to enhance resilience against climate change impacts in fisheries sector.',
+      objectives: [
+        'Develop climate-resilient aquaculture systems',
+        'Study impact of climate change on fish production',
+        'Design adaptation strategies for fish farmers'
       ]
     },
     {
-      title: 'Fish Feed Formulation',
-      principal: 'Dr. Shashikant Mahajan',
-      duration: '2019-2022',
+      title: 'Integrated Fish Health Management in Freshwater Aquaculture',
+      principal: 'Dr. Priya Sharma',
+      duration: '2023-2025',
+      funding: 'NFDB',
+      amount: '₹32 Lakhs',
+      description: 'Comprehensive study on fish disease prevention, diagnosis, and treatment strategies in freshwater aquaculture systems.',
+      objectives: [
+        'Develop early disease detection protocols',
+        'Study immunology and vaccine development',
+        'Create health monitoring systems'
+      ]
+    },
+    {
+      title: 'Evaluation of Alternative Protein Sources in Fish Feed',
+      principal: 'Dr. Amit Patel',
+      duration: '2024-2026',
+      funding: 'PMMSY',
+      amount: '₹28 Lakhs',
+      description: 'Research on sustainable and cost-effective protein alternatives for fish feed formulation to reduce dependency on fishmeal.',
+      objectives: [
+        'Identify local protein sources',
+        'Optimize feed formulations',
+        'Assess growth performance and economics'
+      ]
+    },
+    {
+      title: 'Genetic Improvement of Native Fish Species',
+      principal: 'Dr. Meera Singh',
+      duration: '2024-2027',
       funding: 'DBT',
-      amount: '₹42 Lakhs',
-      description: 'Development of cost-effective fish feed using local ingredients',
-      status: 'Completed',
-      outcomes: [
-        'Feed cost reduced by 30%',
-        'Improved growth rates',
-        'Published 6 research papers',
-        'Commercialized feed formula'
+      amount: '₹38 Lakhs',
+      description: 'Selective breeding and genetic enhancement programs for improving growth, disease resistance, and productivity of indigenous fish species.',
+      objectives: [
+        'Develop breeding protocols',
+        'Study genetic diversity',
+        'Enhance productivity traits'
+      ]
+    }
+  ]
+
+  const studentResearch = [
+    {
+      title: 'Water Quality Assessment in Aquaculture Ponds',
+      student: 'Rakesh Sharma',
+      degree: 'M.F.Sc',
+      supervisor: 'Dr. Amit Patel',
+      year: '2024',
+      description: 'Comprehensive analysis of water quality parameters and their impact on fish health and productivity in different aquaculture systems.'
+    },
+    {
+      title: 'Nutritional Evaluation of Local Feed Ingredients',
+      student: 'Priya Verma',
+      degree: 'M.F.Sc',
+      supervisor: 'Dr. Rajesh Kumar',
+      year: '2024',
+      description: 'Study on the nutritional value and digestibility of locally available ingredients for sustainable fish feed formulation.'
+    },
+    {
+      title: 'Disease Surveillance in Freshwater Fish Farms',
+      student: 'Anil Kumar',
+      degree: 'M.F.Sc',
+      supervisor: 'Dr. Priya Sharma',
+      year: '2023',
+      description: 'Monitoring and identification of common diseases in freshwater aquaculture with focus on prevention and treatment strategies.'
+    }
+  ]
+
+  const researchCollaborations = [
+    {
+      organization: 'Central Institute of Freshwater Aquaculture (CIFA)',
+      location: 'Bhubaneswar',
+      type: 'ICAR Institute',
+      focus: 'Freshwater aquaculture research and technology development',
+      activities: [
+        'Joint research projects',
+        'Faculty exchange programs',
+        'Student training programs',
+        'Technology transfer'
+      ]
+    },
+    {
+      organization: 'National Bureau of Fish Genetic Resources (NBFGR)',
+      location: 'Lucknow',
+      type: 'ICAR Institute',
+      focus: 'Fish genetic resources and biodiversity conservation',
+      activities: [
+        'Genetic improvement programs',
+        'Biodiversity assessment',
+        'Germplasm conservation',
+        'Molecular research'
+      ]
+    },
+    {
+      organization: 'Central Inland Fisheries Research Institute (CIFRI)',
+      location: 'Barrackpore',
+      type: 'ICAR Institute',
+      focus: 'Inland fisheries research and development',
+      activities: [
+        'Fisheries enhancement',
+        'Stock assessment',
+        'Environmental studies',
+        'Capacity building'
+      ]
+    },
+    {
+      organization: 'State Fisheries Departments',
+      location: 'Madhya Pradesh & Neighboring States',
+      type: 'Government Partnership',
+      focus: 'Field implementation and extension services',
+      activities: [
+        'Technology demonstration',
+        'Farmer training programs',
+        'Policy support',
+        'Field trials'
       ]
     }
   ]
 
   const researchFacilities = [
     {
-      name: 'Central Laboratory',
-      description: 'State-of-the-art research laboratory with modern equipment',
+      name: 'Central Research Laboratory',
+      description: 'State-of-the-art multi-disciplinary research facility with modern analytical instruments',
       equipment: [
-        'Spectrophotometers',
-        'Microscopes',
-        'Centrifuges',
-        'Incubators',
-        'Analytical balances'
-      ]
+        'Spectrophotometers (UV-Vis, AAS)',
+        'High-resolution microscopes',
+        'Centrifuges and incubators',
+        'Analytical balances',
+        'pH meters and dissolved oxygen meters'
+      ],
+      area: '500 sq.m'
     },
     {
       name: 'Aquaculture Research Unit',
-      description: 'Dedicated facility for aquaculture research and experiments',
+      description: 'Dedicated facility for practical aquaculture research and demonstration',
       equipment: [
-        'Hatchery systems',
-        'Pond facilities',
-        'Water quality analyzers',
-        'Feed processing units'
-      ]
+        'Hatchery and nursery systems',
+        'Experimental pond facilities',
+        'Water quality monitoring equipment',
+        'Feed processing unit',
+        'Aeration systems'
+      ],
+      area: '2 hectares'
     },
     {
-      name: 'Molecular Biology Lab',
-      description: 'Advanced laboratory for genetic and molecular research',
+      name: 'Fish Health Laboratory',
+      description: 'Specialized laboratory for fish disease diagnosis and health monitoring',
       equipment: [
-        'PCR machines',
-        'Gel electrophoresis',
-        'DNA sequencers',
-        'Microscopes'
-      ]
+        'Pathology and histology equipment',
+        'Microbiology culture facilities',
+        'Diagnostic kits and reagents',
+        'Quarantine facilities',
+        'Microscopy and imaging systems'
+      ],
+      area: '200 sq.m'
+    },
+    {
+      name: 'Molecular Biology Laboratory',
+      description: 'Advanced facility for genetic and molecular research in fisheries',
+      equipment: [
+        'PCR machines (conventional and real-time)',
+        'Gel electrophoresis systems',
+        'DNA/RNA extraction equipment',
+        'Sequencing facilities',
+        'Tissue culture setup'
+      ],
+      area: '150 sq.m'
     },
     {
       name: 'Processing Technology Lab',
-      description: 'Facility for fish processing and technology research',
+      description: 'Research facility for fish processing, preservation, and value addition',
       equipment: [
-        'Processing equipment',
-        'Quality testing tools',
+        'Fish processing equipment',
+        'Quality analysis instruments',
         'Packaging machines',
-        'Storage facilities'
-      ]
+        'Cold storage facilities',
+        'Sensory evaluation setup'
+      ],
+      area: '300 sq.m'
     }
   ]
 
   const publications = [
     {
-      title: 'Sustainable Aquaculture Practices in Eastern India',
+      title: 'Climate Change Adaptation Strategies in Freshwater Aquaculture',
       authors: 'Kumar, R., Sharma, P., Patel, A.',
-      journal: 'Journal of Aquaculture Research',
+      journal: 'Aquaculture Research',
       year: '2024',
-      impact: '2.8'
+      impact: '3.2',
+      type: 'Research Article'
     },
     {
-      title: 'Disease Prevention in Freshwater Aquaculture',
-      authors: 'Sharma, P., Singh, M., Kumar, R.',
-      journal: 'Aquaculture Health Management',
-      year: '2023',
-      impact: '3.2'
+      title: 'Sustainable Fish Feed Formulation Using Local Ingredients',
+      authors: 'Patel, A., Singh, M., Kumar, R.',
+      journal: 'Journal of Applied Aquaculture',
+      year: '2024',
+      impact: '2.8',
+      type: 'Research Article'
     },
     {
-      title: 'Water Quality Management in Fish Farms',
-      authors: 'Patel, A., Kumar, R., Mahajan, S.',
-      journal: 'Environmental Science & Technology',
+      title: 'Disease Management in Indian Major Carps: A Review',
+      authors: 'Sharma, P., Kumar, R., Verma, S.',
+      journal: 'Fish & Shellfish Immunology',
       year: '2023',
-      impact: '4.1'
+      impact: '4.1',
+      type: 'Review Article'
+    },
+    {
+      title: 'Genetic Diversity Assessment of Indigenous Fish Species',
+      authors: 'Singh, M., Patel, A., Kumar, R.',
+      journal: 'Conservation Genetics',
+      year: '2023',
+      impact: '3.5',
+      type: 'Research Article'
+    },
+    {
+      title: 'Water Quality Management in Intensive Aquaculture Systems',
+      authors: 'Patel, A., Sharma, P., Singh, M.',
+      journal: 'Aquacultural Engineering',
+      year: '2023',
+      impact: '2.9',
+      type: 'Research Article'
+    },
+    {
+      title: 'Economics of Small-scale Fish Farming in Central India',
+      authors: 'Kumar, R., Patel, A., Sharma, P.',
+      journal: 'Aquaculture Economics & Management',
+      year: '2022',
+      impact: '2.3',
+      type: 'Research Article'
     }
   ]
 
@@ -251,289 +258,275 @@ const Research = () => {
       <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Research Projects</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Research & Innovation</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Cutting-edge research in fisheries science, aquaculture, and aquatic resource management. 
-              Discover our innovative projects and contributions to the field.
+              Advancing fisheries science through cutting-edge research, innovative projects, and collaborative partnerships 
+              for sustainable aquaculture development.
             </p>
           </div>
         </div>
       </section>
 
       {/* Quick Navigation */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white border-b">
         <div className="container-max">
           <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => setActiveTab('areas')}
-              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'areas'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Research Areas
-            </button>
-            <button
-              onClick={() => setActiveTab('ongoing')}
-              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'ongoing'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
+            <a href="#ongoing-projects" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
               Ongoing Projects
-            </button>
-            <button
-              onClick={() => setActiveTab('completed')}
-              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'completed'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Completed Projects
-            </button>
-            <button
-              onClick={() => setActiveTab('facilities')}
-              className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                activeTab === 'facilities'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
+            </a>
+            <a href="#publications" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Publications & Journals
+            </a>
+            <a href="#student-research" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Student Research
+            </a>
+            <a href="#collaborations" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+              Research Collaborations
+            </a>
+            <a href="#facilities" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
               Research Facilities
-            </button>
+            </a>
           </div>
         </div>
       </section>
 
-      {/* Navigation Anchors */}
-      <div id="publications"></div>
-      <div id="student-research"></div>
-      <div id="collaborations"></div>
-      <div id="facilities"></div>
-
-      {/* Research Areas */}
-      {activeTab === 'areas' && (
-        <section className="section-padding bg-gray-50">
-          <div className="container-max">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Research Areas</h2>
-              <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {researchAreas.map((area, index) => (
-                <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300">
-                  <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <area.icon className="w-8 h-8 text-primary-600" />
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">{area.title}</h3>
-                  <p className="text-gray-600 mb-4 text-center">{area.description}</p>
-                  
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">Key Projects</h4>
-                    <ul className="space-y-1">
-                      {area.projects.map((project, idx) => (
-                        <li key={idx} className="flex items-center text-sm text-gray-700">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2"></div>
-                          {project}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Facilities</h4>
-                    <ul className="space-y-1">
-                      {area.facilities.map((facility, idx) => (
-                        <li key={idx} className="flex items-center text-sm text-gray-700">
-                          <Building className="w-3 h-3 text-primary-600 mr-2" />
-                          {facility}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Ongoing Projects */}
-      {activeTab === 'ongoing' && (
-        <section className="section-padding bg-gray-50">
-          <div className="container-max">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Ongoing Research Projects</h2>
-              <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-            </div>
-
-            <div className="space-y-6">
-              {ongoingProjects.map((project, index) => (
-                <Card key={index} className="p-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{project.title}</h3>
-                      <p className="text-gray-700 mb-4">{project.description}</p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <p className="text-sm text-gray-600">Principal Investigator</p>
-                          <p className="font-semibold text-gray-900">{project.principal}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Duration</p>
-                          <p className="font-semibold text-gray-900">{project.duration}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Funding Agency</p>
-                          <p className="font-semibold text-gray-900">{project.funding}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Project Amount</p>
-                          <p className="font-semibold text-gray-900">{project.amount}</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="text-center">
-                        <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                          <span className="text-2xl font-bold text-primary-600">{project.progress}%</span>
-                        </div>
-                        <p className="text-sm text-gray-600">Progress</p>
-                      </div>
-                      
-                      <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                        <p className="text-green-800 font-medium text-center">{project.status}</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
+      <section id="ongoing-projects" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Ongoing Projects (ICAR, NFDB, PMMSY, etc.)</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Our current research projects funded by premier agencies focusing on sustainable aquaculture, 
+              fish health management, and technology development.
+            </p>
           </div>
-        </section>
-      )}
 
-      {/* Completed Projects */}
-      {activeTab === 'completed' && (
-        <section className="section-padding bg-gray-50">
-          <div className="container-max">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Completed Research Projects</h2>
-              <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-            </div>
-
-            <div className="space-y-6">
-              {completedProjects.map((project, index) => (
-                <Card key={index} className="p-8">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">{project.title}</h3>
-                      <p className="text-gray-700 mb-4">{project.description}</p>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <p className="text-sm text-gray-600">Principal Investigator</p>
-                          <p className="font-semibold text-gray-900">{project.principal}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Duration</p>
-                          <p className="font-semibold text-gray-900">{project.duration}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Funding Agency</p>
-                          <p className="font-semibold text-gray-900">{project.funding}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-600">Project Amount</p>
-                          <p className="font-semibold text-gray-900">{project.amount}</p>
-                        </div>
+          <div className="space-y-8">
+            {ongoingProjects.map((project, index) => (
+              <Card key={index} className="p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  <div className="lg:col-span-2">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{project.title}</h3>
+                    <p className="text-gray-700 mb-4">{project.description}</p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <p className="text-sm text-gray-600">Principal Investigator</p>
+                        <p className="font-semibold text-gray-900">{project.principal}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Duration</p>
+                        <p className="font-semibold text-gray-900">{project.duration}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Funding Agency</p>
+                        <p className="font-semibold text-gray-900">{project.funding}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Project Amount</p>
+                        <p className="font-semibold text-gray-900">{project.amount}</p>
                       </div>
                     </div>
-                    
+
                     <div>
-                      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 mb-4">
-                        <p className="text-blue-800 font-medium text-center">{project.status}</p>
-                      </div>
-                      
-                      <h4 className="font-semibold text-gray-900 mb-3">Key Outcomes</h4>
+                      <h4 className="font-semibold text-gray-900 mb-3">Key Objectives</h4>
                       <ul className="space-y-2">
-                        {project.outcomes.map((outcome, idx) => (
+                        {project.objectives.map((objective, idx) => (
                           <li key={idx} className="flex items-center text-sm text-gray-700">
-                            <Award className="w-4 h-4 text-primary-600 mr-2" />
-                            {outcome}
+                            <div className="w-2 h-2 bg-primary-500 rounded-full mr-3"></div>
+                            {objective}
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Research Facilities */}
-      {activeTab === 'facilities' && (
-        <section className="section-padding bg-gray-50">
-          <div className="container-max">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Research Facilities</h2>
-              <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {researchFacilities.map((facility, index) => (
-                <Card key={index} className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{facility.name}</h3>
-                  <p className="text-gray-600 mb-4">{facility.description}</p>
                   
-                  <h4 className="font-semibold text-gray-900 mb-3">Available Equipment</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {facility.equipment.map((item, idx) => (
-                      <div key={idx} className="flex items-center space-x-2">
-                        <FlaskConical className="w-4 h-4 text-primary-600" />
-                        <span className="text-gray-700 text-sm">{item}</span>
-                      </div>
-                    ))}
+                  <div className="space-y-4">
+                    <div className="p-4 bg-green-50 rounded-lg border border-green-200 text-center">
+                      <FlaskConical className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                      <p className="text-green-800 font-medium">Active Research</p>
+                      <p className="text-green-600 text-sm">In Progress</p>
+                    </div>
                   </div>
-                </Card>
-              ))}
-            </div>
+                </div>
+              </Card>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* Publications */}
-      <section className="section-padding bg-white">
+      {/* Publications and Journals */}
+      <section id="publications" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Recent Publications</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Publications and Journals</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Research publications by our faculty and students in peer-reviewed journals, 
+              contributing to the advancement of fisheries science.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {publications.map((pub, index) => (
               <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{pub.title}</h3>
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+                  <BookOpen className="w-6 h-6 text-primary-600" />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-3 line-clamp-2">{pub.title}</h3>
                 <p className="text-gray-600 text-sm mb-2">{pub.authors}</p>
                 <p className="text-gray-700 mb-3">{pub.journal}, {pub.year}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Impact Factor: {pub.impact}</span>
+                
+                <div className="flex items-center justify-between mb-3">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">{pub.type}</span>
+                  <span className="text-sm text-gray-500">IF: {pub.impact}</span>
+                </div>
+                
+                <div className="pt-3 border-t border-gray-200">
                   <Link
-                    to="/research#publications"
-                    className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                    to="/research"
+                    className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center"
                   >
                     View Details
-                    <ChevronRight className="w-4 h-4 ml-1 inline" />
+                    <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Student Research */}
+      <section id="student-research" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Student Research</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Graduate student research projects contributing to fisheries science knowledge and 
+              practical solutions for the aquaculture industry.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {studentResearch.map((research, index) => (
+              <Card key={index} className="p-6">
+                <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="w-6 h-6 text-secondary-600" />
+                </div>
+                
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{research.title}</h3>
+                <p className="text-gray-600 mb-4">{research.description}</p>
+                
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Student:</span>
+                    <span className="text-sm font-medium text-gray-900">{research.student}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Degree:</span>
+                    <span className="text-sm font-medium text-gray-900">{research.degree}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Supervisor:</span>
+                    <span className="text-sm font-medium text-gray-900">{research.supervisor}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm text-gray-600">Year:</span>
+                    <span className="text-sm font-medium text-gray-900">{research.year}</span>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Research Collaborations */}
+      <section id="collaborations" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Research Collaborations</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Strategic partnerships with leading research institutions and organizations 
+              for collaborative research and knowledge exchange.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {researchCollaborations.map((collab, index) => (
+              <Card key={index} className="p-6">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                    <Globe className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{collab.organization}</h3>
+                    <p className="text-gray-600 text-sm mb-1">{collab.location}</p>
+                    <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded">{collab.type}</span>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 mb-4">{collab.focus}</p>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">Collaboration Activities</h4>
+                  <ul className="space-y-2">
+                    {collab.activities.map((activity, idx) => (
+                      <li key={idx} className="flex items-center text-sm text-gray-700">
+                        <ChevronRight className="w-4 h-4 text-primary-600 mr-2" />
+                        {activity}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Research Facilities */}
+      <section id="facilities" className="section-padding bg-gray-50">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Research Facilities</h2>
+            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              State-of-the-art research infrastructure and facilities supporting diverse 
+              research activities in fisheries and aquaculture sciences.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {researchFacilities.map((facility, index) => (
+              <Card key={index} className="p-6">
+                <div className="flex items-start space-x-4 mb-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Building className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{facility.name}</h3>
+                    <p className="text-gray-600 text-sm">{facility.area}</p>
+                  </div>
+                </div>
+                
+                <p className="text-gray-700 mb-4">{facility.description}</p>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">Key Equipment & Facilities</h4>
+                  <div className="grid grid-cols-1 gap-2">
+                    {facility.equipment.map((item, idx) => (
+                      <div key={idx} className="flex items-center space-x-2">
+                        <Microscope className="w-4 h-4 text-primary-600" />
+                        <span className="text-gray-700 text-sm">{item}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </Card>
             ))}
@@ -544,10 +537,10 @@ const Research = () => {
       {/* Call to Action */}
       <section className="section-padding bg-primary-600 text-white">
         <div className="container-max text-center">
-          <h2 className="text-3xl font-bold mb-4">Interested in Research Collaboration?</h2>
+          <h2 className="text-3xl font-bold mb-4">Join Our Research Community</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join us in advancing fisheries science and aquaculture research. 
-            Explore opportunities for collaboration and innovation.
+            Explore opportunities for research collaboration, student projects, and innovation 
+            in fisheries science and sustainable aquaculture.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -555,14 +548,14 @@ const Research = () => {
               to="/contact"
               className="btn-accent"
             >
-              Contact Us
+              Contact Research Office
             </Link>
             
             <Link
-              to="/research#publications"
+              to="/faculty"
               className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
             >
-              View Publications
+              Meet Our Researchers
             </Link>
           </div>
         </div>

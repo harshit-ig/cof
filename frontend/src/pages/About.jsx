@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Users, Award, Building, Globe, BookOpen, Target, Eye, Users2, Phone, Mail, MapPin, Calendar, ChevronRight } from 'lucide-react'
+import { Building, BookOpen, Target, Eye, Calendar } from 'lucide-react'
 import Card from '../components/common/Card'
 
 const About = () => {
@@ -28,29 +28,6 @@ const About = () => {
     }
   }, [hash])
 
-  const achievements = [
-    {
-      icon: Award,
-      title: 'ICAR Recognition',
-      description: 'Recognized by Indian Council of Agricultural Research for excellence in fisheries education'
-    },
-    {
-      icon: Users,
-      title: 'Student Success',
-      description: 'Over 1200+ students enrolled with excellent placement records'
-    },
-    {
-      icon: Building,
-      title: 'Modern Infrastructure',
-      description: 'State-of-the-art laboratories and research facilities'
-    },
-    {
-      icon: Globe,
-      title: 'Research Excellence',
-      description: 'Multiple research projects and publications in fisheries science'
-    }
-  ]
-
   const organizationalStructure = [
     {
       title: 'Dean',
@@ -74,37 +51,6 @@ const About = () => {
     }
   ]
 
-  const importantContacts = [
-    {
-      icon: Phone,
-      title: 'Phone',
-      details: ['0645-231375', 'Office: 0645-231375'],
-      description: 'Main office contact number'
-    },
-    {
-      icon: Mail,
-      title: 'Email',
-      details: ['deancof_basu_bih@gov.in', 'info@cofbasu.edu.in'],
-      description: 'Primary communication channels'
-    },
-    {
-      icon: MapPin,
-      title: 'Address',
-      details: [
-        'College of Fisheries, Jabalpur',
-        'Nanaji Deshmukh Veterinary Science University',
-        'Jabalpur, Madhya Pradesh'
-      ],
-      description: 'Main campus location'
-    },
-    {
-      icon: Calendar,
-      title: 'Office Hours',
-      details: ['Monday - Friday: 9:00 AM - 5:00 PM', 'Saturday: 9:00 AM - 1:00 PM'],
-      description: 'Administrative office timings'
-    }
-  ]
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -120,26 +66,26 @@ const About = () => {
       </section>
 
       {/* Quick Navigation */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-4">
             <button
               onClick={() => scrollToSection('dean-message')}
-              className="px-6 py-3 bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition-colors"
+              className="px-6 py-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors"
             >
-              Dean's Message
+              Message from the Dean
             </button>
             <button
               onClick={() => scrollToSection('history')}
-              className="px-6 py-3 bg-secondary-100 text-secondary-700 rounded-lg hover:bg-secondary-200 transition-colors"
+              className="px-6 py-3 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
             >
-              History
+              History and Vision
             </button>
             <button
-              onClick={() => scrollToSection('vision')}
-              className="px-6 py-3 bg-accent-100 text-accent-700 rounded-lg hover:bg-accent-200 transition-colors"
+              onClick={() => scrollToSection('mission')}
+              className="px-6 py-3 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
             >
-              Vision & Mission
+              Mission & Objectives
             </button>
             <button
               onClick={() => scrollToSection('structure')}
@@ -148,31 +94,34 @@ const About = () => {
               Organizational Structure
             </button>
             <button
-              onClick={() => scrollToSection('contacts')}
-              className="px-6 py-3 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
+              onClick={() => scrollToSection('governing-body')}
+              className="px-6 py-3 bg-orange-100 text-orange-700 rounded-lg hover:bg-orange-200 transition-colors"
             >
-              Important Contacts
+              Governing Body / Advisory Board
             </button>
           </div>
         </div>
       </section>
 
       {/* Dean's Message */}
-      <section id="dean-message" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="dean-message" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src={`/api/proxy/image?url=${encodeURIComponent('https://www.ndvsu.org/images/Shashikant.jpg')}`}
+                src="https://www.ndvsu.org/images/Shashikant.jpg"
                 alt="Dean's Photo"
                 className="w-full h-96 object-cover rounded-lg shadow-lg"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/400x500/0f766e/ffffff?text=Dean+Photo'
+                }}
               />
             </div>
             
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Dean's Message</h2>
-                <div className="w-20 h-1 bg-primary-500 rounded"></div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Message from the Dean</h2>
+                <div className="w-20 h-1 bg-blue-500 rounded"></div>
               </div>
               
               <blockquote className="text-lg text-gray-700 leading-relaxed italic">
@@ -204,18 +153,18 @@ const About = () => {
         </div>
       </section>
 
-      {/* History */}
-      <section id="history" className="section-padding bg-white">
-        <div className="container-max">
+      {/* History & Vision */}
+      <section id="history" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our History</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">History and Vision</h2>
+            <div className="w-20 h-1 bg-green-500 rounded mx-auto"></div>
           </div>
           
           <div className="max-w-4xl mx-auto">
             <div className="space-y-8">
               <div className="flex items-start space-x-6">
-                <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <Calendar className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -228,7 +177,7 @@ const About = () => {
               </div>
               
               <div className="flex items-start space-x-6">
-                <div className="w-12 h-12 bg-secondary-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <Building className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -241,7 +190,7 @@ const About = () => {
               </div>
               
               <div className="flex items-start space-x-6">
-                <div className="w-12 h-12 bg-accent-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -252,34 +201,36 @@ const About = () => {
                   </p>
                 </div>
               </div>
+
+              <div className="mt-12">
+                <Card className="text-center p-8">
+                  <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+                    <Eye className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    To be a globally recognized institution for excellence in fisheries education, research, 
+                    and extension services, fostering innovation and sustainable practices in aquatic resource management.
+                  </p>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Vision & Mission */}
-      <section id="mission" className="section-padding bg-gray-50">
-        <div className="container-max">
+      {/* Mission & Objectives */}
+      <section id="mission" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Vision & Mission</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mission & Objectives</h2>
+            <div className="w-20 h-1 bg-purple-500 rounded mx-auto"></div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <Card className="text-center p-8">
-              <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                <Eye className="w-8 h-8 text-primary-600" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
-              <p className="text-gray-700 leading-relaxed">
-                To be a globally recognized institution for excellence in fisheries education, research, 
-                and extension services, fostering innovation and sustainable practices in aquatic resource management.
-              </p>
-            </Card>
-            
-            <Card className="text-center p-8">
-              <div className="w-16 h-16 bg-secondary-100 rounded-lg flex items-center justify-center mx-auto mb-6">
-                <Target className="w-8 h-8 text-secondary-600" />
+          <div className="max-w-4xl mx-auto">
+            <Card className="text-center p-8 mb-8">
+              <div className="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-6">
+                <Target className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-gray-700 leading-relaxed">
@@ -287,80 +238,65 @@ const About = () => {
                 and disseminate knowledge to stakeholders for sustainable development of the fisheries sector.
               </p>
             </Card>
-          </div>
-          
-          <div className="mt-12">
-            <Card className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Core Values</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Award className="w-6 h-6 text-accent-600" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Excellence</h4>
-                  <p className="text-gray-600 text-sm">Commitment to highest standards in education and research</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Globe className="w-6 h-6 text-green-600" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Sustainability</h4>
-                  <p className="text-gray-600 text-sm">Promoting sustainable practices in fisheries management</p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                    <Users2 className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <h4 className="font-semibold text-gray-900 mb-2">Innovation</h4>
-                  <p className="text-gray-600 text-sm">Fostering creativity and technological advancement</p>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
 
-      {/* Achievements */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Achievements</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {achievements.map((achievement, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-xl transition-all duration-300">
-                <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <achievement.icon className="w-8 h-8 text-primary-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{achievement.title}</h3>
-                <p className="text-gray-600 text-sm">{achievement.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Educational Objectives</h4>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Provide comprehensive education in fisheries science
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Develop skilled professionals for the aquaculture industry
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Foster innovation and practical learning
+                  </li>
+                </ul>
               </Card>
-            ))}
+
+              <Card className="p-6">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Research Objectives</h4>
+                <ul className="space-y-2 text-gray-700">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Conduct cutting-edge research in fisheries science
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Promote sustainable aquaculture practices
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-3 mt-2"></div>
+                    Contribute to fisheries sector development
+                  </li>
+                </ul>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Organizational Structure */}
-      <section id="structure" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="structure" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Organizational Structure</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-gray-500 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {organizationalStructure.map((item, index) => (
               <Card key={index} className="p-6">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-primary-600 font-medium mb-4">{item.description}</p>
+                <p className="text-blue-600 font-medium mb-4">{item.description}</p>
                 <ul className="space-y-2">
                   {item.responsibilities.map((responsibility, idx) => (
                     <li key={idx} className="flex items-center text-gray-700">
-                      <div className="w-2 h-2 bg-primary-500 rounded-full mr-3"></div>
+                      <div className="w-2 h-2 bg-gray-500 rounded-full mr-3"></div>
                       {responsibility}
                     </li>
                   ))}
@@ -371,67 +307,21 @@ const About = () => {
         </div>
       </section>
 
-      {/* Important Contacts */}
-      <section id="contacts" className="section-padding bg-white">
-        <div className="container-max">
+      {/* Governing Body / Advisory Board */}
+      <section id="governing-body" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Important Contacts</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Governing Body / Advisory Board</h2>
+            <div className="w-20 h-1 bg-orange-500 rounded mx-auto"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {importantContacts.map((contact, index) => (
-              <Card key={index} className="text-center p-6">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <contact.icon className="w-6 h-6 text-primary-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{contact.title}</h3>
-                <div className="space-y-2 mb-3">
-                  {contact.details.map((detail, idx) => (
-                    <p key={idx} className="text-gray-700 text-sm">{detail}</p>
-                  ))}
-                </div>
-                <p className="text-gray-600 text-xs">{contact.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Governing Body */}
-      <section id="governing-body" className="section-padding bg-white">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Governing Body</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
-          </div>
-          <p className="text-gray-600 text-center">Information about the college governing body will be displayed here.</p>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
-        <div className="container-max text-center">
-          <h2 className="text-3xl font-bold mb-4">Join Our Institution</h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Be part of our journey towards excellence in fisheries education and research. 
-            Explore our programs and discover your potential.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/programs"
-              className="btn-accent"
-            >
-              View Programs
-            </Link>
-            
-            <Link
-              to="/contact"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
-            >
-              Contact Us
-            </Link>
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8 text-center">
+              <p className="text-gray-600 text-lg">
+                The college operates under the governance structure of Nanaji Deshmukh Veterinary Science University. 
+                Detailed information about the governing body and advisory board members will be updated here.
+              </p>
+            </Card>
           </div>
         </div>
       </section>
