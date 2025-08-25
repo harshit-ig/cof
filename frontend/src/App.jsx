@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -30,7 +29,6 @@ import Departments from './pages/Departments'
 import NotFound from './pages/NotFound'
 import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
-import Gallery from './pages/Gallery'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -64,7 +62,6 @@ function App() {
               <Route path="/extension" element={<Extension />} />
               <Route path="/infrastructure" element={<Infrastructure />} />
               <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
-              <Route path="/gallery" element={<Gallery />} />
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/student-corner" element={<StudentCorner />} />
               <Route path="/news" element={<News />} />
@@ -86,7 +83,7 @@ function App() {
               />
               
               {/* 404 Route */}
-              <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           

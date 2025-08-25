@@ -22,9 +22,13 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only redirect to login if we're not already on the login page
+    if (error.response?.status === 401 && !window.location.pathname.includes('/admin/login')) {
       localStorage.removeItem('token')
-      window.location.href = '/admin/login'
+      // Check if we're in admin area before redirecting
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/admin/login'
+      }
     }
     return Promise.reject(error)
   }
@@ -102,20 +106,22 @@ export const contentAPI = {
 }
 
 export const uploadAPI = {
-  single: (file) => {
+  single: (file, category = 'images') => {
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('category', category)
     return api.post('/upload/single', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
   },
-  multiple: (files) => {
+  multiple: (files, category = 'images') => {
     const formData = new FormData()
     files.forEach((file) => {
       formData.append('files', file)
     })
+    formData.append('category', category)
     return api.post('/upload/multiple', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -123,14 +129,17 @@ export const uploadAPI = {
     })
   },
   delete: (filename) => api.delete(`/upload/${filename}`),
-  // Helper function to get proper image URL
   getImageUrl: (filename, type = 'images') => {
     if (!filename) return null
-    // If it's already a full URL, return as is
-    if (filename.startsWith('http')) return filename
-    // Use the new serve endpoint for better CORS handling
+
+    // Handle external URLs (proxy through backend)
+    if (filename.startsWith('http')) {
+      return `/api/proxy/image?url=${encodeURIComponent(filename)}`
+    }
+
+    // Handle local files - use relative URL which will be proxied by Vite
     return `/api/upload/serve/${type}/${filename}`
-  }
+  },
 }
 
 export default api

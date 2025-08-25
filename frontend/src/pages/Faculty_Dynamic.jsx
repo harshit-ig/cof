@@ -38,18 +38,17 @@ const Faculty = () => {
       try {
         setLoading(true)
         const response = await facultyAPI.getAll()
-        if (response.data?.success) {
+        if (response.data.success) {
           setFacultyMembers(response.data.data.faculty || [])
         }
       } catch (error) {
         console.error('Error fetching faculty:', error)
-        // Fallback to empty array if API fails
-        setFacultyMembers([])
+        setError('Failed to load faculty')
       } finally {
         setLoading(false)
       }
     }
-
+    
     fetchFaculty()
   }, [])
 
@@ -327,3 +326,5 @@ const Faculty = () => {
 }
 
 export default Faculty
+
+

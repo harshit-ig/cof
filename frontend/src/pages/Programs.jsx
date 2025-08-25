@@ -207,7 +207,7 @@ const Programs = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Academic Information</h1>
@@ -223,7 +223,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Academic Programmes</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Undergraduate, Postgraduate, and Doctoral programs in Fisheries Science.</p>
           </div>
           {/* Program Tabs and Details (reuse existing tab logic) */}
@@ -232,7 +232,7 @@ const Programs = () => {
               onClick={() => setActiveTab('undergraduate')}
               className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                 activeTab === 'undergraduate'
-                  ? 'bg-primary-600 text-white'
+                  ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -242,7 +242,7 @@ const Programs = () => {
               onClick={() => setActiveTab('postgraduate')}
               className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                 activeTab === 'postgraduate'
-                  ? 'bg-primary-600 text-white'
+                  ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -252,7 +252,7 @@ const Programs = () => {
               onClick={() => setActiveTab('doctoral')}
               className={`px-6 py-3 rounded-lg font-medium transition-colors ${
                 activeTab === 'doctoral'
-                  ? 'bg-primary-600 text-white'
+                  ? 'bg-blue-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -272,7 +272,7 @@ const Programs = () => {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                       <div className="flex items-center space-x-3">
-                        <Clock className="w-5 h-5 text-primary-600" />
+                        <Clock className="w-5 h-5 text-blue-500" />
                         <div>
                           <p className="font-semibold text-gray-900">Duration</p>
                           <p className="text-gray-600">{program.duration}</p>
@@ -280,7 +280,7 @@ const Programs = () => {
                       </div>
                       
                       <div className="flex items-center space-x-3">
-                        <Users className="w-5 h-5 text-primary-600" />
+                        <Users className="w-5 h-5 text-blue-500" />
                         <div>
                           <p className="font-semibold text-gray-900">Seats Available</p>
                           <p className="text-gray-600">{program.seats}</p>
@@ -294,7 +294,7 @@ const Programs = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {program.highlights.map((highlight, index) => (
                           <div key={index} className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                            <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                             <span className="text-gray-700">{highlight}</span>
                           </div>
                         ))}
@@ -307,7 +307,7 @@ const Programs = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {program.subjects.map((subject, index) => (
                           <div key={index} className="flex items-center space-x-2">
-                            <BookOpen className="w-4 h-4 text-primary-600" />
+                            <BookOpen className="w-4 h-4 text-blue-500" />
                             <span className="text-gray-700">{subject}</span>
                           </div>
                         ))}
@@ -319,7 +319,7 @@ const Programs = () => {
                       <h3 className="text-xl font-semibold text-gray-900 mb-3">Career Opportunities</h3>
                       <div className="flex flex-wrap gap-2">
                         {program.career.map((career, index) => (
-                          <span key={index} className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm">
+                          <span key={index} className="px-3 py-1 bg-blue-100 text-primary-700 rounded-full text-sm">
                             {career}
                           </span>
                         ))}
@@ -374,7 +374,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Admission Eligibility</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Eligibility criteria for B.F.Sc., M.F.Sc., and Ph.D. programs.</p>
           </div>
           {/* Eligibility Details (reuse existing eligibility code) */}
@@ -404,7 +404,7 @@ const Programs = () => {
               <div className="space-y-3">
                 {admissionInfo.process.map((step, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-6 h-6 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
+                    <div className="w-6 h-6 bg-blue-400 text-white rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">
                       {index + 1}
                     </div>
                     <p className="text-gray-700">{step}</p>
@@ -421,7 +421,7 @@ const Programs = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {admissionInfo.documents.map((doc, index) => (
                   <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                    <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                     <span className="text-gray-700">{doc}</span>
                   </div>
                 ))}
@@ -436,7 +436,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Admission Capacity</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Annual intake capacity for each program.</p>
           </div>
           {/* Show a table or cards for seats per program, or placeholder if not available */}
@@ -465,7 +465,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Fees Structure</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Detailed fee structure for all programs.</p>
           </div>
           {/* Fees Structure Details (reuse existing fees code) */}
@@ -504,7 +504,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Academic Regulations</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Rules and regulations governing academic programs and student conduct.</p>
           </div>
           {/* Placeholder or real content for academic regulations */}
@@ -517,7 +517,7 @@ const Programs = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Academic Calendar</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Important academic dates and events for the current session.</p>
           </div>
           {/* Academic Calendar Details (reuse existing calendar code) */}
@@ -528,7 +528,7 @@ const Programs = () => {
               {academicCalendar.map((month, index) => (
                 <Card key={index} className="p-6">
                   <div className="text-center mb-4">
-                    <h3 className="text-xl font-bold text-primary-600">{month.month}</h3>
+                    <h3 className="text-xl font-bold text-blue-500">{month.month}</h3>
                   </div>
                   <div className="space-y-2">
                     {month.events.map((event, idx) => (
@@ -546,7 +546,7 @@ const Programs = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -561,7 +561,7 @@ const Programs = () => {
             
             <Link
               to="/contact"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
             >
               Contact Admissions
             </Link>
@@ -573,3 +573,4 @@ const Programs = () => {
 }
 
 export default Programs
+

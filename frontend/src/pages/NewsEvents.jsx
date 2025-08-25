@@ -212,7 +212,7 @@ const NewsEvents = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">News & Events</h1>
@@ -228,19 +228,19 @@ const NewsEvents = () => {
       <section className="section-padding bg-white border-b">
         <div className="container-max">
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#seminars-conferences" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#seminars-conferences" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Seminars & Conferences
             </a>
-            <a href="#workshops-training" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#workshops-training" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Workshops & Training
             </a>
-            <a href="#field-visits" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#field-visits" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Field Visits & Exposure Trips
             </a>
-            <a href="#photo-gallery" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#photo-gallery" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Photo Gallery
             </a>
-            <a href="#press-releases" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#press-releases" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Press Releases
             </a>
           </div>
@@ -252,7 +252,7 @@ const NewsEvents = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Seminars & Conferences</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               National and international seminars, conferences, and symposiums organized and attended 
               by our faculty and students to promote knowledge sharing and research collaboration.
@@ -263,8 +263,8 @@ const NewsEvents = () => {
             {seminarsConferences.map((event, index) => (
               <Card key={index} className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary-600" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-blue-500" />
                   </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     event.status === 'Upcoming' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
@@ -296,7 +296,7 @@ const NewsEvents = () => {
                   <ul className="space-y-1">
                     {event.speakers.map((speaker, idx) => (
                       <li key={idx} className="text-sm text-gray-700 flex items-center">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full mr-3"></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
                         {speaker}
                       </li>
                     ))}
@@ -313,7 +313,7 @@ const NewsEvents = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Workshops and Training</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Regular training programs and workshops designed to enhance technical skills, 
               promote technology adoption, and support capacity building in fisheries sector.
@@ -375,7 +375,7 @@ const NewsEvents = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Field Visits & Exposure Trips</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Educational and exposure visits to premier research institutes, successful farms, 
               and industrial facilities to provide practical learning experiences.
@@ -433,7 +433,7 @@ const NewsEvents = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Photo Gallery</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Visual collection of campus life, academic activities, events, research work, 
               and infrastructure showcasing the vibrant college environment.
@@ -472,12 +472,235 @@ const NewsEvents = () => {
                     </div>
                   </div>
                   
-                  <button className="w-full px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+                  <button className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors">
                     View Gallery
                   </button>
                 </div>
               </Card>
             ))}
+          </div>
+
+          {/* Complete Photo Gallery Grid */}
+          <div className="mt-16">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Complete Photo Collection</h3>
+              <p className="text-gray-600">Browse through our comprehensive collection of campus and event photos</p>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {/* Campus & Infrastructure Photos */}
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/cllg.jpg" 
+                  alt="College Building"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">College Building</p>
+                  <p className="text-xs text-gray-600">Main Campus</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg" 
+                  alt="Campus Infrastructure"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Campus Infrastructure</p>
+                  <p className="text-xs text-gray-600">Modern Facilities</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg" 
+                  alt="Laboratory Facilities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Laboratory Facilities</p>
+                  <p className="text-xs text-gray-600">Research Labs</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg" 
+                  alt="Academic Activities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Academic Activities</p>
+                  <p className="text-xs text-gray-600">Classroom Sessions</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.52_e4f075d7.jpg" 
+                  alt="Student Activities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Student Activities</p>
+                  <p className="text-xs text-gray-600">Campus Life</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg" 
+                  alt="Research Activities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Research Activities</p>
+                  <p className="text-xs text-gray-600">Field Work</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-19 at 09.04.54_38d4a9cd.jpg" 
+                  alt="Extension Programs"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Extension Programs</p>
+                  <p className="text-xs text-gray-600">Farmer Training</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.39_1241e1b8.jpg" 
+                  alt="Campus Events"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Campus Events</p>
+                  <p className="text-xs text-gray-600">Special Occasions</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.39_b0838fbd.jpg" 
+                  alt="Cultural Programs"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Cultural Programs</p>
+                  <p className="text-xs text-gray-600">Annual Functions</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.39_d6ab2436.jpg" 
+                  alt="Practical Training"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Practical Training</p>
+                  <p className="text-xs text-gray-600">Hands-on Learning</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.41_288fca02.jpg" 
+                  alt="Workshop Sessions"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Workshop Sessions</p>
+                  <p className="text-xs text-gray-600">Skill Development</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.42_4e674a8f.jpg" 
+                  alt="Seminar Hall"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Seminar Hall</p>
+                  <p className="text-xs text-gray-600">Conference Venue</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/WhatsApp Image 2025-08-21 at 22.43.42_b0410280.jpg" 
+                  alt="Library & Resources"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Library & Resources</p>
+                  <p className="text-xs text-gray-600">Learning Center</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/slider.jpg" 
+                  alt="Campus Overview"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Campus Overview</p>
+                  <p className="text-xs text-gray-600">Aerial View</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/slider-2.jpg" 
+                  alt="Sports Facilities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Sports Facilities</p>
+                  <p className="text-xs text-gray-600">Recreation Center</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/slider-3.jpg" 
+                  alt="Hostel Facilities"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Hostel Facilities</p>
+                  <p className="text-xs text-gray-600">Student Accommodation</p>
+                </div>
+              </div>
+
+              <div className="group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img 
+                  src="/slider-4.jpg" 
+                  alt="Garden & Landscape"
+                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="p-3 bg-white">
+                  <p className="text-sm font-medium text-gray-800">Garden & Landscape</p>
+                  <p className="text-xs text-gray-600">Green Campus</p>
+                </div>
+              </div>
+            </div>
+
+            {/* View More Button */}
+            <div className="text-center mt-8">
+              <button className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors inline-flex items-center space-x-2">
+                <span>Load More Photos</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -487,7 +710,7 @@ const NewsEvents = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Press Releases</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Official announcements, achievements, and newsworthy developments from 
               College of Fisheries covered in various media outlets.
@@ -539,7 +762,7 @@ const NewsEvents = () => {
                         <div className="mt-3">
                           <a 
                             href={release.downloadLink}
-                            className="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 font-medium"
+                            className="inline-flex items-center text-sm text-blue-500 hover:text-primary-700 font-medium"
                           >
                             <ExternalLink className="w-4 h-4 mr-1" />
                             Download Press Release
@@ -554,7 +777,7 @@ const NewsEvents = () => {
           </div>
           
           <div className="text-center mt-8">
-            <button className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition-colors">
+            <button className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors">
               View All Press Releases
             </button>
           </div>
@@ -562,7 +785,7 @@ const NewsEvents = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Stay Connected with Latest Updates</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -580,7 +803,7 @@ const NewsEvents = () => {
             
             <Link
               to="/about"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
             >
               Follow Us on Social Media
             </Link>
@@ -592,3 +815,5 @@ const NewsEvents = () => {
 }
 
 export default NewsEvents
+
+

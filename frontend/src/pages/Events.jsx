@@ -7,8 +7,9 @@ import Card from '../components/common/Card'
 const Events = () => {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('upcoming')
+  const [error, setError] = useState(null)
 
-  // Sample events data based on reference site
+  // Complete events data restored with blank page fixes
   const eventsData = {
     upcoming: [
       {
@@ -275,53 +276,107 @@ const Events = () => {
   }
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => {
+    try {
+      // Simulate loading with proper cleanup to prevent blank page
+      const timer = setTimeout(() => {
+        setLoading(false)
+      }, 1000)
+      
+      return () => clearTimeout(timer)
+    } catch (err) {
+      console.error('Error in useEffect:', err)
+      setError(err.message)
       setLoading(false)
-    }, 1000)
+    }
   }, [])
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
+    try {
+      if (!dateString) return 'Date not available'
+      const date = new Date(dateString)
+      return date.toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    } catch (error) {
+      console.error('Date formatting error:', error)
+      return dateString || 'Invalid date'
+    }
   }
 
   const getEventIcon = (type) => {
-    switch (type.toLowerCase()) {
-      case 'seminar':
-      case 'conference':
-        return <Users className="h-5 w-5 text-blue-600" />
-      case 'workshop':
-      case 'training':
-        return <BookOpen className="h-5 w-5 text-green-600" />
-      case 'field visit':
-      case 'exposure trip':
-      case 'industrial visit':
-        return <MapPin className="h-5 w-5 text-purple-600" />
-      default:
-        return <Calendar className="h-5 w-5 text-gray-600" />
+    try {
+      switch (type?.toLowerCase()) {
+        case 'seminar':
+        case 'conference':
+          return <Users className="h-5 w-5 text-blue-600" />
+        case 'workshop':
+        case 'training':
+          return <BookOpen className="h-5 w-5 text-green-600" />
+        case 'field visit':
+        case 'exposure trip':
+        case 'industrial visit':
+          return <MapPin className="h-5 w-5 text-purple-600" />
+        default:
+          return <Calendar className="h-5 w-5 text-gray-600" />
+      }
+    } catch (err) {
+      console.error('Icon rendering error:', err)
+      return <Calendar className="h-5 w-5 text-gray-600" />
     }
   }
 
   const getEventColor = (type) => {
-    switch (type.toLowerCase()) {
-      case 'seminar':
-      case 'conference':
-        return 'bg-blue-100 text-blue-800'
-      case 'workshop':
-      case 'training':
-        return 'bg-green-100 text-green-800'
-      case 'field visit':
-      case 'exposure trip':
-      case 'industrial visit':
-        return 'bg-purple-100 text-purple-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
+    try {
+      switch (type?.toLowerCase()) {
+        case 'seminar':
+        case 'conference':
+          return 'bg-blue-100 text-blue-800'
+        case 'workshop':
+        case 'training':
+          return 'bg-green-100 text-green-800'
+        case 'field visit':
+        case 'exposure trip':
+        case 'industrial visit':
+          return 'bg-purple-100 text-purple-800'
+        default:
+          return 'bg-gray-100 text-gray-800'
+      }
+    } catch (err) {
+      console.error('Color assignment error:', err)
+      return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  // Error handling to prevent blank page
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8">
+          <div className="text-red-600 text-xl mb-4">⚠️ Error loading events</div>
+          <div className="text-gray-600 mb-4">{error}</div>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Loading state to prevent blank page
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading events information...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -333,266 +388,261 @@ const Events = () => {
           align="left"
         />
         
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading events information...</p>
-          </div>
-        ) : (
-          <div className="space-y-12">
-            {/* Event Tabs */}
+        <div className="space-y-12">
+          {/* Event Tabs */}
+          <div>
+            <div className="flex flex-wrap gap-2 mb-6">
+              <button
+                onClick={() => setActiveTab('upcoming')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'upcoming'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Upcoming Events
+              </button>
+              <button
+                onClick={() => setActiveTab('recent')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'recent'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Recent Events
+              </button>
+              <button
+                onClick={() => setActiveTab('workshops')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'workshops'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Workshops
+              </button>
+              <button
+                onClick={() => setActiveTab('fieldVisits')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'fieldVisits'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Field Visits
+              </button>
+              <button
+                onClick={() => setActiveTab('pressReleases')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'pressReleases'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                Press Releases
+              </button>
+            </div>
+
+            {/* Event Content */}
             <div>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <button
-                  onClick={() => setActiveTab('upcoming')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === 'upcoming'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Upcoming Events
-                </button>
-                <button
-                  onClick={() => setActiveTab('recent')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === 'recent'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Recent Events
-                </button>
-                <button
-                  onClick={() => setActiveTab('workshops')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === 'workshops'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Workshops
-                </button>
-                <button
-                  onClick={() => setActiveTab('fieldVisits')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === 'fieldVisits'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Field Visits
-                </button>
-                <button
-                  onClick={() => setActiveTab('pressReleases')}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    activeTab === 'pressReleases'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  Press Releases
-                </button>
-              </div>
-
-              {/* Event Content */}
-              <div>
-                {activeTab === 'upcoming' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {eventsData.upcoming.map((event) => (
-                        <Card key={event.id} className="h-full">
-                          <div className="p-6">
-                            <div className="flex items-start justify-between mb-4">
-                              <div className="flex-1">
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
-                                <div className="flex items-center space-x-2 mb-2">
-                                  {getEventIcon(event.type)}
-                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getEventColor(event.type)}`}>
-                                    {event.type}
+              {activeTab === 'upcoming' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {eventsData.upcoming?.map((event) => (
+                      <Card key={event.id} className="h-full">
+                        <div className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
+                              <div className="flex items-center space-x-2 mb-2">
+                                {getEventIcon(event.type)}
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getEventColor(event.type)}`}>
+                                  {event.type}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm mb-4">{event.description}</p>
+                          
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div>
+                              <span className="font-semibold text-gray-700">Date:</span>
+                              <span className="text-gray-600 ml-2">{formatDate(event.date)}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Time:</span>
+                              <span className="text-gray-600 ml-2">{event.time}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Venue:</span>
+                              <span className="text-gray-600 ml-2">{event.venue}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Registration:</span>
+                              <span className="text-gray-600 ml-2">{event.registration}</span>
+                            </div>
+                          </div>
+                          
+                          {event.speakers && event.speakers.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="font-semibold text-gray-700 mb-2">Speakers:</h4>
+                              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                {event.speakers.map((speaker, index) => (
+                                  <li key={index}>{speaker}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {event.topics && event.topics.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="font-semibold text-gray-700 mb-2">Topics:</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {event.topics.map((topic, index) => (
+                                  <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                                    {topic}
                                   </span>
-                                </div>
+                                ))}
                               </div>
                             </div>
-                            
-                            <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                            
-                            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                              <div>
-                                <span className="font-semibold text-gray-700">Date:</span>
-                                <span className="text-gray-600 ml-2">{formatDate(event.date)}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Time:</span>
-                                <span className="text-gray-600 ml-2">{event.time}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Venue:</span>
-                                <span className="text-gray-600 ml-2">{event.venue}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Registration:</span>
-                                <span className="text-gray-600 ml-2">{event.registration}</span>
+                          )}
+                          
+                          <div className="pt-4 border-t border-gray-200">
+                            <div className="flex items-center space-x-2 mb-2">
+                              <Users className="h-4 w-4 text-blue-600" />
+                              <span className="text-sm font-semibold text-gray-700">{event.contact}</span>
+                            </div>
+                            <div className="flex items-center space-x-2 mb-2">
+                              <Phone className="h-4 w-4 text-green-600" />
+                              <span className="text-sm text-gray-600">{event.phone}</span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Mail className="h-4 w-4 text-red-600" />
+                              <span className="text-sm text-gray-600">{event.email}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'recent' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Events</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {eventsData.recent?.map((event) => (
+                      <Card key={event.id} className="h-full">
+                        <div className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                              <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
+                              <div className="flex items-center space-x-2 mb-2">
+                                {getEventIcon(event.type)}
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getEventColor(event.type)}`}>
+                                  {event.type}
+                                </span>
                               </div>
                             </div>
-                            
-                            {event.speakers && (
-                              <div className="mb-4">
-                                <h4 className="font-semibold text-gray-700 mb-2">Speakers:</h4>
-                                <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                                  {event.speakers.map((speaker, index) => (
-                                    <li key={index}>{speaker}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            
-                            {event.topics && (
-                              <div className="mb-4">
-                                <h4 className="font-semibold text-gray-700 mb-2">Topics:</h4>
-                                <div className="flex flex-wrap gap-2">
-                                  {event.topics.map((topic, index) => (
-                                    <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                                      {topic}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                            
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm mb-4">{event.description}</p>
+                          
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div>
+                              <span className="font-semibold text-gray-700">Date:</span>
+                              <span className="text-gray-600 ml-2">{formatDate(event.date)}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Time:</span>
+                              <span className="text-gray-600 ml-2">{event.time}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Venue:</span>
+                              <span className="text-gray-600 ml-2">{event.venue}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Participants:</span>
+                              <span className="text-gray-600 ml-2">{event.participants}</span>
+                            </div>
+                          </div>
+                          
+                          {event.speakers && event.speakers.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="font-semibold text-gray-700 mb-2">Key Speakers:</h4>
+                              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                {event.speakers.map((speaker, index) => (
+                                  <li key={index}>{speaker}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {event.outcomes && event.outcomes.length > 0 && (
+                            <div className="mb-4">
+                              <h4 className="font-semibold text-gray-700 mb-2">Outcomes:</h4>
+                              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                {event.outcomes.map((outcome, index) => (
+                                  <li key={index}>{outcome}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {event.photos && event.photos.length > 0 && (
                             <div className="pt-4 border-t border-gray-200">
-                              <div className="flex items-center space-x-2 mb-2">
-                                <Users className="h-4 w-4 text-blue-600" />
-                                <span className="text-sm font-semibold text-gray-700">{event.contact}</span>
+                              <h4 className="font-semibold text-gray-700 mb-2">Event Photos:</h4>
+                              <div className="flex space-x-2">
+                                {event.photos.map((photo, index) => (
+                                  <div key={index} className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
+                                    <Image className="h-6 w-6 text-gray-400" />
+                                  </div>
+                                ))}
                               </div>
-                              <div className="flex items-center space-x-2 mb-2">
-                                <Phone className="h-4 w-4 text-green-600" />
-                                <span className="text-sm text-gray-600">{event.phone}</span>
-                              </div>
-                              <div className="flex items-center space-x-2">
-                                <Mail className="h-4 w-4 text-red-600" />
-                                <span className="text-sm text-gray-600">{event.email}</span>
-                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'workshops' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Workshops & Training</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {eventsData.workshops?.map((workshop) => (
+                      <Card key={workshop.id} className="h-full">
+                        <div className="p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3">{workshop.title}</h3>
+                          
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div>
+                              <span className="font-semibold text-gray-700">Type:</span>
+                              <span className="text-gray-600 ml-2">{workshop.type}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Date:</span>
+                              <span className="text-gray-600 ml-2">{formatDate(workshop.date)}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Duration:</span>
+                              <span className="text-gray-600 ml-2">{workshop.duration}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Venue:</span>
+                              <span className="text-gray-600 ml-2">{workshop.venue}</span>
                             </div>
                           </div>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'recent' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Recent Events</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {eventsData.recent.map((event) => (
-                        <Card key={event.id} className="h-full">
-                          <div className="p-6">
-                            <div className="flex items-start justify-between mb-4">
-                              <div className="flex-1">
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">{event.title}</h3>
-                                <div className="flex items-center space-x-2 mb-2">
-                                  {getEventIcon(event.type)}
-                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getEventColor(event.type)}`}>
-                                    {event.type}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <p className="text-gray-600 text-sm mb-4">{event.description}</p>
-                            
-                            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                              <div>
-                                <span className="font-semibold text-gray-700">Date:</span>
-                                <span className="text-gray-600 ml-2">{formatDate(event.date)}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Time:</span>
-                                <span className="text-gray-600 ml-2">{event.time}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Venue:</span>
-                                <span className="text-gray-600 ml-2">{event.venue}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Participants:</span>
-                                <span className="text-gray-600 ml-2">{event.participants}</span>
-                              </div>
-                            </div>
-                            
-                            {event.speakers && (
-                              <div className="mb-4">
-                                <h4 className="font-semibold text-gray-700 mb-2">Key Speakers:</h4>
-                                <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                                  {event.speakers.map((speaker, index) => (
-                                    <li key={index}>{speaker}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            
-                            {event.outcomes && (
-                              <div className="mb-4">
-                                <h4 className="font-semibold text-gray-700 mb-2">Outcomes:</h4>
-                                <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
-                                  {event.outcomes.map((outcome, index) => (
-                                    <li key={index}>{outcome}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            
-                            {event.photos && (
-                              <div className="pt-4 border-t border-gray-200">
-                                <h4 className="font-semibold text-gray-700 mb-2">Event Photos:</h4>
-                                <div className="flex space-x-2">
-                                  {event.photos.map((photo, index) => (
-                                    <div key={index} className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
-                                      <Image className="h-6 w-6 text-gray-400" />
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {activeTab === 'workshops' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Workshops & Training</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {eventsData.workshops.map((workshop) => (
-                        <Card key={workshop.id} className="h-full">
-                          <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-3">{workshop.title}</h3>
-                            
-                            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                              <div>
-                                <span className="font-semibold text-gray-700">Type:</span>
-                                <span className="text-gray-600 ml-2">{workshop.type}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Date:</span>
-                                <span className="text-gray-600 ml-2">{formatDate(workshop.date)}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Duration:</span>
-                                <span className="text-gray-600 ml-2">{workshop.duration}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Venue:</span>
-                                <span className="text-gray-600 ml-2">{workshop.venue}</span>
-                              </div>
-                            </div>
-                            
-                            <p className="text-gray-600 text-sm mb-4">{workshop.description}</p>
-                            
+                          
+                          <p className="text-gray-600 text-sm mb-4">{workshop.description}</p>
+                          
+                          {workshop.topics && workshop.topics.length > 0 && (
                             <div className="mb-4">
                               <h4 className="font-semibold text-gray-700 mb-2">Topics Covered:</h4>
                               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
@@ -601,7 +651,9 @@ const Events = () => {
                                 ))}
                               </ul>
                             </div>
-                            
+                          )}
+                          
+                          {workshop.outcomes && workshop.outcomes.length > 0 && (
                             <div className="mb-4">
                               <h4 className="font-semibold text-gray-700 mb-2">Outcomes:</h4>
                               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
@@ -610,49 +662,51 @@ const Events = () => {
                                 ))}
                               </ul>
                             </div>
-                            
-                            <div className="pt-4 border-t border-gray-200">
-                              <div className="text-center">
-                                <span className="text-sm text-gray-600">Participants: {workshop.participants}</span>
-                              </div>
+                          )}
+                          
+                          <div className="pt-4 border-t border-gray-200">
+                            <div className="text-center">
+                              <span className="text-sm text-gray-600">Participants: {workshop.participants}</span>
                             </div>
                           </div>
-                        </Card>
-                      ))}
-                    </div>
+                        </div>
+                      </Card>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
-                {activeTab === 'fieldVisits' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Field Visits & Exposure Trips</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {eventsData.fieldVisits.map((visit) => (
-                        <Card key={visit.id} className="h-full">
-                          <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-3">{visit.title}</h3>
-                            
-                            <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                              <div>
-                                <span className="font-semibold text-gray-700">Type:</span>
-                                <span className="text-gray-600 ml-2">{visit.type}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Date:</span>
-                                <span className="text-gray-600 ml-2">{formatDate(visit.date)}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Duration:</span>
-                                <span className="text-gray-600 ml-2">{visit.duration}</span>
-                              </div>
-                              <div>
-                                <span className="font-semibold text-gray-700">Venue:</span>
-                                <span className="text-gray-600 ml-2">{visit.venue}</span>
-                              </div>
+              {activeTab === 'fieldVisits' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Field Visits & Exposure Trips</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {eventsData.fieldVisits?.map((visit) => (
+                      <Card key={visit.id} className="h-full">
+                        <div className="p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3">{visit.title}</h3>
+                          
+                          <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                            <div>
+                              <span className="font-semibold text-gray-700">Type:</span>
+                              <span className="text-gray-600 ml-2">{visit.type}</span>
                             </div>
-                            
-                            <p className="text-gray-600 text-sm mb-4">{visit.description}</p>
-                            
+                            <div>
+                              <span className="font-semibold text-gray-700">Date:</span>
+                              <span className="text-gray-600 ml-2">{formatDate(visit.date)}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Duration:</span>
+                              <span className="text-gray-600 ml-2">{visit.duration}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-gray-700">Venue:</span>
+                              <span className="text-gray-600 ml-2">{visit.venue}</span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm mb-4">{visit.description}</p>
+                          
+                          {visit.activities && visit.activities.length > 0 && (
                             <div className="mb-4">
                               <h4 className="font-semibold text-gray-700 mb-2">Activities:</h4>
                               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
@@ -661,7 +715,9 @@ const Events = () => {
                                 ))}
                               </ul>
                             </div>
-                            
+                          )}
+                          
+                          {visit.outcomes && visit.outcomes.length > 0 && (
                             <div className="mb-4">
                               <h4 className="font-semibold text-gray-700 mb-2">Outcomes:</h4>
                               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
@@ -670,36 +726,38 @@ const Events = () => {
                                 ))}
                               </ul>
                             </div>
-                            
-                            <div className="pt-4 border-t border-gray-200">
-                              <div className="text-center">
-                                <span className="text-sm text-gray-600">Participants: {visit.participants}</span>
-                              </div>
+                          )}
+                          
+                          <div className="pt-4 border-t border-gray-200">
+                            <div className="text-center">
+                              <span className="text-sm text-gray-600">Participants: {visit.participants}</span>
                             </div>
                           </div>
-                        </Card>
-                      ))}
-                    </div>
+                        </div>
+                      </Card>
+                    ))}
                   </div>
-                )}
+                </div>
+              )}
 
-                {activeTab === 'pressReleases' && (
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Press Releases</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      {eventsData.pressReleases.map((release) => (
-                        <Card key={release.id} className="h-full">
-                          <div className="p-6">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-3">{release.title}</h3>
-                            
-                            <div className="mb-4">
-                              <span className="text-sm text-gray-500">{formatDate(release.date)}</span>
-                            </div>
-                            
-                            <p className="text-gray-600 text-sm mb-4">{release.summary}</p>
-                            
-                            <p className="text-gray-700 text-sm mb-4">{release.content}</p>
-                            
+              {activeTab === 'pressReleases' && (
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Press Releases</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {eventsData.pressReleases?.map((release) => (
+                      <Card key={release.id} className="h-full">
+                        <div className="p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3">{release.title}</h3>
+                          
+                          <div className="mb-4">
+                            <span className="text-sm text-gray-500">{formatDate(release.date)}</span>
+                          </div>
+                          
+                          <p className="text-gray-600 text-sm mb-4">{release.summary}</p>
+                          
+                          <p className="text-gray-700 text-sm mb-4">{release.content}</p>
+                          
+                          {release.highlights && release.highlights.length > 0 && (
                             <div className="mb-4">
                               <h4 className="font-semibold text-gray-700 mb-2">Key Highlights:</h4>
                               <ul className="list-disc list-inside text-sm text-gray-600 space-y-1">
@@ -708,29 +766,29 @@ const Events = () => {
                                 ))}
                               </ul>
                             </div>
-                            
-                            <div className="pt-4 border-t border-gray-200">
-                              <div className="space-y-2 text-sm">
-                                <div>
-                                  <span className="font-semibold text-gray-700">Media Coverage:</span>
-                                  <span className="text-gray-600 ml-2">{release.media}</span>
-                                </div>
-                                <div>
-                                  <span className="font-semibold text-gray-700">Contact:</span>
-                                  <span className="text-gray-600 ml-2">{release.contact}</span>
-                                </div>
+                          )}
+                          
+                          <div className="pt-4 border-t border-gray-200">
+                            <div className="space-y-2 text-sm">
+                              <div>
+                                <span className="font-semibold text-gray-700">Media Coverage:</span>
+                                <span className="text-gray-600 ml-2">{release.media}</span>
+                              </div>
+                              <div>
+                                <span className="font-semibold text-gray-700">Contact:</span>
+                                <span className="text-gray-600 ml-2">{release.contact}</span>
                               </div>
                             </div>
                           </div>
-                        </Card>
-                      ))}
-                    </div>
+                        </div>
+                      </Card>
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        </div>
       </Section>
 
       {/* Navigation Anchors */}
@@ -738,37 +796,9 @@ const Events = () => {
       <div id="visits"></div>
       <div id="gallery"></div>
 
-      {/* Workshops and Training Section */}
-      <Section id="workshops" background="bg-white">
-        <SectionHeader
-          title="Workshops and Training"
-          subtitle="Professional development and skill-building workshops"
-          align="center"
-        />
-        <p className="text-gray-600">Information about workshops and training programs will be displayed here.</p>
-      </Section>
-
-      {/* Field Visits & Exposure Trips Section */}
-      <Section id="visits" background="bg-gray-50">
-        <SectionHeader
-          title="Field Visits & Exposure Trips"
-          subtitle="Educational visits and field exposure programs"
-          align="center"
-        />
-        <p className="text-gray-600">Details about field visits and exposure trips will be displayed here.</p>
-      </Section>
-
-      {/* Photo Gallery Section */}
-      <Section id="gallery" background="bg-white">
-        <SectionHeader
-          title="Photo Gallery"
-          subtitle="Visual memories from college events and activities"
-          align="center"
-        />
-        <p className="text-gray-600">Photo gallery showcasing college events and activities will be displayed here.</p>
-      </Section>
     </div>
   )
 }
 
 export default Events
+

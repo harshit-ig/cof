@@ -17,3 +17,4 @@ const ProgramDetail = () => {
 }
 
 export default ProgramDetail
+

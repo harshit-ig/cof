@@ -314,7 +314,7 @@ const StudentCorner = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Students Corner</h1>
@@ -330,19 +330,19 @@ const StudentCorner = () => {
       <section className="section-padding bg-white border-b">
         <div className="container-max">
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#admission-guidelines" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#admission-guidelines" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Admission Guidelines
             </a>
-            <a href="#scholarships" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#scholarships" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Scholarships & Fellowships
             </a>
-            <a href="#student-council" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#student-council" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Student Council / Clubs
             </a>
-            <a href="#alumni-testimonials" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#alumni-testimonials" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Alumni Testimonials
             </a>
-            <a href="#internship-placement" className="px-6 py-3 bg-gray-100 hover:bg-primary-600 hover:text-white rounded-lg font-medium transition-colors">
+            <a href="#internship-placement" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
               Internship & Placement
             </a>
           </div>
@@ -354,7 +354,7 @@ const StudentCorner = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Admission Guidelines</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Complete information about admission process, eligibility criteria, required documents, 
               and important dates for B.F.Sc and M.F.Sc programs.
@@ -364,14 +364,14 @@ const StudentCorner = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {admissionGuidelines.map((guideline, index) => (
               <Card key={index} className="p-6">
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                   {guideline.category.includes('Eligibility') ? 
-                    <GraduationCap className="w-6 h-6 text-primary-600" /> :
+                    <GraduationCap className="w-6 h-6 text-blue-500" /> :
                     guideline.category.includes('Process') ?
-                    <FileText className="w-6 h-6 text-primary-600" /> :
+                    <FileText className="w-6 h-6 text-blue-500" /> :
                     guideline.category.includes('Documents') ?
-                    <FileText className="w-6 h-6 text-primary-600" /> :
-                    <Calendar className="w-6 h-6 text-primary-600" />
+                    <FileText className="w-6 h-6 text-blue-500" /> :
+                    <Calendar className="w-6 h-6 text-blue-500" />
                   }
                 </div>
                 
@@ -382,7 +382,7 @@ const StudentCorner = () => {
                   <ul className="space-y-2">
                     {guideline.guidelines.map((item, idx) => (
                       <li key={idx} className="flex items-start text-sm text-gray-700">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full mr-3 mt-2"></div>
+                        <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 mt-2"></div>
                         {item}
                       </li>
                     ))}
@@ -399,7 +399,7 @@ const StudentCorner = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Scholarships & Fellowships</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Financial assistance programs to support deserving students through scholarships, 
               fellowships, and incentive schemes for academic excellence.
@@ -455,7 +455,7 @@ const StudentCorner = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Student Council / Clubs</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Active student organizations fostering leadership, technical skills, cultural activities, 
               and overall personality development through various clubs and societies.
@@ -506,7 +506,7 @@ const StudentCorner = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Alumni Testimonials</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Success stories and experiences from our distinguished alumni who are making 
               significant contributions in various sectors of fisheries and aquaculture.
@@ -560,7 +560,7 @@ const StudentCorner = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Internship & Placement</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Comprehensive placement support with excellent industry connections, internship opportunities, 
               and career development services for students.
@@ -612,7 +612,7 @@ const StudentCorner = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Join Our Student Community?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -630,7 +630,7 @@ const StudentCorner = () => {
             
             <Link
               to="/academics"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
             >
               Explore Programs
             </Link>
@@ -642,3 +642,5 @@ const StudentCorner = () => {
 }
 
 export default StudentCorner
+
+

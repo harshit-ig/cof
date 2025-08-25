@@ -10,52 +10,129 @@ const Gallery = () => {
   const galleryImages = [
     {
       id: 1,
-      src: '/COF NEW.png',
+      src: '/cllg.jpg',
       title: 'College of Fisheries - Main Building',
       category: 'infrastructure',
       description: 'Main administrative and academic building of College of Fisheries, Jabalpur'
     },
     {
       id: 2,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
-      title: 'Academic Buildings',
-      category: 'infrastructure',
-      description: 'Modern academic buildings with state-of-the-art classrooms and facilities'
+      src: '/COF NEW.png',
+      title: 'College Logo & Branding',
+      category: 'campus',
+      description: 'Official logo and branding of College of Fisheries'
     },
     {
       id: 3,
+      src: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
+      title: 'Campus Infrastructure',
+      category: 'infrastructure',
+      description: 'Modern campus infrastructure and building facilities'
+    },
+    {
+      id: 4,
       src: '/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg',
       title: 'Research Laboratories',
       category: 'research',
       description: 'Well-equipped research laboratories for fisheries science studies'
     },
     {
-      id: 4,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
-      title: 'Hatchery Facilities',
-      category: 'facilities',
-      description: 'Modern fish hatchery units for breeding and demonstration'
-    },
-    {
       id: 5,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.52_e4f075d7.jpg',
-      title: 'Campus Environment',
+      src: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
+      title: 'Academic Activities',
       category: 'campus',
-      description: 'Beautiful campus environment and student areas'
+      description: 'Classroom sessions and academic activities'
     },
     {
       id: 6,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
-      title: 'Processing Units',
-      category: 'facilities',
-      description: 'Fish processing and feed manufacturing facilities'
+      src: '/WhatsApp Image 2025-08-19 at 09.04.52_e4f075d7.jpg',
+      title: 'Student Activities',
+      category: 'campus',
+      description: 'Student life and campus activities'
     },
     {
       id: 7,
+      src: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
+      title: 'Field Work & Research',
+      category: 'research',
+      description: 'Field research and practical training activities'
+    },
+    {
+      id: 8,
       src: '/WhatsApp Image 2025-08-19 at 09.04.54_38d4a9cd.jpg',
-      title: 'Library and Study Areas',
+      title: 'Extension Programs',
+      category: 'facilities',
+      description: 'Extension programs and farmer training activities'
+    },
+    {
+      id: 9,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.39_1241e1b8.jpg',
+      title: 'Campus Events',
+      category: 'campus',
+      description: 'Special events and celebrations on campus'
+    },
+    {
+      id: 10,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.39_b0838fbd.jpg',
+      title: 'Cultural Programs',
+      category: 'campus',
+      description: 'Cultural programs and annual functions'
+    },
+    {
+      id: 11,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.39_d6ab2436.jpg',
+      title: 'Practical Training',
+      category: 'research',
+      description: 'Hands-on practical training sessions'
+    },
+    {
+      id: 12,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.41_288fca02.jpg',
+      title: 'Workshop Sessions',
+      category: 'facilities',
+      description: 'Technical workshops and skill development programs'
+    },
+    {
+      id: 13,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.42_4e674a8f.jpg',
+      title: 'Seminar Hall',
       category: 'infrastructure',
-      description: 'Central library with comprehensive academic resources'
+      description: 'Conference hall and seminar facilities'
+    },
+    {
+      id: 14,
+      src: '/WhatsApp Image 2025-08-21 at 22.43.42_b0410280.jpg',
+      title: 'Library & Resources',
+      category: 'infrastructure',
+      description: 'Central library and learning resources center'
+    },
+    {
+      id: 15,
+      src: '/slider.jpg',
+      title: 'Campus Overview',
+      category: 'campus',
+      description: 'Beautiful overview of the entire campus'
+    },
+    {
+      id: 16,
+      src: '/slider-2.jpg',
+      title: 'Sports Facilities',
+      category: 'facilities',
+      description: 'Sports complex and recreational facilities'
+    },
+    {
+      id: 17,
+      src: '/slider-3.jpg',
+      title: 'Hostel Facilities',
+      category: 'infrastructure',
+      description: 'Student hostel and accommodation facilities'
+    },
+    {
+      id: 18,
+      src: '/slider-4.jpg',
+      title: 'Garden & Landscape',
+      category: 'campus',
+      description: 'Beautiful gardens and landscaped areas'
     }
   ]
 
@@ -229,3 +306,5 @@ const Gallery = () => {
 }
 
 export default Gallery
+
+

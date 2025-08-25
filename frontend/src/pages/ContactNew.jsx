@@ -8,30 +8,30 @@ const Contact = () => {
       icon: Phone,
       title: 'Phone Numbers',
       details: [
-        'Principal Office: +91-761-2681375',
-        'Administrative Office: +91-761-2681376',
-        'Admission Office: +91-761-2681377',
-        'Library: +91-761-2681378'
+        'Dean Office: +91-761-2681969',
+        'Administrative Office: +91-761-2681971',
+        'Admission Office: +91-761-2681972',
+        'Library: +91-761-2681973'
       ]
     },
     {
       icon: Mail,
       title: 'Email Addresses',
       details: [
-        'Principal: principal@cofjabalpur.ac.in',
-        'Admission: admissions@cofjabalpur.ac.in',
-        'General Inquiry: info@cofjabalpur.ac.in',
-        'Research: research@cofjabalpur.ac.in'
+        'Dean: dean.fisheries@ndvsu.ac.in',
+        'Admission: admissions.cof@ndvsu.ac.in',
+        'General Inquiry: info.cof@ndvsu.ac.in',
+        'Research: research.cof@ndvsu.ac.in'
       ]
     },
     {
       icon: Fax,
       title: 'Fax & Other',
       details: [
-        'Fax: +91-761-2681379',
-        'Website: www.cofjabalpur.ac.in',
-        'EPABX: +91-761-2681380',
-        'Emergency: +91-761-2681381'
+        'Fax: +91-761-2681970',
+        'University Website: www.ndvsu.ac.in',
+        'EPABX: +91-761-2681969',
+        'Emergency: +91-761-2681974'
       ]
     },
     {
@@ -52,8 +52,8 @@ const Contact = () => {
       address: [
         'College of Fisheries',
         'Nanaji Deshmukh Veterinary Science University',
-        'Mhow-Neemuch Road, Jabalpur',
-        'Madhya Pradesh - 482004, India'
+        'Adhartal, Jabalpur - 482004',
+        'Madhya Pradesh, India'
       ],
       type: 'Primary Campus',
       landmark: 'Near Veterinary College'
@@ -63,8 +63,8 @@ const Contact = () => {
       address: [
         'Administrative Block',
         'College of Fisheries',
-        'University Campus, Jabalpur',
-        'Madhya Pradesh - 482004, India'
+        'Adhartal, Jabalpur - 482004',
+        'Madhya Pradesh, India'
       ],
       type: 'Admin Block',
       landmark: 'Inside Main Campus'
@@ -74,8 +74,8 @@ const Contact = () => {
       address: [
         'Fisheries Research Unit',
         'College of Fisheries',
-        'Research Complex, Jabalpur',
-        'Madhya Pradesh - 482004, India'
+        'Adhartal, Jabalpur - 482004',
+        'Madhya Pradesh, India'
       ],
       type: 'Research Facility',
       landmark: 'Near Main Laboratory Block'
@@ -87,28 +87,28 @@ const Contact = () => {
       department: 'Aquaculture',
       hod: 'Dr. Rajesh Kumar Singh',
       phone: '+91-761-2681385',
-      email: 'aquaculture@cofjabalpur.ac.in',
+      email: 'aquaculture.cof@ndvsu.ac.in',
       room: 'Room 201, Academic Block'
     },
     {
       department: 'Fish Processing Technology',
       hod: 'Dr. Priya Sharma',
       phone: '+91-761-2681386',
-      email: 'processing@cofjabalpur.ac.in',
+      email: 'processing.cof@ndvsu.ac.in',
       room: 'Room 301, Technology Block'
     },
     {
       department: 'Fisheries Extension',
       hod: 'Dr. Amit Kumar Patel',
       phone: '+91-761-2681387',
-      email: 'extension@cofjabalpur.ac.in',
+      email: 'extension.cof@ndvsu.ac.in',
       room: 'Room 101, Extension Wing'
     },
     {
       department: 'Fish Health Management',
       hod: 'Dr. Meera Singh',
       phone: '+91-761-2681388',
-      email: 'fishhealth@cofjabalpur.ac.in',
+      email: 'fishhealth.cof@ndvsu.ac.in',
       room: 'Room 401, Research Block'
     }
   ]
@@ -116,7 +116,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
@@ -133,7 +133,7 @@ const Contact = () => {
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Contact Details & Google Map</h2>
-            <div className="w-20 h-1 bg-primary-500 rounded mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Complete contact information including phone numbers, email addresses, office hours, 
               physical addresses, and interactive map location for easy navigation.
@@ -164,8 +164,8 @@ const Contact = () => {
             {officeAddresses.map((office, index) => (
               <Card key={index} className="p-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-primary-600" />
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-blue-500" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{office.title}</h3>
@@ -190,7 +190,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
             {/* Map */}
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="bg-primary-600 text-white p-4">
+              <div className="bg-blue-500 text-white p-4">
                 <h3 className="text-lg font-semibold flex items-center">
                   <Globe className="w-5 h-5 mr-2" />
                   Interactive Location Map
@@ -294,7 +294,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2 text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Department Contacts</h3>
-              <div className="w-16 h-1 bg-primary-500 rounded mx-auto"></div>
+              <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
             </div>
             
             {departmentContacts.map((dept, index) => (
@@ -329,7 +329,7 @@ const Contact = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Visit Our Campus</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -348,7 +348,7 @@ const Contact = () => {
             
             <a
               href="mailto:info@cofjabalpur.ac.in"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600 inline-flex items-center"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500 inline-flex items-center"
             >
               <Mail className="w-4 h-4 mr-2" />
               Email for Information
@@ -361,3 +361,5 @@ const Contact = () => {
 }
 
 export default Contact
+
+

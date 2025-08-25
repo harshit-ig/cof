@@ -17,3 +17,4 @@ const FacultyDetail = () => {
 }
 
 export default FacultyDetail
+

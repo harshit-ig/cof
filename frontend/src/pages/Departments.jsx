@@ -133,7 +133,7 @@ const Departments = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Departments</h1>
@@ -173,7 +173,7 @@ const Departments = () => {
                       <h4 className="font-semibold text-gray-800 mb-2">Courses Offered:</h4>
                       <div className="flex flex-wrap gap-2">
                         {dept.courses.map((course) => (
-                          <span key={course} className="px-2 py-1 bg-primary-100 text-primary-700 text-sm rounded">
+                          <span key={course} className="px-2 py-1 bg-blue-100 text-primary-700 text-sm rounded">
                             {course}
                           </span>
                         ))}
@@ -185,7 +185,7 @@ const Departments = () => {
                       <ul className="text-sm text-gray-600 space-y-1">
                         {dept.facilities.map((facility) => (
                           <li key={facility} className="flex items-center">
-                            <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2"></div>
+                            <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></div>
                             {facility}
                           </li>
                         ))}
@@ -196,7 +196,7 @@ const Departments = () => {
                   <div className="mt-6 pt-4 border-t border-gray-200">
                     <Link
                       to={`/departments#${dept.id}`}
-                      className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium text-sm"
+                      className="inline-flex items-center text-blue-500 hover:text-primary-700 font-medium text-sm"
                     >
                       Learn More
                       <BookOpen className="ml-1 h-4 w-4" />
@@ -239,7 +239,7 @@ const Departments = () => {
                       <div className="space-y-3">
                         {dept.courses.map((course) => (
                           <div key={course} className="flex items-center p-3 bg-primary-50 rounded-lg">
-                            <BookOpen className="w-5 h-5 text-primary-600 mr-3" />
+                            <BookOpen className="w-5 h-5 text-blue-500 mr-3" />
                             <span className="font-medium text-gray-800">{course}</span>
                           </div>
                         ))}
@@ -266,7 +266,7 @@ const Departments = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {dept.facilities.map((facility) => (
                         <div key={facility} className="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                          <div className="w-2 h-2 bg-primary-500 rounded-full mb-2"></div>
+                          <div className="w-2 h-2 bg-blue-400 rounded-full mb-2"></div>
                           <span className="text-gray-700 text-sm">{facility}</span>
                         </div>
                       ))}
@@ -297,7 +297,7 @@ const Departments = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Join Our Department?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -315,7 +315,7 @@ const Departments = () => {
             
             <Link
               to="/contact"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
             >
               Contact Us
             </Link>
@@ -327,3 +327,4 @@ const Departments = () => {
 }
 
 export default Departments 
+

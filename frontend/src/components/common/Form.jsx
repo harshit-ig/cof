@@ -34,12 +34,13 @@ export const FormGroup = ({
   error, 
   required = false, 
   className = '',
+  id,
   ...props 
 }) => {
   return (
     <div className={`space-y-1 ${className}`} {...props}>
       {label && (
-        <label className="form-label">
+        <label className="form-label" htmlFor={id}>
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -153,7 +154,7 @@ export const Checkbox = ({
     <div className={`flex items-start ${className}`}>
       <input
         type="checkbox"
-        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+        className="h-4 w-4 text-blue-500 focus:ring-primary-500 border-gray-300 rounded"
         {...props}
       />
       {label && (
@@ -187,7 +188,7 @@ export const RadioGroup = ({
             value={option.value || option}
             checked={value === (option.value || option)}
             onChange={onChange}
-            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+            className="h-4 w-4 text-blue-500 focus:ring-primary-500 border-gray-300"
           />
           <label 
             htmlFor={`${name}-${index}`}
@@ -270,7 +271,6 @@ export const FileUpload = ({
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
-    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       handleFiles(e.dataTransfer.files)
     }
@@ -283,19 +283,12 @@ export const FileUpload = ({
     }
   }
 
-  const removeFile = (index) => {
-    const newFiles = files.filter((_, i) => i !== index)
-    setFiles(newFiles)
-    onFileSelect && onFileSelect(multiple ? newFiles : null)
-  }
-
-  const errorClass = error ? 'border-red-300' : 'border-gray-300'
-  const dragClass = dragActive ? 'border-primary-500 bg-primary-50' : ''
-
   return (
-    <div className={className}>
+    <div className={`relative ${className}`}>
       <div
-        className={`relative border-2 border-dashed rounded-lg p-6 text-center hover:border-primary-400 transition-colors ${errorClass} ${dragClass}`}
+        className={`border-2 border-dashed rounded-lg p-6 text-center ${
+          dragActive ? 'border-primary-500 bg-primary-50' : 'border-gray-300'
+        }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -309,40 +302,42 @@ export const FileUpload = ({
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           {...props}
         />
-        
-        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-        <div className="mt-4">
-          <p className="text-sm text-gray-600">
-            <span className="font-medium text-primary-600 hover:text-primary-500">
-              Click to upload
-            </span>{' '}
-            or drag and drop
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            {allowedTypes.length > 0 && `${allowedTypes.join(', ')} `}
-            {maxSize && `(max ${maxSize}MB)`}
-          </p>
+        <div className="text-gray-600">
+          <Upload className="h-8 w-8 mx-auto mb-2" />
+          <p>Drop files here or click to browse</p>
+          {maxSize && (
+            <p className="text-sm text-gray-500 mt-1">
+              Maximum file size: {maxSize}MB
+            </p>
+          )}
         </div>
       </div>
-
-      {/* File List */}
+      
       {files.length > 0 && (
-        <div className="mt-4 space-y-2">
-          {files.map((file, index) => (
-            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-              <span className="text-sm text-gray-700 truncate">{file.name}</span>
-              <button
-                type="button"
-                onClick={() => removeFile(index)}
-                className="text-red-500 hover:text-red-700"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          ))}
+        <div className="mt-4">
+          <h4 className="text-sm font-medium mb-2">Selected Files:</h4>
+          <ul className="space-y-1">
+            {files.map((file, index) => (
+              <li key={index} className="text-sm text-gray-600 flex items-center">
+                <File className="h-4 w-4 mr-2" />
+                {file.name}
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newFiles = files.filter((_, i) => i !== index)
+                    setFiles(newFiles)
+                    onFileSelect && onFileSelect(multiple ? newFiles : null)
+                  }}
+                  className="ml-2 text-red-500 hover:text-red-700"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-
+      
       {error && <p className="form-error mt-2">{error}</p>}
     </div>
   )
@@ -376,3 +371,4 @@ export const SubmitButton = ({
 }
 
 export default Form
+

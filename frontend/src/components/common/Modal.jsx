@@ -44,61 +44,39 @@ const Modal = ({
   }
 
   const handleOverlayClick = (e) => {
-    if (closeOnOverlayClick && e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && closeOnOverlayClick) {
       onClose()
     }
   }
 
-  const modalContent = (
-    <div className="fixed inset-0 z-[9999] overflow-y-auto">
+  return (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={handleOverlayClick}
+    >
       <div 
-        className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
-        onClick={handleOverlayClick}
+        className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full ${className}`}
+        {...props}
       >
-        {/* Background overlay with blur */}
-        <div className="fixed inset-0 bg-black/20 backdrop-blur-sm transition-all duration-300" />
-
-        {/* Modal positioning */}
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" />
-
-        {/* Modal content */}
-        <div
-          className={`relative inline-block align-bottom bg-white rounded-xl px-4 pt-5 pb-4 text-left overflow-hidden shadow-2xl border border-gray-200 transform transition-all sm:my-8 sm:align-middle sm:w-full sm:p-6 ${sizeClasses[size]} ${className}`}
-          onClick={(e) => e.stopPropagation()}
-          {...props}
-        >
-          {/* Header */}
-          {(title || showCloseButton) && (
-            <div className="flex items-center justify-between mb-4">
-              {title && (
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  {title}
-                </h3>
-              )}
-              
-              {showCloseButton && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* Content */}
-          <div className="mt-2">
-            {children}
+        {(title || showCloseButton) && (
+          <div className="flex items-center justify-between p-6 border-b">
+            {title && <h3 className="text-lg font-semibold">{title}</h3>}
+            {showCloseButton && (
+              <button
+                onClick={onClose}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            )}
           </div>
+        )}
+        <div className="p-6">
+          {children}
         </div>
       </div>
     </div>
   )
-
-  // Use portal to render modal at body level
-  return createPortal(modalContent, document.body)
 }
 
 // Confirmation Modal Component
@@ -223,3 +201,4 @@ export const ImageModal = ({
 }
 
 export default Modal
+

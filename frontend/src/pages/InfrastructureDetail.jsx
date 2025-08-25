@@ -16,3 +16,4 @@ const InfrastructureDetail = () => {
 }
 
 export default InfrastructureDetail
+

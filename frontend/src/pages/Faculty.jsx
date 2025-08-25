@@ -184,7 +184,7 @@ const Faculty = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 via-primary-700 to-secondary-600 text-white">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Teaching Faculty</h1>
@@ -201,8 +201,8 @@ const Faculty = () => {
         <div className="container-max">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
             <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Users className="w-8 h-8 text-primary-600" />
+              <div className="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Users className="w-8 h-8 text-blue-500" />
               </div>
               <p className="text-2xl font-bold text-gray-900">{stats.totalFaculty}</p>
               <p className="text-sm text-gray-600">Total Faculty</p>
@@ -325,7 +325,7 @@ const Faculty = () => {
                     loading="lazy"
                   />
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{faculty.name}</h3>
-                  <p className="text-primary-600 font-medium mb-1">{faculty.designation}</p>
+                  <p className="text-blue-500 font-medium mb-1">{faculty.designation}</p>
                   <p className="text-gray-600 text-sm">{faculty.department}</p>
                 </div>
 
@@ -346,7 +346,7 @@ const Faculty = () => {
                     <ul className="space-y-1">
                       {faculty.research.slice(0, 3).map((area, index) => (
                         <li key={index} className="flex items-center text-sm text-gray-700">
-                          <div className="w-1.5 h-1.5 bg-primary-500 rounded-full mr-2"></div>
+                          <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></div>
                           {area}
                         </li>
                       ))}
@@ -355,7 +355,7 @@ const Faculty = () => {
 
                   <div className="grid grid-cols-2 gap-4 text-center">
                     <div className="p-3 bg-primary-50 rounded-lg">
-                      <p className="text-lg font-bold text-primary-600">{faculty.publications}</p>
+                      <p className="text-lg font-bold text-blue-500">{faculty.publications}</p>
                       <p className="text-xs text-gray-600">Publications</p>
                     </div>
                     <div className="p-3 bg-secondary-50 rounded-lg">
@@ -401,7 +401,7 @@ const Faculty = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-primary-600 text-white">
+      <section className="section-padding bg-blue-500 text-white">
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Faculty</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -419,7 +419,7 @@ const Faculty = () => {
             
             <Link
               to="/about"
-              className="btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
             >
               Learn More
             </Link>
@@ -431,3 +431,4 @@ const Faculty = () => {
 }
 
 export default Faculty
+

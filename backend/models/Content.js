@@ -53,8 +53,7 @@ const contentSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Index for search functionality
-contentSchema.index({ key: 1 });
+// Index for search functionality (key is already indexed due to unique: true)
 contentSchema.index({ section: 1, subsection: 1, order: 1 });
 
 module.exports = mongoose.model('Content', contentSchema);

@@ -43,27 +43,26 @@ const News = () => {
           </div>
         ) : items.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((n) => {
-              const img = n.images?.[0]?.url
-              const src = img ? uploadAPI.getImageUrl(img, 'news') : null
+            {items.map((item) => {
+              const src = item.image ? uploadAPI.getImageUrl(item.image, 'news') : null
               return (
-                <div key={n._id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div key={item._id} className="bg-white rounded-lg shadow-md overflow-hidden">
                   {src && (
                     <img 
                   src={src} 
-                  alt={n.title} 
+                  alt={item.title} 
                   className="w-full h-40 md:h-48 lg:h-56 object-cover" 
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   loading="lazy"
                 />
                   )}
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{n.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{item.title}</h3>
                     <p className="text-sm text-gray-500 mb-2">
-                      {n.createdAt ? new Date(n.createdAt).toLocaleDateString() : ''}
+                      {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : ''}
                     </p>
-                    {n.excerpt && (
-                      <p className="text-gray-700 text-sm line-clamp-3">{n.excerpt}</p>
+                    {item.excerpt && (
+                      <p className="text-gray-700 text-sm line-clamp-3">{item.excerpt}</p>
                     )}
                   </div>
                 </div>
@@ -79,3 +78,4 @@ const News = () => {
 }
 
 export default News
+

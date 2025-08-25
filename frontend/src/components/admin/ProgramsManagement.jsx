@@ -14,8 +14,9 @@ const ProgramsManagement = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [editingProgram, setEditingProgram] = useState(null)
   const [deletingProgram, setDeletingProgram] = useState(null)
-  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
   const [pagination, setPagination] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
@@ -40,22 +41,73 @@ const ProgramsManagement = () => {
     fetchPrograms()
   }, [searchTerm])
 
-  const fetchPrograms = async () => {
+  // Add error handling wrapper
+  const safeExecute = async (fn, errorMessage) => {
     try {
+      setError(null)
+      await fn()
+    } catch (error) {
+      console.error(errorMessage, error)
+      setError(error.message || errorMessage)
+      toast.error(error.response?.data?.message || errorMessage)
+    }
+  }
+
+  const fetchPrograms = async () => {
+    await safeExecute(async () => {
       setLoading(true)
+      console.log('Fetching programs with search term:', searchTerm)
+      
       const params = { page: 1, limit: 20 }
       if (searchTerm) params.search = searchTerm
 
+      console.log('API params:', params)
       const response = await programsAPI.getAll(params)
-      if (response.data.success) {
-        setPrograms(response.data.data.programs || [])
-        setPagination(response.data.data.pagination || {})
+      console.log('Programs API response:', response)
+      
+      if (response?.data?.success) {
+        setPrograms(response.data.data?.programs || [])
+        setPagination(response.data.data?.pagination || {})
+        console.log('Programs loaded:', response.data.data?.programs?.length || 0)
+      } else {
+        console.error('Unexpected API response format:', response)
+        setPrograms([])
+        setPagination({})
       }
+    }, 'Failed to fetch programs')
+    setLoading(false)
+  }
+
+  // Add a test function to debug API calls
+  const testProgramCreation = async () => {
+    try {
+      console.log('Testing program creation with sample data...')
+      
+      // Check token
+      const token = localStorage.getItem('token')
+      console.log('Token exists:', !!token)
+      console.log('Token preview:', token ? token.substring(0, 20) + '...' : 'NO TOKEN')
+      
+      const testData = {
+        title: "Test Program API",
+        description: "This is a test program to check API connectivity",
+        duration: "4 Years",
+        eligibility: "10+2 with PCB",
+        fees: 50000,
+        intake: 50,
+        department: "Fisheries Science",
+        level: "undergraduate"
+      }
+      
+      console.log('Test data:', testData)
+      const response = await programsAPI.create(testData)
+      console.log('Test API response:', response)
+      toast.success('Test program created successfully!')
+      fetchPrograms()
     } catch (error) {
-      console.error('Error fetching programs:', error)
-      toast.error('Failed to fetch programs')
-    } finally {
-      setLoading(false)
+      console.error('Test API error:', error)
+      console.error('Test error response:', error.response?.data)
+      toast.error(`Test failed: ${error.response?.data?.message || error.message}`)
     }
   }
 
@@ -64,17 +116,44 @@ const ProgramsManagement = () => {
     setSubmitting(true)
 
     try {
+      // Validate required fields
+      const requiredFields = ['title', 'description', 'duration', 'eligibility', 'fees', 'intake', 'department', 'level']
+      const missingFields = requiredFields.filter(field => !formData[field] || formData[field].toString().trim() === '')
+      
+      if (missingFields.length > 0) {
+        toast.error(`Please fill in all required fields: ${missingFields.join(', ')}`)
+        setSubmitting(false)
+        return
+      }
+
+      // Validate numeric fields
+      if (isNaN(parseFloat(formData.fees)) || parseFloat(formData.fees) <= 0) {
+        toast.error('Please enter a valid fees amount')
+        setSubmitting(false)
+        return
+      }
+
+      if (isNaN(parseInt(formData.intake)) || parseInt(formData.intake) <= 0) {
+        toast.error('Please enter a valid intake capacity')
+        setSubmitting(false)
+        return
+      }
+
       const data = {
         ...formData,
         fees: parseFloat(formData.fees),
         intake: parseInt(formData.intake)
       }
 
+      console.log('Submitting program data:', data)
+
       if (editingProgram) {
-        await programsAPI.update(editingProgram._id, data)
+        const response = await programsAPI.update(editingProgram._id, data)
+        console.log('Update response:', response)
         toast.success('Program updated successfully')
       } else {
-        await programsAPI.create(data)
+        const response = await programsAPI.create(data)
+        console.log('Create response:', response)
         toast.success('Program created successfully')
       }
 
@@ -83,7 +162,19 @@ const ProgramsManagement = () => {
       fetchPrograms()
     } catch (error) {
       console.error('Error saving program:', error)
-      toast.error(error.response?.data?.message || 'Failed to save program')
+      console.error('Error response:', error.response?.data)
+      
+      if (error.response?.data?.errors) {
+        // Handle validation errors
+        const errorMessages = error.response.data.errors.map(err => err.msg || err.message || err).join(', ')
+        toast.error(`Validation errors: ${errorMessages}`)
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message)
+      } else if (error.message) {
+        toast.error(error.message)
+      } else {
+        toast.error('Failed to save program. Please try again.')
+      }
     } finally {
       setSubmitting(false)
     }
@@ -137,7 +228,14 @@ const ProgramsManagement = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    console.log(`Form field changed: ${name} = ${value}`)
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleAddNew = () => {
+    console.log('Opening new program modal')
+    resetForm()
+    setShowModal(true)
   }
 
   return (
@@ -148,16 +246,22 @@ const ProgramsManagement = () => {
           <p className="text-gray-600">Manage academic programs and courses</p>
         </div>
         
-        <button
-          onClick={() => {
-            resetForm()
-            setShowModal(true)
-          }}
-          className="btn-primary flex items-center"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add Program
-        </button>
+        <div className="flex space-x-2">
+          <button
+            onClick={handleAddNew}
+            className="btn-primary flex items-center"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Add Program
+          </button>
+          
+          <button
+            onClick={testProgramCreation}
+            className="btn-secondary flex items-center"
+          >
+            Test API
+          </button>
+        </div>
       </div>
 
       {/* Search */}
@@ -238,7 +342,7 @@ const ProgramsManagement = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(program)}
-                          className="text-primary-600 hover:text-primary-900"
+                          className="text-blue-500 hover:text-blue-600"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -390,3 +494,4 @@ const ProgramsManagement = () => {
 }
 
 export default ProgramsManagement
+

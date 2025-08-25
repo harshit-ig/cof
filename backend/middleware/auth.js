@@ -53,7 +53,7 @@ const protect = async (req, res, next) => {
       message: 'Not authorized, no token provided'
     });
   }
-};
+}
 
 // Admin only middleware
 const adminOnly = (req, res, next) => {

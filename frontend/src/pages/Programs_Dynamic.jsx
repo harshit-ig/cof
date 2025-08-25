@@ -24,25 +24,17 @@ const Programs = () => {
       try {
         setLoading(true)
         const response = await programsAPI.getAll()
-        if (response.data?.success) {
-          // Group programs by level
-          const programData = response.data.data.programs || []
-          const grouped = {
-            undergraduate: programData.filter(p => p.level?.toLowerCase().includes('undergraduate') || p.level?.toLowerCase().includes('bachelor')),
-            postgraduate: programData.filter(p => p.level?.toLowerCase().includes('postgraduate') || p.level?.toLowerCase().includes('master')),
-            doctoral: programData.filter(p => p.level?.toLowerCase().includes('doctoral') || p.level?.toLowerCase().includes('phd'))
-          }
-          setPrograms(grouped)
+        if (response.data.success) {
+          setPrograms(response.data.data.programs || [])
         }
       } catch (error) {
         console.error('Error fetching programs:', error)
-        // Keep empty programs object if API fails
-        setPrograms({ undergraduate: [], postgraduate: [], doctoral: [] })
+        setError('Failed to load programs')
       } finally {
         setLoading(false)
       }
     }
-
+    
     fetchPrograms()
   }, [])
 
@@ -397,3 +389,5 @@ const Programs = () => {
 }
 
 export default Programs
+
+

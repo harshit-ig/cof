@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure upload directories exist
-const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research'];
+const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
 uploadDirs.forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -15,12 +15,16 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let uploadPath = 'uploads/images'; // default
     
-    // Determine upload path based on file type or route
-    if (req.route.path.includes('faculty')) {
+    // Determine upload path based on file type, route, or request body
+    const category = req.body.category;
+    
+    if (category === 'dean') {
+      uploadPath = 'uploads/dean';
+    } else if (req.route.path.includes('faculty') || category === 'faculty') {
       uploadPath = 'uploads/faculty';
-    } else if (req.route.path.includes('news') || req.route.path.includes('events')) {
+    } else if (req.route.path.includes('news') || req.route.path.includes('events') || category === 'news') {
       uploadPath = 'uploads/news';
-    } else if (req.route.path.includes('research')) {
+    } else if (req.route.path.includes('research') || category === 'research') {
       uploadPath = 'uploads/research';
     } else if (file.mimetype.startsWith('application/')) {
       uploadPath = 'uploads/documents';
