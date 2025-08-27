@@ -94,6 +94,9 @@ const FacultyManagement = () => {
           : formData.researchInterests.split(',').map(s => s.trim()).filter(Boolean)
       }
 
+      console.log('Submitting faculty data:', data)
+      console.log('Image field value:', data.image)
+
       if (editingFaculty) {
         await facultyAPI.update(editingFaculty._id, data)
         toast.success('Faculty updated successfully')
@@ -162,17 +165,33 @@ const FacultyManagement = () => {
 
     try {
       setUploadingImage(true)
-      const response = await uploadAPI.single(file)
+      console.log('Starting faculty image upload:', file.name)
+      
+      // Use uploadAPI with faculty category
+      const response = await uploadAPI.single(file, 'faculty')
+      console.log('Upload response:', response.data)
       
       if (response.data.success) {
+        // Extract just the filename from the response
+        const filename = response.data.data.filename
+        console.log('Faculty image uploaded filename:', filename)
+        
+        // Test the URL construction
+        const imageUrl = uploadAPI.getImageUrl(filename, 'faculty')
+        console.log('Constructed image URL:', imageUrl)
+        
         setFormData(prev => ({
           ...prev,
-          image: response.data.data.url
+          image: filename
         }))
         toast.success('Image uploaded successfully')
+      } else {
+        console.error('Upload failed:', response.data)
+        toast.error('Upload failed')
       }
     } catch (error) {
       console.error('Error uploading image:', error)
+      console.error('Error details:', error.response?.data)
       toast.error('Failed to upload image')
     } finally {
       setUploadingImage(false)
@@ -222,7 +241,7 @@ const FacultyManagement = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Faculty Management</h1>
           <p className="text-gray-600">Manage faculty profiles and information</p>
@@ -233,7 +252,7 @@ const FacultyManagement = () => {
             resetForm()
             setShowModal(true)
           }}
-          className="btn-primary flex items-center"
+          className="w-full sm:w-auto btn-primary flex items-center justify-center"
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Faculty
@@ -242,12 +261,12 @@ const FacultyManagement = () => {
 
       {/* Search */}
       <div className="mb-6">
-        <div className="relative max-w-md">
+        <div className="relative w-full sm:max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
             placeholder="Search faculty..."
-            className="form-input pl-10"
+            className="form-input pl-10 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -334,7 +353,7 @@ const FacultyManagement = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(member)}
-                          className="text-primary-600 hover:text-primary-900"
+                          className="text-blue-500 hover:text-blue-600"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -368,120 +387,171 @@ const FacultyManagement = () => {
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         title={editingFaculty ? 'Edit Faculty' : 'Add New Faculty'}
-        size="xl"
+        size="lg"
+        className="max-h-[90vh] overflow-y-auto"
       >
-        <Form onSubmit={handleSubmit}>
-          {/* Basic Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormGroup label="Full Name" required>
-              <Input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Enter full name"
-                required
-              />
-            </FormGroup>
+        <Form onSubmit={handleSubmit} className="space-y-4">
+          {/* Basic Information Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Basic Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <FormGroup label="Full Name" required>
+                <Input
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter full name"
+                  required
+                />
+              </FormGroup>
 
-            <FormGroup label="Email" required>
-              <Input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Enter email address"
-                required
-              />
-            </FormGroup>
+              <FormGroup label="Email" required>
+                <Input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter email address"
+                  required
+                />
+              </FormGroup>
 
-            <FormGroup label="Phone">
-              <Input
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Enter phone number"
-              />
-            </FormGroup>
+              <FormGroup label="Phone">
+                <Input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Enter phone number"
+                />
+              </FormGroup>
 
-            <FormGroup label="Designation" required>
-              <Select
-                name="designation"
-                value={formData.designation}
-                onChange={handleChange}
-                options={designations}
-                placeholder="Select designation"
-                required
-              />
-            </FormGroup>
-
-            <FormGroup label="Department" required>
-              <Select
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                options={departments}
-                placeholder="Select department"
-                required
-              />
-            </FormGroup>
-
-            <FormGroup label="Experience (Years)">
-              <Input
-                type="number"
-                name="experience"
-                value={formData.experience}
-                onChange={handleChange}
-                placeholder="Years of experience"
-              />
-            </FormGroup>
+              <FormGroup label="Experience (Years)">
+                <Input
+                  type="number"
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleChange}
+                  placeholder="Years of experience"
+                />
+              </FormGroup>
+            </div>
           </div>
 
-          <FormGroup label="Qualification" required>
-            <Input
-              name="qualification"
-              value={formData.qualification}
-              onChange={handleChange}
-              placeholder="e.g., Ph.D. in Fisheries Science"
-              required
-            />
-          </FormGroup>
+          {/* Professional Information Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Professional Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <FormGroup label="Designation" required>
+                <Select
+                  name="designation"
+                  value={formData.designation}
+                  onChange={handleChange}
+                  options={designations}
+                  placeholder="Select designation"
+                  required
+                />
+              </FormGroup>
 
-          <FormGroup label="Specialization">
-            <Input
-              name="specialization"
-              value={formData.specialization}
-              onChange={handleChange}
-              placeholder="Area of specialization"
-            />
-          </FormGroup>
+              <FormGroup label="Department" required>
+                <Select
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  options={departments}
+                  placeholder="Select department"
+                  required
+                />
+              </FormGroup>
+            </div>
+          </div>
 
-          <FormGroup label="Research Interests">
-            <Input
-              name="researchInterests"
-              value={formData.researchInterests}
-              onChange={handleChange}
-              placeholder="Comma-separated research interests"
-            />
-          </FormGroup>
+          {/* Academic Information Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Academic Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <FormGroup label="Qualification" required>
+                <Input
+                  name="qualification"
+                  value={formData.qualification}
+                  onChange={handleChange}
+                  placeholder="e.g., Ph.D. in Fisheries Science"
+                  required
+                />
+              </FormGroup>
 
-          <FormGroup label="Biography">
-            <Textarea
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              placeholder="Brief biography"
-              rows={4}
-            />
-          </FormGroup>
+              <FormGroup label="Specialization">
+                <Input
+                  name="specialization"
+                  value={formData.specialization}
+                  onChange={handleChange}
+                  placeholder="Area of specialization"
+                />
+              </FormGroup>
 
-          {/* Profile Image */}
-          <FormGroup label="Profile Image">
-            <div className="space-y-4">
-              <div className="flex items-center justify-center w-full">
-                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <User className="w-8 h-8 mb-4 text-gray-500" />
-                    <p className="mb-2 text-sm text-gray-500">
+              <div className="md:col-span-2">
+                <FormGroup label="Research Interests">
+                  <Input
+                    name="researchInterests"
+                    value={formData.researchInterests}
+                    onChange={handleChange}
+                    placeholder="Comma-separated research interests"
+                  />
+                </FormGroup>
+              </div>
+
+              <div className="md:col-span-2">
+                <FormGroup label="Biography">
+                  <Textarea
+                    name="bio"
+                    value={formData.bio}
+                    onChange={handleChange}
+                    placeholder="Brief biography"
+                    rows={3}
+                  />
+                </FormGroup>
+              </div>
+            </div>
+          </div>
+
+          {/* Profile Image Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Profile Image</h3>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+              <div className="flex-shrink-0">
+                {formData.image ? (
+                  <img
+                    src={uploadAPI.getImageUrl(formData.image, 'faculty')}
+                    alt="Profile"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-300"
+                    onError={(e) => {
+                      console.error('Image failed to load:', e.target.src)
+                      e.target.style.display = 'none'
+                      e.target.nextSibling.style.display = 'flex'
+                    }}
+                    onLoad={() => {
+                      console.log('Image loaded successfully:', uploadAPI.getImageUrl(formData.image, 'faculty'))
+                    }}
+                  />
+                ) : null}
+                
+                {!formData.image && (
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 border-2 border-gray-300 flex items-center justify-center">
+                    <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-500" />
+                  </div>
+                )}
+                
+                {/* Fallback placeholder for failed images */}
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 border-2 border-gray-300 flex items-center justify-center" style={{display: 'none'}}>
+                  <User className="w-6 h-6 sm:w-8 sm:h-8 text-gray-500" />
+                </div>
+              </div>
+              
+              <div className="flex-1">
+                <label className="flex flex-col items-center justify-center w-full h-20 sm:h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+                  <div className="flex flex-col items-center justify-center py-2">
+                    <User className="w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-2 text-gray-500" />
+                    <p className="text-xs sm:text-sm text-gray-500">
                       <span className="font-semibold">Click to upload</span> profile image
                     </p>
                     <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
@@ -494,31 +564,21 @@ const FacultyManagement = () => {
                     disabled={uploadingImage}
                   />
                 </label>
+                
+                {uploadingImage && (
+                  <div className="flex items-center justify-center mt-2">
+                    <LoadingSpinner size="sm" />
+                    <span className="ml-2 text-sm text-gray-600">Uploading...</span>
+                  </div>
+                )}
               </div>
-
-              {uploadingImage && (
-                <div className="flex items-center justify-center">
-                  <LoadingSpinner size="sm" />
-                  <span className="ml-2 text-sm text-gray-600">Uploading...</span>
-                </div>
-              )}
-
-              {formData.image && (
-                <div className="flex justify-center">
-                  <img
-                    src={uploadAPI.getImageUrl(formData.image, 'faculty')}
-                    alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover"
-                  />
-                </div>
-              )}
             </div>
-          </FormGroup>
+          </div>
 
-          {/* Social Links */}
-          <div className="border-t pt-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Social Links</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Social Links Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Social Links</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <FormGroup label="LinkedIn">
                 <Input
                   name="socialLinks.linkedin"
@@ -557,15 +617,19 @@ const FacultyManagement = () => {
             </div>
           </div>
 
-          <div className="flex justify-end space-x-3 mt-6">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200">
             <button
               type="button"
               onClick={() => setShowModal(false)}
-              className="btn-ghost"
+              className="w-full sm:w-auto btn-ghost order-2 sm:order-1"
             >
               Cancel
             </button>
-            <SubmitButton isLoading={submitting}>
+            <SubmitButton 
+              isLoading={submitting}
+              className="w-full sm:w-auto order-1 sm:order-2"
+            >
               {editingFaculty ? 'Update Faculty' : 'Create Faculty'}
             </SubmitButton>
           </div>
@@ -586,3 +650,4 @@ const FacultyManagement = () => {
 }
 
 export default FacultyManagement
+

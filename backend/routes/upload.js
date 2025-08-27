@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/serve/:type/:filename', (req, res) => {
   try {
     const { type, filename } = req.params;
-    const validTypes = ['images', 'documents', 'faculty', 'news', 'research'];
+    const validTypes = ['images', 'documents', 'faculty', 'news', 'research', 'dean'];
     
     if (!validTypes.includes(type)) {
       return res.status(400).json({
@@ -140,7 +140,7 @@ router.delete('/:filename', protect, adminOnly, (req, res) => {
     }
 
     // Try to find and delete the file in all upload directories
-    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research'];
+    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
     let fileDeleted = false;
 
     for (const dir of uploadDirs) {
@@ -188,7 +188,7 @@ router.get('/info/:filename', protect, adminOnly, (req, res) => {
     }
 
     const fs = require('fs');
-    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research'];
+    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
     
     for (const dir of uploadDirs) {
       const filePath = path.join(dir, filename);

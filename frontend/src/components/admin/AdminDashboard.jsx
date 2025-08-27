@@ -14,33 +14,20 @@ import {
   LogOut,
   Menu,
   X,
-  User,
-  Upload,
-  Shield,
-  BarChart3,
-  Activity,
-  Search,
-  Monitor
+  User
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI } from '../../services/api'
 import LoadingSpinner from '../common/LoadingSpinner'
 
 import ProgramsManagement from './ProgramsManagement'
-import NewsManagement from './NewsManagementNew'
-import FacultyManagement from './FacultyManagementNew'
+import NewsManagement from './NewsManagement'
+import FacultyManagement from './FacultyManagement'
 import ContentManagement from './ContentManagement'
-import FileUploadDemo from './FileUploadDemo'
-import EventsManagement from './EventsManagement'
+import WelcomeMessageManagement from './WelcomeMessageManagement'
+import InfrastructureGalleryManagement from './InfrastructureGalleryManagement'
+import AcademicProgramsManagement from './AcademicProgramsManagement'
 import ResearchManagement from './ResearchManagement'
-import InfrastructureManagement from './InfrastructureManagement'
-import CollaborationsManagement from './CollaborationsManagement'
-import AdminSettings from './AdminSettings'
-import UserManagement from './UserManagement'
-import Analytics from './Analytics'
-import ActivityLogs from './ActivityLogs'
-import SeoManagement from './SeoManagement'
-import SystemMonitoring from './SystemMonitoring'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -58,6 +45,7 @@ const DashboardHome = () => {
 
   const fetchDashboardStats = async () => {
     try {
+      setLoading(true)
       const [programsRes, facultyRes, newsRes] = await Promise.allSettled([
         programsAPI.getAll({ limit: 1 }),
         facultyAPI.getAll({ limit: 1 }),
@@ -92,7 +80,7 @@ const DashboardHome = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <LoadingSpinner size="lg" />
+        <div className="spinner"></div>
       </div>
     )
   }
@@ -107,8 +95,8 @@ const DashboardHome = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center">
-            <div className="p-2 bg-primary-100 rounded-lg">
-              <BookOpen className="h-6 w-6 text-primary-600" />
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <BookOpen className="h-6 w-6 text-blue-500" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Programs</p>
@@ -119,8 +107,8 @@ const DashboardHome = () => {
         
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center">
-            <div className="p-2 bg-secondary-100 rounded-lg">
-              <Users className="h-6 w-6 text-secondary-600" />
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Users className="h-6 w-6 text-green-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Faculty Members</p>
@@ -143,8 +131,8 @@ const DashboardHome = () => {
         
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Calendar className="h-6 w-6 text-green-600" />
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Calendar className="h-6 w-6 text-purple-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Events</p>
@@ -157,6 +145,47 @@ const DashboardHome = () => {
   )
 }
 
+// Placeholder components for remaining sections
+const InfrastructureManagement = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Infrastructure management functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Infrastructure Management</h1>
+    <p className="text-gray-600">This section will allow you to manage infrastructure and facilities information.</p>
+  </div>
+)
+
+const AdminSettings = () => (
+  <div>
+    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <div className="ml-3">
+          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
+          <p className="text-sm text-yellow-700 mt-1">Admin settings functionality is being developed.</p>
+        </div>
+      </div>
+    </div>
+    <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Settings</h1>
+    <p className="text-gray-600">This section will allow you to manage admin settings and configuration.</p>
+  </div>
+)
+
 const AdminDashboard = () => {
   const { admin, logout } = useAuth()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -164,20 +193,15 @@ const AdminDashboard = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
+    { name: 'Welcome Message', href: '/admin/welcome', icon: User },
+    { name: 'Academic Programs', href: '/admin/academic-programs', icon: BookOpen },
     { name: 'Programs', href: '/admin/programs', icon: BookOpen },
     { name: 'Faculty', href: '/admin/faculty', icon: Users },
-    { name: 'News', href: '/admin/news', icon: Newspaper },
-    { name: 'File Upload', href: '/admin/uploads', icon: Upload },
-    { name: 'Events', href: '/admin/events', icon: Calendar },
-    { name: 'Research', href: '/admin/research', icon: FileText },
+    { name: 'Research Topics', href: '/admin/research', icon: FileText },
+    { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
-    { name: 'Collaborations', href: '/admin/collaborations', icon: Briefcase },
-    { name: 'Content', href: '/admin/content', icon: FileText },
-    { name: 'User Management', href: '/admin/users', icon: Shield },
-    { name: 'Analytics', href: '/admin/analytics', icon: BarChart3 },
-    { name: 'Activity Logs', href: '/admin/logs', icon: Activity },
-    { name: 'SEO Management', href: '/admin/seo', icon: Search },
-    { name: 'System Monitor', href: '/admin/monitoring', icon: Monitor },
+    { name: 'News & Events', href: '/admin/news', icon: Newspaper },
+    { name: 'Content Management', href: '/admin/content', icon: FileText },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -213,7 +237,7 @@ const AdminDashboard = () => {
           <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
             <div className="flex-shrink-0 flex items-center px-4">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">FC</span>
                 </div>
                 <div className="ml-3">
@@ -234,11 +258,11 @@ const AdminDashboard = () => {
                     onClick={() => setSidebarOpen(false)}
                     className={`${
                       active
-                        ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600'
+                        ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     } group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200`}
                   >
-                    <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                    <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
                     {item.name}
                   </Link>
                 )
@@ -275,7 +299,7 @@ const AdminDashboard = () => {
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-primary-600 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">FC</span>
                   </div>
                   <div className="ml-3">
@@ -296,11 +320,11 @@ const AdminDashboard = () => {
                       to={item.href}
                       className={`${
                         active
-                          ? 'bg-primary-50 text-primary-700 border-r-2 border-primary-600'
+                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       } group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200`}
                     >
-                      <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                      <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
                       {item.name}
                     </Link>
                   )
@@ -336,7 +360,7 @@ const AdminDashboard = () => {
         <div className="md:hidden">
           <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow-sm border-b border-gray-200">
             <button
-              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden"
+              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-6 w-6" />
@@ -359,20 +383,15 @@ const AdminDashboard = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <Routes>
                 <Route path="/" element={<DashboardHome />} />
+                <Route path="/welcome" element={<WelcomeMessageManagement />} />
+                <Route path="/academic-programs" element={<AcademicProgramsManagement />} />
                 <Route path="/programs" element={<ProgramsManagement />} />
                 <Route path="/faculty" element={<FacultyManagement />} />
-                <Route path="/news" element={<NewsManagement />} />
-                <Route path="/uploads" element={<FileUploadDemo />} />
-                <Route path="/events" element={<EventsManagement />} />
                 <Route path="/research" element={<ResearchManagement />} />
+                <Route path="/infrastructure-gallery" element={<InfrastructureGalleryManagement />} />
                 <Route path="/infrastructure" element={<InfrastructureManagement />} />
-                <Route path="/collaborations" element={<CollaborationsManagement />} />
+                <Route path="/news" element={<NewsManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
-                <Route path="/users" element={<UserManagement />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/logs" element={<ActivityLogs />} />
-                <Route path="/seo" element={<SeoManagement />} />
-                <Route path="/monitoring" element={<SystemMonitoring />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>
@@ -385,3 +404,4 @@ const AdminDashboard = () => {
 }
 
 export default AdminDashboard
+

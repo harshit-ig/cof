@@ -1,4 +1,3 @@
-import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 
@@ -84,7 +83,7 @@ function App() {
               />
               
               {/* 404 Route */}
-              <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           

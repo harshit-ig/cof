@@ -7,6 +7,12 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure we're on client side
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -85,7 +91,7 @@ const Navbar = () => {
         { name: 'Seminars & Conferences', href: '/events' },
         { name: 'Workshops and Training', href: '/events', section: 'workshops' },
         { name: 'Field Visits & Exposure Trips', href: '/events', section: 'visits' },
-        { name: 'Photo Gallery', href: '/events', section: 'gallery' },
+        { name: 'Photo Gallery', href: '/gallery' },
         { name: 'Press Releases', href: '/news' }
       ]
     },
@@ -205,6 +211,10 @@ const Navbar = () => {
     }
   }
 
+  if (!isClient) {
+    return <div className="h-20 bg-white"></div> // Placeholder during SSR
+  }
+
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       {/* Top Header - College Name */}
@@ -212,8 +222,12 @@ const Navbar = () => {
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center py-3">
             <Link to="/" className="flex items-center space-x-3">
-              <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-700 to-green-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-base lg:text-lg">CoF</span>
+              <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center">
+                <img 
+                  src="/logo.jpg" 
+                  alt="College of Fisheries Logo" 
+                  className="w-full h-full object-contain rounded-lg"
+                />
               </div>
               <div className="text-center">
                 <h1 className="text-lg lg:text-xl font-bold text-gray-900 leading-tight">College of Fisheries, Jabalpur</h1>
@@ -378,3 +392,4 @@ const Navbar = () => {
 }
 
 export default Navbar
+

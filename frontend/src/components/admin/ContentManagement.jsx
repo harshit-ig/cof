@@ -230,7 +230,7 @@ const ContentManagement = () => {
                   <button
                     key={predefined.key}
                     onClick={() => handleQuickAdd(section, predefined)}
-                    className="text-sm text-primary-600 hover:text-primary-800 block"
+                    className="text-sm text-blue-500 hover:text-primary-800 block"
                   >
                     + {predefined.title}
                   </button>
@@ -325,7 +325,7 @@ const ContentManagement = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(content)}
-                          className="text-primary-600 hover:text-primary-900"
+                          className="text-blue-500 hover:text-blue-600"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -462,3 +462,4 @@ const ContentManagement = () => {
 }
 
 export default ContentManagement
+

@@ -24,8 +24,11 @@ export const SectionHeader = ({ title, subtitle, align = 'center', className = '
           {subtitle}
         </p>
       )}
-      <div className={`w-20 h-1 bg-primary-500 rounded mt-4 ${align === 'left' ? '' : 'mx-auto'}`} />
+      <div className={`w-20 h-1 bg-blue-400 rounded mt-4 ${align === 'left' ? '' : 'mx-auto'}`} />
     </div>
-  )}
+  )
+}
 
 export default Section
+
+

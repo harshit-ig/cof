@@ -7,7 +7,7 @@ const HeroSlideshow = () => {
   const slides = [
     {
       id: 1,
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      image: '/COF NEW.png',
       title: 'College of Fisheries, Jabalpur',
       subtitle: 'Excellence in Fisheries Education & Research',
       description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fisheries science education, committed to nurturing future professionals in aquaculture and fisheries management.',
@@ -16,7 +16,7 @@ const HeroSlideshow = () => {
     },
     {
       id: 2,
-      image: 'https://images.unsplash.com/photo-1581093458791-9f3c3250a67d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      image: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
       title: 'State-of-the-Art Facilities',
       subtitle: 'Modern Infrastructure for Quality Education',
       description: 'Well-equipped laboratories, research facilities, and comprehensive infrastructure to provide hands-on learning experience.',
@@ -25,7 +25,7 @@ const HeroSlideshow = () => {
     },
     {
       id: 3,
-      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      image: '/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg',
       title: 'Research & Innovation',
       subtitle: 'Advancing Fisheries Science',
       description: 'Cutting-edge research programs contributing to sustainable fisheries development and aquaculture innovation.',
@@ -34,7 +34,25 @@ const HeroSlideshow = () => {
     },
     {
       id: 4,
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+      image: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
+      title: 'Campus Life & Activities',
+      subtitle: 'Vibrant Student Community',
+      description: 'Experience a dynamic campus environment with various student activities, cultural events, and academic programs.',
+      cta: 'Explore Campus',
+      link: '/about'
+    },
+    {
+      id: 5,
+      image: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
+      title: 'Practical Learning',
+      subtitle: 'Hands-on Experience',
+      description: 'Field training, practical sessions, and real-world exposure to fisheries and aquaculture practices.',
+      cta: 'Learn More',
+      link: '/academics'
+    },
+    {
+      id: 6,
+      image: '/WhatsApp Image 2025-08-19 at 09.04.54_38d4a9cd.jpg',
       title: 'Admission 2025-26',
       subtitle: 'Join Our Academic Excellence',
       description: 'Applications now open for Bachelor of Fisheries Science program. Shape your future with quality education.',
@@ -52,7 +70,7 @@ const HeroSlideshow = () => {
     }, 5000) // Change slide every 5 seconds
 
     return () => clearInterval(interval)
-  }, [slides.length])
+  }, [])
 
   const goToSlide = (slideIndex) => {
     setCurrentSlide(slideIndex)
@@ -67,7 +85,14 @@ const HeroSlideshow = () => {
   }
 
   return (
-    <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
+    <div 
+      className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden"
+      style={{
+        position: 'relative',
+        height: '500px',
+        overflow: 'hidden'
+      }}
+    >
       {/* Slides */}
       {slides.map((slide, index) => (
         <div
@@ -75,16 +100,49 @@ const HeroSlideshow = () => {
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             index === currentSlide ? 'opacity-100' : 'opacity-0'
           }`}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            opacity: index === currentSlide ? 1 : 0,
+            transition: 'opacity 1s ease-in-out'
+          }}
         >
-          {/* Background Image with Overlay */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
+          {/* Background Image */}
+          <img 
+            src={slide.image} 
+            alt={slide.title}
+            className="absolute inset-0 w-full h-full object-cover"
             style={{
-              backgroundImage: `linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 102, 51, 0.7)), url(${slide.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+            sizes="100vw"
+            loading="eager"
+          />
+          
+          {/* Overlay */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 102, 51, 0.7))'
             }}
           />
+          
+
           
           {/* Content */}
           <div className="relative z-10 h-full flex items-center">
@@ -174,3 +232,5 @@ const HeroSlideshow = () => {
 }
 
 export default HeroSlideshow
+
+

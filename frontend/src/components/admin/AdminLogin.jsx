@@ -71,12 +71,16 @@ const AdminLogin = () => {
     )
   }
 
+  if (isAuthenticated) {
+    return <Navigate to="/admin/dashboard" replace />
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center section-padding">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-primary-100 rounded-lg flex items-center justify-center">
-            <Lock className="h-6 w-6 text-primary-600" />
+            <Lock className="h-6 w-6 text-blue-500" />
           </div>
           <h2 className="mt-6 text-3xl font-bold text-gray-900">Admin Login</h2>
           <p className="mt-2 text-sm text-gray-600">
@@ -142,7 +146,7 @@ const AdminLogin = () => {
           <div className="mt-6 text-center">
             <Link
               to="/"
-              className="text-sm text-primary-600 hover:text-primary-500"
+              className="text-sm text-blue-500 hover:text-blue-400"
             >
               ← Back to Website
             </Link>
@@ -159,3 +163,4 @@ const AdminLogin = () => {
 }
 
 export default AdminLogin
+

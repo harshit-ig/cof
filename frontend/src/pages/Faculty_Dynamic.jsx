@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap, Clock } from 'lucide-react'
+import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap } from 'lucide-react'
 import Card from '../components/common/Card'
 import { facultyAPI, uploadAPI } from '../services/api'
 import LoadingSpinner from '../components/common/LoadingSpinner'
@@ -38,18 +38,17 @@ const Faculty = () => {
       try {
         setLoading(true)
         const response = await facultyAPI.getAll()
-        if (response.data?.success) {
+        if (response.data.success) {
           setFacultyMembers(response.data.data.faculty || [])
         }
       } catch (error) {
         console.error('Error fetching faculty:', error)
-        // Fallback to empty array if API fails
-        setFacultyMembers([])
+        setError('Failed to load faculty')
       } finally {
         setLoading(false)
       }
     }
-
+    
     fetchFaculty()
   }, [])
 
@@ -327,3 +326,5 @@ const Faculty = () => {
 }
 
 export default Faculty
+
+

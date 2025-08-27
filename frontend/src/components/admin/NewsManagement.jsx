@@ -28,7 +28,18 @@ const NewsManagement = () => {
     featured: false,
     published: true,
     publishDate: new Date().toISOString().split('T')[0],
-    images: []
+    images: [],
+    // Event-specific fields
+    eventDate: '',
+    eventTime: '',
+    venue: '',
+    registrationRequired: false,
+    registrationLink: '',
+    contactPerson: '',
+    contactEmail: '',
+    contactPhone: '',
+    capacity: '',
+    tags: []
   })
 
   const newsTypes = [
@@ -36,7 +47,11 @@ const NewsManagement = () => {
     { value: 'announcement', label: 'Announcement' },
     { value: 'press_release', label: 'Press Release' },
     { value: 'achievement', label: 'Achievement' },
-    { value: 'event', label: 'Event' }
+    { value: 'event', label: 'Event' },
+    { value: 'workshop', label: 'Workshop/Seminar' },
+    { value: 'conference', label: 'Conference' },
+    { value: 'competition', label: 'Competition' },
+    { value: 'cultural', label: 'Cultural Event' }
   ]
 
   const categories = [
@@ -46,6 +61,9 @@ const NewsManagement = () => {
     { value: 'faculty', label: 'Faculty' },
     { value: 'infrastructure', label: 'Infrastructure' },
     { value: 'collaboration', label: 'Collaboration' },
+    { value: 'placement', label: 'Placement' },
+    { value: 'sports', label: 'Sports' },
+    { value: 'cultural', label: 'Cultural' },
     { value: 'general', label: 'General' }
   ]
 
@@ -114,7 +132,18 @@ const NewsManagement = () => {
       featured: newsItem.featured,
       published: newsItem.published,
       publishDate: newsItem.publishDate ? newsItem.publishDate.split('T')[0] : new Date().toISOString().split('T')[0],
-      images: newsItem.images || []
+      images: newsItem.images || [],
+      // Event-specific fields
+      eventDate: newsItem.eventDate ? newsItem.eventDate.split('T')[0] : '',
+      eventTime: newsItem.eventTime || '',
+      venue: newsItem.venue || '',
+      registrationRequired: newsItem.registrationRequired || false,
+      registrationLink: newsItem.registrationLink || '',
+      contactPerson: newsItem.contactPerson || '',
+      contactEmail: newsItem.contactEmail || '',
+      contactPhone: newsItem.contactPhone || '',
+      capacity: newsItem.capacity || '',
+      tags: newsItem.tags || []
     })
     setShowModal(true)
   }
@@ -179,7 +208,18 @@ const NewsManagement = () => {
       featured: false,
       published: true,
       publishDate: new Date().toISOString().split('T')[0],
-      images: []
+      images: [],
+      // Event-specific fields
+      eventDate: '',
+      eventTime: '',
+      venue: '',
+      registrationRequired: false,
+      registrationLink: '',
+      contactPerson: '',
+      contactEmail: '',
+      contactPhone: '',
+      capacity: '',
+      tags: []
     })
     setEditingNews(null)
   }
@@ -314,7 +354,7 @@ const NewsManagement = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEdit(item)}
-                          className="text-primary-600 hover:text-primary-900"
+                          className="text-blue-500 hover:text-blue-600"
                         >
                           <Edit className="w-4 h-4" />
                         </button>
@@ -425,6 +465,119 @@ const NewsManagement = () => {
             </FormGroup>
           </div>
 
+          {/* Event-specific fields */}
+          {(formData.type === 'event' || formData.type === 'workshop' || formData.type === 'conference' || formData.type === 'competition' || formData.type === 'cultural') && (
+            <div className="border-t border-gray-200 pt-6 mt-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Event Details</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormGroup label="Event Date" required>
+                  <Input
+                    type="date"
+                    name="eventDate"
+                    value={formData.eventDate}
+                    onChange={handleChange}
+                    required
+                  />
+                </FormGroup>
+
+                <FormGroup label="Event Time">
+                  <Input
+                    type="time"
+                    name="eventTime"
+                    value={formData.eventTime}
+                    onChange={handleChange}
+                    placeholder="e.g., 10:00 AM"
+                  />
+                </FormGroup>
+
+                <FormGroup label="Venue" required>
+                  <Input
+                    name="venue"
+                    value={formData.venue}
+                    onChange={handleChange}
+                    placeholder="Event venue/location"
+                    required
+                  />
+                </FormGroup>
+
+                <FormGroup label="Capacity">
+                  <Input
+                    type="number"
+                    name="capacity"
+                    value={formData.capacity}
+                    onChange={handleChange}
+                    placeholder="Maximum participants"
+                  />
+                </FormGroup>
+
+                <FormGroup label="Contact Person">
+                  <Input
+                    name="contactPerson"
+                    value={formData.contactPerson}
+                    onChange={handleChange}
+                    placeholder="Contact person name"
+                  />
+                </FormGroup>
+
+                <FormGroup label="Contact Email">
+                  <Input
+                    type="email"
+                    name="contactEmail"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    placeholder="contact@example.com"
+                  />
+                </FormGroup>
+
+                <FormGroup label="Contact Phone">
+                  <Input
+                    type="tel"
+                    name="contactPhone"
+                    value={formData.contactPhone}
+                    onChange={handleChange}
+                    placeholder="+91 XXXXXXXXXX"
+                  />
+                </FormGroup>
+
+                <FormGroup label="Registration Link">
+                  <Input
+                    type="url"
+                    name="registrationLink"
+                    value={formData.registrationLink}
+                    onChange={handleChange}
+                    placeholder="https://registration-link.com"
+                  />
+                </FormGroup>
+              </div>
+
+              <FormGroup label="Event Tags">
+                <Input
+                  name="tags"
+                  value={Array.isArray(formData.tags) ? formData.tags.join(', ') : ''}
+                  onChange={(e) => setFormData(prev => ({ 
+                    ...prev, 
+                    tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag) 
+                  }))}
+                  placeholder="workshop, seminar, training (comma-separated)"
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="registrationRequired"
+                    checked={formData.registrationRequired}
+                    onChange={handleChange}
+                    className="rounded border-gray-300 text-blue-500 focus:ring-primary-500"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Registration Required</span>
+                </label>
+              </FormGroup>
+            </div>
+          )}
+
           {/* Image Upload */}
           <FormGroup label="Images">
             <div className="space-y-4">
@@ -487,7 +640,7 @@ const NewsManagement = () => {
                   name="featured"
                   checked={formData.featured}
                   onChange={handleChange}
-                  className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  className="rounded border-gray-300 text-blue-500 focus:ring-primary-500"
                 />
                 <span className="ml-2 text-sm text-gray-700">Featured Article</span>
               </label>
@@ -500,7 +653,7 @@ const NewsManagement = () => {
                   name="published"
                   checked={formData.published}
                   onChange={handleChange}
-                  className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  className="rounded border-gray-300 text-blue-500 focus:ring-primary-500"
                 />
                 <span className="ml-2 text-sm text-gray-700">Published</span>
               </label>
@@ -536,3 +689,4 @@ const NewsManagement = () => {
 }
 
 export default NewsManagement
+

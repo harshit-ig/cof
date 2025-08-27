@@ -22,9 +22,13 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Only redirect to login if we're not already on the login page
+    if (error.response?.status === 401 && !window.location.pathname.includes('/admin/login')) {
       localStorage.removeItem('token')
-      window.location.href = '/admin/login'
+      // Check if we're in admin area before redirecting
+      if (window.location.pathname.startsWith('/admin')) {
+        window.location.href = '/admin/login'
+      }
     }
     return Promise.reject(error)
   }
@@ -102,20 +106,22 @@ export const contentAPI = {
 }
 
 export const uploadAPI = {
-  single: (file) => {
+  single: (file, category = 'images') => {
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('category', category)
     return api.post('/upload/single', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     })
   },
-  multiple: (files) => {
+  multiple: (files, category = 'images') => {
     const formData = new FormData()
     files.forEach((file) => {
       formData.append('files', file)
     })
+    formData.append('category', category)
     return api.post('/upload/multiple', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -123,54 +129,17 @@ export const uploadAPI = {
     })
   },
   delete: (filename) => api.delete(`/upload/${filename}`),
-  // Helper function to get proper image URL
   getImageUrl: (filename, type = 'images') => {
     if (!filename) return null
-    // If it's already a full URL, return as is
-    if (filename.startsWith('http')) return filename
-    // Use the new serve endpoint for better CORS handling
-    return `/api/upload/serve/${type}/${filename}`
-  }
-}
 
-export const adminAPI = {
-  // Existing admin functions
-  getStats: () => api.get('/admin/stats'),
-  clearCache: () => api.post('/admin/clear-cache'),
-  exportData: (collections) => api.post('/admin/export-data', { collections }),
-  backupDatabase: () => api.post('/admin/backup-database'),
-  getHealth: () => api.get('/admin/health'),
-  optimize: () => api.post('/admin/optimize'),
-  
-  // User Management
-  getUsers: (params) => api.get('/admin/users', { params }),
-  createUser: (data) => api.post('/admin/users', data),
-  updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
-  deleteUser: (id) => api.delete(`/admin/users/${id}`),
-  updateUserStatus: (id, status) => api.put(`/admin/users/${id}`, { status }),
-  exportUsers: () => api.get('/admin/users/export'),
-  
-  // Analytics
-  getAnalytics: (params) => api.get('/admin/analytics', { params }),
-  exportAnalytics: (params) => api.get('/admin/analytics/export', { params }),
-  
-  // Activity Logs
-  getActivityLogs: (params) => api.get('/admin/activity-logs', { params }),
-  exportActivityLogs: (params) => api.get('/admin/activity-logs/export', { params }),
-  clearOldLogs: (params) => api.delete('/admin/activity-logs', { params }),
-  
-  // SEO Management
-  getSeoSettings: () => api.get('/admin/seo-settings'),
-  updateSeoSettings: (data) => api.put('/admin/seo-settings', data),
-  updatePageSeo: (id, data) => api.put(`/admin/seo-settings/pages/${id}`, data),
-  generateSitemap: () => api.post('/admin/seo-settings/sitemap'),
-  analyzeSeo: () => api.post('/admin/seo-settings/analyze'),
-  
-  // System Monitoring
-  getSystemHealth: () => api.get('/admin/system-health'),
-  restartService: (service) => api.post(`/admin/system-health/restart/${service}`),
-  clearSystemLogs: () => api.delete('/admin/system-health/logs'),
-  exportSystemReport: () => api.get('/admin/system-health/report'),
+    // Handle external URLs (proxy through backend)
+    if (filename.startsWith('http')) {
+      return `/api/proxy/image?url=${encodeURIComponent(filename)}`
+    }
+
+    // Handle local files - use relative URL which will be proxied by Vite
+    return `/api/upload/serve/${type}/${filename}`
+  },
 }
 
 export default api

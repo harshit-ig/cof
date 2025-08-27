@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Users, BookOpen, Award, Building, ChevronRight, Bell, Trophy, FileText, Calendar, Phone, Mail, MapPin } from 'lucide-react'
-import Card, { NewsCard, StatsCard, FeatureCard } from '../components/common/Card'
-import LoadingSpinner, { LoadingCard } from '../components/common/LoadingSpinner'
+import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen } from 'lucide-react'
+import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
-import { newsAPI, eventsAPI, contentAPI, programsAPI, facultyAPI } from '../services/api'
-import toast from 'react-hot-toast'
+import { newsAPI, eventsAPI, contentAPI } from '../services/api'
 
 const Home = () => {
   const [latestNews, setLatestNews] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [deanMessage, setDeanMessage] = useState('')
-  const [stats, setStats] = useState({
-    programs: 0,
-    faculty: 0,
-    students: 1200,
-    years: 25
+  const [welcomeData, setWelcomeData] = useState({
+    deanName: 'Dr. Shashikant Mahajan',
+    deanTitle: 'Dean, College of Fisheries, Jabalpur',
+    deanPhoto: '/cllg.jpg',
+    welcomeMessage: 'Welcome to College of Fisheries, Jabalpur, where we are committed to excellence in fisheries education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fisheries management for the benefit of society.'
   })
   const [loading, setLoading] = useState(true)
 
@@ -27,75 +25,87 @@ const Home = () => {
     try {
       setLoading(true)
       
-      // Fetch multiple data sources in parallel
-      const [newsResponse, eventsResponse, deanMessageResponse, programsResponse, facultyResponse] = await Promise.allSettled([
-        newsAPI.getAll({ limit: 3, featured: true }),
-        eventsAPI.getUpcoming({ limit: 5 }),
-        contentAPI.getByKey('dean_message'),
-        programsAPI.getAll({ limit: 1 }), // Just to get count
-        facultyAPI.getAll({ limit: 1 }) // Just to get count
-      ])
+      // Fetch essential data only with proper error handling
+      const promises = [
+        newsAPI.getAll({ limit: 4, featured: true }).catch(err => ({ error: true, message: err.message })),
+        eventsAPI.getUpcoming({ limit: 3 }).catch(err => ({ error: true, message: err.message })),
+        fetch('/api/content/key/dean-welcome-message').catch(err => ({ error: true, message: err.message }))
+      ]
 
-      // Process news data
-      if (newsResponse.status === 'fulfilled' && newsResponse.value.data.success) {
-        setLatestNews(newsResponse.value.data.data.newsEvents || [])
-      }
+      const [newsResponse, eventsResponse, welcomeResponse] = await Promise.all(promises)
 
-      // Process events data
-      if (eventsResponse.status === 'fulfilled' && eventsResponse.value.data.success) {
-        setUpcomingEvents(eventsResponse.value.data.data.events || [])
+      // Process news data with safety checks
+      if (newsResponse && !newsResponse.error && newsResponse.data?.success) {
+        setLatestNews(Array.isArray(newsResponse.data.data?.newsEvents) ? newsResponse.data.data.newsEvents : [])
       }
 
-      // Process dean's message
-      if (deanMessageResponse.status === 'fulfilled' && deanMessageResponse.value.data.success) {
-        setDeanMessage(deanMessageResponse.value.data.data.content?.content || '')
+      // Process events data with safety checks
+      if (eventsResponse && !eventsResponse.error && eventsResponse.data?.success) {
+        setUpcomingEvents(Array.isArray(eventsResponse.data.data?.events) ? eventsResponse.data.data.events : [])
       }
 
-      // Update stats
-      const newStats = { ...stats }
-      if (programsResponse.status === 'fulfilled' && programsResponse.value.data.success) {
-        newStats.programs = programsResponse.value.data.data.pagination?.total || 0
+      // Process dean's welcome message with safety checks
+      if (welcomeResponse && !welcomeResponse.error) {
+        const welcomeData = await welcomeResponse.json()
+        if (welcomeData.success && welcomeData.data.content) {
+          const content = welcomeData.data.content
+          let welcomeInfo = {}
+          
+          // Parse the content based on type
+          if (content.type === 'json') {
+            try {
+              welcomeInfo = JSON.parse(content.content)
+            } catch (e) {
+              console.warn('Failed to parse JSON content, using metadata')
+              welcomeInfo = content.metadata || {}
+            }
+          } else {
+            // Fallback to metadata
+            welcomeInfo = content.metadata || {}
+          }
+          
+          // Update welcome data with fetched information
+          setWelcomeData({
+            deanName: welcomeInfo.deanName || 'Dr. Shashikant Mahajan',
+            deanTitle: welcomeInfo.deanTitle || 'Dean, College of Fisheries, Jabalpur',
+            deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
+            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to College of Fisheries, Jabalpur, where we are committed to excellence in fisheries education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fisheries management for the benefit of society.'
+          })
+        }
       }
-      if (facultyResponse.status === 'fulfilled' && facultyResponse.value.data.success) {
-        newStats.faculty = facultyResponse.value.data.data.pagination?.total || 0
-      }
-      setStats(newStats)
 
     } catch (error) {
       console.error('Error fetching home data:', error)
-      toast.error('Failed to load some content. Please refresh the page.')
+      // Continue with default content if APIs fail
     } finally {
       setLoading(false)
     }
   }
 
-  const statsDisplay = [
-    { title: 'Students Enrolled', value: `${stats.students.toLocaleString()}+`, icon: Users },
-    { title: 'Faculty Members', value: stats.faculty.toString(), icon: Users },
-    { title: 'Programs Offered', value: stats.programs.toString(), icon: BookOpen },
-    { title: 'Years of Excellence', value: `${stats.years}+`, icon: Award }
-  ]
-
-  const features = [
+  const quickLinks = [
     {
+      title: 'Admission Guidelines',
+      href: '/student-corner',
       icon: BookOpen,
-      title: 'Quality Education',
-      description: 'Comprehensive programs in fisheries science and aquaculture with industry-relevant curriculum.'
+      description: 'Information about admission process and requirements'
     },
     {
+      title: 'Academic Programs',
+      href: '/programs',
       icon: Award,
-      title: 'Research Excellence',
-      description: 'Cutting-edge research facilities and ongoing projects in various aspects of fisheries science.'
+      description: 'Explore our undergraduate and postgraduate programs'
     },
     {
+      title: 'Research Activities',
+      href: '/research',
+      icon: FileText,
+      description: 'Ongoing research projects and publications'
+    },
+    {
+      title: 'Campus Facilities',
+      href: '/infrastructure',
       icon: Users,
-      title: 'Expert Faculty',
-      description: 'Highly qualified and experienced faculty members dedicated to student success.'
-    },
-    {
-      icon: Building,
-      title: 'Modern Infrastructure',
-      description: 'State-of-the-art laboratories, hatcheries, and processing units for practical learning.'
+      description: 'Modern labs, hatcheries, and campus amenities'
     }
   ]
 
@@ -104,39 +114,61 @@ const Home = () => {
       {/* Hero Slideshow */}
       <HeroSlideshow />
 
-      {/* Main Content Grid - Similar to College of Fisheries */}
-      <section className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Left Column - Main Content */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* About CoF Section */}
-              <Card>
-                <div className="flex items-center mb-4">
+      {/* Main Content */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Dean's Welcome Message */}
+            <div className="lg:col-span-2">
+              <Card className="mb-8">
+                <div className="flex items-center mb-6">
                   <div className="w-1 h-8 bg-green-600 rounded mr-3"></div>
-                  <h2 className="text-2xl font-bold text-gray-900">About CoF</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">Welcome from the Dean</h2>
                 </div>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  The College of Fisheries, Jabalpur is a constituent college of Nanaji Deshmukh Veterinary Science University. 
-                  This College offers quality fisheries education and is committed to excellence in teaching, research, and extension activities.
-                </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
-                  This college offers a credible fisheries education institution that nurtures the next-generation of professionals and entrepreneurs in the fisheries sector 
-                  and contributes to the state and nation by pursuing innovations and research which is relevant to local needs.
-                </p>
-                <Link
-                  to="/about"
-                  className="inline-flex items-center text-green-700 hover:text-green-800 font-medium"
-                >
-                  Read More...
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="md:col-span-1">
+                    <img
+                      src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : welcomeData.deanPhoto}
+                      alt={welcomeData.deanName}
+                      className="w-full h-48 md:h-56 lg:h-64 object-cover rounded-lg shadow-md"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.src = '/COF NEW.png'
+                      }}
+                    />
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <blockquote className="text-gray-700 text-lg leading-relaxed italic mb-4">
+                      "{welcomeData.welcomeMessage}"
+                    </blockquote>
+                    
+                    <div className="border-t pt-4">
+                      <p className="font-semibold text-gray-900">{welcomeData.deanName}</p>
+                      <p className="text-gray-600">{welcomeData.deanTitle}</p>
+                    </div>
+                    
+                    <Link
+                      to="/about"
+                      className="inline-flex items-center mt-4 text-green-700 hover:text-green-800 font-medium"
+                    >
+                      Read Full Message
+                      <ChevronRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
               </Card>
 
-              {/* Latest News */}
+              {/* Latest Updates */}
               <Card>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-semibold text-gray-900">Latest News</h3>
+                  <div className="flex items-center">
+                    <Bell className="w-5 h-5 text-green-600 mr-2" />
+                    <h3 className="text-xl font-semibold text-gray-900">Latest Updates & Announcements</h3>
+                  </div>
                   <Link
                     to="/news"
                     className="text-green-700 hover:text-green-800 text-sm font-medium"
@@ -147,342 +179,155 @@ const Home = () => {
                 
                 {loading ? (
                   <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <LoadingCard key={i} />
-                    ))}
-                  </div>
-                ) : latestNews.length > 0 ? (
-                  <div className="space-y-4">
-                    {latestNews.map((news) => (
-                      <NewsCard
-                        key={news._id}
-                        title={news.title}
-                        excerpt={news.excerpt}
-                        date={news.createdAt}
-                        type={news.type}
-                        category={news.category}
-                        image={news.images?.[0]?.url || 'https://via.placeholder.com/400x200'}
-                        link={`/news/${news._id}`}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">No news available at the moment.</p>
-                  </div>
-                )}
-              </Card>
-            </div>
-
-            {/* Right Column - Sidebar */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Student Corner */}
-              <Card>
-                <div className="flex items-center mb-4">
-                  <Users className="w-5 h-5 text-primary-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Student Corner</h3>
-                </div>
-                <div className="space-y-3">
-                  <Link to="/student-corner" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Admission Guidelines</span>
-                  </Link>
-                  <Link to="/infrastructure#hostels" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Hostel Facilities</span>
-                  </Link>
-                  <Link to="/student-corner#clubs" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Student Clubs</span>
-                  </Link>
-                  <Link to="/student-corner#placement" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Placement Cell</span>
-                  </Link>
-                </div>
-              </Card>
-
-              {/* Notice Board */}
-              <Card>
-                <div className="flex items-center mb-4">
-                  <Bell className="w-5 h-5 text-green-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Notice Board</h3>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-2 rounded bg-yellow-50 border-l-4 border-yellow-400">
-                    <p className="text-sm text-gray-700">Academic Calendar 2024-25</p>
-                    <p className="text-xs text-gray-500">Updated on: 15 Jan 2024</p>
-                  </div>
-                  <div className="p-2 rounded bg-blue-50 border-l-4 border-blue-600">
-                    <p className="text-sm text-gray-700">Mid-Semester Examination Schedule</p>
-                    <p className="text-xs text-gray-500">Updated on: 10 Jan 2024</p>
-                  </div>
-                  <div className="p-2 rounded bg-green-50 border-l-4 border-green-600">
-                    <p className="text-sm text-gray-700">Workshop on Aquaculture Technology</p>
-                    <p className="text-xs text-gray-500">Updated on: 8 Jan 2024</p>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Achievement */}
-              <Card>
-                <div className="flex items-center mb-4">
-                  <Trophy className="w-5 h-5 text-green-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Achievement</h3>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-3 rounded bg-gradient-to-r from-green-50 to-yellow-50">
-                    <p className="text-sm font-medium text-gray-900">Best College Award 2023</p>
-                    <p className="text-xs text-gray-600">ICAR Recognition</p>
-                  </div>
-                  <div className="p-3 rounded bg-gradient-to-r from-blue-50 to-green-50">
-                    <p className="text-sm font-medium text-gray-900">Research Excellence</p>
-                    <p className="text-xs text-gray-600">5 Research Papers Published</p>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Publication */}
-              <Card>
-                <div className="flex items-center mb-4">
-                  <FileText className="w-5 h-5 text-blue-700 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Publication</h3>
-                </div>
-                <div className="space-y-3">
-                  <Link to="/research#publications" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Publications & Journals</span>
-                  </Link>
-                  <Link to="/research" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Research Papers</span>
-                  </Link>
-                  <Link to="/extension" className="block p-2 rounded hover:bg-gray-50 transition-colors">
-                    <span className="text-gray-700">Extension Materials</span>
-                  </Link>
-                </div>
-              </Card>
-
-              {/* Quick Links */}
-              <Card>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
-                <div className="space-y-3">
-                  <Link
-                    to="/student-corner"
-                    className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="text-gray-700">Admission Guidelines</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  
-                  <Link
-                    to="/academics#calendar"
-                    className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="text-gray-700">Academic Calendar</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  
-                  <Link
-                    to="/student-corner#scholarships"
-                    className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="text-gray-700">Scholarships & Fellowships</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                  
-                  <Link
-                    to="/contact"
-                    className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-colors"
-                  >
-                    <span className="text-gray-700">Contact Us</span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </Link>
-                </div>
-              </Card>
-
-              {/* Upcoming Events */}
-              <Card>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
-                  <Link
-                    to="/events"
-                    className="text-primary-600 hover:text-primary-700 text-sm font-medium"
-                  >
-                    View All
-                  </Link>
-                </div>
-                
-                {loading ? (
-                  <div className="space-y-3">
-                    {[1, 2].map((i) => (
+                    {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="animate-pulse">
                         <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
                         <div className="h-3 bg-gray-200 rounded w-1/2"></div>
                       </div>
                     ))}
                   </div>
-                ) : upcomingEvents.length > 0 ? (
+                ) : (
                   <div className="space-y-4">
-                    {upcomingEvents.map((event) => (
-                      <div key={event._id} className="border-b border-gray-200 pb-3 last:border-b-0 last:pb-0">
-                        <h4 className="font-medium text-gray-900 mb-1">{event.title}</h4>
-                        <div className="text-sm text-gray-600">
-                          <p>{event.eventDate ? new Date(event.eventDate).toLocaleDateString() : 'Date TBD'}</p>
-                          <p>{event.venue || 'Venue TBD'}</p>
+                    {latestNews.length > 0 ? (
+                      latestNews.map((news, index) => (
+                        <div key={index} className="border-l-4 border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
+                          <h4 className="font-medium text-gray-900 mb-1">
+                            <Link to={`/news/${news.id}`} className="hover:text-green-700">
+                              {news.title}
+                            </Link>
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-1">{news.summary}</p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(news.date).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
+                          </p>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="border-l-4 border-yellow-500 pl-4 py-2">
+                          <h4 className="font-medium text-gray-900 mb-1">Academic Calendar 2025-26</h4>
+                          <p className="text-sm text-gray-600 mb-1">New academic session begins with orientation program</p>
+                          <p className="text-xs text-gray-500">September 15, 2025</p>
+                        </div>
+                        <div className="border-l-4 border-blue-500 pl-4 py-2">
+                          <h4 className="font-medium text-gray-900 mb-1">Admission Open for B.F.Sc Program</h4>
+                          <p className="text-sm text-gray-600 mb-1">Applications are now being accepted for the new session</p>
+                          <p className="text-xs text-gray-500">August 20, 2025</p>
+                        </div>
+                        <div className="border-l-4 border-green-500 pl-4 py-2">
+                          <h4 className="font-medium text-gray-900 mb-1">Research Conference on Aquaculture</h4>
+                          <p className="text-sm text-gray-600 mb-1">International conference on sustainable fisheries practices</p>
+                          <p className="text-xs text-gray-500">August 25, 2025</p>
+                        </div>
+                        <div className="border-l-4 border-purple-500 pl-4 py-2">
+                          <h4 className="font-medium text-gray-900 mb-1">New Research Publications</h4>
+                          <p className="text-sm text-gray-600 mb-1">Faculty publications in international journals</p>
+                          <p className="text-xs text-gray-500">August 18, 2025</p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-6">
-                    <p className="text-gray-500 text-sm">No upcoming events.</p>
+                    )}
                   </div>
                 )}
               </Card>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Dean's Message Section */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <img
-                src={`/api/proxy/image?url=${encodeURIComponent('https://www.ndvsu.org/images/Shashikant.jpg')}`}    
-                alt="Dean's Photo"
-                className="w-full h-96 object-cover rounded-lg shadow-lg"
-              />
-            </div>
-            
+            {/* Sidebar */}
             <div className="space-y-6">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Dean's Message</h2>
-                <div className="w-20 h-1 bg-primary-500 rounded"></div>
-              </div>
-              
-              <blockquote className="text-lg text-gray-700 leading-relaxed italic">
-                "Welcome to College of Fisheries, Jabalpur, where we are committed to excellence 
-                in fisheries education and research. Our mission is to develop skilled 
-                professionals who will contribute to sustainable aquaculture and fisheries 
-                management for the benefit of society."
-              </blockquote>
-              
-              <div>
-                <p className="font-semibold text-gray-900">Dr. Shashikant Mahajan</p>
-                <p className="text-gray-600">Dean, College of Fisheries, Jabalpur</p>
-              </div>
-              
-              <Link
-                to="/about#dean-message"
-                className="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
-              >
-                Read Full Message
-                <ChevronRight className="ml-1 h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+              {/* Quick Links */}
+              <Card>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+                <div className="space-y-3">
+                  {quickLinks.map((link, index) => {
+                    const IconComponent = link.icon
+                    return (
+                      <Link
+                        key={index}
+                        to={link.href}
+                        className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                      >
+                        <IconComponent className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900 group-hover:text-green-700 mb-1">
+                            {link.title}
+                          </h4>
+                          <p className="text-sm text-gray-600">{link.description}</p>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 mt-1" />
+                      </Link>
+                    )
+                  })}
+                </div>
+              </Card>
 
-      {/* Stats Section */}
-      <section className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Impact</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Numbers that reflect our commitment to excellence in fisheries education and research
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {statsDisplay.map((stat, index) => (
-              <StatsCard
-                key={index}
-                title={stat.title}
-                value={stat.value}
-                icon={stat.icon}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+              {/* Upcoming Events */}
+              <Card>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <Calendar className="w-5 h-5 text-blue-600 mr-2" />
+                    <h3 className="text-lg font-semibold text-gray-900">Upcoming Events</h3>
+                  </div>
+                  <Link
+                    to="/events"
+                    className="text-blue-700 hover:text-blue-800 text-sm font-medium"
+                  >
+                    View All
+                  </Link>
+                </div>
+                
+                <div className="space-y-3">
+                  {upcomingEvents.length > 0 ? (
+                    upcomingEvents.map((event, index) => (
+                      <div key={index} className="p-3 bg-blue-50 rounded-lg">
+                        <h4 className="font-medium text-gray-900 mb-1">{event.title}</h4>
+                        <p className="text-sm text-blue-700">
+                          {new Date(event.date).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric' 
+                          })}
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="p-3 bg-blue-50 rounded-lg">
+                        <h4 className="font-medium text-gray-900 mb-1">Workshop on Fish Processing</h4>
+                        <p className="text-sm text-blue-700">Sep 5</p>
+                      </div>
+                      <div className="p-3 bg-green-50 rounded-lg">
+                        <h4 className="font-medium text-gray-900 mb-1">Guest Lecture Series</h4>
+                        <p className="text-sm text-green-700">Sep 12</p>
+                      </div>
+                      <div className="p-3 bg-yellow-50 rounded-lg">
+                        <h4 className="font-medium text-gray-900 mb-1">Field Visit to Hatchery</h4>
+                        <p className="text-sm text-yellow-700">Sep 20</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </Card>
 
-      {/* Features Section */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Us</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Discover what makes College of Fisheries, Jabalpur the premier choice for fisheries education
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <FeatureCard
-                key={index}
-                icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Information */}
-      <section className="section-padding bg-primary-600 text-white">
-        <div className="container-max">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <MapPin className="w-8 h-8 mx-auto mb-4 text-accent-400" />
-              <h3 className="text-xl font-semibold mb-2">Address</h3>
-              <p className="text-blue-100">
-                College of Fisheries, Jabalpur<br />
-                Nanaji Deshmukh Veterinary Science University<br />
-                Jabalpur, Madhya Pradesh
-              </p>
+              {/* Important Notice */}
+              <Card className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200">
+                <div className="flex items-center mb-3">
+                  <FileText className="w-5 h-5 text-green-600 mr-2" />
+                  <h3 className="text-lg font-semibold text-gray-900">Important Notice</h3>
+                </div>
+                <p className="text-gray-700 mb-3">
+                  Admission process for B.F.Sc (Bachelor of Fisheries Science) program 2025-26 is now open.
+                </p>
+                <Link
+                  to="/student-corner"
+                  className="inline-flex items-center text-green-700 hover:text-green-800 font-medium"
+                >
+                  Learn More
+                  <ExternalLink className="ml-1 h-4 w-4" />
+                </Link>
+              </Card>
             </div>
-            
-            <div className="text-center">
-              <Phone className="w-8 h-8 mx-auto mb-4 text-accent-400" />
-              <h3 className="text-xl font-semibold mb-2">Phone</h3>
-              <p className="text-blue-100">0645-231375</p>
-            </div>
-            
-            <div className="text-center">
-              <Mail className="w-8 h-8 mx-auto mb-4 text-accent-400" />
-              <h3 className="text-xl font-semibold mb-2">Email</h3>
-              <p className="text-blue-100">deancof_basu_bih@gov.in</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="section-padding bg-secondary-600 text-white">
-        <div className="container-max text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-lg text-green-100 mb-8 max-w-2xl mx-auto">
-            Join us in shaping the future of fisheries science and aquaculture. 
-            Explore our programs and take the first step towards a rewarding career.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/programs"
-              className="btn-accent"
-            >
-              View Programs
-            </Link>
-            
-            <Link
-              to="/contact"
-              className="btn-outline border-white text-white hover:bg-white hover:text-secondary-600"
-            >
-              Get in Touch
-            </Link>
           </div>
         </div>
       </section>
@@ -491,3 +336,5 @@ const Home = () => {
 }
 
 export default Home
+
+

@@ -108,6 +108,9 @@ router.post('/', protect, adminOnly, [
       createdBy: req.admin._id
     };
 
+    console.log('Creating faculty with data:', facultyData);
+    console.log('Image field in request:', req.body.image);
+
     const faculty = await Faculty.create(facultyData);
 
     res.status(201).json({

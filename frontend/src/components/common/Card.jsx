@@ -81,8 +81,8 @@ export const StatsCard = ({
       <div className="flex items-center">
         <div className="flex-shrink-0">
           {Icon && (
-            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Icon className="w-5 h-5 text-primary-600" />
+            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Icon className="w-5 h-5 text-blue-500" />
             </div>
           )}
         </div>
@@ -109,8 +109,8 @@ export const FeatureCard = ({
   title, 
   description, 
   className = '',
-  iconColor = 'text-primary-600',
-  iconBgColor = 'bg-primary-100',
+  iconColor = 'text-blue-500',
+  iconBgColor = 'bg-blue-100',
   ...props 
 }) => {
   return (
@@ -191,7 +191,7 @@ export const NewsCard = ({
           </div>
           
           {title && (
-            <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-primary-600 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-500 transition-colors">
               {title}
             </h3>
           )}
@@ -216,3 +216,4 @@ export const NewsCard = ({
 }
 
 export default Card
+
