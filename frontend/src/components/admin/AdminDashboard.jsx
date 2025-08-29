@@ -25,8 +25,8 @@ import NewsManagement from './NewsManagement'
 import FacultyManagement from './FacultyManagement'
 import ContentManagement from './ContentManagement'
 import WelcomeMessageManagement from './WelcomeMessageManagement'
-import InfrastructureGalleryManagement from './InfrastructureGalleryManagement'
-import AcademicProgramsManagement from './AcademicProgramsManagement'
+// import InfrastructureGalleryManagement from './InfrastructureGalleryManagement'
+// import AcademicProgramsManagement from './AcademicProgramsManagement'
 import ResearchManagement from './ResearchManagement'
 
 // Admin Page Components
@@ -166,25 +166,353 @@ const InfrastructureManagement = () => (
   </div>
 )
 
-const AdminSettings = () => (
-  <div>
-    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-      <div className="flex items-center">
-        <div className="flex-shrink-0">
-          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-        </div>
-        <div className="ml-3">
-          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
-          <p className="text-sm text-yellow-700 mt-1">Admin settings functionality is being developed.</p>
-        </div>
+const AdminSettings = () => {
+  const [settings, setSettings] = useState({
+    siteName: 'College of Fisheries, Jabalpur',
+    siteDescription: 'Excellence in Fisheries Education & Research',
+    contactEmail: 'info@fisheriescollege.edu',
+    contactPhone: '+91-761-2345678',
+    address: 'College of Fisheries, Jabalpur, Madhya Pradesh',
+    established: '2018',
+    affiliatedUniversity: 'JNKVV, Jabalpur',
+    principalName: 'Dr. Principal Name',
+    socialMedia: {
+      facebook: '',
+      twitter: '',
+      linkedin: '',
+      instagram: ''
+    },
+    admissionOpen: true,
+    maintenanceMode: false
+  })
+  
+  const [activeTab, setActiveTab] = useState('general')
+  const [saving, setSaving] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    
+    try {
+      // Here you would save to your backend API
+      // await settingsAPI.update(settings)
+      toast.success('Settings updated successfully!')
+    } catch (error) {
+      console.error('Error updating settings:', error)
+      toast.error('Failed to update settings')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const tabs = [
+    { id: 'general', name: 'General', icon: Settings },
+    { id: 'contact', name: 'Contact Info', icon: User },
+    { id: 'social', name: 'Social Media', icon: Briefcase },
+    { id: 'system', name: 'System', icon: Building }
+  ]
+
+  return (
+    <div>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Admin Settings</h1>
+        <p className="text-gray-600 mt-2">Manage your college website settings and configuration.</p>
       </div>
+
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-200 mb-8">
+        <nav className="-mb-px flex space-x-8">
+          {tabs.map((tab) => {
+            const Icon = tab.icon
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{tab.name}</span>
+              </button>
+            )
+          })}
+        </nav>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* General Settings */}
+        {activeTab === 'general' && (
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium text-gray-900 mb-6">General Settings</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Site Name
+                </label>
+                <input
+                  type="text"
+                  value={settings.siteName}
+                  onChange={(e) => setSettings({...settings, siteName: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Site Description
+                </label>
+                <textarea
+                  value={settings.siteDescription}
+                  onChange={(e) => setSettings({...settings, siteDescription: e.target.value})}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Established Year
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.established}
+                    onChange={(e) => setSettings({...settings, established: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Affiliated University
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.affiliatedUniversity}
+                    onChange={(e) => setSettings({...settings, affiliatedUniversity: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Principal Name
+                </label>
+                <input
+                  type="text"
+                  value={settings.principalName}
+                  onChange={(e) => setSettings({...settings, principalName: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Contact Settings */}
+        {activeTab === 'contact' && (
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Contact Information</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contact Email
+                </label>
+                <input
+                  type="email"
+                  value={settings.contactEmail}
+                  onChange={(e) => setSettings({...settings, contactEmail: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Contact Phone
+                </label>
+                <input
+                  type="tel"
+                  value={settings.contactPhone}
+                  onChange={(e) => setSettings({...settings, contactPhone: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Address
+                </label>
+                <textarea
+                  value={settings.address}
+                  onChange={(e) => setSettings({...settings, address: e.target.value})}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Social Media Settings */}
+        {activeTab === 'social' && (
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Social Media Links</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Facebook URL
+                </label>
+                <input
+                  type="url"
+                  value={settings.socialMedia.facebook}
+                  onChange={(e) => setSettings({
+                    ...settings, 
+                    socialMedia: {...settings.socialMedia, facebook: e.target.value}
+                  })}
+                  placeholder="https://facebook.com/yourpage"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Twitter URL
+                </label>
+                <input
+                  type="url"
+                  value={settings.socialMedia.twitter}
+                  onChange={(e) => setSettings({
+                    ...settings, 
+                    socialMedia: {...settings.socialMedia, twitter: e.target.value}
+                  })}
+                  placeholder="https://twitter.com/yourhandle"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  LinkedIn URL
+                </label>
+                <input
+                  type="url"
+                  value={settings.socialMedia.linkedin}
+                  onChange={(e) => setSettings({
+                    ...settings, 
+                    socialMedia: {...settings.socialMedia, linkedin: e.target.value}
+                  })}
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Instagram URL
+                </label>
+                <input
+                  type="url"
+                  value={settings.socialMedia.instagram}
+                  onChange={(e) => setSettings({
+                    ...settings, 
+                    socialMedia: {...settings.socialMedia, instagram: e.target.value}
+                  })}
+                  placeholder="https://instagram.com/yourhandle"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* System Settings */}
+        {activeTab === 'system' && (
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium text-gray-900 mb-6">System Settings</h3>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">Admission Status</h4>
+                  <p className="text-sm text-gray-500">Show admission open status on website</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSettings({...settings, admissionOpen: !settings.admissionOpen})}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    settings.admissionOpen ? 'bg-blue-600' : 'bg-gray-200'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      settings.admissionOpen ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-900">Maintenance Mode</h4>
+                  <p className="text-sm text-gray-500">Put website in maintenance mode</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSettings({...settings, maintenanceMode: !settings.maintenanceMode})}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    settings.maintenanceMode ? 'bg-red-600' : 'bg-gray-200'
+                  }`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                      settings.maintenanceMode ? 'translate-x-5' : 'translate-x-0'
+                    }`}
+                  />
+                </button>
+              </div>
+              
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-yellow-800">Warning</h3>
+                    <p className="text-sm text-yellow-700 mt-1">
+                      Enabling maintenance mode will make the website inaccessible to visitors.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Save Button */}
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            disabled={saving}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+          >
+            {saving && (
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            )}
+            <span>{saving ? 'Saving...' : 'Save Settings'}</span>
+          </button>
+        </div>
+      </form>
     </div>
-    <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Settings</h1>
-    <p className="text-gray-600">This section will allow you to manage admin settings and configuration.</p>
-  </div>
-)
+  )
+}
 
 const AdminDashboard = () => {
   const { admin, logout } = useAuth()
@@ -194,12 +522,12 @@ const AdminDashboard = () => {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
     { name: 'Welcome Message', href: '/admin/welcome', icon: User },
-    { name: 'Academic Programs', href: '/admin/academic-programs', icon: BookOpen },
+    // { name: 'Academic Programs', href: '/admin/academic-programs', icon: BookOpen },
     { name: 'Programs', href: '/admin/programs', icon: BookOpen },
     { name: 'Faculty', href: '/admin/faculty', icon: Users },
     { name: 'Research Topics', href: '/admin/research', icon: FileText },
-    { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
-    { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
+    // { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
+    // { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'News & Events', href: '/admin/news', icon: Newspaper },
     { name: 'Content Management', href: '/admin/content', icon: FileText },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
@@ -384,12 +712,12 @@ const AdminDashboard = () => {
               <Routes>
                 <Route path="/" element={<DashboardHome />} />
                 <Route path="/welcome" element={<WelcomeMessageManagement />} />
-                <Route path="/academic-programs" element={<AcademicProgramsManagement />} />
+                {/* <Route path="/academic-programs" element={<AcademicProgramsManagement />} /> */}
                 <Route path="/programs" element={<ProgramsManagement />} />
                 <Route path="/faculty" element={<FacultyManagement />} />
                 <Route path="/research" element={<ResearchManagement />} />
-                <Route path="/infrastructure-gallery" element={<InfrastructureGalleryManagement />} />
-                <Route path="/infrastructure" element={<InfrastructureManagement />} />
+                {/* <Route path="/infrastructure-gallery" element={<InfrastructureGalleryManagement />} /> */}
+                {/* <Route path="/infrastructure" element={<InfrastructureManagement />} /> */}
                 <Route path="/news" element={<NewsManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />

@@ -9,9 +9,9 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 // Public Pages
 import Home from './pages/Home'
 import About from './pages/About'
-import Programs from './pages/Programs'
+import Programs from './pages/Programs_Dynamic'
 import ProgramDetail from './pages/ProgramDetail'
-import Faculty from './pages/Faculty'
+import Faculty from './pages/Faculty_Dynamic'
 import FacultyDetail from './pages/FacultyDetail'
 import Research from './pages/Research'
 import ResearchDetail from './pages/ResearchDetail'
@@ -21,7 +21,7 @@ import InfrastructureDetail from './pages/InfrastructureDetail'
 import Incubation from './pages/Incubation'
 import News from './pages/News'
 import NewsDetail from './pages/NewsDetail'
-import Events from './pages/Events'
+import NewsEvents from './pages/NewsEvents_Dynamic'
 import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
@@ -66,7 +66,7 @@ function App() {
               <Route path="/student-corner" element={<StudentCorner />} />
               <Route path="/news" element={<News />} />
               <Route path="/news/:id" element={<NewsDetail />} />
-              <Route path="/events" element={<Events />} />
+              <Route path="/events" element={<NewsEvents />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
               <Route path="/contact" element={<Contact />} />

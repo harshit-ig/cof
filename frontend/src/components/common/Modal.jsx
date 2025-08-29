@@ -51,15 +51,15 @@ const Modal = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto p-4"
       onClick={handleOverlayClick}
     >
       <div 
-        className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full ${className}`}
+        className={`bg-white rounded-lg shadow-xl ${sizeClasses[size]} w-full max-h-[90vh] overflow-y-auto ${className}`}
         {...props}
       >
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-6 border-b">
+          <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-white z-10">
             {title && <h3 className="text-lg font-semibold">{title}</h3>}
             {showCloseButton && (
               <button
