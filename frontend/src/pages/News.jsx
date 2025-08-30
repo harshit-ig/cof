@@ -44,7 +44,7 @@ const News = () => {
         ) : items.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {items.map((item) => {
-              const src = item.image ? uploadAPI.getImageUrl(item.image, 'news') : null
+              const src = item.images && item.images.length > 0 ? uploadAPI.getImageUrl(item.images[0].url, 'news') : null
               return (
                 <div key={item._id} className="bg-white rounded-lg shadow-md overflow-hidden">
                   {src && (

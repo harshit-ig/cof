@@ -16,20 +16,30 @@ const storage = multer.diskStorage({
     let uploadPath = 'uploads/images'; // default
     
     // Determine upload path based on file type, route, or request body
-    const category = req.body.category;
+    // Note: req.body might not be available yet during multer processing
+    const category = req.body?.category;
+    console.log('Upload category:', category);
+    console.log('Route path:', req.route?.path);
+    console.log('Request URL:', req.url);
+    console.log('Request headers:', req.headers);
     
-    if (category === 'dean') {
+    // Check for category in headers as fallback
+    const categoryHeader = req.headers['x-upload-category'];
+    const finalCategory = category || categoryHeader;
+    
+    if (finalCategory === 'dean') {
       uploadPath = 'uploads/dean';
-    } else if (req.route.path.includes('faculty') || category === 'faculty') {
+    } else if (req.route?.path?.includes('faculty') || finalCategory === 'faculty') {
       uploadPath = 'uploads/faculty';
-    } else if (req.route.path.includes('news') || req.route.path.includes('events') || category === 'news') {
+    } else if (req.route?.path?.includes('news') || req.route?.path?.includes('events') || finalCategory === 'news') {
       uploadPath = 'uploads/news';
-    } else if (req.route.path.includes('research') || category === 'research') {
+    } else if (req.route?.path?.includes('research') || finalCategory === 'research') {
       uploadPath = 'uploads/research';
     } else if (file.mimetype.startsWith('application/')) {
       uploadPath = 'uploads/documents';
     }
     
+    console.log('Final upload path:', uploadPath);
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {

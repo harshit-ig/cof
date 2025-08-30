@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap } from 'lucide-react'
+import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap, Clock } from 'lucide-react'
 import Card from '../components/common/Card'
 import { facultyAPI, uploadAPI } from '../services/api'
 import LoadingSpinner from '../components/common/LoadingSpinner'
@@ -11,6 +11,7 @@ const Faculty = () => {
   const [selectedDesignation, setSelectedDesignation] = useState('all')
   const [facultyMembers, setFacultyMembers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
   const departments = [
     { id: 'all', name: 'All Departments', icon: Building },
@@ -37,13 +38,21 @@ const Faculty = () => {
     const fetchFaculty = async () => {
       try {
         setLoading(true)
+        setError('')
+        console.log('Fetching faculty data...')
         const response = await facultyAPI.getAll()
+        console.log('Faculty API response:', response)
         if (response.data.success) {
-          setFacultyMembers(response.data.data.faculty || [])
+          const facultyData = response.data.data.faculty || []
+          console.log('Faculty data:', facultyData)
+          setFacultyMembers(facultyData)
+        } else {
+          console.error('API returned unsuccessful response:', response.data)
+          setError('Failed to load faculty data')
         }
       } catch (error) {
         console.error('Error fetching faculty:', error)
-        setError('Failed to load faculty')
+        setError('Failed to load faculty: ' + error.message)
       } finally {
         setLoading(false)
       }
@@ -73,7 +82,28 @@ const Faculty = () => {
   }
 
   if (loading) {
-    return <LoadingSpinner />
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Faculty</h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -248,11 +278,11 @@ const Faculty = () => {
                   </div>
 
                   {/* Research Areas */}
-                  {faculty.research && faculty.research.length > 0 && (
+                  {faculty.researchInterests && faculty.researchInterests.length > 0 && (
                     <div className="mt-4 pt-4 border-t border-gray-100">
                       <h4 className="text-sm font-medium text-gray-900 mb-2">Research Areas</h4>
                       <div className="flex flex-wrap gap-1">
-                        {faculty.research.slice(0, 3).map((area, index) => (
+                        {faculty.researchInterests.slice(0, 3).map((area, index) => (
                           <span
                             key={index}
                             className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
@@ -260,9 +290,9 @@ const Faculty = () => {
                             {area}
                           </span>
                         ))}
-                        {faculty.research.length > 3 && (
+                        {faculty.researchInterests.length > 3 && (
                           <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                            +{faculty.research.length - 3} more
+                            +{faculty.researchInterests.length - 3} more
                           </span>
                         )}
                       </div>
@@ -270,18 +300,18 @@ const Faculty = () => {
                   )}
 
                   {/* Stats */}
-                  {(faculty.publications || faculty.projects) && (
+                  {(faculty.publications?.length > 0 || faculty.awards?.length > 0) && (
                     <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between text-center">
-                      {faculty.publications && (
+                      {faculty.publications?.length > 0 && (
                         <div>
-                          <div className="text-lg font-bold text-blue-600">{faculty.publications}</div>
+                          <div className="text-lg font-bold text-blue-600">{faculty.publications.length}</div>
                           <div className="text-xs text-gray-600">Publications</div>
                         </div>
                       )}
-                      {faculty.projects && (
+                      {faculty.awards?.length > 0 && (
                         <div>
-                          <div className="text-lg font-bold text-green-600">{faculty.projects}</div>
-                          <div className="text-xs text-gray-600">Projects</div>
+                          <div className="text-lg font-bold text-green-600">{faculty.awards.length}</div>
+                          <div className="text-xs text-gray-600">Awards</div>
                         </div>
                       )}
                     </div>

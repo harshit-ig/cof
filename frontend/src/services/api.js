@@ -113,6 +113,7 @@ export const uploadAPI = {
     return api.post('/upload/single', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+        'X-Upload-Category': category,
       },
     })
   },

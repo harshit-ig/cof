@@ -8,14 +8,16 @@ import LoadingSpinner from '../components/common/LoadingSpinner'
 const Programs = () => {
   const [selectedLevel, setSelectedLevel] = useState('all')
   const [searchTerm, setSearchTerm] = useState('')
-  const [programs, setPrograms] = useState({ undergraduate: [], postgraduate: [], doctoral: [] })
+  const [programs, setPrograms] = useState({ undergraduate: [], postgraduate: [], diploma: [], certificate: [] })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const levels = [
     { id: 'all', name: 'All Programs' },
     { id: 'undergraduate', name: 'Undergraduate' },
     { id: 'postgraduate', name: 'Postgraduate' },
-    { id: 'doctoral', name: 'Doctoral' }
+    { id: 'diploma', name: 'Diploma' },
+    { id: 'certificate', name: 'Certificate' }
   ]
 
   // Fetch programs from API
@@ -25,7 +27,15 @@ const Programs = () => {
         setLoading(true)
         const response = await programsAPI.getAll()
         if (response.data.success) {
-          setPrograms(response.data.data.programs || [])
+          // Convert flat array to categorized object
+          const allPrograms = response.data.data.programs || []
+          const categorized = {
+            undergraduate: allPrograms.filter(p => p.level === 'undergraduate'),
+            postgraduate: allPrograms.filter(p => p.level === 'postgraduate'),
+            diploma: allPrograms.filter(p => p.level === 'diploma'),
+            certificate: allPrograms.filter(p => p.level === 'certificate')
+          }
+          setPrograms(categorized)
         }
       } catch (error) {
         console.error('Error fetching programs:', error)
@@ -42,7 +52,8 @@ const Programs = () => {
   const allPrograms = [
     ...programs.undergraduate.map(p => ({ ...p, level: 'undergraduate' })),
     ...programs.postgraduate.map(p => ({ ...p, level: 'postgraduate' })),
-    ...programs.doctoral.map(p => ({ ...p, level: 'doctoral' }))
+    ...programs.diploma.map(p => ({ ...p, level: 'diploma' })),
+    ...programs.certificate.map(p => ({ ...p, level: 'certificate' }))
   ]
 
   // Filter programs based on search and level
@@ -64,6 +75,10 @@ const Programs = () => {
         return GraduationCap
       case 'doctoral':
         return Award
+      case 'diploma':
+        return FlaskConical
+      case 'certificate':
+        return Shield
       default:
         return BookOpen
     }
@@ -77,6 +92,10 @@ const Programs = () => {
         return 'bg-green-100 text-green-800'
       case 'doctoral':
         return 'bg-purple-100 text-purple-800'
+      case 'diploma':
+        return 'bg-orange-100 text-orange-800'
+      case 'certificate':
+        return 'bg-yellow-100 text-yellow-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -86,39 +105,65 @@ const Programs = () => {
     return <LoadingSpinner />
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Loading Programs</h2>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="btn-primary"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Academic Programs</h1>
+      <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">Academic Programs</h1>
             <p className="text-xl text-blue-100 mb-8">
               Discover our comprehensive range of fisheries and aquaculture programs designed to 
               prepare you for a successful career in marine sciences, sustainable aquaculture, 
               and fisheries management.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
-                  <BookOpen className="h-6 w-6" />
+            <div className="flex justify-center">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mt-8 max-w-4xl">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                    <BookOpen className="h-6 w-6" />
+                  </div>
+                  <div className="text-2xl font-bold">{programs.undergraduate.length}</div>
+                  <div className="text-blue-200">Undergraduate Programs</div>
                 </div>
-                <div className="text-2xl font-bold">{programs.undergraduate.length}</div>
-                <div className="text-blue-200">Undergraduate Programs</div>
-              </div>
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
-                  <GraduationCap className="h-6 w-6" />
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                    <GraduationCap className="h-6 w-6" />
+                  </div>
+                  <div className="text-2xl font-bold">{programs.postgraduate.length}</div>
+                  <div className="text-blue-200">Postgraduate Programs</div>
                 </div>
-                <div className="text-2xl font-bold">{programs.postgraduate.length}</div>
-                <div className="text-blue-200">Postgraduate Programs</div>
-              </div>
-              <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
-                  <Award className="h-6 w-6" />
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                    <FlaskConical className="h-6 w-6" />
+                  </div>
+                  <div className="text-2xl font-bold">{programs.diploma.length}</div>
+                  <div className="text-blue-200">Diploma Programs</div>
                 </div>
-                <div className="text-2xl font-bold">{programs.doctoral.length}</div>
-                <div className="text-blue-200">Doctoral Programs</div>
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                    <Shield className="h-6 w-6" />
+                  </div>
+                  <div className="text-2xl font-bold">{programs.certificate.length}</div>
+                  <div className="text-blue-200">Certificate Programs</div>
+                </div>
               </div>
             </div>
           </div>
@@ -126,8 +171,8 @@ const Programs = () => {
       </div>
 
       {/* Filter Section */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-6">
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="flex items-center space-x-2 text-gray-600 flex-shrink-0">
               <Building className="h-5 w-5" />
@@ -164,7 +209,8 @@ const Programs = () => {
       </div>
 
       {/* Programs Grid */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
         {filteredPrograms.length === 0 ? (
           <div className="text-center py-12">
             <BookOpen className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -382,6 +428,7 @@ const Programs = () => {
               Download Brochure
             </Link>
           </div>
+        </div>
         </div>
       </div>
     </div>
