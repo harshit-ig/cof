@@ -94,9 +94,9 @@ const NewsEvents = () => {
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
+        <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
           <div className="container mx-auto px-4 py-16">
-            <div className="max-w-3xl">
+            <div className="max-w-3xl text-center mx-auto">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">News & Events</h1>
               <p className="text-xl text-blue-100">
                 Stay updated with the latest news, events, and announcements from our college.
@@ -137,9 +137,9 @@ const NewsEvents = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
+      <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container mx-auto px-4 py-16">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl text-center mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">News & Events</h1>
             <p className="text-xl text-blue-100 mb-8">
               Stay updated with the latest news, events, seminars, workshops, and announcements 

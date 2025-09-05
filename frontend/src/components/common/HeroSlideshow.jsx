@@ -186,7 +186,7 @@ const HeroSlideshow = () => {
       {/* Navigation Arrows */}
       <button
         onClick={goToPrevSlide}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-black p-2 rounded-full transition-all duration-200"
         aria-label="Previous slide"
       >
         <ChevronLeft className="h-6 w-6" />
@@ -194,7 +194,7 @@ const HeroSlideshow = () => {
       
       <button
         onClick={goToNextSlide}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-white p-2 rounded-full transition-all duration-200"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-20 hover:bg-opacity-30 text-black p-2 rounded-full transition-all duration-200"
         aria-label="Next slide"
       >
         <ChevronRight className="h-6 w-6" />

@@ -321,19 +321,7 @@ const Collaborations = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding bg-white border-b">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="#mou-linkages" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              MoUs & Linkages
-            </a>
-            <a href="#industry-partnerships" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Industry Partnerships
-            </a>
-          </div>
-        </div>
-      </section>
+
 
       {/* MoUs & Linkages */}
       <section id="mou-linkages" className="section-padding bg-gray-50">

@@ -43,45 +43,7 @@ const Infrastructure = () => {
           </div>
         </div>
       </section>
-
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('classrooms')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Classrooms & Labs
-            </button>
-            <button 
-              onClick={() => scrollToSection('hatcheries')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Hatcheries & Demo Units
-            </button>
-            <button 
-              onClick={() => scrollToSection('library')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Library & e-Resources
-            </button>
-            <button 
-              onClick={() => scrollToSection('hostels')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Hostels & Campus Facilities
-            </button>
-            <button 
-              onClick={() => scrollToSection('processing')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Fish Processing & Feed Units
-            </button>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Classrooms and Labs */}
       <section id="classrooms" className="section-padding bg-gray-50">
         <div className="container-max">

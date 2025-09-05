@@ -224,28 +224,7 @@ const NewsEvents = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding bg-white border-b">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="#seminars-conferences" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Seminars & Conferences
-            </a>
-            <a href="#workshops-training" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Workshops & Training
-            </a>
-            <a href="#field-visits" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Field Visits & Exposure Trips
-            </a>
-            <a href="#photo-gallery" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Photo Gallery
-            </a>
-            <a href="#press-releases" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Press Releases
-            </a>
-          </div>
-        </div>
-      </section>
+
 
       {/* Seminars & Conferences */}
       <section id="seminars-conferences" className="section-padding bg-gray-50">

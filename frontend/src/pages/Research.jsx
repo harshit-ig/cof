@@ -44,43 +44,6 @@ const Research = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('projects')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Ongoing Projects
-            </button>
-            <button 
-              onClick={() => scrollToSection('publications')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Publications
-            </button>
-            <button 
-              onClick={() => scrollToSection('student-research')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Student Research
-            </button>
-            <button 
-              onClick={() => scrollToSection('collaborations')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Collaborations
-            </button>
-            <button 
-              onClick={() => scrollToSection('facilities')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Research Facilities
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Ongoing Projects */}
       <section id="projects" className="section-padding bg-gray-50">

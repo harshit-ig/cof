@@ -91,32 +91,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('dean-message')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Dean's Message
-            </button>
-            <button 
-              onClick={() => scrollToSection('vision')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Vision & Mission
-            </button>
-            <button 
-              onClick={() => scrollToSection('structure')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Organization
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Dean's Message */}
       <section id="dean-message" className="section-padding bg-gray-50">
         <div className="container-max">

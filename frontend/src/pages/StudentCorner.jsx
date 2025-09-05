@@ -326,28 +326,6 @@ const StudentCorner = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding bg-white border-b">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="#admission-guidelines" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Admission Guidelines
-            </a>
-            <a href="#scholarships" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Scholarships & Fellowships
-            </a>
-            <a href="#student-council" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Student Council / Clubs
-            </a>
-            <a href="#alumni-testimonials" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Alumni Testimonials
-            </a>
-            <a href="#internship-placement" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Internship & Placement
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* Admission Guidelines */}
       <section id="admission-guidelines" className="section-padding bg-gray-50">

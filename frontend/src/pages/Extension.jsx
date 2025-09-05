@@ -295,28 +295,7 @@ const Extension = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding bg-white border-b">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-4">
-            <a href="#farmer-training" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Farmer Training Programs
-            </a>
-            <a href="#ffpo-shg" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              FFPO and SHG Support
-            </a>
-            <a href="#mvk-initiatives" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              MVK Initiatives
-            </a>
-            <a href="#demonstrations" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Aquaculture Demonstrations
-            </a>
-            <a href="#success-stories" className="px-6 py-3 bg-gray-100 hover:bg-blue-500 hover:text-white rounded-lg font-medium transition-colors">
-              Success Stories
-            </a>
-          </div>
-        </div>
-      </section>
+
 
       {/* Farmer Training Programs */}
       <section id="farmer-training" className="section-padding bg-gray-50">

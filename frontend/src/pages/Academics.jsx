@@ -44,49 +44,6 @@ const Academics = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('programs')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Programs
-            </button>
-            <button 
-              onClick={() => scrollToSection('calendar')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Calendar
-            </button>
-            <button 
-              onClick={() => scrollToSection('departments')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Departments
-            </button>
-            <button 
-              onClick={() => scrollToSection('curriculum')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Curriculum
-            </button>
-            <button 
-              onClick={() => scrollToSection('faculty')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Faculty
-            </button>
-            <button 
-              onClick={() => scrollToSection('regulations')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Regulations
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Programs Offered */}
       <section id="programs" className="section-padding bg-gray-50">

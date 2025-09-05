@@ -44,20 +44,6 @@ const Incubation = () => {
         </div>
       </section>
 
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('activities')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Activities
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Activities */}
       <section id="activities" className="section-padding bg-gray-50">
         <div className="container-max">

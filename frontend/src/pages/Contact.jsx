@@ -43,21 +43,6 @@ const Contact = () => {
           </div>
         </div>
       </section>
-
-      {/* Quick Navigation */}
-      <section className="section-padding-sm bg-white border-b border-gray-200">
-        <div className="container-max">
-          <div className="flex flex-wrap justify-center gap-3">
-            <button 
-              onClick={() => scrollToSection('contact-details')}
-              className="px-4 py-2 text-sm border border-blue-300 text-blue-500 rounded-lg hover:bg-blue-50 transition-colors"
-            >
-              Contact Details & Google Map
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Details & Google Map */}
       <section id="contact-details" className="section-padding bg-gray-50">
         <div className="container-max">
