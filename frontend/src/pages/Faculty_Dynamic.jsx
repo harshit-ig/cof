@@ -109,9 +109,9 @@ const Faculty = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white">
+      <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
         <div className="container mx-auto px-4 py-16">
-          <div className="max-w-3xl">
+          <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Faculty</h1>
             <p className="text-xl text-blue-100 mb-8">
               Meet our distinguished faculty members who are leading experts in fisheries science, 

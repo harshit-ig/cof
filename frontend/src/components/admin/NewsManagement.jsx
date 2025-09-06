@@ -24,9 +24,6 @@ const NewsManagement = () => {
     excerpt: '',
     type: 'news',
     category: 'general',
-    eventDate: '',
-    venue: '',
-    organizer: '',
     images: [],
     attachments: [],
     isPublished: true,
@@ -37,10 +34,9 @@ const NewsManagement = () => {
   const newsTypes = [
     { value: 'news', label: 'News Article' },
     { value: 'announcement', label: 'Announcement' },
-    { value: 'event', label: 'Event' },
-    { value: 'seminar', label: 'Seminar' },
-    { value: 'workshop', label: 'Workshop' },
-    { value: 'visit', label: 'Visit' }
+    { value: 'notification', label: 'Notification' },
+    { value: 'achievement', label: 'Achievement' },
+    { value: 'update', label: 'Update' }
   ]
 
   const categories = [
@@ -63,7 +59,11 @@ const NewsManagement = () => {
 
       const response = await newsAPI.getAll(params)
       if (response.data.success) {
-        setNews(response.data.data.newsEvents || [])
+        // Filter to only include news types (exclude events)
+        const newsItems = (response.data.data.newsEvents || []).filter(item => 
+          !['event', 'seminar', 'workshop', 'visit', 'conference', 'training'].includes(item.type)
+        )
+        setNews(newsItems)
         setPagination(response.data.data.pagination || {})
       }
     } catch (error) {
@@ -88,14 +88,9 @@ const NewsManagement = () => {
         isPublished: Boolean(formData.isPublished),
         isFeatured: Boolean(formData.isFeatured),
         images: formData.images,
-        tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(Boolean) : []
-      }
-
-      // Add event-specific fields if type is event, seminar, workshop, or visit
-      if (['event', 'seminar', 'workshop', 'visit'].includes(formData.type)) {
-        if (formData.eventDate) data.eventDate = formData.eventDate
-        if (formData.venue) data.venue = formData.venue
-        if (formData.organizer) data.organizer = formData.organizer
+        tags: (formData.tags && typeof formData.tags === 'string') 
+          ? formData.tags.split(',').map(tag => tag.trim()).filter(Boolean) 
+          : []
       }
 
       console.log('Submitting news data:', data)
@@ -127,9 +122,6 @@ const NewsManagement = () => {
       excerpt: newsItem.excerpt || '',
       type: newsItem.type || 'news',
       category: newsItem.category || 'general',
-      eventDate: newsItem.eventDate ? newsItem.eventDate.split('T')[0] : '',
-      venue: newsItem.venue || '',
-      organizer: newsItem.organizer || '',
       images: newsItem.images || [],
       attachments: newsItem.attachments || [],
       isPublished: newsItem.isPublished !== undefined ? newsItem.isPublished : true,
@@ -160,25 +152,36 @@ const NewsManagement = () => {
 
     try {
       setUploadingImage(true)
-      console.log('Uploading news image:', file.name)
+      console.log('Starting image upload for news:', file.name)
+      console.log('File size:', file.size, 'bytes')
+      console.log('File type:', file.type)
       
-      const response = await uploadAPI.single(file, 'news')
-      console.log('Upload response:', response.data)
+      console.log('Calling newsAPI.uploadImage...')
+      const response = await newsAPI.uploadImage(file)
+      console.log('Upload response received:', response)
+      console.log('Response data:', response.data)
       
       if (response.data.success) {
         const filename = response.data.data.filename
+        console.log('Upload successful, filename:', filename)
         setFormData(prev => ({
           ...prev,
           images: [...prev.images, {
-            url: filename, // Store just the filename, not the full URL
-            caption: file.name
+            url: filename, // Store just the filename
+            caption: file.name.split('.')[0] // Use filename without extension as caption
           }]
         }))
         toast.success('Image uploaded successfully')
+        
+        // Clear the file input
+        e.target.value = ''
+      } else {
+        throw new Error(response.data.message || 'Upload failed')
       }
     } catch (error) {
       console.error('Error uploading image:', error)
-      toast.error('Failed to upload image')
+      console.error('Error details:', error.response?.data)
+      toast.error(error.response?.data?.message || error.message || 'Failed to upload image')
     } finally {
       setUploadingImage(false)
     }
@@ -198,9 +201,6 @@ const NewsManagement = () => {
       excerpt: '',
       type: 'news',
       category: 'general',
-      eventDate: '',
-      venue: '',
-      organizer: '',
       images: [],
       attachments: [],
       isPublished: true,
@@ -430,15 +430,6 @@ const NewsManagement = () => {
               />
             </FormGroup>
 
-            <FormGroup label="Organizer">
-              <Input
-                name="organizer"
-                value={formData.organizer}
-                onChange={handleChange}
-                placeholder="Organizer name"
-              />
-            </FormGroup>
-
             <FormGroup label="Tags">
               <Input
                 name="tags"
@@ -447,39 +438,10 @@ const NewsManagement = () => {
                   ...prev, 
                   tags: e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag) 
                 }))}
-                placeholder="academic, workshop, seminar (comma-separated)"
+                placeholder="academic, research, announcement (comma-separated)"
               />
             </FormGroup>
           </div>
-
-          {/* Event-specific fields */}
-          {(formData.type === 'event' || formData.type === 'seminar' || formData.type === 'workshop' || formData.type === 'visit') && (
-            <div className="border-t border-gray-200 pt-6 mt-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Event Details</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormGroup label="Event Date" required>
-                  <Input
-                    type="date"
-                    name="eventDate"
-                    value={formData.eventDate}
-                    onChange={handleChange}
-                    required
-                  />
-                </FormGroup>
-
-                <FormGroup label="Venue" required>
-                  <Input
-                    name="venue"
-                    value={formData.venue}
-                    onChange={handleChange}
-                    placeholder="Event venue/location"
-                    required
-                  />
-                </FormGroup>
-              </div>
-            </div>
-          )}
 
           {/* Image Upload */}
           <FormGroup label="Images">

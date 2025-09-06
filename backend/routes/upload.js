@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/serve/:type/:filename', (req, res) => {
   try {
     const { type, filename } = req.params;
-    const validTypes = ['images', 'documents', 'faculty', 'news', 'research', 'dean'];
+    const validTypes = ['images', 'documents', 'faculty', 'news', 'research', 'dean', 'gallery'];
     
     if (!validTypes.includes(type)) {
       return res.status(400).json({
@@ -45,11 +45,16 @@ router.get('/serve/:type/:filename', (req, res) => {
   }
 });
 
-// @desc    Upload single file
-// @route   POST /api/upload/single
+// @desc    Upload single file (fallback route)
+// @route   POST /api/upload
 // @access  Private (Admin only)
-router.post('/single', protect, adminOnly, upload.single('file'), (req, res) => {
+router.post('/', protect, adminOnly, upload.single('file'), (req, res) => {
   try {
+    console.log('Fallback upload endpoint hit');
+    console.log('Request body category:', req.body.category);
+    console.log('Request headers x-upload-category:', req.headers['x-upload-category']);
+    console.log('File received:', req.file ? req.file.filename : 'No file');
+    
     if (!req.file) {
       return res.status(400).json({
         success: false,
@@ -58,6 +63,53 @@ router.post('/single', protect, adminOnly, upload.single('file'), (req, res) => 
     }
 
     const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${path.relative('uploads', req.file.path).replace(/\\/g, '/')}`;
+
+    console.log('File saved to:', req.file.path);
+    console.log('Returning URL:', fileUrl);
+
+    res.json({
+      success: true,
+      message: 'File uploaded successfully',
+      data: {
+        filename: req.file.filename,
+        originalName: req.file.originalname,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        url: fileUrl,
+        path: req.file.path
+      }
+    });
+
+  } catch (error) {
+    console.error('Fallback upload error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during file upload'
+    });
+  }
+});
+
+// @desc    Upload single file
+// @route   POST /api/upload/single
+// @access  Private (Admin only)
+router.post('/single', protect, adminOnly, upload.single('file'), (req, res) => {
+  try {
+    console.log('General upload endpoint hit');
+    console.log('Request body category:', req.body.category);
+    console.log('Request headers x-upload-category:', req.headers['x-upload-category']);
+    console.log('File received:', req.file ? req.file.filename : 'No file');
+    
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded'
+      });
+    }
+
+    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${path.relative('uploads', req.file.path).replace(/\\/g, '/')}`;
+
+    console.log('File saved to:', req.file.path);
+    console.log('Returning URL:', fileUrl);
 
     res.json({
       success: true,

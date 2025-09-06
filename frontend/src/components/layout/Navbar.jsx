@@ -5,6 +5,7 @@ import { Menu, X, ChevronDown } from 'lucide-react'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
+  const [showBanner, setShowBanner] = useState(true)
   const location = useLocation()
   const navigate = useNavigate()
   const [isClient, setIsClient] = useState(false)
@@ -20,7 +21,7 @@ const Navbar = () => {
       name: 'About Us',
       href: '/about',
       dropdown: [
-        { name: 'History and Vision', href: '/about' },
+        { name: 'History and Vision', href: '/about', section: 'history' },
         { name: 'Mission & Objectives', href: '/about', section: 'mission' },
         { name: 'Message from the Dean', href: '/about', section: 'dean-message' },
         { name: 'Organizational Structure', href: '/about', section: 'structure' },
@@ -29,13 +30,13 @@ const Navbar = () => {
     },
     {
       name: 'Academics',
-      href: '/academics',
+      href: '/programs', 
       dropdown: [
-        { name: 'Programs Offered', href: '/programs' },
+        { name: 'Programs Offered', href: '/programs', section: 'programs' },
         { name: 'Academic Calendar', href: '/academics', section: 'calendar' },
-        { name: 'Departments', href: '/departments' },
+        { name: 'Departments', href: '/departments', section: 'departments' },
         { name: 'Course Curriculum', href: '/academics', section: 'curriculum' },
-        { name: 'Faculty Directory', href: '/faculty' },
+        { name: 'Faculty Directory', href: '/faculty', section: 'faculty' },
         { name: 'Academic Regulations', href: '/academics', section: 'regulations' }
       ]
     },
@@ -43,7 +44,7 @@ const Navbar = () => {
       name: 'Research',
       href: '/research',
       dropdown: [
-        { name: 'Ongoing Projects', href: '/research' },
+        { name: 'Ongoing Projects', href: '/research', section: 'ongoing-projects' },
         { name: 'Publications and Journals', href: '/research', section: 'publications' },
         { name: 'Student Research', href: '/research', section: 'student-research' },
         { name: 'Research Collaborations', href: '/research', section: 'collaborations' },
@@ -54,7 +55,7 @@ const Navbar = () => {
       name: 'Extension & Outreach',
       href: '/extension',
       dropdown: [
-        { name: 'Farmer Training Programs', href: '/extension' },
+        { name: 'Farmer Training Programs', href: '/extension', section: 'farmer-training' },
         { name: 'FFPO and SHG Support', href: '/extension', section: 'ffpo-shg' },
         { name: 'Matsya Vigyan Kendra (MVK)', href: '/extension', section: 'mvk' },
         { name: 'Aquaculture Demonstrations', href: '/extension', section: 'demonstrations' },
@@ -65,7 +66,7 @@ const Navbar = () => {
       name: 'Infrastructure',
       href: '/infrastructure',
       dropdown: [
-        { name: 'Classrooms and Labs', href: '/infrastructure' },
+        { name: 'Classrooms and Labs', href: '/infrastructure', section: 'classrooms' },
         { name: 'Hatcheries and Demo Units', href: '/infrastructure', section: 'hatcheries' },
         { name: 'Library and e-Resources', href: '/infrastructure', section: 'library' },
         { name: 'Hostels and Campus Facilities', href: '/infrastructure', section: 'hostels' },
@@ -77,7 +78,7 @@ const Navbar = () => {
       name: 'Students Corner',
       href: '/student-corner',
       dropdown: [
-        { name: 'Admission Guidelines', href: '/student-corner' },
+        { name: 'Admission Guidelines', href: '/student-corner', section: 'admissions' },
         { name: 'Scholarships & Fellowships', href: '/student-corner', section: 'scholarships' },
         { name: 'Student Council / Clubs', href: '/student-corner', section: 'clubs' },
         { name: 'Alumni Testimonials', href: '/student-corner', section: 'alumni' },
@@ -86,13 +87,13 @@ const Navbar = () => {
     },
     {
       name: 'News & Events',
-      href: '/news',
+      href: '/events', // Changed to match the primary dropdown item
       dropdown: [
-        { name: 'Seminars & Conferences', href: '/events' },
+        { name: 'Seminars & Conferences', href: '/events', section: 'seminars' },
         { name: 'Workshops and Training', href: '/events', section: 'workshops' },
         { name: 'Field Visits & Exposure Trips', href: '/events', section: 'visits' },
-        { name: 'Photo Gallery', href: '/gallery' },
-        { name: 'Press Releases', href: '/news' }
+        { name: 'Photo Gallery', href: '/gallery', section: 'gallery' },
+        { name: 'Press Releases', href: '/news', section: 'press-releases' }
       ]
     },
     { name: 'Collaborations', href: '/collaborations' },
@@ -103,9 +104,13 @@ const Navbar = () => {
     if (href === '/') {
       return location.pathname === href
     }
-    // Special handling for academics route
-    if (href === '/academics') {
-      return location.pathname === '/academics'
+    // Special handling for academics route - now points to programs
+    if (href === '/programs') {
+      return location.pathname === '/programs' || location.pathname === '/academics'
+    }
+    // Special handling for events route
+    if (href === '/events') {
+      return location.pathname === '/events' || location.pathname === '/news'
     }
     return location.pathname.startsWith(href)
   }
@@ -177,6 +182,27 @@ const Navbar = () => {
     }
   }, [])
 
+  // Handle scroll to hide/show banner
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      
+      if (currentScrollY > 80) {
+        // Hide banner when scrolled down more than 80px
+        setShowBanner(false)
+      } else {
+        // Show banner when near top
+        setShowBanner(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   // Improved hover handling with cancelable close timer
   const closeTimerRef = useRef(null)
   const dropdownRef = useRef(null)
@@ -217,24 +243,20 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
-      {/* Top Header - College Name */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center py-3">
-            <Link to="/" className="flex items-center space-x-3">
-              <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center">
-                <img 
-                  src="/logo.jpg" 
-                  alt="College of Fisheries Logo" 
-                  className="w-full h-full object-contain rounded-lg"
-                />
-              </div>
-              <div className="text-center">
-                <h1 className="text-lg lg:text-xl font-bold text-gray-900 leading-tight">College of Fisheries, Jabalpur</h1>
-                <p className="text-xs lg:text-sm text-gray-600">(nanaji deshmukh veterinary science university)</p>
-              </div>
-            </Link>
-          </div>
+      {/* Top Banner */}
+      <div 
+        className={`bg-white transition-all duration-400 ease-in-out overflow-hidden ${
+          showBanner ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="max-w-full mx-auto">
+          <Link to="/">
+            <img 
+              src="/top_banner.png" 
+              alt="College of Fisheries, Jabalpur Banner" 
+              className="w-full h-auto object-contain"
+            />
+          </Link>
         </div>
       </div>
 
@@ -276,13 +298,10 @@ const Navbar = () => {
                       aria-haspopup="true"
                       aria-expanded={activeDropdown === index}
                       onFocus={() => openDropdown(index)}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        if (activeDropdown === index) {
-                          setActiveDropdown(null)
-                        } else {
-                          openDropdown(index)
-                        }
+                      onClick={() => {
+                        // Navigate to the main page and close dropdown
+                        handleNavClick(item)
+                        setActiveDropdown(null)
                       }}
                     >
                       {item.name}
@@ -343,13 +362,25 @@ const Navbar = () => {
                 {item.dropdown ? (
                   <div>
                     <button
-                      onClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
+                      onClick={() => {
+                        // Navigate to main page if clicked without toggling dropdown
+                        handleNavClick(item)
+                        setActiveDropdown(null)
+                      }}
+                      onDoubleClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
                       className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40 rounded-md transition-all duration-200 ${
                         activeDropdown === index ? 'bg-white bg-opacity-25' : ''
                       }`}
                     >
-                      {item.name}
+                      <span onClick={(e) => {
+                        e.stopPropagation()
+                        handleNavClick(item)
+                      }}>{item.name}</span>
                       <ChevronDown
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setActiveDropdown(activeDropdown === index ? null : index)
+                        }}
                         className={`h-4 w-4 transition-transform duration-200 ${
                           activeDropdown === index ? 'rotate-180 text-gray-900' : 'text-white'
                         }`}

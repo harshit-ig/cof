@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Search, Award, FileText, Save, X, Eye } from 'lucide-react'
+import { researchAPI } from '../../services/api'
 import toast from 'react-hot-toast'
 
 const ResearchManagement = () => {
@@ -30,16 +31,10 @@ const ResearchManagement = () => {
   })
 
   const categories = [
-    { value: 'aquaculture', label: 'Aquaculture' },
-    { value: 'fish-nutrition', label: 'Fish Nutrition' },
-    { value: 'fish-breeding', label: 'Fish Breeding & Genetics' },
-    { value: 'fish-health', label: 'Fish Health Management' },
-    { value: 'processing', label: 'Fish Processing Technology' },
-    { value: 'extension', label: 'Fisheries Extension' },
-    { value: 'environment', label: 'Aquatic Environment' },
-    { value: 'economics', label: 'Fisheries Economics' },
-    { value: 'biotechnology', label: 'Aquaculture Biotechnology' },
-    { value: 'other', label: 'Other' }
+    { value: 'project', label: 'Research Project' },
+    { value: 'publication', label: 'Publication' },
+    { value: 'collaboration', label: 'Collaboration' },
+    { value: 'facility', label: 'Research Facility' }
   ]
 
   const statusOptions = [
@@ -56,11 +51,10 @@ const ResearchManagement = () => {
   const fetchResearch = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/content/research-topics')
-      const data = await response.json()
+      const response = await researchAPI.getAll()
       
-      if (data.success) {
-        setResearch(data.data.content || [])
+      if (response.data.success) {
+        setResearch(response.data.data.research || [])
       }
     } catch (error) {
       console.error('Error fetching research:', error)
@@ -139,57 +133,61 @@ const ResearchManagement = () => {
     try {
       setSaving(true)
       
-      const payload = {
-        section: 'research-topics',
-        subsection: formData.category,
+      // Transform frontend data to match backend Research model
+      const data = {
         title: formData.title,
-        data: {
-          category: formData.category,
-          description: formData.description,
-          objectives: formData.objectives,
-          methodology: formData.methodology,
-          keyFindings: formData.keyFindings,
-          researchTeam: formData.researchTeam,
-          duration: formData.duration,
-          fundingAgency: formData.fundingAgency,
-          budget: formData.budget,
-          status: formData.status,
-          publications: formData.publications,
-          keywords: formData.keywords,
-          startDate: formData.startDate,
-          endDate: formData.endDate
+        description: formData.description,
+        type: formData.category, // Map category to type
+        status: formData.status,
+        principalInvestigator: formData.researchTeam[0] || 'Not specified', // First team member as PI
+        coInvestigators: formData.researchTeam.slice(1), // Rest as co-investigators
+        department: 'College of Fisheries', // Default department
+        fundingAgency: formData.fundingAgency,
+        budget: formData.budget ? parseFloat(formData.budget) : undefined,
+        duration: {
+          startDate: formData.startDate ? new Date(formData.startDate) : undefined,
+          endDate: formData.endDate ? new Date(formData.endDate) : undefined
         },
-        isPublished: formData.isPublished,
-        order: editingResearch ? editingResearch.order : research.length + 1
+        objectives: Array.isArray(formData.objectives) ? formData.objectives : 
+                   formData.objectives ? formData.objectives.split('\n').filter(obj => obj.trim()) : [],
+        methodology: formData.methodology,
+        expectedOutcomes: Array.isArray(formData.keyFindings) ? formData.keyFindings : 
+                         formData.keyFindings ? formData.keyFindings.split('\n').filter(finding => finding.trim()) : [],
+        publications: Array.isArray(formData.publications) && formData.publications.length > 0 ? 
+                     formData.publications.map(pub => {
+                       if (typeof pub === 'string' && pub.trim()) {
+                         // Convert string to publication object structure
+                         return {
+                           title: pub.trim(),
+                           journal: '',
+                           year: new Date().getFullYear(),
+                           authors: [],
+                           doi: '',
+                           url: ''
+                         }
+                       }
+                       return pub
+                     }).filter(pub => pub && pub.title) : [],
+        tags: Array.isArray(formData.keywords) ? formData.keywords :
+              formData.keywords ? formData.keywords.split(',').map(k => k.trim()).filter(k => k) : [],
+        isPublished: formData.isPublished
       }
 
-      const url = editingResearch 
-        ? `/api/content/${editingResearch._id}`
-        : '/api/content'
-      
-      const method = editingResearch ? 'PATCH' : 'POST'
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(payload)
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        toast.success(`Research ${editingResearch ? 'updated' : 'added'} successfully!`)
-        setShowAddModal(false)
-        resetForm()
-        fetchResearch()
+      if (editingResearch) {
+        await researchAPI.update(editingResearch._id, data)
+        toast.success('Research updated successfully!')
       } else {
-        throw new Error(data.message)
+        await researchAPI.create(data)
+        toast.success('Research added successfully!')
       }
+
+      setShowAddModal(false)
+      resetForm()
+      fetchResearch()
     } catch (error) {
       console.error('Error saving research:', error)
-      toast.error(`Failed to ${editingResearch ? 'update' : 'add'} research`)
+      const message = error.response?.data?.message || 'Failed to save research'
+      toast.error(message)
     } finally {
       setSaving(false)
     }
@@ -199,20 +197,9 @@ const ResearchManagement = () => {
     if (!window.confirm('Are you sure you want to delete this research topic?')) return
 
     try {
-      const response = await fetch(`/api/content/${researchId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        toast.success('Research topic deleted successfully!')
-        fetchResearch()
-      } else {
-        throw new Error(data.message)
-      }
+      await researchAPI.delete(researchId)
+      toast.success('Research topic deleted successfully!')
+      fetchResearch()
     } catch (error) {
       console.error('Error deleting research:', error)
       toast.error('Failed to delete research topic')

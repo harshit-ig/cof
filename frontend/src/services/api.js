@@ -61,15 +61,40 @@ export const facultyAPI = {
 export const newsAPI = {
   getAll: (params) => api.get('/news', { params }),
   getById: (id) => api.get(`/news/${id}`),
-  create: (data) => api.post('/news', data),
-  update: (id, data) => api.put(`/news/${id}`, data),
+  create: (data) => {
+    console.log('newsAPI.create called with:', data)
+    return api.post('/news', data)
+  },
+  update: (id, data) => {
+    console.log('newsAPI.update called with:', { id, data })
+    return api.put(`/news/${id}`, data)
+  },
   delete: (id) => api.delete(`/news/${id}`),
+  uploadImage: (file) => {
+    console.log('newsAPI.uploadImage called with file:', file.name, file.size, 'bytes')
+    const formData = new FormData()
+    formData.append('file', file)
+    return api.post('/news/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  },
 }
 
 export const eventsAPI = {
   getAll: (params) => api.get('/events', { params }),
   getUpcoming: (params) => api.get('/events/upcoming', { params }),
   getById: (id) => api.get(`/events/${id}`),
+  create: (data) => {
+    console.log('eventsAPI.create called with:', data)
+    return api.post('/events', data)
+  },
+  update: (id, data) => {
+    console.log('eventsAPI.update called with:', { id, data })
+    return api.put(`/events/${id}`, data)
+  },
+  delete: (id) => api.delete(`/events/${id}`),
 }
 
 export const researchAPI = {
@@ -141,6 +166,30 @@ export const uploadAPI = {
     // Handle local files - use relative URL which will be proxied by Vite
     return `/api/upload/serve/${type}/${filename}`
   },
+}
+
+export const slideshowAPI = {
+  getAll: () => api.get('/slideshow'),
+  getAllAdmin: () => api.get('/slideshow/admin'),
+  getById: (id) => api.get(`/slideshow/${id}`),
+  create: (formData) => api.post('/slideshow', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
+  update: (id, formData) => api.put(`/slideshow/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
+  delete: (id) => api.delete(`/slideshow/${id}`),
+  reorder: (slides) => api.post('/slideshow/reorder', { slides }),
+}
+
+export const settingsAPI = {
+  get: () => api.get('/settings'),
+  update: (settings) => api.put('/settings', settings),
+  getPublic: () => api.get('/settings/public'),
 }
 
 export default api

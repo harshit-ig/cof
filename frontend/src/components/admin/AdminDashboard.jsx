@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { 
@@ -14,19 +14,19 @@ import {
   LogOut,
   Menu,
   X,
-  User
+  User,
+  Image
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { programsAPI, facultyAPI, newsAPI } from '../../services/api'
-import LoadingSpinner from '../common/LoadingSpinner'
+import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
 
 import ProgramsManagement from './ProgramsManagement'
 import NewsManagement from './NewsManagement'
+import EventsManagement from './EventsManagement'
 import FacultyManagement from './FacultyManagement'
-import ContentManagement from './ContentManagement'
 import WelcomeMessageManagement from './WelcomeMessageManagement'
-// import InfrastructureGalleryManagement from './InfrastructureGalleryManagement'
-// import AcademicProgramsManagement from './AcademicProgramsManagement'
+import GalleryManagement from './GalleryManagement'
+import SlideshowManagement from './SlideshowManagement'
 import ResearchManagement from './ResearchManagement'
 
 // Admin Page Components
@@ -146,26 +146,7 @@ const DashboardHome = () => {
 }
 
 // Placeholder components for remaining sections
-const InfrastructureManagement = () => (
-  <div>
-    <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
-      <div className="flex items-center">
-        <div className="flex-shrink-0">
-          <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-        </div>
-        <div className="ml-3">
-          <h3 className="text-sm font-medium text-yellow-800">Under Development</h3>
-          <p className="text-sm text-yellow-700 mt-1">Infrastructure management functionality is being developed.</p>
-        </div>
-      </div>
-    </div>
-    <h1 className="text-2xl font-bold text-gray-900 mb-6">Infrastructure Management</h1>
-    <p className="text-gray-600">This section will allow you to manage infrastructure and facilities information.</p>
-  </div>
-)
-
+// Placeholder for future InfrastructureManagement component (currently unused)
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
     siteName: 'College of Fisheries, Jabalpur',
@@ -188,21 +169,48 @@ const AdminSettings = () => {
   
   const [activeTab, setActiveTab] = useState('general')
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchSettings()
+  }, [])
+
+  const fetchSettings = async () => {
+    try {
+      setLoading(true)
+      const response = await settingsAPI.get()
+      setSettings(response)
+    } catch (error) {
+      console.error('Error fetching settings:', error)
+      // Keep default values if fetch fails
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSaving(true)
-    
     try {
-      // Here you would save to your backend API
-      // await settingsAPI.update(settings)
-      toast.success('Settings updated successfully!')
+      await settingsAPI.update(settings)
+      alert('Settings saved successfully!')
     } catch (error) {
-      console.error('Error updating settings:', error)
-      toast.error('Failed to update settings')
+      console.error('Error saving settings:', error)
+      alert('Failed to save settings')
     } finally {
       setSaving(false)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading settings...</p>
+        </div>
+      </div>
+    )
   }
 
   const tabs = [
@@ -522,14 +530,16 @@ const AdminDashboard = () => {
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
     { name: 'Welcome Message', href: '/admin/welcome', icon: User },
+    { name: 'Hero Slideshow', href: '/admin/slideshow', icon: Image },
     // { name: 'Academic Programs', href: '/admin/academic-programs', icon: BookOpen },
     { name: 'Programs', href: '/admin/programs', icon: BookOpen },
     { name: 'Faculty', href: '/admin/faculty', icon: Users },
     { name: 'Research Topics', href: '/admin/research', icon: FileText },
+    { name: 'Gallery', href: '/admin/gallery', icon: Image },
     // { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
     // { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
-    { name: 'News & Events', href: '/admin/news', icon: Newspaper },
-    { name: 'Content Management', href: '/admin/content', icon: FileText },
+        { name: 'News', href: '/admin/news', icon: Newspaper },
+    { name: 'Events', href: '/admin/events', icon: Calendar },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -712,14 +722,13 @@ const AdminDashboard = () => {
               <Routes>
                 <Route path="/" element={<DashboardHome />} />
                 <Route path="/welcome" element={<WelcomeMessageManagement />} />
-                {/* <Route path="/academic-programs" element={<AcademicProgramsManagement />} /> */}
+                <Route path="/slideshow" element={<SlideshowManagement />} />
                 <Route path="/programs" element={<ProgramsManagement />} />
                 <Route path="/faculty" element={<FacultyManagement />} />
                 <Route path="/research" element={<ResearchManagement />} />
-                {/* <Route path="/infrastructure-gallery" element={<InfrastructureGalleryManagement />} /> */}
-                {/* <Route path="/infrastructure" element={<InfrastructureManagement />} /> */}
+                <Route path="/gallery" element={<GalleryManagement />} />
                 <Route path="/news" element={<NewsManagement />} />
-                <Route path="/content" element={<ContentManagement />} />
+                <Route path="/events" element={<EventsManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>
@@ -732,4 +741,3 @@ const AdminDashboard = () => {
 }
 
 export default AdminDashboard
-

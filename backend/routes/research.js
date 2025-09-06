@@ -56,6 +56,14 @@ router.get('/', async (req, res) => {
 // @route   POST /api/research
 // @access  Private (Admin only)
 router.post('/', protect, adminOnly, async (req, res) => {
+  console.log('=== RESEARCH CREATION REQUEST ===');
+  console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Headers:', req.headers);
+  console.log('Body:', JSON.stringify(req.body, null, 2));
+  console.log('Admin:', req.admin);
+  console.log('=== END REQUEST LOG ===');
+  
   try {
     const researchData = {
       ...req.body,
@@ -74,7 +82,7 @@ router.post('/', protect, adminOnly, async (req, res) => {
     console.error('Create research error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error creating research'
+      message: error.message || 'Server error creating research'
     });
   }
 });

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { slideshowAPI } from '../../services/api'
 
 const HeroSlideshow = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [slides, setSlides] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const slides = [
+  // Fallback slides in case API fails or no slides exist
+  const fallbackSlides = [
     {
       id: 1,
-      image: '/COF NEW.png',
+      image: '/slider.jpg',
       title: 'College of Fisheries, Jabalpur',
       subtitle: 'Excellence in Fisheries Education & Research',
       description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fisheries science education, committed to nurturing future professionals in aquaculture and fisheries management.',
@@ -16,7 +20,7 @@ const HeroSlideshow = () => {
     },
     {
       id: 2,
-      image: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
+      image: '/slider-2.jpg',
       title: 'State-of-the-Art Facilities',
       subtitle: 'Modern Infrastructure for Quality Education',
       description: 'Well-equipped laboratories, research facilities, and comprehensive infrastructure to provide hands-on learning experience.',
@@ -25,7 +29,7 @@ const HeroSlideshow = () => {
     },
     {
       id: 3,
-      image: '/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg',
+      image: '/slider-3.jpg',
       title: 'Research & Innovation',
       subtitle: 'Advancing Fisheries Science',
       description: 'Cutting-edge research programs contributing to sustainable fisheries development and aquaculture innovation.',
@@ -34,35 +38,52 @@ const HeroSlideshow = () => {
     },
     {
       id: 4,
-      image: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
+      image: '/slider-4.jpg',
       title: 'Campus Life & Activities',
       subtitle: 'Vibrant Student Community',
       description: 'Experience a dynamic campus environment with various student activities, cultural events, and academic programs.',
       cta: 'Explore Campus',
       link: '/about'
-    },
-    {
-      id: 5,
-      image: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
-      title: 'Practical Learning',
-      subtitle: 'Hands-on Experience',
-      description: 'Field training, practical sessions, and real-world exposure to fisheries and aquaculture practices.',
-      cta: 'Learn More',
-      link: '/academics'
-    },
-    {
-      id: 6,
-      image: '/WhatsApp Image 2025-08-19 at 09.04.54_38d4a9cd.jpg',
-      title: 'Admission 2025-26',
-      subtitle: 'Join Our Academic Excellence',
-      description: 'Applications now open for Bachelor of Fisheries Science program. Shape your future with quality education.',
-      cta: 'Apply Now',
-      link: '/academics'
     }
   ]
 
+  useEffect(() => {
+    fetchSlides()
+  }, [])
+
+  const fetchSlides = async () => {
+    try {
+      setLoading(true)
+      const response = await slideshowAPI.getAll()
+      
+      if (response.data.success && response.data.data.slides.length > 0) {
+        const formattedSlides = response.data.data.slides.map(slide => ({
+          id: slide._id,
+          image: slide.image.startsWith('http') ? slide.image : slide.image,
+          title: slide.title,
+          subtitle: slide.subtitle,
+          description: slide.description,
+          cta: slide.cta,
+          link: slide.link
+        }))
+        setSlides(formattedSlides)
+      } else {
+        // Use fallback slides if no slides in database
+        setSlides(fallbackSlides)
+      }
+    } catch (error) {
+      console.error('Error fetching slides:', error)
+      // Use fallback slides on error
+      setSlides(fallbackSlides)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   // Auto-advance slides
   useEffect(() => {
+    if (slides.length === 0) return
+
     const interval = setInterval(() => {
       setCurrentSlide((prevSlide) => 
         prevSlide === slides.length - 1 ? 0 : prevSlide + 1
@@ -70,7 +91,7 @@ const HeroSlideshow = () => {
     }, 5000) // Change slide every 5 seconds
 
     return () => clearInterval(interval)
-  }, [])
+  }, [slides.length])
 
   const goToSlide = (slideIndex) => {
     setCurrentSlide(slideIndex)
@@ -82,6 +103,27 @@ const HeroSlideshow = () => {
 
   const goToNextSlide = () => {
     setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)
+  }
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gray-200 flex items-center justify-center">
+        <div className="text-gray-500">Loading slideshow...</div>
+      </div>
+    )
+  }
+
+  // Show message if no slides available
+  if (slides.length === 0) {
+    return (
+      <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-r from-blue-800 to-green-700 flex items-center justify-center">
+        <div className="text-white text-center">
+          <h1 className="text-4xl font-bold mb-4">College of Fisheries, Jabalpur</h1>
+          <p className="text-xl">Excellence in Fisheries Education & Research</p>
+        </div>
+      </div>
+    )
   }
 
   return (

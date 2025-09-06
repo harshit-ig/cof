@@ -1,10 +1,11 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const connectDB = require('./config/database');
-require('dotenv').config();
 
 // Connect to database
 connectDB();
@@ -54,6 +55,9 @@ app.use('/api/infrastructure', require('./routes/infrastructure'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/collaborations', require('./routes/collaborations'));
 app.use('/api/content', require('./routes/content'));
+app.use('/api/gallery', require('./routes/gallery'));
+app.use('/api/slideshow', require('./routes/slideshow'));
+app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/proxy', require('./routes/proxy'));
 

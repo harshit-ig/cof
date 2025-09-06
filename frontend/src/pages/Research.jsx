@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { FlaskConical, Users, Award, BookOpen, Globe, Building, Fish, Microscope } from 'lucide-react'
+import { FlaskConical, Users, Award, BookOpen, Globe, Building, Fish, Microscope, Calendar, User } from 'lucide-react'
 import Card from '../components/common/Card'
+import { researchAPI } from '../services/api'
 
 const Research = () => {
   const location = useLocation()
   const hash = location.hash.substring(1)
+  const [researches, setResearches] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -20,6 +24,25 @@ const Research = () => {
       })
     }
   }
+
+  // Fetch research data
+  useEffect(() => {
+    const fetchResearches = async () => {
+      try {
+        setLoading(true)
+        const response = await researchAPI.getAll()
+        setResearches(response.data.data.research || [])
+        setError(null)
+      } catch (error) {
+        console.error('Error fetching researches:', error)
+        setError('Failed to load research data')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchResearches()
+  }, [])
 
   // Scroll to section when hash changes
   React.useEffect(() => {
@@ -41,6 +64,114 @@ const Research = () => {
               Advancing Fisheries Science Through Innovation & Discovery
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Research Entries from Database */}
+      <section id="research-entries" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Faculty Research</h2>
+            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+          </div>
+          
+          {loading && (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="text-gray-500 mt-2">Loading research entries...</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="text-center py-8">
+              <p className="text-red-500">{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && researches.length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-gray-500">No research entries found.</p>
+            </div>
+          )}
+
+          {!loading && researches.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {researches.map((research) => (
+                <Card key={research._id} className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="flex items-start mb-4">
+                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                      <FlaskConical className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{research.title}</h3>
+                      <div className="flex items-center text-sm text-gray-600 mb-2">
+                        <User className="w-4 h-4 mr-1" />
+                        <span>{research.principalInvestigator}</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-700 text-sm mb-4 line-clamp-3">
+                    {research.description}
+                  </p>
+                  
+                  <div className="space-y-2 mb-4">
+                    {research.fundingAgency && (
+                      <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                        <strong>Funding:</strong> {research.fundingAgency}
+                      </div>
+                    )}
+                    {research.duration && (research.duration.startDate || research.duration.endDate) && (
+                      <div className="flex items-center text-xs text-gray-600">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        <span>
+                          {research.duration.startDate && new Date(research.duration.startDate).getFullYear()} - 
+                          {research.duration.endDate && new Date(research.duration.endDate).getFullYear()}
+                        </span>
+                      </div>
+                    )}
+                    {research.status && (
+                      <div className={`text-xs px-2 py-1 rounded ${
+                        research.status === 'Ongoing' 
+                          ? 'bg-green-100 text-green-800' 
+                          : research.status === 'Completed'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {research.status}
+                      </div>
+                    )}
+                  </div>
+
+                  {research.publications && research.publications.length > 0 && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Publications ({research.publications.length})</h4>
+                      <div className="space-y-1">
+                        {research.publications.slice(0, 2).map((pub, index) => (
+                          <div key={index} className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+                            <div className="font-medium">{pub.title || 'Untitled'}</div>
+                            {pub.journal && <div className="text-gray-500">{pub.journal} ({pub.year || 'N/A'})</div>}
+                          </div>
+                        ))}
+                        {research.publications.length > 2 && (
+                          <div className="text-xs text-blue-600 font-medium">
+                            +{research.publications.length - 2} more publications
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  <Link
+                    to={`/research/${research._id}`}
+                    className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    View Details →
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -132,12 +263,6 @@ const Research = () => {
               Our faculty and students regularly publish in prestigious national and international journals 
               in the field of fisheries science and aquaculture.
             </p>
-            <Link
-              to="/research/publications"
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
-            >
-              View Publications
-            </Link>
           </Card>
         </div>
       </section>

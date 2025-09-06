@@ -16,6 +16,7 @@ const protect = async (req, res, next) => {
     try {
       // Get token from header
       token = req.headers.authorization.split(' ')[1];
+      console.log('Token received:', token ? token.substring(0, 20) + '...' : 'No token');
 
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,6 +25,7 @@ const protect = async (req, res, next) => {
       req.admin = await Admin.findById(decoded.id).select('-password');
 
       if (!req.admin) {
+        console.log('Admin not found for token');
         return res.status(401).json({
           success: false,
           message: 'Not authorized, admin not found'
@@ -31,15 +33,18 @@ const protect = async (req, res, next) => {
       }
 
       if (!req.admin.isActive) {
+        console.log('Admin account is deactivated');
         return res.status(401).json({
           success: false,
           message: 'Account is deactivated'
         });
       }
 
+      console.log('Authentication successful for admin:', req.admin.username);
       next();
     } catch (error) {
       console.error('Token verification error:', error);
+      console.log('Problematic token:', token ? token.substring(0, 50) + '...' : 'No token');
       return res.status(401).json({
         success: false,
         message: 'Not authorized, invalid token'

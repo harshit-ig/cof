@@ -189,6 +189,113 @@ const About = () => {
         </div>
       </section>
 
+      {/* Governing Body */}
+      <section id="governing-body" className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Governing Body</h2>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our college is governed by a distinguished body of academics, administrators, and industry experts 
+              who provide strategic direction and oversight for institutional excellence.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Chairman */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <User className="w-10 h-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Chairman</h3>
+              <p className="text-blue-600 font-medium mb-2">Vice Chancellor</p>
+              <p className="text-sm text-gray-600">Nanaji Deshmukh Veterinary Science University</p>
+            </Card>
+
+            {/* Dean */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-10 h-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Dean & Director</h3>
+              <p className="text-blue-600 font-medium mb-2">Ex-Officio Member</p>
+              <p className="text-sm text-gray-600">College of Fisheries, Jabalpur</p>
+            </Card>
+
+            {/* Registrar */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Settings className="w-10 h-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Registrar</h3>
+              <p className="text-blue-600 font-medium mb-2">Ex-Officio Member</p>
+              <p className="text-sm text-gray-600">Administrative Affairs</p>
+            </Card>
+
+            {/* Director Research */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-10 h-10 text-gray-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Director of Research</h3>
+              <p className="text-gray-600 font-medium mb-2">Ex-Officio Member</p>
+              <p className="text-sm text-gray-600">Research & Development</p>
+            </Card>
+
+            {/* Government Representative */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Building className="w-10 h-10 text-gray-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Government Representative</h3>
+              <p className="text-gray-600 font-medium mb-2">Nominated Member</p>
+              <p className="text-sm text-gray-600">Ministry of Fisheries, Animal Husbandry & Dairying</p>
+            </Card>
+
+            {/* Industry Expert */}
+            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="w-10 h-10 text-gray-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Industry Expert</h3>
+              <p className="text-gray-600 font-medium mb-2">External Member</p>
+              <p className="text-sm text-gray-600">Aquaculture & Fisheries Industry</p>
+            </Card>
+          </div>
+
+          {/* Additional Information */}
+          <div className="mt-12 bg-gray-50 rounded-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Key Responsibilities</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                  <Target className="w-5 h-5 text-blue-500 mr-2" />
+                  Strategic Governance
+                </h4>
+                <ul className="text-gray-700 space-y-2 text-sm">
+                  <li>• Policy formulation and implementation</li>
+                  <li>• Academic quality assurance</li>
+                  <li>• Resource allocation and planning</li>
+                  <li>• Institutional development oversight</li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
+                  <Award className="w-5 h-5 text-blue-500 mr-2" />
+                  Academic Excellence
+                </h4>
+                <ul className="text-gray-700 space-y-2 text-sm">
+                  <li>• Curriculum development and review</li>
+                  <li>• Faculty appointment and promotion</li>
+                  <li>• Research program evaluation</li>
+                  <li>• Student welfare and development</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Us */}
       <section className="section-padding bg-blue-500 text-white">
         <div className="container-max">

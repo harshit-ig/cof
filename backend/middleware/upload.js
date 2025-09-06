@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure upload directories exist
-const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
+const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean', 'uploads/gallery'];
 uploadDirs.forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -15,26 +15,40 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let uploadPath = 'uploads/images'; // default
     
-    // Determine upload path based on file type, route, or request body
-    // Note: req.body might not be available yet during multer processing
+    // Determine upload path based on URL, headers, or body
+    const url = req.originalUrl || req.url;
+    const referer = req.headers.referer || req.headers.referrer || '';
     const category = req.body?.category;
-    console.log('Upload category:', category);
-    console.log('Route path:', req.route?.path);
-    console.log('Request URL:', req.url);
-    console.log('Request headers:', req.headers);
-    
-    // Check for category in headers as fallback
     const categoryHeader = req.headers['x-upload-category'];
     const finalCategory = category || categoryHeader;
     
-    if (finalCategory === 'dean') {
-      uploadPath = 'uploads/dean';
-    } else if (req.route?.path?.includes('faculty') || finalCategory === 'faculty') {
-      uploadPath = 'uploads/faculty';
-    } else if (req.route?.path?.includes('news') || req.route?.path?.includes('events') || finalCategory === 'news') {
+    console.log('Upload category:', category);
+    console.log('Category header:', categoryHeader);
+    console.log('Request URL:', url);
+    console.log('Referer:', referer);
+    console.log('Final category:', finalCategory);
+    
+    // Check URL path first for most specific matching
+    if (url.includes('/news/upload')) {
       uploadPath = 'uploads/news';
-    } else if (req.route?.path?.includes('research') || finalCategory === 'research') {
+    } else if (url.includes('/gallery') || finalCategory === 'gallery') {
+      uploadPath = 'uploads/gallery';
+    } else if (url.includes('/faculty/upload') || finalCategory === 'faculty') {
+      uploadPath = 'uploads/faculty';
+    } else if (url.includes('/research/upload') || finalCategory === 'research') {
       uploadPath = 'uploads/research';
+    } else if (finalCategory === 'dean') {
+      uploadPath = 'uploads/dean';
+    } else if (finalCategory === 'news') {
+      uploadPath = 'uploads/news';
+    } else if (referer && referer.includes('/admin/news')) {
+      // If the upload is coming from the news admin page, assume it's for news
+      uploadPath = 'uploads/news';
+      console.log('Detected news upload from referer');
+    } else if (referer && referer.includes('/admin/gallery')) {
+      // If the upload is coming from the gallery admin page, assume it's for gallery
+      uploadPath = 'uploads/gallery';
+      console.log('Detected gallery upload from referer');
     } else if (file.mimetype.startsWith('application/')) {
       uploadPath = 'uploads/documents';
     }

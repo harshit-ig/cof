@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 
 const AuthContext = createContext()
 
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      // Token will be automatically added by the axios interceptor in api.js
       // Verify token is still valid
       verifyToken()
     }
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
   const verifyToken = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true })
-      const response = await axios.get('/api/auth/me')
+      const response = await api.get('/auth/me')
       
       if (response.data.success) {
         dispatch({
@@ -94,16 +94,13 @@ export const AuthProvider = ({ children }) => {
     try {
       dispatch({ type: 'LOGIN_START' })
       
-      const response = await axios.post('/api/auth/login', credentials)
+      const response = await api.post('/auth/login', credentials)
       
       if (response.data.success) {
         const { admin, token } = response.data.data
         
         // Store token in localStorage
         localStorage.setItem('token', token)
-        
-        // Set default authorization header
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         
         dispatch({
           type: 'LOGIN_SUCCESS',
@@ -125,9 +122,6 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     // Remove token from localStorage
     localStorage.removeItem('token')
-    
-    // Remove authorization header
-    delete axios.defaults.headers.common['Authorization']
     
     dispatch({ type: 'LOGOUT' })
   }

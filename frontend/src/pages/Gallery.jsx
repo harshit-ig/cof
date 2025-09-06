@@ -1,172 +1,136 @@
-import React, { useState } from 'react'
-import { X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { X, ChevronLeft, ChevronRight, ZoomIn, Calendar, Eye } from 'lucide-react'
 import Section, { SectionHeader } from '../components/common/Section'
 import Card from '../components/common/Card'
+import { uploadAPI } from '../services/api'
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null)
   const [activeFilter, setActiveFilter] = useState('all')
+  const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  const galleryImages = [
-    {
-      id: 1,
-      src: '/cllg.jpg',
-      title: 'College of Fisheries - Main Building',
-      category: 'infrastructure',
-      description: 'Main administrative and academic building of College of Fisheries, Jabalpur'
-    },
-    {
-      id: 2,
-      src: '/COF NEW.png',
-      title: 'College Logo & Branding',
-      category: 'campus',
-      description: 'Official logo and branding of College of Fisheries'
-    },
-    {
-      id: 3,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
-      title: 'Campus Infrastructure',
-      category: 'infrastructure',
-      description: 'Modern campus infrastructure and building facilities'
-    },
-    {
-      id: 4,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.51_bd417a2e.jpg',
-      title: 'Research Laboratories',
-      category: 'research',
-      description: 'Well-equipped research laboratories for fisheries science studies'
-    },
-    {
-      id: 5,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.52_8b313bd6.jpg',
-      title: 'Academic Activities',
-      category: 'campus',
-      description: 'Classroom sessions and academic activities'
-    },
-    {
-      id: 6,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.52_e4f075d7.jpg',
-      title: 'Student Activities',
-      category: 'campus',
-      description: 'Student life and campus activities'
-    },
-    {
-      id: 7,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
-      title: 'Field Work & Research',
-      category: 'research',
-      description: 'Field research and practical training activities'
-    },
-    {
-      id: 8,
-      src: '/WhatsApp Image 2025-08-19 at 09.04.54_38d4a9cd.jpg',
-      title: 'Extension Programs',
-      category: 'facilities',
-      description: 'Extension programs and farmer training activities'
-    },
-    {
-      id: 9,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.39_1241e1b8.jpg',
-      title: 'Campus Events',
-      category: 'campus',
-      description: 'Special events and celebrations on campus'
-    },
-    {
-      id: 10,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.39_b0838fbd.jpg',
-      title: 'Cultural Programs',
-      category: 'campus',
-      description: 'Cultural programs and annual functions'
-    },
-    {
-      id: 11,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.39_d6ab2436.jpg',
-      title: 'Practical Training',
-      category: 'research',
-      description: 'Hands-on practical training sessions'
-    },
-    {
-      id: 12,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.41_288fca02.jpg',
-      title: 'Workshop Sessions',
-      category: 'facilities',
-      description: 'Technical workshops and skill development programs'
-    },
-    {
-      id: 13,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.42_4e674a8f.jpg',
-      title: 'Seminar Hall',
-      category: 'infrastructure',
-      description: 'Conference hall and seminar facilities'
-    },
-    {
-      id: 14,
-      src: '/WhatsApp Image 2025-08-21 at 22.43.42_b0410280.jpg',
-      title: 'Library & Resources',
-      category: 'infrastructure',
-      description: 'Central library and learning resources center'
-    },
-    {
-      id: 15,
-      src: '/slider.jpg',
-      title: 'Campus Overview',
-      category: 'campus',
-      description: 'Beautiful overview of the entire campus'
-    },
-    {
-      id: 16,
-      src: '/slider-2.jpg',
-      title: 'Sports Facilities',
-      category: 'facilities',
-      description: 'Sports complex and recreational facilities'
-    },
-    {
-      id: 17,
-      src: '/slider-3.jpg',
-      title: 'Hostel Facilities',
-      category: 'infrastructure',
-      description: 'Student hostel and accommodation facilities'
-    },
-    {
-      id: 18,
-      src: '/slider-4.jpg',
-      title: 'Garden & Landscape',
-      category: 'campus',
-      description: 'Beautiful gardens and landscaped areas'
+  // Helper function to get proper image URL
+  const getImageUrl = (image) => {
+    // If imageUrl starts with http, use it directly (external images)
+    if (image.imageUrl && image.imageUrl.startsWith('http')) {
+      return image.imageUrl;
     }
-  ]
+    
+    // Extract filename from imageUrl path
+    const filename = image.imageUrl ? image.imageUrl.split('/').pop() : null;
+    if (filename) {
+      const url = uploadAPI.getImageUrl(filename, 'gallery');
+      console.log('Gallery page - Generated URL:', url, 'from filename:', filename);
+      return url;
+    }
+    
+    // Fallback to direct imageUrl
+    console.log('Gallery page - Using fallback imageUrl:', image.imageUrl);
+    return image.imageUrl;
+  }
 
   const categories = [
     { id: 'all', name: 'All Images' },
-    { id: 'infrastructure', name: 'Infrastructure' },
+    { id: 'events', name: 'Events' },
+    { id: 'campus', name: 'Campus Life' },
+    { id: 'academics', name: 'Academics' },
     { id: 'research', name: 'Research' },
-    { id: 'facilities', name: 'Facilities' },
-    { id: 'campus', name: 'Campus Life' }
+    { id: 'infrastructure', name: 'Infrastructure' },
+    { id: 'activities', name: 'Activities' },
+    { id: 'facilities', name: 'Facilities' }
   ]
 
-  const filteredImages = activeFilter === 'all' 
-    ? galleryImages 
-    : galleryImages.filter(image => image.category === activeFilter)
+  useEffect(() => {
+    fetchGalleryImages()
+  }, [])
 
-  const openLightbox = (image) => {
+  const fetchGalleryImages = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch('/api/gallery')
+      const data = await response.json()
+      
+      if (data.success) {
+        setImages(data.data || [])
+      } else {
+        setError(data.error || 'Failed to load images')
+      }
+    } catch (err) {
+      console.error('Error fetching gallery images:', err)
+      setError('Failed to load images')
+    } finally {
+      setLoading(false)
+    }
+  }
+  const filteredImages = activeFilter === 'all' 
+    ? images 
+    : images.filter(image => image.category === activeFilter)
+
+  const openLightbox = (image, index) => {
     setSelectedImage(image)
+    setCurrentImageIndex(index)
   }
 
   const closeLightbox = () => {
     setSelectedImage(null)
+    setCurrentImageIndex(0)
   }
 
   const navigateImage = (direction) => {
-    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id)
     let newIndex
     
     if (direction === 'next') {
-      newIndex = currentIndex === filteredImages.length - 1 ? 0 : currentIndex + 1
+      newIndex = currentImageIndex === filteredImages.length - 1 ? 0 : currentImageIndex + 1
     } else {
-      newIndex = currentIndex === 0 ? filteredImages.length - 1 : currentIndex - 1
+      newIndex = currentImageIndex === 0 ? filteredImages.length - 1 : currentImageIndex - 1
     }
     
     setSelectedImage(filteredImages[newIndex])
+    setCurrentImageIndex(newIndex)
+  }
+
+  const handleKeyPress = (e) => {
+    if (selectedImage) {
+      if (e.key === 'Escape') closeLightbox()
+      if (e.key === 'ArrowLeft') navigateImage('prev')
+      if (e.key === 'ArrowRight') navigateImage('next')
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [selectedImage, currentImageIndex])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading gallery...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-500 text-xl mb-4">Error loading gallery</div>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={fetchGalleryImages}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -199,36 +163,58 @@ const Gallery = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredImages.map((image) => (
-            <Card 
-              key={image.id} 
-              className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300"
-              onClick={() => openLightbox(image)}
-            >
-              <div className="relative overflow-hidden">
-                <img 
-                  src={image.src} 
-                  alt={image.title}
-                  className="w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                  <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{image.title}</h3>
-                <p className="text-gray-600 text-sm">{image.description}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-
-        {filteredImages.length === 0 && (
+        {filteredImages.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No images found in this category.</p>
+            <Eye className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No images found</h3>
+            <p className="text-gray-600">
+              {activeFilter === 'all' 
+                ? 'No images have been uploaded yet.' 
+                : `No images found in the "${categories.find(c => c.id === activeFilter)?.name}" category.`
+              }
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredImages.map((image, index) => (
+              <Card 
+                key={image._id} 
+                className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300"
+                onClick={() => openLightbox(image, index)}
+              >
+                <div className="relative overflow-hidden aspect-video">
+                  <img 
+                    src={getImageUrl(image)}
+                    alt={image.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      console.error('Image failed to load:', e.target.src);
+                      console.log('Trying fallback URL...');
+                      // Fallback to direct imageUrl from database
+                      e.target.src = image.imageUrl;
+                    }}
+                    onLoad={() => {
+                      console.log('Image loaded successfully:', image.title);
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                    <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{image.title}</h3>
+                  {image.description && (
+                    <p className="text-gray-600 text-sm mb-2">{image.description}</p>
+                  )}
+                  {image.date && (
+                    <p className="text-xs text-gray-500 flex items-center">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      {new Date(image.date).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              </Card>
+            ))}
           </div>
         )}
       </Section>
@@ -236,7 +222,7 @@ const Gallery = () => {
       {/* Lightbox Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl max-h-full">
+          <div className="relative w-full h-full flex items-center justify-center">
             {/* Close Button */}
             <button
               onClick={closeLightbox}
@@ -260,17 +246,32 @@ const Gallery = () => {
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Image */}
-            <img 
-              src={selectedImage.src} 
-              alt={selectedImage.title}
-              className="max-w-full max-h-full object-contain"
-            />
+            {/* Image Container */}
+            <div className="relative max-w-[90vw] max-h-[80vh] flex items-center justify-center">
+              <img 
+                src={getImageUrl(selectedImage)}
+                alt={selectedImage.title}
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
 
             {/* Image Info */}
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4">
               <h3 className="text-xl font-semibold mb-2">{selectedImage.title}</h3>
-              <p className="text-gray-200">{selectedImage.description}</p>
+              {selectedImage.description && (
+                <p className="text-gray-200 mb-2">{selectedImage.description}</p>
+              )}
+              {selectedImage.date && (
+                <p className="text-xs text-gray-300 flex items-center">
+                  <Calendar className="w-3 h-3 mr-1" />
+                  {new Date(selectedImage.date).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+            
+            {/* Image counter */}
+            <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+              {currentImageIndex + 1} / {filteredImages.length}
             </div>
           </div>
         </div>

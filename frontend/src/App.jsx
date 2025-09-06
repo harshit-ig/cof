@@ -26,6 +26,7 @@ import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
 import Departments from './pages/Departments'
+import Gallery from './pages/Gallery'
 import NotFound from './pages/NotFound'
 import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
@@ -37,16 +38,18 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 
 // Context Providers
 import { AuthProvider } from './context/AuthContext'
+import { SettingsProvider } from './context/SettingsContext'
 
 function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <Router>
-          <div className="min-h-screen bg-gray-50 flex flex-col">
-            <Navbar />
-            
-            <main className="flex-grow">
+        <SettingsProvider>
+          <Router>
+            <div className="min-h-screen bg-gray-50 flex flex-col">
+              <Navbar />
+              
+              <main className="flex-grow">
               <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
@@ -69,6 +72,7 @@ function App() {
               <Route path="/events" element={<NewsEvents />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
+              <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               
               {/* Admin Routes */}
@@ -116,6 +120,7 @@ function App() {
           />
         </div>
       </Router>
+      </SettingsProvider>
     </AuthProvider>
     </ErrorBoundary>
   )

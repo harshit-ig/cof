@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const { body, validationResult, query } = require('express-validator');
 const NewsEvent = require('../models/NewsEvent');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -142,8 +143,12 @@ router.post('/', protect, adminOnly, [
   body('organizer').optional().trim()
 ], async (req, res) => {
   try {
+    console.log('Creating news/event - Request body:', req.body);
+    console.log('Request user/admin:', req.admin ? req.admin._id : 'No admin found');
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({
         success: false,
         message: 'Validation errors',
@@ -156,7 +161,11 @@ router.post('/', protect, adminOnly, [
       createdBy: req.admin._id
     };
 
+    console.log('Creating news with data:', newsEventData);
+
     const newsEvent = await NewsEvent.create(newsEventData);
+
+    console.log('News created successfully:', newsEvent._id);
 
     res.status(201).json({
       success: true,
@@ -168,7 +177,11 @@ router.post('/', protect, adminOnly, [
 
   } catch (error) {
     console.error('Create news/event error:', error);
+    console.error('Error details:', error.message);
+    console.error('Error stack:', error.stack);
+    
     if (error.name === 'ValidationError') {
+      console.log('Mongoose validation errors:', error.errors);
       return res.status(400).json({
         success: false,
         message: 'Validation error',
@@ -177,7 +190,8 @@ router.post('/', protect, adminOnly, [
     }
     res.status(500).json({
       success: false,
-      message: 'Server error creating news/event'
+      message: 'Server error creating news/event',
+      error: error.message
     });
   }
 });
@@ -239,6 +253,71 @@ router.put('/:id', protect, adminOnly, [
       message: 'Server error updating news/event'
     });
   }
+});
+
+// @desc    Upload images for news/event
+// @route   POST /api/news/upload
+// @access  Private (Admin only)
+router.post('/upload', protect, adminOnly, (req, res) => {
+  console.log('News upload route hit - before multer');
+  console.log('Request headers:', {
+    'content-type': req.headers['content-type'],
+    'content-length': req.headers['content-length'],
+    'referer': req.headers.referer
+  });
+  
+  // Use multer middleware
+  const uploadSingle = require('../middleware/upload').upload.single('file');
+  
+  uploadSingle(req, res, (err) => {
+    if (err) {
+      console.error('Multer error:', err);
+      return res.status(400).json({
+        success: false,
+        message: err.message || 'File upload error'
+      });
+    }
+
+    try {
+      console.log('News upload route - after multer');
+      console.log('File received:', req.file ? req.file.filename : 'No file');
+      
+      if (!req.file) {
+        console.log('No file in request');
+        return res.status(400).json({
+          success: false,
+          message: 'No image file uploaded'
+        });
+      }
+
+      // Ensure the file went to the news directory
+      console.log('File path:', req.file.path);
+      console.log('File destination:', req.file.destination);
+      
+      const imageUrl = `/api/upload/serve/news/${req.file.filename}`;
+
+      console.log('Returning success response with filename:', req.file.filename);
+      
+      res.json({
+        success: true,
+        message: 'Image uploaded successfully',
+        data: {
+          filename: req.file.filename,
+          originalName: req.file.originalname,
+          url: imageUrl,
+          size: req.file.size,
+          mimetype: req.file.mimetype
+        }
+      });
+
+    } catch (error) {
+      console.error('News image upload error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error uploading image'
+      });
+    }
+  });
 });
 
 // @desc    Delete news/event
