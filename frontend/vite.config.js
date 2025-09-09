@@ -9,12 +9,12 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: import.meta.env.SERVER_HOST,
+        target: import.meta.env.VITE_SERVER_HOST,
         changeOrigin: true,
         secure: false,
       },
       '/uploads': {
-        target: import.meta.env.SERVER_HOST,
+        target: import.meta.env.VITE_SERVER_HOST,
         changeOrigin: true,
         secure: false,
       },
