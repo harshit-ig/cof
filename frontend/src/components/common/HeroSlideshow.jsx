@@ -12,9 +12,9 @@ const HeroSlideshow = () => {
     {
       id: 1,
       image: '/slider.jpg',
-      title: 'College of Fisheries, Jabalpur',
-      subtitle: 'Excellence in Fisheries Education & Research',
-      description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fisheries science education, committed to nurturing future professionals in aquaculture and fisheries management.',
+      title: 'College of Fishery, Jabalpur',
+      subtitle: 'Excellence in Fishery Education & Research',
+      description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fishery science education, committed to nurturing future professionals in aquaculture and fishery management.',
       cta: 'Learn More',
       link: '/about'
     },
@@ -31,8 +31,8 @@ const HeroSlideshow = () => {
       id: 3,
       image: '/slider-3.jpg',
       title: 'Research & Innovation',
-      subtitle: 'Advancing Fisheries Science',
-      description: 'Cutting-edge research programs contributing to sustainable fisheries development and aquaculture innovation.',
+      subtitle: 'Advancing Fishery Science',
+      description: 'Cutting-edge research programs contributing to sustainable fishery development and aquaculture innovation.',
       cta: 'View Research',
       link: '/research'
     },
@@ -119,8 +119,8 @@ const HeroSlideshow = () => {
     return (
       <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-r from-blue-800 to-green-700 flex items-center justify-center">
         <div className="text-white text-center">
-          <h1 className="text-4xl font-bold mb-4">College of Fisheries, Jabalpur</h1>
-          <p className="text-xl">Excellence in Fisheries Education & Research</p>
+          <h1 className="text-4xl font-bold mb-4">College of Fishery, Jabalpur</h1>
+          <p className="text-xl">Excellence in Fishery Education & Research</p>
         </div>
       </div>
     )
@@ -274,5 +274,10 @@ const HeroSlideshow = () => {
 }
 
 export default HeroSlideshow
+
+
+
+
+
 
 

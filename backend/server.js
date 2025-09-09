@@ -75,6 +75,8 @@ app.use('/api/slideshow', require('./routes/slideshow'));
 app.use('/api/settings', require('./routes/settings'));
 app.use('/api/upload', require('./routes/upload'));
 app.use('/api/proxy', require('./routes/proxy'));
+app.use('/api/placement', require('./routes/placement'));
+app.use('/api/incubation', require('./routes/incubation'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -112,3 +114,7 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+
+
+

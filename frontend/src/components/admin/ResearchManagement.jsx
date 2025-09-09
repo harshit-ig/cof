@@ -141,7 +141,7 @@ const ResearchManagement = () => {
         status: formData.status,
         principalInvestigator: formData.researchTeam[0] || 'Not specified', // First team member as PI
         coInvestigators: formData.researchTeam.slice(1), // Rest as co-investigators
-        department: 'College of Fisheries', // Default department
+        department: 'College of Fishery', // Default department
         fundingAgency: formData.fundingAgency,
         budget: formData.budget ? parseFloat(formData.budget) : undefined,
         duration: {
@@ -733,3 +733,8 @@ const ResearchManagement = () => {
 }
 
 export default ResearchManagement
+
+
+
+
+

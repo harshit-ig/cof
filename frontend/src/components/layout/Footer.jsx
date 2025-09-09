@@ -49,7 +49,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Fishery College Jabalpur</h3>
             <p className="text-gray-300">
-              Leading institution in fisheries education and research
+              Leading institution in fishery education and research
             </p>
           </div>
           <div>
@@ -85,4 +85,9 @@ const Footer = () => {
 }
 
 export default Footer
+
+
+
+
+
 

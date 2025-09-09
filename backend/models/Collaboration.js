@@ -76,3 +76,7 @@ const collaborationSchema = new mongoose.Schema({
 collaborationSchema.index({ title: 'text', 'partner.name': 'text', description: 'text' });
 
 module.exports = mongoose.model('Collaboration', collaborationSchema);
+
+
+
+

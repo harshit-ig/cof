@@ -61,7 +61,7 @@ const Research = () => {
               Research
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Advancing Fisheries Science Through Innovation & Discovery
+              Advancing Fishery Science Through Innovation & Discovery
             </p>
           </div>
         </div>
@@ -261,7 +261,7 @@ const Research = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Research Publications</h3>
             <p className="text-gray-700 text-sm mb-4">
               Our faculty and students regularly publish in prestigious national and international journals 
-              in the field of fisheries science and aquaculture.
+              in the field of fishery science and aquaculture.
             </p>
           </Card>
         </div>
@@ -279,7 +279,7 @@ const Research = () => {
             <Card className="p-6 text-center">
               <Users className="w-8 h-8 text-blue-500 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">M.F.Sc. Research</h3>
-              <p className="text-gray-700 text-sm">Postgraduate students conducting research in various areas of fisheries science</p>
+              <p className="text-gray-700 text-sm">Postgraduate students conducting research in various areas of fishery science</p>
             </Card>
             <Card className="p-6 text-center">
               <FlaskConical className="w-8 h-8 text-secondary-600 mx-auto mb-3" />
@@ -312,7 +312,7 @@ const Research = () => {
             <Card className="p-6">
               <Globe className="w-8 h-8 text-secondary-600 mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Government Partnerships</h3>
-              <p className="text-gray-700 text-sm">State fisheries departments and policy implementation agencies</p>
+              <p className="text-gray-700 text-sm">State fishery departments and policy implementation agencies</p>
             </Card>
             <Card className="p-6">
               <Users className="w-8 h-8 text-accent-600 mb-3" />
@@ -375,4 +375,9 @@ const Research = () => {
 }
 
 export default Research
+
+
+
+
+
 

@@ -12,7 +12,7 @@ const Students = () => {
     admission: {
       programs: [
         {
-          name: 'Bachelor of Fisheries Science (B.F.Sc.)',
+          name: 'Bachelor of Fishery Science (B.F.Sc.)',
           duration: '4 years (8 semesters)',
           seats: '60 seats',
           eligibility: [
@@ -47,7 +47,7 @@ const Students = () => {
           }
         },
         {
-          name: 'Master of Fisheries Science (M.F.Sc.)',
+          name: 'Master of Fishery Science (M.F.Sc.)',
           duration: '2 years (4 semesters)',
           seats: '30 seats',
           eligibility: [
@@ -160,8 +160,8 @@ const Students = () => {
     },
     clubs: [
       {
-        name: 'Fisheries Science Club',
-        description: 'Technical club for fisheries science enthusiasts.',
+        name: 'Fishery Science Club',
+        description: 'Technical club for fishery science enthusiasts.',
         activities: [
           'Technical presentations',
           'Field visits',
@@ -221,8 +221,8 @@ const Students = () => {
         name: 'Dr. Sanjay Kumar',
         batch: '2010-2014',
         currentPosition: 'Senior Scientist, ICAR-CIFRI',
-        testimonial: 'The foundation I received at CoF Jabalpur was excellent. The practical exposure and research opportunities shaped my career in fisheries research.',
-        achievements: ['PhD from ICAR-CIFE', '15+ research papers', '2 patents'],
+        testimonial: 'The foundation I received at CoF Jabalpur was excellent. The practical exposure and research opportunities shaped my career in fishery research.',
+        achievements: ['M.F.Sc from ICAR-CIFE', '15+ research papers', '2 patents'],
         contact: 'sanjay.kumar@icar.gov.in'
       },
       {
@@ -237,7 +237,7 @@ const Students = () => {
         name: 'Mr. Rajesh Malhotra',
         batch: '2015-2019',
         currentPosition: 'Entrepreneur, Fresh Fish Farm',
-        testimonial: 'CoF Jabalpur not only taught me fisheries science but also entrepreneurship. I started my own fish farm and now employ 20 people.',
+        testimonial: 'CoF Jabalpur not only taught me fishery science but also entrepreneurship. I started my own fish farm and now employ 20 people.',
         achievements: ['Successful business', 'Employment generation', 'Innovation awards'],
         contact: 'rajesh@freshfishfarm.com'
       }
@@ -253,7 +253,7 @@ const Students = () => {
       },
       recruiters: [
         'ICAR Research Institutes',
-        'State Fisheries Departments',
+        'State Fishery Departments',
         'Private Aquaculture Companies',
         'Feed Manufacturing Companies',
         'Processing Units',
@@ -261,7 +261,7 @@ const Students = () => {
         'Consultancy Firms'
       ],
       roles: [
-        'Fisheries Officer',
+        'Fishery Officer',
         'Aquaculture Manager',
         'Research Associate',
         'Quality Control Officer',
@@ -307,7 +307,7 @@ const Students = () => {
         'ICAR-CIFRI, Barrackpore',
         'ICAR-CIFE, Mumbai',
         'ICAR-CIBA, Chennai',
-        'State Fisheries Departments',
+        'State Fishery Departments',
         'Private Aquaculture Companies',
         'Feed Manufacturing Units'
       ],
@@ -791,4 +791,9 @@ const Students = () => {
 }
 
 export default Students
+
+
+
+
+
 

@@ -242,10 +242,10 @@ const Events = () => {
     pressReleases: [
       {
         id: 10,
-        title: 'College of Fisheries Launches New Research Program',
+        title: 'College of Fishery Launches New Research Program',
         date: '2024-02-20',
         summary: 'CoF Jabalpur announces launch of innovative research program on sustainable aquaculture funded by ICAR.',
-        content: 'The College of Fisheries, Jabalpur has launched a new research program focused on sustainable aquaculture practices. The program, funded by the Indian Council of Agricultural Research (ICAR), aims to develop eco-friendly aquaculture systems that can withstand climate change challenges while ensuring food security.',
+        content: 'The College of Fishery, Jabalpur has launched a new research program focused on sustainable aquaculture practices. The program, funded by the Indian Council of Agricultural Research (ICAR), aims to develop eco-friendly aquaculture systems that can withstand climate change challenges while ensuring food security.',
         highlights: [
           '₹2 crore funding from ICAR',
           'Multi-disciplinary research approach',
@@ -261,7 +261,7 @@ const Events = () => {
         title: 'Student Wins National Innovation Award',
         date: '2024-02-15',
         summary: 'B.F.Sc. student Rahul Patel wins prestigious national innovation award for eco-friendly fish feed project.',
-        content: 'Rahul Patel, a final year B.F.Sc. student at College of Fisheries, Jabalpur, has won the National Innovation Award for his project on developing eco-friendly fish feed using agricultural waste products. The project demonstrates innovative use of locally available resources.',
+        content: 'Rahul Patel, a final year B.F.Sc. student at College of Fishery, Jabalpur, has won the National Innovation Award for his project on developing eco-friendly fish feed using agricultural waste products. The project demonstrates innovative use of locally available resources.',
         highlights: [
           'National recognition',
           'Innovation in feed technology',
@@ -801,4 +801,9 @@ const Events = () => {
 }
 
 export default Events
+
+
+
+
+
 

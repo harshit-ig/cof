@@ -4,8 +4,8 @@ import { Users2, Building2, Users, Target, Calendar, MapPin, ChevronRight, Exter
 import Card from '../components/common/Card'
 
 const Collaborations = () => {
-  // MoUs & Linkages Data
-  const mouLinkages = [
+  // MoUs & Implementations Data
+  const mouImplementations = [
     {
       organization: "National Agricultural Cooperative Marketing Federation of India Ltd. (NAFED)",
       type: "Government Agency",
@@ -158,154 +158,6 @@ const Collaborations = () => {
     }
   ]
 
-  // Industry Partnerships Data
-  const industryPartnerships = [
-    {
-      company: "Godrej Agrovet Limited",
-      sector: "Aquaculture Feed & Nutrition",
-      partnership: "Technology & Training",
-      since: "2022",
-      description: "Strategic partnership for fish feed development, nutrition research, feed quality testing, and farmer training on modern feeding practices.",
-      collaboration: [
-        "Feed formulation research",
-        "Quality testing services",
-        "Farmer training programs",
-        "Technical support services",
-        "Product development initiatives"
-      ],
-      benefits: [
-        "Access to latest feed technologies",
-        "Student internship opportunities",
-        "Research funding support",
-        "Technical expertise sharing",
-        "Market ready product development"
-      ],
-      achievements: "3 new feed formulations, 200+ farmers trained",
-      projects: ["Cost-effective feed development", "Nutritional requirement studies", "Feed conversion efficiency trials"],
-      contactInfo: "Mr. Rajesh Kumar, Regional Manager"
-    },
-    {
-      company: "Avanti Feeds Limited",
-      sector: "Aqua Feed Manufacturing",
-      partnership: "Research & Development",
-      since: "2023",
-      description: "Collaborative partnership focusing on innovative feed solutions, research support, technology transfer, and industry-ready skill development.",
-      collaboration: [
-        "Research and development projects",
-        "Technology transfer programs",
-        "Student placement support",
-        "Faculty industry exposure",
-        "Joint patent applications"
-      ],
-      benefits: [
-        "Industry exposure for students",
-        "Research grant support",
-        "Employment opportunities",
-        "Technical infrastructure access",
-        "Commercial product development"
-      ],
-      achievements: "2 patents filed, 15 students placed",
-      projects: ["Functional feed development", "Immunostimulant research", "Sustainable feed ingredients"],
-      contactInfo: "Dr. Amit Patel, R&D Head"
-    },
-    {
-      company: "Waterbase Limited",
-      sector: "Aquaculture Equipment & Systems",
-      partnership: "Infrastructure & Technology",
-      since: "2021",
-      description: "Comprehensive partnership for aquaculture equipment, system design, technology demonstration, and hands-on training on modern aquaculture systems.",
-      collaboration: [
-        "Equipment demonstration units",
-        "System design consultancy",
-        "Technical training programs",
-        "Maintenance support services",
-        "Innovation development"
-      ],
-      benefits: [
-        "State-of-the-art equipment access",
-        "Technical skill development",
-        "Industry standard training",
-        "Employment opportunities",
-        "Technology adaptation"
-      ],
-      achievements: "5 demonstration units installed, 100+ students trained",
-      projects: ["RAS system optimization", "Biofloc system design", "Water quality monitoring systems"],
-      contactInfo: "Eng. Suresh Reddy, Technical Director"
-    },
-    {
-      company: "Growel Feeds Private Limited",
-      sector: "Animal & Aqua Nutrition",
-      partnership: "Nutrition Research & Training",
-      since: "2023",
-      description: "Partnership focused on nutritional research, feed development, quality assurance, farmer education, and sustainable aquaculture practices.",
-      collaboration: [
-        "Nutritional research studies",
-        "Feed quality assessment",
-        "Farmer education programs",
-        "Product testing facilities",
-        "Market development support"
-      ],
-      benefits: [
-        "Research collaboration opportunities",
-        "Industry standard testing facilities",
-        "Practical training exposure",
-        "Career development support",
-        "Innovation in nutrition"
-      ],
-      achievements: "4 research papers published, 300+ farmers reached",
-      projects: ["Indigenous feed ingredient research", "Probiotics in aquaculture", "Sustainable nutrition solutions"],
-      contactInfo: "Dr. Neha Singh, Technical Manager"
-    },
-    {
-      company: "CP Aquaculture India",
-      sector: "Integrated Aquaculture Solutions",
-      partnership: "Comprehensive Development",
-      since: "2024",
-      description: "Holistic partnership covering technology transfer, capacity building, market linkages, sustainable practices, and value chain development.",
-      collaboration: [
-        "Technology transfer programs",
-        "Comprehensive training modules",
-        "Market linkage facilitation",
-        "Sustainable practice promotion",
-        "Value chain development"
-      ],
-      benefits: [
-        "Integrated aquaculture exposure",
-        "Global best practices access",
-        "Market connection opportunities",
-        "Skill enhancement programs",
-        "Career pathway development"
-      ],
-      achievements: "2 technology transfer programs, 500+ beneficiaries",
-      projects: ["Integrated aquaculture systems", "Market linkage platforms", "Sustainability assessment tools"],
-      contactInfo: "Mr. Vikram Thakur, Country Head"
-    },
-    {
-      company: "Aquaculture Foundation of India",
-      sector: "Industry Development",
-      partnership: "Policy & Development",
-      since: "2022",
-      description: "Strategic alliance for policy advocacy, industry development, research support, skill development, and sustainable aquaculture promotion.",
-      collaboration: [
-        "Policy research and advocacy",
-        "Industry development initiatives",
-        "Skill development programs",
-        "Research funding support",
-        "Sustainability promotion"
-      ],
-      benefits: [
-        "Policy research opportunities",
-        "Industry networking access",
-        "Professional development",
-        "Research grant opportunities",
-        "Leadership development"
-      ],
-      achievements: "3 policy papers, 250+ industry connections",
-      projects: ["Aquaculture policy research", "Industry skill mapping", "Sustainable development frameworks"],
-      contactInfo: "Dr. Manoj Sharma, Executive Director"
-    }
-  ]
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -323,20 +175,20 @@ const Collaborations = () => {
 
 
 
-      {/* MoUs & Linkages */}
-      <section id="mou-linkages" className="section-padding bg-gray-50">
+      {/* MoUs & Implementations */}
+      <section id="mou-Implementations" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">MoUs & Linkages</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">MoUs & Implementations</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Formal agreements and institutional linkages with government agencies, research organizations, 
+              Formal agreements and institutional implementations with government agencies, research organizations, 
               NGOs, and international bodies for collaborative development in fisheries sector.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {mouLinkages.map((mou, index) => (
+            {mouImplementations.map((mou, index) => (
               <Card key={index} className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -410,93 +262,179 @@ const Collaborations = () => {
         </div>
       </section>
 
-      {/* Industry Partnerships */}
-      <section id="industry-partnerships" className="section-padding bg-white">
+      {/* National Partnerships */}
+      <section id="national-partnerships" className="section-padding bg-blue-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Industry Partnerships</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              🤝 Our Collaborations & Partnerships
+            </h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Strategic alliances with leading industry players in aquaculture, feed manufacturing, 
-              equipment supply, and technology development for practical exposure and skill development.
+            <p className="text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed">
+              We are proud to collaborate with leading national organizations, research institutes, and development agencies 
+              that play a vital role in advancing fisheries, aquaculture, and allied sectors. These partnerships strengthen 
+              our programs, provide valuable expertise, and ensure effective implementation of initiatives.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {industryPartnerships.map((partnership, index) => (
-              <Card key={index} className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <Building2 className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div className="text-right">
-                    <span className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
-                      Since {partnership.since}
-                    </span>
-                  </div>
+          <div className="space-y-8">
+            {/* Government Departments */}
+            <Card className="p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Building2 className="w-6 h-6 text-blue-600 mr-3" />
+                Government Departments & Boards
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">Department of Fisheries (DOF)</h4>
+                  <p className="text-sm text-gray-600">Central government department for fisheries policy and development</p>
                 </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{partnership.company}</h3>
-                <div className="grid grid-cols-1 gap-3 mb-4">
-                  <div className="text-sm">
-                    <span className="font-medium text-gray-900">Sector:</span>
-                    <p className="text-gray-600">{partnership.sector}</p>
-                  </div>
-                  <div className="text-sm">
-                    <span className="font-medium text-gray-900">Partnership Type:</span>
-                    <p className="text-gray-600">{partnership.partnership}</p>
-                  </div>
-                  <div className="text-sm">
-                    <span className="font-medium text-gray-900">Contact:</span>
-                    <p className="text-gray-600">{partnership.contactInfo}</p>
-                  </div>
+                <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">National Fisheries Development Board (NFDB)</h4>
+                  <p className="text-sm text-gray-600">National board for fisheries development and infrastructure</p>
                 </div>
-                
-                <p className="text-gray-700 mb-4">{partnership.description}</p>
-                
+                <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">Pradhan Mantri Matsya Sampada Yojana (PMMSY)</h4>
+                  <p className="text-sm text-gray-600">Flagship scheme for fisheries sector development</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* ICAR Institutes */}
+            <Card className="p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Award className="w-6 h-6 text-green-600 mr-3" />
+                ICAR (Indian Council of Agricultural Research) & Institutes
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Collaboration Areas</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {partnership.collaboration.slice(0, 4).map((area, idx) => (
-                        <span key={idx} className="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">
-                          {area}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CMFRI, Kochi, Kerala</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Marine Fisheries Research Institute</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Marine Research</span>
                   </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Key Benefits</h4>
-                    <ul className="space-y-1">
-                      {partnership.benefits.slice(0, 3).map((benefit, idx) => (
-                        <li key={idx} className="text-sm text-gray-700 flex items-start">
-                          <Award className="w-4 h-4 text-orange-600 mr-2 mt-0.5" />
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CIFRI, Barrackpore, West Bengal</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Inland Fisheries Research Institute</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Inland Fisheries</span>
                   </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Ongoing Projects</h4>
-                    <ul className="space-y-1">
-                      {partnership.projects.map((project, idx) => (
-                        <li key={idx} className="text-sm text-gray-700 flex items-start">
-                          <div className="w-2 h-2 bg-orange-500 rounded-full mr-3 mt-2"></div>
-                          {project}
-                        </li>
-                      ))}
-                    </ul>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CIFA, Bhubaneswar, Odisha</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Institute of Freshwater Aquaculture</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Freshwater Aquaculture</span>
                   </div>
-                  
-                  <div className="bg-orange-50 p-3 rounded-lg">
-                    <h4 className="font-semibold text-orange-900 mb-1">Achievements</h4>
-                    <p className="text-sm text-orange-800">{partnership.achievements}</p>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CIBA, Chennai, Tamil Nadu</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Institute of Brackishwater Aquaculture</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Brackishwater</span>
                   </div>
                 </div>
-              </Card>
-            ))}
+                <div className="space-y-4">
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CIFT, Cochin, Kerala</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Institute of Fisheries Technology</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Fisheries Technology</span>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-CIFE, Mumbai, Maharashtra</h4>
+                    <p className="text-sm text-gray-600 mb-2">Central Institute of Fisheries Education (Deemed University)</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Education</span>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-NBFGR, Lucknow, Uttar Pradesh</h4>
+                    <p className="text-sm text-gray-600 mb-2">National Bureau of Fish Genetic Resources</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Genetics</span>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <h4 className="font-semibold text-gray-900 mb-1">ICAR-DCFR, Bhimtal, Uttarakhand</h4>
+                    <p className="text-sm text-gray-600 mb-2">Directorate of Coldwater Fisheries Research</p>
+                    <span className="text-xs bg-green-200 text-green-800 px-2 py-1 rounded">Coldwater</span>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Development & Extension */}
+            <Card className="p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Users className="w-6 h-6 text-purple-600 mr-3" />
+                Development & Extension Organizations
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">MANAGE</h4>
+                  <p className="text-sm text-gray-600">National Institute of Agricultural Extension Management</p>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">SFAC</h4>
+                  <p className="text-sm text-gray-600">Small Farmers' Agribusiness Consortium</p>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">NERAMAC</h4>
+                  <p className="text-sm text-gray-600">North Eastern Regional Agricultural Marketing Corporation</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* Marketing & Export */}
+            <Card className="p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Globe className="w-6 h-6 text-orange-600 mr-3" />
+                Marketing & Export Organizations
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">MPEDA</h4>
+                  <p className="text-sm text-gray-600 mb-2">Marine Products Export Development Authority</p>
+                  <a href="#" className="text-xs text-orange-600 hover:text-orange-800 flex items-center">
+                    Visit Website <ExternalLink className="w-3 h-3 ml-1" />
+                  </a>
+                </div>
+                <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">NAFED</h4>
+                  <p className="text-sm text-gray-600">National Agricultural Cooperative Marketing Federation of India</p>
+                </div>
+                <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                  <h4 className="font-semibold text-gray-900 mb-2">NCDC</h4>
+                  <p className="text-sm text-gray-600">National Cooperative Development Corporation</p>
+                </div>
+              </div>
+            </Card>
+
+            {/* Financial & Development */}
+            <Card className="p-8">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                <Target className="w-6 h-6 text-indigo-600 mr-3" />
+                Financial & Rural Development
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-6 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
+                    <Award className="w-5 h-5 text-indigo-600 mr-2" />
+                    NABARD
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-3">National Bank for Agriculture and Rural Development</p>
+                  <div className="space-y-2 text-xs text-gray-500">
+                    <div>• Rural development financing</div>
+                    <div>• Agricultural infrastructure support</div>
+                    <div>• Capacity building programs</div>
+                  </div>
+                </div>
+                <div className="p-6 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
+                    <Users className="w-5 h-5 text-indigo-600 mr-2" />
+                    Partner Benefits
+                  </h4>
+                  <p className="text-sm text-gray-600 mb-3">Key advantages of our partnerships</p>
+                  <div className="space-y-2 text-xs text-gray-500">
+                    <div>• Research collaboration opportunities</div>
+                    <div>• Technology transfer programs</div>
+                    <div>• Capacity building initiatives</div>
+                    <div>• Market linkage support</div>
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </section>
@@ -539,7 +477,7 @@ const Collaborations = () => {
                 <Globe className="w-8 h-8 text-purple-600" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">8+</h3>
-              <p className="text-gray-600">International Linkages</p>
+              <p className="text-gray-600">International Implementations</p>
             </Card>
           </div>
         </div>
@@ -550,7 +488,7 @@ const Collaborations = () => {
         <div className="container-max text-center">
           <h2 className="text-3xl font-bold mb-4">Partner with Us</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Interested in collaborating with College of Fisheries? We welcome partnerships 
+            Interested in collaborating with College of Fishery? We welcome partnerships 
             that contribute to fisheries education, research, and sustainable development.
           </p>
           
@@ -576,4 +514,9 @@ const Collaborations = () => {
 }
 
 export default Collaborations
+
+
+
+
+
 

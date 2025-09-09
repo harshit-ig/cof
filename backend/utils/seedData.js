@@ -57,7 +57,7 @@ const seedData = async () => {
     const programs = await Program.insertMany([
       {
         title: 'Bachelor of Fishery Science (B.F.Sc)',
-        description: 'A comprehensive 4-year undergraduate program covering all aspects of fisheries science including aquaculture, fish biology, fisheries management, and processing technology.',
+        description: 'A comprehensive 4-year undergraduate program covering all aspects of fishery science including aquaculture, fish biology, fishery management, and processing technology.',
         duration: '4 Years',
         eligibility: '10+2 with PCB/PCM with minimum 50% marks',
         curriculum: [
@@ -72,14 +72,14 @@ const seedData = async () => {
         ],
         fees: 50000,
         intake: 60,
-        department: 'Fisheries Science',
+        department: 'Fishery Science',
         level: 'undergraduate',
         isActive: true,
         createdBy: admin._id
       },
       {
         title: 'Master of Fishery Science (M.F.Sc)',
-        description: 'Advanced 2-year postgraduate program with specializations in Aquaculture, Fish Processing Technology, and Fisheries Resource Management.',
+        description: 'Advanced 2-year postgraduate program with specializations in Aquaculture, Fish Processing Technology, and Fishery Resource Management.',
         duration: '2 Years',
         eligibility: 'B.F.Sc or equivalent degree with minimum 60% marks',
         curriculum: [
@@ -90,7 +90,7 @@ const seedData = async () => {
         ],
         fees: 60000,
         intake: 30,
-        department: 'Fisheries Science',
+        department: 'Fishery Science',
         level: 'postgraduate',
         isActive: true,
         createdBy: admin._id
@@ -128,13 +128,13 @@ const seedData = async () => {
       {
         name: 'Dr. Rajesh Kumar Sharma',
         designation: 'Dean & Professor',
-        department: 'Fisheries Science',
+        department: 'fishery science',
         qualification: 'Ph.D. in Aquaculture Science',
         specialization: 'Aquaculture Systems and Fish Nutrition',
         experience: 25,
         email: 'dean@fisherycollegejabalpur.edu.in',
         phone: '+91 761 2345678',
-        bio: 'Dr. Sharma has over 25 years of experience in fisheries education and research. He has published over 100 research papers and has been instrumental in developing innovative aquaculture techniques.',
+        bio: 'Dr. Sharma has over 25 years of experience in fishery education and research. He has published over 100 research papers and has been instrumental in developing innovative aquaculture techniques.',
         researchInterests: ['Sustainable Aquaculture', 'Fish Nutrition', 'Water Quality Management'],
         publications: [
           {
@@ -148,7 +148,7 @@ const seedData = async () => {
           {
             title: 'Best Researcher Award',
             year: 2022,
-            organization: 'Indian Fisheries Society'
+            organization: 'Indian Fishery Society'
           }
         ],
         isActive: true,
@@ -262,7 +262,7 @@ const seedData = async () => {
           startDate: new Date('2023-04-01'),
           endDate: new Date('2026-03-31')
         },
-        department: 'Fisheries Science',
+        department: 'fishery science',
         objectives: [
           'Develop sustainable fish feed formulations',
           'Evaluate nutritional quality and growth performance',
@@ -364,7 +364,7 @@ const seedData = async () => {
       {
         name: 'Central Library',
         type: 'library',
-        description: 'Well-equipped library with extensive collection of books, journals, and digital resources related to fisheries science.',
+        description: 'Well-equipped library with extensive collection of books, journals, and digital resources related to fishery science.',
         capacity: '100 readers',
         area: '300 sq meters',
         location: 'Academic Block B, First Floor',
@@ -414,7 +414,7 @@ const seedData = async () => {
         },
         status: 'active',
         coordinator: 'Dr. Rajesh Kumar Sharma',
-        department: 'Fisheries Science',
+        department: 'fishery science',
         outcomes: [
           'Joint research publications',
           'Technology development',
@@ -432,7 +432,7 @@ const seedData = async () => {
           website: 'https://www.auburn.edu'
         },
         type: 'student_exchange',
-        description: 'Memorandum of Understanding for student and faculty exchange programs in aquaculture and fisheries science.',
+        description: 'Memorandum of Understanding for student and faculty exchange programs in aquaculture and fishery science.',
         objectives: [
           'Student exchange programs',
           'Faculty collaboration',
@@ -464,7 +464,7 @@ const seedData = async () => {
       {
         key: 'dean_message',
         title: 'Dean\'s Message',
-        content: 'Welcome to Fishery College Jabalpur, where excellence meets innovation in the field of fisheries science and aquaculture. As the Dean of this prestigious institution, I am proud to lead a community of dedicated faculty, passionate students, and committed staff who work tirelessly to advance the frontiers of knowledge in fisheries science...',
+        content: 'Welcome to Fishery College Jabalpur, where excellence meets innovation in the field of fishery science and aquaculture. As the Dean of this prestigious institution, I am proud to lead a community of dedicated faculty, passionate students, and committed staff who work tirelessly to advance the frontiers of knowledge in fishery science...',
         type: 'html',
         section: 'about',
         subsection: 'dean-message',
@@ -475,7 +475,7 @@ const seedData = async () => {
       {
         key: 'vision_statement',
         title: 'Vision Statement',
-        content: 'To be a globally recognized center of excellence in fisheries education, research, and extension, contributing to sustainable aquaculture development and food security.',
+        content: 'To be a globally recognized center of Excellence in Fishery education, research, and extension, contributing to sustainable aquaculture development and food security.',
         type: 'text',
         section: 'about',
         subsection: 'vision',
@@ -486,7 +486,7 @@ const seedData = async () => {
       {
         key: 'mission_statement',
         title: 'Mission Statement',
-        content: 'To provide quality education, conduct innovative research, and extend knowledge to stakeholders for the advancement of fisheries science and sustainable aquaculture practices.',
+        content: 'To provide quality education, conduct innovative research, and extend knowledge to stakeholders for the advancement of fishery science and sustainable aquaculture practices.',
         type: 'text',
         section: 'about',
         subsection: 'mission',
@@ -534,3 +534,7 @@ if (require.main === module) {
 }
 
 module.exports = { seedData, connectDB };
+
+
+
+

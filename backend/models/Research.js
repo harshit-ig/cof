@@ -78,3 +78,7 @@ const researchSchema = new mongoose.Schema({
 researchSchema.index({ title: 'text', description: 'text', tags: 'text' });
 
 module.exports = mongoose.model('Research', researchSchema);
+
+
+
+

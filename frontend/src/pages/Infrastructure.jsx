@@ -38,7 +38,7 @@ const Infrastructure = () => {
               Infrastructure
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Modern Facilities Supporting Excellence in Fisheries Education
+              Modern Facilities Supporting Excellence in Fishery Education
             </p>
           </div>
         </div>
@@ -296,4 +296,9 @@ const Infrastructure = () => {
 }
 
 export default Infrastructure
+
+
+
+
+
 

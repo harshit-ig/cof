@@ -79,3 +79,7 @@ const facultySchema = new mongoose.Schema({
 facultySchema.index({ name: 'text', department: 'text', specialization: 'text' });
 
 module.exports = mongoose.model('Faculty', facultySchema);
+
+
+
+

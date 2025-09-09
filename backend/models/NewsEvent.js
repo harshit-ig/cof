@@ -70,3 +70,7 @@ newsEventSchema.index({ createdAt: -1 });
 newsEventSchema.index({ eventDate: -1 });
 
 module.exports = mongoose.model('NewsEvent', newsEventSchema);
+
+
+
+

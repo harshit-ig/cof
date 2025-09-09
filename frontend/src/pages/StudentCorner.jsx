@@ -126,7 +126,7 @@ const StudentCorner = () => {
     {
       name: 'Aquaculture Club',
       role: 'Technical Activities',
-      description: 'Club focused on practical aspects of aquaculture and fisheries management.',
+      description: 'Club focused on practical aspects of aquaculture and fishery management.',
       activities: [
         'Technical workshops and seminars',
         'Field visits to fish farms',
@@ -181,14 +181,14 @@ const StudentCorner = () => {
     {
       name: 'Dr. Rahul Sharma',
       batch: '2015-19',
-      currentPosition: 'Aquaculture Officer, MP Fisheries Department',
+      currentPosition: 'Aquaculture Officer, MP Fishery Department',
       photo: '/WhatsApp Image 2025-08-19 at 09.04.50_9e82a1f1.jpg',
-      testimonial: 'My time at College of Fisheries, Jabalpur was transformative. The practical exposure to modern aquaculture techniques and guidance from experienced faculty prepared me well for my career in government service.',
+      testimonial: 'My time at College of Fishery, Jabalpur was transformative. The practical exposure to modern aquaculture techniques and guidance from experienced faculty prepared me well for my career in government service.',
       achievements: [
         'Selected as Aquaculture Officer in MP Civil Services',
         'Implemented 5 successful aquaculture projects',
         'Trained over 500 farmers in modern techniques',
-        'Received State Award for Excellence in Fisheries'
+        'Received State Award for Excellence in Fishery'
       ],
       contact: 'rahul.sharma@mpgov.in'
     },
@@ -223,7 +223,7 @@ const StudentCorner = () => {
     {
       name: 'Dr. Sunita Singh',
       batch: '2016-20',
-      currentPosition: 'Assistant Professor, College of Fisheries, Raipur',
+      currentPosition: 'Assistant Professor, College of Fishery, Raipur',
       photo: '/WhatsApp Image 2025-08-19 at 09.04.53_8ff77827.jpg',
       testimonial: 'The academic excellence and research culture at COF inspired me to pursue higher studies and academic career. The institution shaped my passion for teaching and research.',
       achievements: [
@@ -249,7 +249,7 @@ const StudentCorner = () => {
       ],
       partners: [
         'ICAR Research Institutes',
-        'State Fisheries Departments',
+        'State Fishery Departments',
         'Private Aquaculture Companies',
         'Fish Processing Industries',
         'NGOs and Development Organizations'
@@ -295,7 +295,7 @@ const StudentCorner = () => {
       category: 'Top Recruiters',
       description: 'Leading organizations that regularly recruit from our college.',
       details: [
-        'Government Sectors: State Fisheries Departments, ICAR Institutes',
+        'Government Sectors: State Fishery Departments, ICAR Institutes',
         'Private Companies: Godrej, Avanti, CP Aquaculture, Growel',
         'Research Organizations: CIFA, CIFRI, NBFGR, CMFRI',
         'International Organizations: WorldFish, FAO projects',
@@ -320,7 +320,7 @@ const StudentCorner = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Students Corner</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Your comprehensive guide to admissions, scholarships, student life, alumni experiences, 
-              and career opportunities at College of Fisheries, Jabalpur.
+              and career opportunities at College of Fishery, Jabalpur.
             </p>
           </div>
         </div>
@@ -487,7 +487,7 @@ const StudentCorner = () => {
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Success stories and experiences from our distinguished alumni who are making 
-              significant contributions in various sectors of fisheries and aquaculture.
+              significant contributions in various sectors of fishery and aquaculture.
             </p>
           </div>
 
@@ -595,7 +595,7 @@ const StudentCorner = () => {
           <h2 className="text-3xl font-bold mb-4">Ready to Join Our Student Community?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Explore admission opportunities, connect with current students, and start your journey 
-            towards a successful career in fisheries science and aquaculture.
+            towards a successful career in fishery science and aquaculture.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -620,5 +620,10 @@ const StudentCorner = () => {
 }
 
 export default StudentCorner
+
+
+
+
+
 
 

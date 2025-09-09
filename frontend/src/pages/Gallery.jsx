@@ -283,7 +283,7 @@ const Gallery = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Visit Our Campus</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
             We welcome prospective students and their families to visit our campus and experience 
-            our facilities firsthand. Schedule a visit to see why College of Fisheries, Jabalpur 
+            our facilities firsthand. Schedule a visit to see why College of Fishery, Jabalpur 
             is the right choice for your education.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -307,5 +307,10 @@ const Gallery = () => {
 }
 
 export default Gallery
+
+
+
+
+
 
 

@@ -50,10 +50,10 @@ const FacultyManagement = () => {
   ]
 
   const departments = [
-    { value: 'Fisheries Science', label: 'Fisheries Science' },
+    { value: 'Fishery Science', label: 'Fishery Science' },
     { value: 'Aquaculture', label: 'Aquaculture' },
     { value: 'Fish Processing Technology', label: 'Fish Processing Technology' },
-    { value: 'Fisheries Resource Management', label: 'Fisheries Resource Management' },
+    { value: 'Fishery Resource Management', label: 'Fishery Resource Management' },
     { value: 'Aquatic Environment Management', label: 'Aquatic Environment Management' },
     { value: 'Fish Genetics and Biotechnology', label: 'Fish Genetics and Biotechnology' }
   ]
@@ -475,7 +475,7 @@ const FacultyManagement = () => {
                   name="qualification"
                   value={formData.qualification}
                   onChange={handleChange}
-                  placeholder="e.g., Ph.D. in Fisheries Science"
+                  placeholder="e.g., Ph.D. in Fishery Science"
                   required
                 />
               </FormGroup>
@@ -650,4 +650,9 @@ const FacultyManagement = () => {
 }
 
 export default FacultyManagement
+
+
+
+
+
 

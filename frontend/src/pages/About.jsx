@@ -8,9 +8,9 @@ const About = () => {
   const hash = location.hash.substring(1)
   const [welcomeData, setWelcomeData] = useState({
     deanName: 'Dean',
-    deanTitle: 'College of Fisheries, Jabalpur',
+    deanTitle: 'College of Fishery, Jabalpur',
     deanPhoto: '/cllg.jpg',
-    welcomeMessage: 'Welcome to the College of Fisheries, Jabalpur. Our institution is committed to providing quality education in fisheries science and aquaculture, fostering innovation and sustainable practices. We prepare our students to become leaders in the fisheries sector, contributing to food security and sustainable development.'
+    welcomeMessage: 'Welcome to the College of Fishery, Jabalpur. Our institution is committed to providing quality education in fishery science and aquaculture, fostering innovation and sustainable practices. We prepare our students to become leaders in the fishery sector, contributing to food security and sustainable development.'
   })
 
   const scrollToSection = (sectionId) => {
@@ -64,9 +64,9 @@ const About = () => {
         // Update welcome data with fetched information
         setWelcomeData({
           deanName: welcomeInfo.deanName || 'Dean',
-          deanTitle: welcomeInfo.deanTitle || 'College of Fisheries, Jabalpur',
+          deanTitle: welcomeInfo.deanTitle || 'College of Fishery, Jabalpur',
           deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
-          welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fisheries, Jabalpur. Our institution is committed to providing quality education in fisheries science and aquaculture, fostering innovation and sustainable practices.'
+          welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fishery, Jabalpur. Our institution is committed to providing quality education in fishery science and aquaculture, fostering innovation and sustainable practices.'
         })
       }
     } catch (error) {
@@ -85,7 +85,7 @@ const About = () => {
               About Our College
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Excellence in Fisheries Education & Research since 2018
+              Excellence in Fishery Education & Research since 2018
             </p>
           </div>
         </div>
@@ -134,7 +134,7 @@ const About = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
               <p className="text-gray-700">
-                To be a globally recognized institution for excellence in fisheries education, research, 
+                To be a globally recognized institution for excellence in fishery education, research, 
                 and extension services, fostering innovation and sustainable practices.
               </p>
             </Card>
@@ -145,8 +145,8 @@ const About = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
               <p className="text-gray-700">
-                To provide quality education in fisheries science and aquaculture, conduct cutting-edge research, 
-                and disseminate knowledge for sustainable development of the fisheries sector.
+                To provide quality education in fishery science and aquaculture, conduct cutting-edge research, 
+                and disseminate knowledge for sustainable development of the fishery sector.
               </p>
             </Card>
           </div>
@@ -219,7 +219,7 @@ const About = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Dean & Director</h3>
               <p className="text-blue-600 font-medium mb-2">Ex-Officio Member</p>
-              <p className="text-sm text-gray-600">College of Fisheries, Jabalpur</p>
+              <p className="text-sm text-gray-600">College of Fishery, Jabalpur</p>
             </Card>
 
             {/* Registrar */}
@@ -249,7 +249,7 @@ const About = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Government Representative</h3>
               <p className="text-gray-600 font-medium mb-2">Nominated Member</p>
-              <p className="text-sm text-gray-600">Ministry of Fisheries, Animal Husbandry & Dairying</p>
+              <p className="text-sm text-gray-600">Ministry of Fishery, Animal Husbandry & Dairying</p>
             </Card>
 
             {/* Industry Expert */}
@@ -259,7 +259,7 @@ const About = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Industry Expert</h3>
               <p className="text-gray-600 font-medium mb-2">External Member</p>
-              <p className="text-sm text-gray-600">Aquaculture & Fisheries Industry</p>
+              <p className="text-sm text-gray-600">Aquaculture & Fishery Industry</p>
             </Card>
           </div>
 
@@ -315,4 +315,9 @@ const About = () => {
 }
 
 export default About
+
+
+
+
+
 

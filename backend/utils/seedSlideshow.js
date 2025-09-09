@@ -20,9 +20,9 @@ const seedSlideshow = async () => {
     // Create default slides using the existing slider images
     const defaultSlides = [
       {
-        title: 'College of Fisheries, Jabalpur',
-        subtitle: 'Excellence in Fisheries Education & Research',
-        description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fisheries science education, committed to nurturing future professionals in aquaculture and fisheries management.',
+        title: 'College of Fishery, Jabalpur',
+        subtitle: 'Excellence in Fishery Education & Research',
+        description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fishery science education, committed to nurturing future professionals in aquaculture and fisheries management.',
         image: '/slider.jpg',
         cta: 'Learn More',
         link: '/about',
@@ -41,7 +41,7 @@ const seedSlideshow = async () => {
       },
       {
         title: 'Research & Innovation',
-        subtitle: 'Advancing Fisheries Science',
+        subtitle: 'Advancing fishery science',
         description: 'Cutting-edge research programs contributing to sustainable fisheries development and aquaculture innovation.',
         image: '/slider-3.jpg',
         cta: 'View Research',
@@ -85,3 +85,8 @@ if (require.main === module) {
 }
 
 module.exports = { seedSlideshow };
+
+
+
+
+

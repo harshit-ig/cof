@@ -55,3 +55,8 @@ gallerySchema.index({ date: -1 });
 gallerySchema.index({ order: 1 });
 
 module.exports = mongoose.model('Gallery', gallerySchema);
+
+
+
+
+

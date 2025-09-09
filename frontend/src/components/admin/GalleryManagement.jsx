@@ -1027,3 +1027,8 @@ const GalleryManagement = () => {
 }
 
 export default GalleryManagement
+
+
+
+
+

@@ -149,11 +149,11 @@ const DashboardHome = () => {
 // Placeholder for future InfrastructureManagement component (currently unused)
 const AdminSettings = () => {
   const [settings, setSettings] = useState({
-    siteName: 'College of Fisheries, Jabalpur',
-    siteDescription: 'Excellence in Fisheries Education & Research',
-    contactEmail: 'info@fisheriescollege.edu',
+    siteName: 'College of Fishery, Jabalpur',
+    siteDescription: 'Excellence in Fishery Education & Research',
+    contactEmail: 'info@fisherycollege.edu',
     contactPhone: '+91-761-2345678',
-    address: 'College of Fisheries, Jabalpur, Madhya Pradesh',
+    address: 'College of Fishery, Jabalpur, Madhya Pradesh',
     established: '2018',
     affiliatedUniversity: 'JNKVV, Jabalpur',
     principalName: 'Dr. Principal Name',
@@ -741,3 +741,8 @@ const AdminDashboard = () => {
 }
 
 export default AdminDashboard
+
+
+
+
+
