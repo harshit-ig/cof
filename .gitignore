@@ -54,8 +54,7 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
+# dotenv environment variables fil
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
@@ -102,9 +101,9 @@ jspm_packages/
 ehthumbs.db
 Thumbs.db
 
-# Uploads directory (except .gitkeep)
-backend/uploads/*
-!backend/uploads/.gitkeep
+# # Uploads directory (except .gitkeep)
+# backend/uploads/*
+# !backend/uploads/.gitkeep
 
 # Temporary files
 *.tmp
