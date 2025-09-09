@@ -13,7 +13,7 @@ const Home = () => {
     deanName: 'Dr. Shashikant Mahajan',
     deanTitle: 'Dean, College of Fishery, Jabalpur',
     deanPhoto: '/cllg.jpg',
-    welcomeMessage: 'Welcome to College of Fishery, Jabalpur, where we are committed to Excellence in Fishery education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fishery management for the benefit of society.'
+    welcomeMessage: 'Welcome to the College of Fishery, Jabalpur. We are committed to excellence in aquaculture education and research, developing skilled professionals for sustainable fishery management.'
   })
   const [loading, setLoading] = useState(true)
 
@@ -69,7 +69,7 @@ const Home = () => {
             deanName: welcomeInfo.deanName || 'Dr. Shashikant Mahajan',
             deanTitle: welcomeInfo.deanTitle || 'Dean, College of Fishery, Jabalpur',
             deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
-            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to College of Fishery, Jabalpur, where we are committed to Excellence in Fishery education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fishery management for the benefit of society.'
+            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fishery, Jabalpur. We are committed to excellence in aquaculture education and research, developing skilled professionals for sustainable fishery management.'
           })
         }
       }

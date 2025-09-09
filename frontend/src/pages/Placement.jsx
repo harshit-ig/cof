@@ -684,7 +684,7 @@ const Placement = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-purple-800 text-white py-20">
+      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white py-20">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">

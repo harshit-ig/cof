@@ -1,0 +1,22 @@
+[33medac7c9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{0}: checkout: moving from main to master
+[33mb87a4bf[m[33m ([m[1;32mmain[m[33m)[m HEAD@{1}: commit: -
+[33m6adcfdf[m HEAD@{2}: commit: 00
+[33me88e5b7[m HEAD@{3}: pull --tags origin main: Fast-forward
+[33m8d72687[m HEAD@{4}: checkout: moving from master to main
+[33medac7c9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{5}: commit: --
+[33me358e36[m HEAD@{6}: pull origin main: Fast-forward
+[33m10c2e29[m HEAD@{7}: commit: --
+[33m7231795[m HEAD@{8}: checkout: moving from master to master
+[33m7231795[m HEAD@{9}: commit (merge): --
+[33m8e6d9e5[m HEAD@{10}: commit: --
+[33m41d7fb6[m HEAD@{11}: commit: admin panel
+[33m687c3ba[m HEAD@{12}: commit: UI changes
+[33m88e6e3c[m HEAD@{13}: checkout: moving from master to master
+[33m88e6e3c[m HEAD@{14}: checkout: moving from master to master
+[33m88e6e3c[m HEAD@{15}: pull origin master: Merge made by the 'ort' strategy.
+[33m8d72687[m HEAD@{16}: checkout: moving from master to master
+[33m8d72687[m HEAD@{17}: checkout: moving from master to master
+[33m8d72687[m HEAD@{18}: Branch: renamed refs/heads/master to refs/heads/master
+[33m8d72687[m HEAD@{20}: checkout: moving from main to master
+[33m8d72687[m HEAD@{21}: commit: UI
+[33m637987e[m HEAD@{22}: clone: from https://github.com/harshit-ig/cof.git
