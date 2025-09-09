@@ -101,9 +101,9 @@ jspm_packages/
 ehthumbs.db
 Thumbs.db
 
-# Uploads directory (except .gitkeep)
-backend/uploads/*
-!backend/uploads/.gitkeep
+# # Uploads directory (except .gitkeep)
+# backend/uploads/*
+# !backend/uploads/.gitkeep
 
 # Temporary files
 *.tmp
