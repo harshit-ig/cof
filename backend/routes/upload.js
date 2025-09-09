@@ -106,9 +106,15 @@ router.post('/single', protect, adminOnly, upload.single('file'), (req, res) => 
       });
     }
 
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${path.relative('uploads', req.file.path).replace(/\\/g, '/')}`;
+    // Get the category from body or headers, default to 'images'
+    const category = req.body.category || req.headers['x-upload-category'] || 'images';
+    
+    // Create relative path for URL
+    const relativePath = path.relative('uploads', req.file.path).replace(/\\/g, '/');
+    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${relativePath}`;
 
     console.log('File saved to:', req.file.path);
+    console.log('Category:', category);
     console.log('Returning URL:', fileUrl);
 
     res.json({
@@ -119,6 +125,7 @@ router.post('/single', protect, adminOnly, upload.single('file'), (req, res) => 
         originalName: req.file.originalname,
         size: req.file.size,
         mimetype: req.file.mimetype,
+        category: category,
         url: fileUrl,
         path: req.file.path
       }

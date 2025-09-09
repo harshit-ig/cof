@@ -163,8 +163,11 @@ export const uploadAPI = {
       return `/api/proxy/image?url=${encodeURIComponent(filename)}`
     }
 
-    // Handle local files - use relative URL which will be proxied by Vite
-    return `/api/upload/serve/${type}/${filename}`
+    // Handle local files
+    // In development, Vite proxy will route to backend
+    // In production, this should be the backend domain
+    const baseURL = import.meta.env.VITE_SERVER_HOST?.replace('/api', '') || window.location.origin
+    return `${baseURL}/uploads/${type}/${filename}`
   },
 }
 
