@@ -9,12 +9,12 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001',
+        target: 'https://cof-yngr.onrender.com',
         changeOrigin: true,
         secure: false,
       },
       '/uploads': {
-        target: import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001',
+        target: 'https://cof-yngr.onrender.com',
         changeOrigin: true,
         secure: false,
       },
