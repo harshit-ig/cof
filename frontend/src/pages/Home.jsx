@@ -11,9 +11,9 @@ const Home = () => {
   const [deanMessage, setDeanMessage] = useState('')
   const [welcomeData, setWelcomeData] = useState({
     deanName: 'Dr. Shashikant Mahajan',
-    deanTitle: 'Dean, College of Fisheries, Jabalpur',
+    deanTitle: 'Dean, College of Fishery, Jabalpur',
     deanPhoto: '/cllg.jpg',
-    welcomeMessage: 'Welcome to College of Fisheries, Jabalpur, where we are committed to excellence in fisheries education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fisheries management for the benefit of society.'
+    welcomeMessage: 'Welcome to College of Fishery, Jabalpur, where we are committed to Excellence in Fishery education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fishery management for the benefit of society.'
   })
   const [loading, setLoading] = useState(true)
 
@@ -67,9 +67,9 @@ const Home = () => {
           // Update welcome data with fetched information
           setWelcomeData({
             deanName: welcomeInfo.deanName || 'Dr. Shashikant Mahajan',
-            deanTitle: welcomeInfo.deanTitle || 'Dean, College of Fisheries, Jabalpur',
+            deanTitle: welcomeInfo.deanTitle || 'Dean, College of Fishery, Jabalpur',
             deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
-            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to College of Fisheries, Jabalpur, where we are committed to excellence in fisheries education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fisheries management for the benefit of society.'
+            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to College of Fishery, Jabalpur, where we are committed to Excellence in Fishery education and research. Our mission is to develop skilled professionals who will contribute to sustainable aquaculture and fishery management for the benefit of society.'
           })
         }
       }
@@ -220,7 +220,7 @@ const Home = () => {
                         </div>
                         <div className="border-l-4 border-green-500 pl-4 py-2">
                           <h4 className="font-medium text-gray-900 mb-1">Research Conference on Aquaculture</h4>
-                          <p className="text-sm text-gray-600 mb-1">International conference on sustainable fisheries practices</p>
+                          <p className="text-sm text-gray-600 mb-1">International conference on sustainable fishery practices</p>
                           <p className="text-xs text-gray-500">August 25, 2025</p>
                         </div>
                         <div className="border-l-4 border-purple-500 pl-4 py-2">
@@ -270,7 +270,7 @@ const Home = () => {
                   <h3 className="text-lg font-semibold text-gray-900">Important Notice</h3>
                 </div>
                 <p className="text-gray-700 mb-3">
-                  Admission process for B.F.Sc (Bachelor of Fisheries Science) program 2025-26 is now open.
+                  Admission process for B.F.Sc (Bachelor of Fishery Science) program 2025-26 is now open.
                 </p>
                 <Link
                   to="/student-corner"
@@ -289,5 +289,10 @@ const Home = () => {
 }
 
 export default Home
+
+
+
+
+
 
 

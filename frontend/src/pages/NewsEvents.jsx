@@ -9,7 +9,7 @@ const NewsEvents = () => {
     {
       title: "National Conference on Sustainable Aquaculture",
       date: "December 15-17, 2024",
-      venue: "College of Fisheries, Jabalpur",
+      venue: "College of Fishery, Jabalpur",
       description: "Three-day national conference focusing on sustainable aquaculture practices, climate-resilient farming, and emerging technologies in fisheries sector.",
       speakers: ["Dr. A.K. Singh (ICAR-CIFA)", "Dr. Priya Sharma (CIFT)", "Prof. R.K. Mishra (NDVSU)"],
       registrations: "250+ participants",
@@ -36,7 +36,7 @@ const NewsEvents = () => {
     {
       title: "Seminar on Blue Economy and Fisheries",
       date: "March 15, 2025",
-      venue: "College of Fisheries, Jabalpur",
+      venue: "College of Fishery, Jabalpur",
       description: "One-day seminar exploring opportunities in blue economy, marine fisheries development, and sustainable coastal aquaculture.",
       speakers: ["Dr. V.K. Tiwari (CMFRI)", "Dr. Neetu Srivastava (ICAR)", "Shri A.B. Patel (DoF, MP)"],
       registrations: "Registration Open",
@@ -163,7 +163,7 @@ const NewsEvents = () => {
   // Press Releases Data
   const pressReleases = [
     {
-      title: "College of Fisheries Launches New Biofloc Training Center",
+      title: "College of Fishery Launches New Biofloc Training Center",
       date: "August 15, 2024",
       category: "Infrastructure Development",
       summary: "State-of-the-art biofloc training facility inaugurated to promote sustainable aquaculture practices among farmers in Madhya Pradesh.",
@@ -218,7 +218,7 @@ const NewsEvents = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">News & Events</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Stay updated with latest happenings, academic events, research activities, 
-              and achievements at College of Fisheries, Jabalpur.
+              and achievements at College of Fishery, Jabalpur.
             </p>
           </div>
         </div>
@@ -692,7 +692,7 @@ const NewsEvents = () => {
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Official announcements, achievements, and newsworthy developments from 
-              College of Fisheries covered in various media outlets.
+              College of Fishery covered in various media outlets.
             </p>
           </div>
 
@@ -769,7 +769,7 @@ const NewsEvents = () => {
           <h2 className="text-3xl font-bold mb-4">Stay Connected with Latest Updates</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Subscribe to our newsletter and follow us on social media to get the latest news, 
-            event updates, and announcements from College of Fisheries.
+            event updates, and announcements from College of Fishery.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -794,5 +794,10 @@ const NewsEvents = () => {
 }
 
 export default NewsEvents
+
+
+
+
+
 
 

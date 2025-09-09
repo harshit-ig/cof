@@ -51,3 +51,8 @@ const slideshowSchema = new mongoose.Schema({
 slideshowSchema.index({ order: 1, isActive: 1 });
 
 module.exports = mongoose.model('Slideshow', slideshowSchema);
+
+
+
+
+

@@ -4,11 +4,11 @@ const settingsSchema = new mongoose.Schema({
   // General Settings
   siteName: {
     type: String,
-    default: 'College of Fisheries, Jabalpur'
+    default: 'College of Fishery, Jabalpur'
   },
   siteDescription: {
     type: String,
-    default: 'Excellence in Fisheries Education & Research'
+    default: 'Excellence in Fishery Education & Research'
   },
   established: {
     type: String,
@@ -26,7 +26,7 @@ const settingsSchema = new mongoose.Schema({
   // Contact Information
   contactEmail: {
     type: String,
-    default: 'info@fisheriescollege.edu'
+    default: 'info@fisherycollege.edu'
   },
   contactPhone: {
     type: String,
@@ -34,7 +34,7 @@ const settingsSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    default: 'College of Fisheries, Jabalpur, Madhya Pradesh'
+    default: 'College of Fishery, Jabalpur, Madhya Pradesh'
   },
   
   // Social Media
@@ -70,7 +70,7 @@ const settingsSchema = new mongoose.Schema({
   // Footer Settings
   footerText: {
     type: String,
-    default: 'College of Fisheries, Jabalpur - Excellence in Fisheries Education & Research'
+    default: 'College of Fishery, Jabalpur - Excellence in Fishery Education & Research'
   }
 }, {
   timestamps: true
@@ -97,3 +97,8 @@ settingsSchema.statics.updateSingleton = async function(updates) {
 };
 
 module.exports = mongoose.model('Settings', settingsSchema);
+
+
+
+
+

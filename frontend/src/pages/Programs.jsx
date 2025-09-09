@@ -10,12 +10,12 @@ const Programs = () => {
     undergraduate: [
       {
         id: 'bfsc',
-        name: 'Bachelor of Fisheries Science (B.F.Sc.)',
+        name: 'Bachelor of Fishery Science (B.F.Sc.)',
         duration: '4 Years (8 Semesters)',
         seats: 60,
-        description: 'Comprehensive undergraduate program covering all aspects of fisheries science and aquaculture.',
+        description: 'Comprehensive undergraduate program covering all aspects of fishery science and aquaculture.',
         highlights: [
-          'Core fisheries subjects',
+          'Core fishery subjects',
           'Practical training in hatcheries',
           'Field visits and internships',
           'Research project in final year'
@@ -25,11 +25,11 @@ const Programs = () => {
           'Aquaculture Engineering',
           'Fish Nutrition & Feed Technology',
           'Fish Processing Technology',
-          'Fisheries Economics & Extension',
+          'Fishery Economics & Extension',
           'Aquatic Environment Management'
         ],
         career: [
-          'Fisheries Officer',
+          'Fishery Officer',
           'Aquaculture Manager',
           'Fish Farm Consultant',
           'Research Assistant',
@@ -40,7 +40,7 @@ const Programs = () => {
     postgraduate: [
       {
         id: 'mfsc-aquaculture',
-        name: 'Master of Fisheries Science (M.F.Sc.) - Aquaculture',
+        name: 'Master of Fishery Science (M.F.Sc.) - Aquaculture',
         duration: '2 Years (4 Semesters)',
         seats: 15,
         description: 'Advanced specialization in aquaculture techniques and management.',
@@ -54,7 +54,7 @@ const Programs = () => {
           'Advanced Aquaculture Systems',
           'Aquaculture Biotechnology',
           'Aquaculture Economics',
-          'Research Methods in Fisheries',
+          'Research Methods in Fishery',
           'Seminar & Thesis'
         ],
         career: [
@@ -67,7 +67,7 @@ const Programs = () => {
       },
       {
         id: 'mfsc-fish-health',
-        name: 'Master of Fisheries Science (M.F.Sc.) - Fish Health Management',
+        name: 'Master of Fishery Science (M.F.Sc.) - Fish Health Management',
         duration: '2 Years (4 Semesters)',
         seats: 15,
         description: 'Specialized program in aquatic animal health and disease management.',
@@ -93,42 +93,12 @@ const Programs = () => {
         ]
       }
     ],
-    doctoral: [
-      {
-        id: 'phd-fisheries',
-        name: 'Doctor of Philosophy (Ph.D.) in Fisheries Science',
-        duration: '3-5 Years',
-        seats: 10,
-        description: 'Research-oriented doctoral program for advanced studies in fisheries science.',
-        highlights: [
-          'Original research work',
-          'Publication requirements',
-          'International exposure',
-          'Academic leadership'
-        ],
-        specializations: [
-          'Aquaculture & Fisheries',
-          'Fish Health & Disease',
-          'Fisheries Economics',
-          'Aquatic Environment',
-          'Fish Processing Technology'
-        ],
-        career: [
-          'University Professor',
-          'Research Director',
-          'Policy Advisor',
-          'Industry Expert',
-          'International Consultant'
-        ]
-      }
-    ]
   }
 
   const admissionInfo = {
     eligibility: {
       bfsc: '10+2 with Biology/Mathematics/Agriculture (50% marks)',
-      mfsc: 'B.F.Sc. or B.Sc. in relevant field (60% marks)',
-      phd: 'M.F.Sc. or M.Sc. in relevant field (65% marks)'
+      mfsc: 'B.F.Sc. or B.Sc. in relevant field (60% marks)'
     },
     process: [
       'Online application submission',
@@ -160,12 +130,7 @@ const Programs = () => {
       total: '₹27,000 per semester',
       hostel: '₹8,000 per semester'
     },
-    phd: {
-      tuition: '₹25,000 per semester',
-      other: '₹10,000 per semester',
-      total: '₹35,000 per semester',
-      hostel: '₹8,000 per semester'
-    }
+    
   }
 
   const academicCalendar = [
@@ -212,7 +177,7 @@ const Programs = () => {
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Academic Information</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Explore our comprehensive range of fisheries science programs and academic details.
+              Explore our comprehensive range of fishery science programs and academic details.
             </p>
           </div>
         </div>
@@ -224,7 +189,7 @@ const Programs = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Academic Programmes</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto"></div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Undergraduate, Postgraduate, and Doctoral programs in Fisheries Science.</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">Undergraduate, Postgraduate, and Doctoral programs in Fishery Science.</p>
           </div>
           {/* Program Tabs and Details (reuse existing tab logic) */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -391,10 +356,6 @@ const Programs = () => {
                   <h4 className="font-semibold text-gray-900 mb-2">M.F.Sc.</h4>
                   <p className="text-gray-700">{admissionInfo.eligibility.mfsc}</p>
                 </div>
-                <div className="border-l-4 border-accent-500 pl-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">Ph.D.</h4>
-                  <p className="text-gray-700">{admissionInfo.eligibility.phd}</p>
-                </div>
               </div>
             </Card>
 
@@ -551,7 +512,7 @@ const Programs = () => {
           <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Join our prestigious institution and become part of the next generation of 
-            fisheries professionals and researchers
+            fishery professionals and researchers
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -573,4 +534,9 @@ const Programs = () => {
 }
 
 export default Programs
+
+
+
+
+
 

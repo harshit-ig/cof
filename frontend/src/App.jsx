@@ -30,6 +30,7 @@ import Gallery from './pages/Gallery'
 import NotFound from './pages/NotFound'
 import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
+import Placement from './pages/Placement'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -67,6 +68,7 @@ function App() {
               <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
               <Route path="/incubation" element={<Incubation />} />
               <Route path="/student-corner" element={<StudentCorner />} />
+              <Route path="/placement" element={<Placement />} />
               <Route path="/news" element={<News />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/events" element={<NewsEvents />} />
@@ -127,3 +129,8 @@ function App() {
 }
 
 export default App
+
+
+
+
+

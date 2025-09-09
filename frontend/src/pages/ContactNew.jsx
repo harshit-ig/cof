@@ -18,7 +18,7 @@ const Contact = () => {
       icon: Mail,
       title: 'Email Addresses',
       details: [
-        'Dean: dean.fisheries@ndvsu.ac.in',
+        'Dean: dean.fishery@ndvsu.ac.in',
         'Admission: admissions.cof@ndvsu.ac.in',
         'General Inquiry: info.cof@ndvsu.ac.in',
         'Research: research.cof@ndvsu.ac.in'
@@ -50,7 +50,7 @@ const Contact = () => {
     {
       title: 'Main Campus',
       address: [
-        'College of Fisheries',
+        'College of Fishery',
         'Nanaji Deshmukh Veterinary Science University',
         'Adhartal, Jabalpur - 482004',
         'Madhya Pradesh, India'
@@ -62,7 +62,7 @@ const Contact = () => {
       title: 'Administrative Office',
       address: [
         'Administrative Block',
-        'College of Fisheries',
+        'College of Fishery',
         'Adhartal, Jabalpur - 482004',
         'Madhya Pradesh, India'
       ],
@@ -73,7 +73,7 @@ const Contact = () => {
       title: 'Research Center',
       address: [
         'Fisheries Research Unit',
-        'College of Fisheries',
+        'College of Fishery',
         'Adhartal, Jabalpur - 482004',
         'Madhya Pradesh, India'
       ],
@@ -121,7 +121,7 @@ const Contact = () => {
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Complete contact information and location details for College of Fisheries, Jabalpur. 
+              Complete contact information and location details for College of Fishery, Jabalpur. 
               Connect with us for admissions, research collaborations, and general inquiries.
             </p>
           </div>
@@ -205,7 +205,7 @@ const Contact = () => {
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="College of Fisheries Location"
+                  title="College of Fishery Location"
                 ></iframe>
                 <div className="absolute top-4 left-4 bg-white p-2 rounded shadow-md">
                   <p className="text-xs text-gray-600">
@@ -334,7 +334,7 @@ const Contact = () => {
           <h2 className="text-3xl font-bold mb-4">Visit Our Campus</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Experience our state-of-the-art facilities, meet our faculty, and explore opportunities 
-            at College of Fisheries, Jabalpur. Schedule a campus visit today!
+            at College of Fishery, Jabalpur. Schedule a campus visit today!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -361,5 +361,10 @@ const Contact = () => {
 }
 
 export default Contact
+
+
+
+
+
 
 

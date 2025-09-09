@@ -296,3 +296,8 @@ const ResearchDetail = () => {
 
 export default ResearchDetail
 
+
+
+
+
+

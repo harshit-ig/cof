@@ -98,3 +98,7 @@ If using PowerShell on Windows, the scripts have been updated to use `;` instead
 4. Set up proper MongoDB authentication
 5. Use environment-specific MongoDB URIs
 6. Configure reverse proxy (nginx/Apache) if needed 
+
+
+
+

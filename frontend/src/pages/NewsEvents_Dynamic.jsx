@@ -143,7 +143,7 @@ const NewsEvents = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">News & Events</h1>
             <p className="text-xl text-blue-100 mb-8">
               Stay updated with the latest news, events, seminars, workshops, and announcements 
-              from the College of Fisheries, Jabalpur.
+              from the College of Fishery, Jabalpur.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
               <div className="text-center">
@@ -346,7 +346,7 @@ const NewsEvents = () => {
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Stay Connected</h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Don't miss out on important updates, events, and opportunities. 
-            Follow us for the latest news from the College of Fisheries.
+            Follow us for the latest news from the College of Fishery.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -372,3 +372,8 @@ const NewsEvents = () => {
 }
 
 export default NewsEvents
+
+
+
+
+

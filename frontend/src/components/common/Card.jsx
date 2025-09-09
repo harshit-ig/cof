@@ -217,3 +217,8 @@ export const NewsCard = ({
 
 export default Card
 
+
+
+
+
+

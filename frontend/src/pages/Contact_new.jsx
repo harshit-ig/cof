@@ -38,7 +38,7 @@ const Contact = () => {
               Contact Us
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Get in Touch with College of Fisheries, Jabalpur
+              Get in Touch with College of Fishery, Jabalpur
             </p>
           </div>
         </div>
@@ -85,7 +85,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">dean.fisheries@ndvsu.ac.in</p>
+                  <p className="text-gray-700 text-sm">dean.fishery@ndvsu.ac.in</p>
                   <p className="text-gray-700 text-sm">registrar@ndvsu.ac.in</p>
                   <p className="text-gray-700 text-sm">info.cof@ndvsu.ac.in</p>
                 </div>
@@ -102,7 +102,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">College of Fisheries</p>
+                  <p className="text-gray-700 text-sm">College of Fishery</p>
                   <p className="text-gray-700 text-sm">Nanaji Deshmukh Veterinary Science University</p>
                   <p className="text-gray-700 text-sm">Adhartal, Jabalpur</p>
                   <p className="text-gray-700 text-sm">Madhya Pradesh - 482004, India</p>
@@ -150,7 +150,7 @@ const Contact = () => {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="College of Fisheries Location"
+                    title="College of Fishery Location"
                   ></iframe>
                 </div>
                 
@@ -201,3 +201,8 @@ const Contact = () => {
 }
 
 export default Contact
+
+
+
+
+

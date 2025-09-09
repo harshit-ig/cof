@@ -331,3 +331,7 @@ For support and queries:
 ---
 
 **Note**: This is a complete MERN stack application with modern development practices. Make sure to change default passwords and secrets before deploying to production.
+
+
+
+

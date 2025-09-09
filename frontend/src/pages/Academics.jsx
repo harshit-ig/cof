@@ -38,7 +38,7 @@ const Academics = () => {
               Academics
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Quality Education in Fisheries Science & Aquaculture
+              Quality Education in Fishery Science & Aquaculture
             </p>
           </div>
         </div>
@@ -60,12 +60,12 @@ const Academics = () => {
                   <GraduationCap className="w-6 h-6 text-blue-500" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Bachelor of Fisheries Science</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Bachelor of Fishery Science</h3>
                   <p className="text-blue-500 text-sm">B.F.Sc. • 4 Years</p>
                 </div>
               </div>
               <p className="text-gray-700 text-sm">
-                Comprehensive undergraduate program covering fisheries science, aquaculture, and fisheries management.
+                Comprehensive undergraduate program covering fishery science, aquaculture, and fishery management.
               </p>
             </Card>
             
@@ -75,12 +75,12 @@ const Academics = () => {
                   <Award className="w-6 h-6 text-secondary-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Master of Fisheries Science</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">Master of Fishery Science</h3>
                   <p className="text-secondary-600 text-sm">M.F.Sc. • 2 Years</p>
                 </div>
               </div>
               <p className="text-gray-700 text-sm">
-                Advanced postgraduate program with specialization in various fields of fisheries science.
+                Advanced postgraduate program with specialization in various fields of fishery science.
               </p>
             </Card>
           </div>
@@ -131,13 +131,13 @@ const Academics = () => {
             </Card>
             <Card className="p-6">
               <Building className="w-8 h-8 text-secondary-600 mb-3" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Fisheries Resource Management</h3>
-              <p className="text-gray-700 text-sm">Sustainable fisheries and resource conservation</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Fishery Resource Management</h3>
+              <p className="text-gray-700 text-sm">Sustainable fishery and resource conservation</p>
             </Card>
             <Card className="p-6">
               <Building className="w-8 h-8 text-accent-600 mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Processing Technology</h3>
-              <p className="text-gray-700 text-sm">Food technology and value addition in fisheries</p>
+              <p className="text-gray-700 text-sm">Food technology and value addition in fishery</p>
             </Card>
             <Card className="p-6">
               <Building className="w-8 h-8 text-green-600 mb-3" />
@@ -160,7 +160,7 @@ const Academics = () => {
             <BookOpen className="w-12 h-12 text-blue-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Comprehensive Curriculum</h3>
             <p className="text-gray-700 text-sm mb-4">
-              Our curriculum covers theoretical knowledge and practical skills in fisheries science, 
+              Our curriculum covers theoretical knowledge and practical skills in fishery science, 
               aquaculture, fish processing, and resource management.
             </p>
             <Link
@@ -185,7 +185,7 @@ const Academics = () => {
             <Users className="w-12 h-12 text-blue-500 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Expert Faculty Members</h3>
             <p className="text-gray-700 text-sm mb-4">
-              Highly qualified and experienced faculty members specializing in various fields of fisheries science.
+              Highly qualified and experienced faculty members specializing in various fields of fishery science.
             </p>
             <Link
               to="/faculty"
@@ -229,4 +229,9 @@ const Academics = () => {
 }
 
 export default Academics
+
+
+
+
+
 

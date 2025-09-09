@@ -74,6 +74,7 @@ const Navbar = () => {
       ]
     },
     { name: 'Incubation Centre', href: '/incubation' },
+    { name: 'Placement', href: '/placement' },
     {
       name: 'Students Corner',
       href: '/student-corner',
@@ -253,7 +254,7 @@ const Navbar = () => {
           <Link to="/">
             <img 
               src="/top_banner.png" 
-              alt="College of Fisheries, Jabalpur Banner" 
+                            alt="College of Fishery, Jabalpur Banner" 
               className="w-full h-auto object-contain"
             />
           </Link>
@@ -423,4 +424,9 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+
+
+
+
 

@@ -22,3 +22,8 @@ console.log('- MONGODB_URI set:', !!process.env.MONGODB_URI);
 
 // Start the actual server
 require('./server.js');
+
+
+
+
+

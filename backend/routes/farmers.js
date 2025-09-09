@@ -1,0 +1,300 @@
+const express = require('express')
+const router = express.Router()
+const nodemailer = require('nodemailer')
+
+// Create transporter using environment variables
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+})
+
+// Advisory Services Endpoint
+router.post('/advisory', async (req, res) => {
+  try {
+    const { name, email, phone, query, category } = req.body
+    
+    // Validate required fields
+    if (!name || !email || !query) {
+      return res.status(400).json({ 
+        message: 'Name, email, and query are required fields' 
+      })
+    }
+
+    // Email to admin
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: 'admin@fisherycollegejabalpur.edu.in',
+      subject: `New Advisory Query - ${category || 'General'}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #3b82f6, #10b981); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">New Advisory Query Received</h2>
+          </div>
+          
+          <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="color: #1f2937; margin-top: 0;">Farmer Details</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Name:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Email:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${email}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Phone:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${phone || 'Not provided'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0;"><strong>Category:</strong></td>
+                  <td style="padding: 8px 0;">${category || 'Not specified'}</td>
+                </tr>
+              </table>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px;">
+              <h3 style="color: #1f2937; margin-top: 0;">Query Details</h3>
+              <div style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; border-left: 4px solid #3b82f6;">
+                <p style="margin: 0; line-height: 1.6;">${query}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div style="background-color: #1f2937; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px;">
+            <p style="margin: 0; font-size: 14px;">Please respond to the farmer at the earliest.</p>
+          </div>
+        </div>
+      `
+    }
+
+    // Confirmation email to farmer
+    const farmerMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Advisory Query Received - CoF Jabalpur',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #10b981, #3b82f6); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">Query Received Successfully</h2>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fisheries, Jabalpur</p>
+          </div>
+          
+          <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <p style="font-size: 16px; color: #1f2937; margin-top: 0;">Dear ${name},</p>
+              <p style="color: #4b5563; line-height: 1.6;">
+                Thank you for reaching out to us through our Farmers' Corner Advisory Services. 
+                We have successfully received your query and our experts are reviewing it.
+              </p>
+              
+              <div style="background-color: #f0f9ff; padding: 15px; border-radius: 6px; border-left: 4px solid #3b82f6; margin: 20px 0;">
+                <h4 style="margin-top: 0; color: #1e40af;">Your Query Summary:</h4>
+                <p style="margin-bottom: 0; color: #1f2937;"><strong>Category:</strong> ${category || 'General'}</p>
+                <p style="margin: 10px 0 0 0; color: #4b5563; font-style: italic;">"${query.substring(0, 150)}${query.length > 150 ? '...' : ''}"</p>
+              </div>
+              
+              <p style="color: #4b5563; line-height: 1.6;">
+                Our subject matter experts will review your query and provide a comprehensive response within 24-48 hours. 
+                You will receive the expert advice directly to this email address.
+              </p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px;">
+              <h3 style="color: #1f2937; margin-top: 0;">Need Immediate Assistance?</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <div style="flex: 1; min-width: 200px;">
+                  <p style="margin: 5px 0; color: #4b5563;"><strong>📞 Helpline:</strong> 1800-123-4567</p>
+                  <p style="margin: 5px 0; color: #4b5563;"><strong>📱 WhatsApp:</strong> +91 98765 43210</p>
+                  <p style="margin: 5px 0; color: #4b5563;"><strong>✉️ Email:</strong> support@fisherycollegejabalpur.edu.in</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="background-color: #1f2937; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px;">
+            <p style="margin: 0; font-size: 14px;">
+              Best regards,<br>
+              <strong>Advisory Services Team</strong><br>
+              College of Fisheries, Jabalpur
+            </p>
+          </div>
+        </div>
+      `
+    }
+
+    // Send emails
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(farmerMailOptions)
+    ])
+
+    res.status(200).json({ 
+      message: 'Advisory query submitted successfully. You will receive a response within 24-48 hours.' 
+    })
+
+  } catch (error) {
+    console.error('Error submitting advisory query:', error)
+    res.status(500).json({ 
+      message: 'Failed to submit advisory query. Please try again.' 
+    })
+  }
+})
+
+// Training Registration Endpoint
+router.post('/training', async (req, res) => {
+  try {
+    const { name, email, phone, program, experience, expectations } = req.body
+    
+    // Validate required fields
+    if (!name || !email || !program) {
+      return res.status(400).json({ 
+        message: 'Name, email, and program selection are required fields' 
+      })
+    }
+
+    // Email to admin
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: 'training@fisherycollegejabalpur.edu.in',
+      subject: `New Training Registration - ${program}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #10b981, #3b82f6); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">New Training Registration</h2>
+          </div>
+          
+          <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h3 style="color: #1f2937; margin-top: 0;">Participant Details</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Name:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Email:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${email}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Phone:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;">${phone || 'Not provided'}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>Program:</strong></td>
+                  <td style="padding: 8px 0; border-bottom: 1px solid #e5e7eb;"><strong>${program}</strong></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0;"><strong>Experience Level:</strong></td>
+                  <td style="padding: 8px 0;">${experience || 'Not specified'}</td>
+                </tr>
+              </table>
+            </div>
+            
+            ${expectations ? `
+            <div style="background-color: white; padding: 20px; border-radius: 8px;">
+              <h3 style="color: #1f2937; margin-top: 0;">Expectations from Training</h3>
+              <div style="background-color: #f3f4f6; padding: 15px; border-radius: 6px; border-left: 4px solid #10b981;">
+                <p style="margin: 0; line-height: 1.6;">${expectations}</p>
+              </div>
+            </div>
+            ` : ''}
+          </div>
+          
+          <div style="background-color: #1f2937; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px;">
+            <p style="margin: 0; font-size: 14px;">Please confirm the registration and send joining instructions.</p>
+          </div>
+        </div>
+      `
+    }
+
+    // Confirmation email to participant
+    const participantMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Training Registration Confirmed - CoF Jabalpur',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="background: linear-gradient(135deg, #3b82f6, #10b981); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+            <h2 style="margin: 0;">Registration Confirmed</h2>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fisheries, Jabalpur</p>
+          </div>
+          
+          <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+              <p style="font-size: 16px; color: #1f2937; margin-top: 0;">Dear ${name},</p>
+              <p style="color: #4b5563; line-height: 1.6;">
+                Congratulations! Your registration for the training program has been successfully confirmed.
+              </p>
+              
+              <div style="background-color: #ecfdf5; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981; margin: 20px 0;">
+                <h3 style="margin-top: 0; color: #047857;">Training Program Details</h3>
+                <p style="margin: 5px 0; color: #1f2937;"><strong>Program:</strong> ${program}</p>
+                <p style="margin: 5px 0; color: #1f2937;"><strong>Venue:</strong> College of Fisheries, Jabalpur</p>
+                <p style="margin: 5px 0; color: #4b5563;">Detailed joining instructions and schedule will be sent to you within 2-3 working days.</p>
+              </div>
+              
+              <div style="background-color: #fef3c7; padding: 15px; border-radius: 6px; border-left: 4px solid #f59e0b; margin: 20px 0;">
+                <p style="margin: 0; color: #92400e;">
+                  <strong>Important:</strong> Please keep checking your email for further updates and joining instructions. 
+                  Also check your spam/junk folder if you don't receive emails in your inbox.
+                </p>
+              </div>
+              
+              <p style="color: #4b5563; line-height: 1.6;">
+                We look forward to having you in our training program. If you have any questions, 
+                please don't hesitate to contact our training coordinator.
+              </p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px;">
+              <h3 style="color: #1f2937; margin-top: 0;">What to Expect</h3>
+              <ul style="color: #4b5563; line-height: 1.6;">
+                <li>Expert-led sessions by experienced faculty</li>
+                <li>Hands-on practical training</li>
+                <li>Course materials and resources</li>
+                <li>Certificate of completion</li>
+                <li>Networking opportunities</li>
+              </ul>
+              
+              <h3 style="color: #1f2937;">Contact Information</h3>
+              <p style="margin: 5px 0; color: #4b5563;"><strong>📞 Training Coordinator:</strong> +91 761-2681367</p>
+              <p style="margin: 5px 0; color: #4b5563;"><strong>✉️ Email:</strong> training@fisherycollegejabalpur.edu.in</p>
+              <p style="margin: 5px 0; color: #4b5563;"><strong>📱 WhatsApp:</strong> +91 98765 43210</p>
+            </div>
+          </div>
+          
+          <div style="background-color: #1f2937; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px;">
+            <p style="margin: 0; font-size: 14px;">
+              Best regards,<br>
+              <strong>Training & Development Team</strong><br>
+              College of Fisheries, Jabalpur
+            </p>
+          </div>
+        </div>
+      `
+    }
+
+    // Send emails
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(participantMailOptions)
+    ])
+
+    res.status(200).json({ 
+      message: 'Training registration successful! You will receive joining instructions via email within 2-3 working days.' 
+    })
+
+  } catch (error) {
+    console.error('Error submitting training registration:', error)
+    res.status(500).json({ 
+      message: 'Failed to submit training registration. Please try again.' 
+    })
+  }
+})
+
+module.exports = router

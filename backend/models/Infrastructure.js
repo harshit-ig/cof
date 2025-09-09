@@ -63,3 +63,7 @@ const infrastructureSchema = new mongoose.Schema({
 infrastructureSchema.index({ name: 'text', description: 'text', type: 'text' });
 
 module.exports = mongoose.model('Infrastructure', infrastructureSchema);
+
+
+
+
