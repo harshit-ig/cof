@@ -5,7 +5,6 @@ import { Menu, X, ChevronDown } from 'lucide-react'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
-  const [showBanner, setShowBanner] = useState(true)
   const location = useLocation()
   const navigate = useNavigate()
   const [isClient, setIsClient] = useState(false)
@@ -183,68 +182,6 @@ const Navbar = () => {
     }
   }, [])
 
-  // Advanced scroll handling with debouncing and state persistence
-  useEffect(() => {
-    let scrollTimeout = null
-    let lastScrollY = 0
-    let isScrolling = false
-
-    const handleScroll = () => {
-      // Clear existing timeout
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
-      }
-
-      // Set scrolling flag
-      if (!isScrolling) {
-        isScrolling = true
-      }
-
-      // Debounce scroll events
-      scrollTimeout = setTimeout(() => {
-        const currentScrollY = window.scrollY
-        const scrollDelta = Math.abs(currentScrollY - lastScrollY)
-        
-        // Only process if scroll delta is significant (prevents micro-movements)
-        if (scrollDelta > 5) {
-          const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up'
-          
-          // More conservative thresholds with larger gaps
-          if (scrollDirection === 'down' && currentScrollY > 150 && showBanner) {
-            setShowBanner(false)
-          } else if (scrollDirection === 'up' && currentScrollY < 30 && !showBanner) {
-            setShowBanner(true)
-          }
-          
-          lastScrollY = currentScrollY
-        }
-        
-        isScrolling = false
-      }, 50) // 50ms debounce
-    }
-
-    // Throttled scroll listener
-    let ticking = false
-    const throttledScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleScroll()
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', throttledScroll, { passive: true })
-    
-    return () => {
-      window.removeEventListener('scroll', throttledScroll)
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
-      }
-    }
-  }, [showBanner]) // Include showBanner in dependencies
-
   // Improved hover handling with cancelable close timer
   const closeTimerRef = useRef(null)
   const dropdownRef = useRef(null)
@@ -284,26 +221,22 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
-      {/* Top Banner */}
-      <div 
-        className={`bg-white transition-all duration-400 ease-in-out overflow-hidden ${
-          showBanner ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
+    <>
+      {/* Top Banner - scrolls away normally */}
+      <div className="bg-white">
         <div className="max-w-full mx-auto">
           <Link to="/">
             <img 
               src="/top_banner.png" 
-                            alt="College of Fishery, Jabalpur Banner" 
+              alt="College of Fishery, Jabalpur Banner" 
               className="w-full h-auto object-contain"
             />
           </Link>
         </div>
       </div>
 
-      {/* Navigation Menu */}
-      <div className="bg-gradient-to-r from-blue-700 to-green-600">
+      {/* Navigation Menu - sticks to top */}
+      <nav className="bg-gradient-to-r from-blue-700 to-green-600 sticky top-0 z-50 shadow-lg">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             {/* Mobile menu button */}
@@ -459,8 +392,8 @@ const Navbar = () => {
             ))}
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   )
 }
 
