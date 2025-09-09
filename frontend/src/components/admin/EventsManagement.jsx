@@ -156,7 +156,7 @@ const EventsManagement = () => {
       const response = await uploadAPI.single(file, 'events')
       
       if (response.data.success && response.data.data.filename) {
-        const imageUrl = `/api/upload/serve/events/${response.data.data.filename}`
+        const imageUrl = uploadAPI.getImageUrl(response.data.data.filename, 'events')
         setFormData(prev => ({
           ...prev,
           images: [...prev.images, { url: imageUrl, caption: '' }]

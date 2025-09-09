@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Save, Upload, Eye, Edit, Trash2, User, AlertCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { contentAPI, uploadAPI } from '../../services/api'
 
 const WelcomeMessageManagement = () => {
   const [loading, setLoading] = useState(false)
@@ -24,8 +25,8 @@ const WelcomeMessageManagement = () => {
       setLoading(true)
       
       // Try to get content by key first
-      const response = await fetch('/api/content/key/dean-welcome-message')
-      const data = await response.json()
+      const response = await contentAPI.getByKey('dean-welcome-message')
+      const data = response.data
       
       if (data.success && data.data.content) {
         const content = data.data.content
@@ -55,7 +56,7 @@ const WelcomeMessageManagement = () => {
         
         // Set photo preview - if it's a relative path, make it absolute
         if (photoUrl) {
-          const fullPhotoUrl = photoUrl.startsWith('http') ? photoUrl : `${window.location.origin}${photoUrl}`
+          const fullPhotoUrl = photoUrl.startsWith('http') ? photoUrl : uploadAPI.getImageUrl(photoUrl, 'dean')
           setPhotoPreview(fullPhotoUrl)
         }
       } else {
@@ -94,10 +95,6 @@ const WelcomeMessageManagement = () => {
       fileType: selectedFile.type
     })
 
-    const formData = new FormData()
-    formData.append('file', selectedFile) // Changed from 'image' to 'file'
-    formData.append('category', 'dean')
-
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -105,25 +102,10 @@ const WelcomeMessageManagement = () => {
         return null
       }
 
-      console.log('Making upload request to /api/upload/single...')
+      console.log('Making upload request with uploadAPI...')
 
-      const response = await fetch('/api/upload/single', { // Changed endpoint
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      })
-
-      console.log('Upload response status:', response.status)
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Upload response error:', response.status, errorText)
-        throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
-      }
-
-      const data = await response.json()
+      const response = await uploadAPI.single(selectedFile, 'dean')
+      const data = response.data
       console.log('Upload response data:', data)
       
       if (data.success) {
@@ -173,24 +155,8 @@ const WelcomeMessageManagement = () => {
 
       console.log('Saving welcome message with payload:', payload)
 
-      const response = await fetch('/api/content', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(payload)
-      })
-
-      console.log('Save response status:', response.status)
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Save response error:', response.status, errorText)
-        throw new Error(`Save failed: ${response.status} ${response.statusText}`)
-      }
-
-      const data = await response.json()
+      const response = await contentAPI.create(payload)
+      const data = response.data
       console.log('Save response data:', data)
 
       if (data.success) {

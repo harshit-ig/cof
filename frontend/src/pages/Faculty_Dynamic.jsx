@@ -221,7 +221,10 @@ const Faculty = () => {
                       alt={faculty.name}
                       className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-blue-100 group-hover:border-blue-200 transition-colors"
                       onError={(e) => {
-                        e.target.src = '/images/default-avatar.jpg'
+                        if (!e.target.dataset.fallbackUsed) {
+                          e.target.dataset.fallbackUsed = 'true'
+                          e.target.src = uploadAPI.getImageUrl('default-avatar.jpg', 'images')
+                        }
                       }}
                     />
                     <h3 className="text-xl font-bold text-gray-900 mb-1">{faculty.name}</h3>

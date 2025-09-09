@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Users, Award, Building, Globe, BookOpen, Target, Eye, User, Users2, Settings } from 'lucide-react'
 import Card from '../components/common/Card'
+import { contentAPI, uploadAPI } from '../services/api'
 
 const About = () => {
   const location = useLocation()
@@ -41,8 +42,8 @@ const About = () => {
 
   const fetchWelcomeData = async () => {
     try {
-      const response = await fetch('/api/content/key/dean-welcome-message')
-      const data = await response.json()
+      const response = await contentAPI.getByKey('dean-welcome-message')
+      const data = response.data
       
       if (data.success && data.data.content) {
         const content = data.data.content
@@ -101,7 +102,10 @@ const About = () => {
                 alt={welcomeData.deanName} 
                 className="w-full max-w-md h-80 object-cover rounded-lg shadow-lg mx-auto"
                 onError={(e) => {
-                  e.target.src = '/COF NEW.png'
+                  if (!e.target.dataset.fallbackUsed) {
+                    e.target.dataset.fallbackUsed = 'true'
+                    e.target.src = uploadAPI.getImageUrl('COF NEW.png', 'images')
+                  }
                 }}
               />
             </div>

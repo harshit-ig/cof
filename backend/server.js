@@ -29,8 +29,15 @@ app.use('/api/', limiter);
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Upload-Category',
+    'Accept',
+    'Origin',
+    'X-Requested-With'
+  ]
 }));
 
 // Body parsing middleware

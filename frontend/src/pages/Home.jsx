@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen } from 'lucide-react'
 import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
-import { newsAPI, eventsAPI, contentAPI } from '../services/api'
+import { newsAPI, eventsAPI, contentAPI, uploadAPI } from '../services/api'
 
 const Home = () => {
   const [latestNews, setLatestNews] = useState([])
@@ -29,7 +29,7 @@ const Home = () => {
       const promises = [
         newsAPI.getAll({ limit: 4, featured: true }).catch(err => ({ error: true, message: err.message })),
         eventsAPI.getUpcoming({ limit: 3 }).catch(err => ({ error: true, message: err.message })),
-        fetch('/api/content/key/dean-welcome-message').catch(err => ({ error: true, message: err.message }))
+        contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message }))
       ]
 
       const [newsResponse, eventsResponse, welcomeResponse] = await Promise.all(promises)
@@ -136,7 +136,10 @@ const Home = () => {
                       sizes="(max-width: 768px) 100vw, 33vw"
                       loading="lazy"
                       onError={(e) => {
-                        e.target.src = '/COF NEW.png'
+                        if (!e.target.dataset.fallbackUsed) {
+                          e.target.dataset.fallbackUsed = 'true'
+                          e.target.src = uploadAPI.getImageUrl('COF NEW.png', 'images')
+                        }
                       }}
                     />
                   </div>

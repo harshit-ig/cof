@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { X, ChevronLeft, ChevronRight, ZoomIn, Calendar, Eye } from 'lucide-react'
 import Section, { SectionHeader } from '../components/common/Section'
 import Card from '../components/common/Card'
-import { uploadAPI } from '../services/api'
+import { uploadAPI, galleryAPI } from '../services/api'
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState(null)
@@ -50,8 +50,8 @@ const Gallery = () => {
   const fetchGalleryImages = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/gallery')
-      const data = await response.json()
+      const response = await galleryAPI.getAll()
+      const data = response.data
       
       if (data.success) {
         setImages(data.data || [])
@@ -188,10 +188,13 @@ const Gallery = () => {
                     alt={image.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
-                      console.error('Image failed to load:', e.target.src);
-                      console.log('Trying fallback URL...');
-                      // Fallback to direct imageUrl from database
-                      e.target.src = image.imageUrl;
+                      if (!e.target.dataset.fallbackUsed) {
+                        e.target.dataset.fallbackUsed = 'true'
+                        console.error('Image failed to load:', e.target.src);
+                        console.log('Trying fallback URL...');
+                        // Fallback to direct imageUrl from database
+                        e.target.src = image.imageUrl;
+                      }
                     }}
                     onLoad={() => {
                       console.log('Image loaded successfully:', image.title);

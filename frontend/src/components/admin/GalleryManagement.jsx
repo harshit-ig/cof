@@ -19,7 +19,7 @@ import {
   ChevronRight
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { uploadAPI } from '../../services/api'
+import { uploadAPI, galleryAPI } from '../../services/api'
 
 const GalleryManagement = () => {
   const [images, setImages] = useState([])
@@ -98,17 +98,15 @@ const GalleryManagement = () => {
         queryParams.append('status', selectedStatus)
       }
 
-      const token = localStorage.getItem('token') // Changed from 'adminToken' to 'token'
-      console.log('Fetching gallery images with token:', token ? 'Token present' : 'No token')
-      
-      const response = await fetch(`/api/gallery/admin/all?${queryParams}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+      const response = await galleryAPI.getAllAdmin({
+        page: currentPage,
+        limit: 12,
+        search: searchTerm,
+        category: selectedCategory !== 'all' ? selectedCategory : undefined,
+        status: selectedStatus !== 'all' ? selectedStatus : undefined,
       })
       
-      const data = await response.json()
+      const data = response.data
       console.log('Gallery fetch response:', data)
       
       if (data.success) {
@@ -150,18 +148,8 @@ const GalleryManagement = () => {
       formData.append('tags', uploadForm.tags)
       formData.append('order', uploadForm.order.toString())
 
-      const token = localStorage.getItem('token') // Changed from 'adminToken' to 'token'
-      console.log('Upload token present:', token ? 'Yes' : 'No')
-      
-      const response = await fetch('/api/gallery', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      })
-
-      const data = await response.json()
+      const response = await galleryAPI.create(formData)
+      const data = response.data
       console.log('Upload response:', data)
 
       if (data.success) {
@@ -209,16 +197,8 @@ const GalleryManagement = () => {
         formData.append('image', editingImage.newImage)
       }
 
-      const token = localStorage.getItem('token') // Changed from 'adminToken' to 'token'
-      const response = await fetch(`/api/gallery/${editingImage._id}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        body: formData
-      })
-
-      const data = await response.json()
+      const response = await galleryAPI.update(editingImage._id, formData)
+      const data = response.data
 
       if (data.success) {
         toast.success('Image updated successfully')
@@ -242,18 +222,10 @@ const GalleryManagement = () => {
     }
 
     try {
-      const token = localStorage.getItem('token') // Fixed: changed from 'adminToken' to 'token'
       console.log('Deleting image ID:', imageId)
       
-      const response = await fetch(`/api/gallery/${imageId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      })
-
-      const data = await response.json()
+      const response = await galleryAPI.delete(imageId)
+      const data = response.data
       console.log('Delete response:', data)
 
       if (data.success) {
@@ -279,17 +251,8 @@ const GalleryManagement = () => {
     }
 
     try {
-      const token = localStorage.getItem('adminToken')
-      const response = await fetch('/api/gallery/bulk/delete', {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ imageIds: selectedImages })
-      })
-
-      const data = await response.json()
+      const response = await galleryAPI.bulkDelete(selectedImages)
+      const data = response.data
 
       if (data.success) {
         toast.success('Images deleted successfully')
@@ -306,15 +269,8 @@ const GalleryManagement = () => {
 
   const toggleImageStatus = async (imageId) => {
     try {
-      const token = localStorage.getItem('adminToken')
-      const response = await fetch(`/api/gallery/${imageId}/toggle-status`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      const data = await response.json()
+      const response = await galleryAPI.toggleStatus(imageId)
+      const data = response.data
 
       if (data.success) {
         toast.success(data.message)

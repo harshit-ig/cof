@@ -1,4 +1,5 @@
 import axios from 'axios'
+import placeholderImage from '../assets/placeholder-image.jpg'
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -9,8 +10,23 @@ const api = axios.create({
   },
 })
 
+// Create a separate axios instance for file uploads without Content-Type header
+const uploadApi = axios.create({
+  baseURL: import.meta.env.VITE_SERVER_HOST,
+  timeout: 30000, // Longer timeout for file uploads
+})
+
 // Request interceptor to add auth token
 api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+// Request interceptor for upload API to add auth token
+uploadApi.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -74,9 +90,9 @@ export const newsAPI = {
     console.log('newsAPI.uploadImage called with file:', file.name, file.size, 'bytes')
     const formData = new FormData()
     formData.append('file', file)
-    return api.post('/news/upload', formData, {
+    return uploadApi.post('/news/upload', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'X-Upload-Category': 'news',
       },
     })
   },
@@ -132,12 +148,30 @@ export const contentAPI = {
 
 export const uploadAPI = {
   single: (file, category = 'images') => {
+    console.log('uploadAPI.single called with:', { file, category })
+    console.log('File object details:', {
+      name: file?.name,
+      size: file?.size,
+      type: file?.type,
+      constructor: file?.constructor?.name,
+      lastModified: file?.lastModified
+    })
+    
+    if (!file) {
+      console.error('No file provided to uploadAPI.single')
+      return Promise.reject(new Error('No file provided'))
+    }
+    
     const formData = new FormData()
     formData.append('file', file)
     formData.append('category', category)
-    return api.post('/upload/single', formData, {
+    
+    console.log('FormData created, entries:', Array.from(formData.entries()))
+    console.log('FormData file entry:', formData.get('file'))
+    console.log('FormData category entry:', formData.get('category'))
+    
+    return uploadApi.post('/upload/single', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
         'X-Upload-Category': category,
       },
     })
@@ -148,25 +182,31 @@ export const uploadAPI = {
       formData.append('files', file)
     })
     formData.append('category', category)
-    return api.post('/upload/multiple', formData, {
+    return uploadApi.post('/upload/multiple', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'X-Upload-Category': category,
       },
     })
   },
   delete: (filename) => api.delete(`/upload/${filename}`),
   getImageUrl: (filename, type = 'images') => {
-    if (!filename) return null
+    if (!filename) return placeholderImage
+    
+    // Return placeholder for missing/null filenames to prevent endless requests
+    if (filename === 'null' || filename === 'undefined' || filename === '') {
+      return placeholderImage // Use the imported placeholder image
+    }
 
     // Handle external URLs (proxy through backend)
     if (filename.startsWith('http')) {
-      return `/api/proxy/image?url=${encodeURIComponent(filename)}`
+      const baseURL = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
+      return `${baseURL}/proxy/image?url=${encodeURIComponent(filename)}`
     }
 
     // Handle local files
-    // In development, Vite proxy will route to backend
-    // In production, this should be the backend domain
-    const baseURL = import.meta.env.VITE_SERVER_HOST?.replace('/api', '') || window.location.origin
+    // Get the base URL from environment variable
+    const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
+    const baseURL = serverHost.replace('/api', '')
     return `${baseURL}/uploads/${type}/${filename}`
   },
 }
@@ -175,14 +215,14 @@ export const slideshowAPI = {
   getAll: () => api.get('/slideshow'),
   getAllAdmin: () => api.get('/slideshow/admin'),
   getById: (id) => api.get(`/slideshow/${id}`),
-  create: (formData) => api.post('/slideshow', formData, {
+  create: (formData) => uploadApi.post('/slideshow', formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'X-Upload-Category': 'slideshow',
     },
   }),
-  update: (id, formData) => api.put(`/slideshow/${id}`, formData, {
+  update: (id, formData) => uploadApi.put(`/slideshow/${id}`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'X-Upload-Category': 'slideshow',
     },
   }),
   delete: (id) => api.delete(`/slideshow/${id}`),
@@ -195,8 +235,40 @@ export const settingsAPI = {
   getPublic: () => api.get('/settings/public'),
 }
 
+export const galleryAPI = {
+  getAll: () => api.get('/gallery'),
+  getAllAdmin: (params) => api.get('/gallery/admin/all', { params }),
+  getById: (id) => api.get(`/gallery/${id}`),
+  create: (formData) => uploadApi.post('/gallery', formData, {
+    headers: {
+      'X-Upload-Category': 'gallery',
+    },
+  }),
+  update: (id, formData) => uploadApi.put(`/gallery/${id}`, formData, {
+    headers: {
+      'X-Upload-Category': 'gallery',
+    },
+  }),
+  delete: (id) => api.delete(`/gallery/${id}`),
+  bulkDelete: (ids) => api.delete('/gallery/bulk/delete', { data: { ids } }),
+  toggleStatus: (id) => api.patch(`/gallery/${id}/toggle-status`),
+}
+
+export const placementAPI = {
+  submit: (formData) => uploadApi.post('/placement/submit', formData, {
+    headers: {
+      'X-Upload-Category': 'placement',
+    },
+  }),
+}
+
+export const incubationAPI = {
+  register: (formData) => uploadApi.post('/incubation/register', formData, {
+    headers: {
+      'X-Upload-Category': 'incubation',
+    },
+  }),
+}
+
 export default api
-
-
-
 

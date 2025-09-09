@@ -3,6 +3,7 @@ import { Briefcase, Users, GraduationCap, Mail, Phone, User, FileText, Upload, S
 import Section, { SectionHeader } from '../components/common/Section'
 import Card from '../components/common/Card'
 import { toast } from 'react-hot-toast'
+import { placementAPI } from '../services/api'
 
 const Placement = () => {
   const [activeTab, setActiveTab] = useState('join-us')
@@ -115,12 +116,10 @@ const Placement = () => {
     formData.append('type', formType)
 
     try {
-      const response = await fetch('/api/placement/submit', {
-        method: 'POST',
-        body: formData
-      })
+      const response = await placementAPI.submit(formData)
+      const data = response.data
 
-      if (response.ok) {
+      if (data.success) {
         toast.success('Application submitted successfully! We will get back to you soon.')
         // Reset form
         if (formType === 'join-us') {

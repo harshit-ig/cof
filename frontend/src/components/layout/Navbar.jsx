@@ -183,26 +183,67 @@ const Navbar = () => {
     }
   }, [])
 
-  // Handle scroll to hide/show banner
+  // Advanced scroll handling with debouncing and state persistence
   useEffect(() => {
+    let scrollTimeout = null
+    let lastScrollY = 0
+    let isScrolling = false
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      
-      if (currentScrollY > 80) {
-        // Hide banner when scrolled down more than 80px
-        setShowBanner(false)
-      } else {
-        // Show banner when near top
-        setShowBanner(true)
+      // Clear existing timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
+
+      // Set scrolling flag
+      if (!isScrolling) {
+        isScrolling = true
+      }
+
+      // Debounce scroll events
+      scrollTimeout = setTimeout(() => {
+        const currentScrollY = window.scrollY
+        const scrollDelta = Math.abs(currentScrollY - lastScrollY)
+        
+        // Only process if scroll delta is significant (prevents micro-movements)
+        if (scrollDelta > 5) {
+          const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up'
+          
+          // More conservative thresholds with larger gaps
+          if (scrollDirection === 'down' && currentScrollY > 150 && showBanner) {
+            setShowBanner(false)
+          } else if (scrollDirection === 'up' && currentScrollY < 30 && !showBanner) {
+            setShowBanner(true)
+          }
+          
+          lastScrollY = currentScrollY
+        }
+        
+        isScrolling = false
+      }, 50) // 50ms debounce
+    }
+
+    // Throttled scroll listener
+    let ticking = false
+    const throttledScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
       }
     }
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('scroll', throttledScroll, { passive: true })
     
     return () => {
-      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('scroll', throttledScroll)
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout)
+      }
     }
-  }, [])
+  }, [showBanner]) // Include showBanner in dependencies
 
   // Improved hover handling with cancelable close timer
   const closeTimerRef = useRef(null)

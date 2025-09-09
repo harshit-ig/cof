@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap } from 'lucide-react'
 import Card from '../components/common/Card'
+import { uploadAPI } from '../services/api'
 
 const Faculty = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -39,7 +40,7 @@ const Faculty = () => {
       experience: '15+ years',
       email: 'deancof_basu_bih@gov.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://www.ndvsu.org/images/Shashikant.jpg',
+      image: uploadAPI.getImageUrl('https://www.ndvsu.org/images/Shashikant.jpg', 'faculty'),
       research: [
         'Sustainable aquaculture practices',
         'Fisheries resource management',
@@ -61,7 +62,7 @@ const Faculty = () => {
       experience: '12+ years',
       email: 'rajesh.kumar@cofbasu.edu.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://via.placeholder.com/300x400?text=Dr.+Rajesh+Kumar',
+      image: uploadAPI.getImageUrl('https://via.placeholder.com/300x400?text=Dr.+Rajesh+Kumar', 'faculty'),
       research: [
         'Fish breeding techniques',
         'Genetic improvement',
@@ -83,7 +84,7 @@ const Faculty = () => {
       experience: '10+ years',
       email: 'priya.sharma@cofbasu.edu.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://via.placeholder.com/300x400?text=Dr.+Priya+Sharma',
+      image: uploadAPI.getImageUrl('https://via.placeholder.com/300x400?text=Dr.+Priya+Sharma', 'faculty'),
       research: [
         'Fish disease diagnosis',
         'Preventive health measures',
@@ -105,7 +106,7 @@ const Faculty = () => {
       experience: '8+ years',
       email: 'amit.patel@cofbasu.edu.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://via.placeholder.com/300x400?text=Dr.+Amit+Patel',
+      image: uploadAPI.getImageUrl('https://via.placeholder.com/300x400?text=Dr.+Amit+Patel', 'faculty'),
       research: [
         'Processing technology',
         'Quality control',
@@ -127,7 +128,7 @@ const Faculty = () => {
       experience: '7+ years',
       email: 'meera.singh@cofbasu.edu.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://via.placeholder.com/300x400?text=Dr.+Meera+Singh',
+      image: uploadAPI.getImageUrl('https://via.placeholder.com/300x400?text=Dr.+Meera+Singh', 'faculty'),
       research: [
         'Extension methodologies',
         'Rural development',
@@ -149,7 +150,7 @@ const Faculty = () => {
       experience: '5+ years',
       email: 'sanjay.verma@cofbasu.edu.in',
       phone: '0645-231375',
-      image: '/api/proxy/image?url=https://via.placeholder.com/300x400?text=Dr.+Sanjay+Verma',
+      image: uploadAPI.getImageUrl('https://via.placeholder.com/300x400?text=Dr.+Sanjay+Verma', 'faculty'),
       research: [
         'Water quality assessment',
         'Environmental monitoring',

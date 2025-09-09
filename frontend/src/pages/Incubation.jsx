@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Building, Users, FileText, Lightbulb, TrendingUp, Target, Award, Calendar, Send, Mail, Phone, MapPin, User, Briefcase } from 'lucide-react'
 import Card from '../components/common/Card'
 import { toast } from 'react-hot-toast'
+import { incubationAPI } from '../services/api'
 
 const Incubation = () => {
   const location = useLocation()
@@ -93,12 +94,10 @@ const Incubation = () => {
         }
       })
 
-      const response = await fetch('/api/incubation/register', {
-        method: 'POST',
-        body: formData
-      })
+      const response = await incubationAPI.register(formData)
+      const data = response.data
 
-      if (response.ok) {
+      if (data.success) {
         toast.success('Registration submitted successfully! We will contact you soon.')
         // Reset form
         setRegistrationForm({
@@ -118,8 +117,7 @@ const Incubation = () => {
         const fileInput = document.querySelector('input[type="file"]')
         if (fileInput) fileInput.value = ''
       } else {
-        const errorData = await response.json()
-        toast.error(errorData.message || 'Failed to submit registration')
+        toast.error(data.message || 'Failed to submit registration')
       }
     } catch (error) {
       console.error('Error submitting registration:', error)
