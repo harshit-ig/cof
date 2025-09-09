@@ -5,21 +5,6 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  server: {
-    port: 5173,
-    proxy: {
-      '/api': {
-        target: 'https://cof-yngr.onrender.com',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/uploads': {
-        target: 'https://cof-yngr.onrender.com',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
-  },
   build: {
     outDir: 'dist',
     sourcemap: true,
