@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import useDocumentTitle from './hooks/useDocumentTitle'
 
 // Layout Components
 import Navbar from './components/layout/Navbar'
@@ -31,6 +32,7 @@ import NotFound from './pages/NotFound'
 import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
 import Placement from './pages/Placement'
+import FarmersCorner from './pages/FarmersCorner'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -41,11 +43,18 @@ import ProtectedRoute from './components/admin/ProtectedRoute'
 import { AuthProvider } from './context/AuthContext'
 import { SettingsProvider } from './context/SettingsContext'
 
+// Document Title Component
+const DocumentTitleUpdater = () => {
+  useDocumentTitle()
+  return null
+}
+
 function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
         <SettingsProvider>
+          <DocumentTitleUpdater />
           <Router>
             <div className="min-h-screen bg-gray-50 flex flex-col">
               <Navbar />
@@ -74,6 +83,7 @@ function App() {
               <Route path="/events" element={<NewsEvents />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
+              <Route path="/farmers-corner" element={<FarmersCorner />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               

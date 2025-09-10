@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
+import { useSettings } from '../../context/SettingsContext'
 
 const Navbar = () => {
+  const { siteName } = useSettings()
   const [isOpen, setIsOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
   const location = useLocation()
@@ -97,6 +99,7 @@ const Navbar = () => {
       ]
     },
     { name: 'Collaborations', href: '/collaborations' },
+    { name: 'Farmers Corner', href: '/farmers-corner' },
     { name: 'Contact Us', href: '/contact' }
   ]
 
@@ -228,7 +231,7 @@ const Navbar = () => {
           <Link to="/">
             <img 
               src="/top_banner.png" 
-              alt="College of Fishery, Jabalpur Banner" 
+              alt={`${siteName} Banner`}
               className="w-full h-auto object-contain"
             />
           </Link>

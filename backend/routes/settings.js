@@ -9,7 +9,9 @@ const router = express.Router();
 // @access  Private/Admin
 router.get('/', protect, adminOnly, async (req, res) => {
   try {
+    console.log('GET /api/settings - Fetching settings')
     const settings = await Settings.getSingleton();
+    console.log('Settings fetched:', settings)
     
     res.json({
       success: true,
@@ -67,7 +69,9 @@ router.get('/public', async (req, res) => {
 // @access  Private/Admin
 router.put('/', protect, adminOnly, async (req, res) => {
   try {
+    console.log('PUT /api/settings - Updating settings:', req.body)
     const updatedSettings = await Settings.updateSingleton(req.body);
+    console.log('Settings updated:', updatedSettings)
     
     res.json({
       success: true,

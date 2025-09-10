@@ -15,7 +15,8 @@ import {
   Menu,
   X,
   User,
-  Image
+  Image,
+  Tractor
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -28,6 +29,7 @@ import WelcomeMessageManagement from './WelcomeMessageManagement'
 import GalleryManagement from './GalleryManagement'
 import SlideshowManagement from './SlideshowManagement'
 import ResearchManagement from './ResearchManagement'
+import FarmersResourceManagement from './FarmersResourceManagement'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -162,9 +164,7 @@ const AdminSettings = () => {
       twitter: '',
       linkedin: '',
       instagram: ''
-    },
-    admissionOpen: true,
-    maintenanceMode: false
+    }
   })
   
   const [activeTab, setActiveTab] = useState('general')
@@ -179,7 +179,10 @@ const AdminSettings = () => {
     try {
       setLoading(true)
       const response = await settingsAPI.get()
-      setSettings(response)
+      console.log('Settings API response:', response.data)
+      if (response.data.success) {
+        setSettings(response.data.data)
+      }
     } catch (error) {
       console.error('Error fetching settings:', error)
       // Keep default values if fetch fails
@@ -192,11 +195,15 @@ const AdminSettings = () => {
     e.preventDefault()
     setSaving(true)
     try {
-      await settingsAPI.update(settings)
-      alert('Settings saved successfully!')
+      console.log('Saving settings:', settings)
+      const response = await settingsAPI.update(settings)
+      console.log('Save response:', response.data)
+      if (response.data.success) {
+        alert('Settings saved successfully!')
+      }
     } catch (error) {
       console.error('Error saving settings:', error)
-      alert('Failed to save settings')
+      alert('Failed to save settings: ' + (error.response?.data?.message || error.message))
     } finally {
       setSaving(false)
     }
@@ -216,8 +223,7 @@ const AdminSettings = () => {
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
     { id: 'contact', name: 'Contact Info', icon: User },
-    { id: 'social', name: 'Social Media', icon: Briefcase },
-    { id: 'system', name: 'System', icon: Building }
+    { id: 'social', name: 'Social Media', icon: Briefcase }
   ]
 
   return (
@@ -437,70 +443,6 @@ const AdminSettings = () => {
           </div>
         )}
 
-        {/* System Settings */}
-        {activeTab === 'system' && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">System Settings</h3>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-900">Admission Status</h4>
-                  <p className="text-sm text-gray-500">Show admission open status on website</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSettings({...settings, admissionOpen: !settings.admissionOpen})}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    settings.admissionOpen ? 'bg-blue-600' : 'bg-gray-200'
-                  }`}
-                >
-                  <span
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                      settings.admissionOpen ? 'translate-x-5' : 'translate-x-0'
-                    }`}
-                  />
-                </button>
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-900">Maintenance Mode</h4>
-                  <p className="text-sm text-gray-500">Put website in maintenance mode</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSettings({...settings, maintenanceMode: !settings.maintenanceMode})}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
-                    settings.maintenanceMode ? 'bg-red-600' : 'bg-gray-200'
-                  }`}
-                >
-                  <span
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                      settings.maintenanceMode ? 'translate-x-5' : 'translate-x-0'
-                    }`}
-                  />
-                </button>
-              </div>
-              
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-yellow-800">Warning</h3>
-                    <p className="text-sm text-yellow-700 mt-1">
-                      Enabling maintenance mode will make the website inaccessible to visitors.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Save Button */}
         <div className="flex justify-end">
           <button
@@ -540,6 +482,7 @@ const AdminDashboard = () => {
     // { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
         { name: 'News', href: '/admin/news', icon: Newspaper },
     { name: 'Events', href: '/admin/events', icon: Calendar },
+    { name: 'Farmers Resources', href: '/admin/farmers', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -729,6 +672,7 @@ const AdminDashboard = () => {
                 <Route path="/gallery" element={<GalleryManagement />} />
                 <Route path="/news" element={<NewsManagement />} />
                 <Route path="/events" element={<EventsManagement />} />
+                <Route path="/farmers" element={<FarmersResourceManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>

@@ -1,6 +1,45 @@
 const express = require('express')
 const router = express.Router()
 const nodemailer = require('nodemailer')
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
+const FarmerResource = require('../models/FarmerResource')
+const { protect, adminOnly } = require('../middleware/auth')
+
+// Configure multer for PDF uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, '../uploads/farmers')
+    // Create directory if it doesn't exist
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true })
+    }
+    cb(null, uploadPath)
+  },
+  filename: function (req, file, cb) {
+    // Generate unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  // Accept only PDF files
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true)
+  } else {
+    cb(new Error('Only PDF files are allowed'), false)
+  }
+}
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+})
 
 // Create transporter using environment variables
 const transporter = nodemailer.createTransport({
@@ -296,5 +335,306 @@ router.post('/training', async (req, res) => {
     })
   }
 })
+
+// ========== FARMER RESOURCES MANAGEMENT ==========
+
+// Get all farmer resources (public endpoint)
+router.get('/resources', async (req, res) => {
+  try {
+    const { category, limit = 20, page = 1 } = req.query
+    
+    const query = { isActive: true }
+    if (category) {
+      query.category = category
+    }
+    
+    const skip = (page - 1) * limit
+    
+    const resources = await FarmerResource.find(query)
+      .select('title description filename originalName fileSize category createdAt downloadCount')
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .skip(skip)
+      .populate('uploadedBy', 'name')
+    
+    const total = await FarmerResource.countDocuments(query)
+    
+    res.json({
+      success: true,
+      data: {
+        resources,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    })
+  } catch (error) {
+    console.error('Get farmer resources error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching farmer resources'
+    })
+  }
+})
+
+// Get single farmer resource by ID (public endpoint)
+router.get('/resources/:id', async (req, res) => {
+  try {
+    const resource = await FarmerResource.findById(req.params.id)
+      .populate('uploadedBy', 'name')
+    
+    if (!resource || !resource.isActive) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found'
+      })
+    }
+    
+    res.json({
+      success: true,
+      data: resource
+    })
+  } catch (error) {
+    console.error('Get farmer resource error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching farmer resource'
+    })
+  }
+})
+
+// Download farmer resource (public endpoint)
+router.get('/resources/:id/download', async (req, res) => {
+  try {
+    const resource = await FarmerResource.findById(req.params.id)
+    
+    if (!resource || !resource.isActive) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found'
+      })
+    }
+    
+    const filePath = path.join(__dirname, '../uploads/farmers', resource.filename)
+    
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({
+        success: false,
+        message: 'File not found'
+      })
+    }
+    
+    // Increment download count
+    await FarmerResource.findByIdAndUpdate(req.params.id, {
+      $inc: { downloadCount: 1 }
+    })
+    
+    // Set headers for PDF download
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader('Content-Disposition', `attachment; filename="${resource.originalName}"`)
+    
+    // Send file
+    res.sendFile(filePath)
+  } catch (error) {
+    console.error('Download farmer resource error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error downloading resource'
+    })
+  }
+})
+
+// Create new farmer resource (admin only)
+router.post('/resources', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+  console.log('=== Farmer Resource Creation Request ===')
+  console.log('Body:', req.body)
+  console.log('File:', req.file)
+  console.log('Admin:', req.admin ? req.admin._id : 'No admin')
+  
+  try {
+    const { title, description, category = 'other' } = req.body
+    
+    if (!title || !description) {
+      console.log('Missing required fields:', { title: !!title, description: !!description })
+      return res.status(400).json({
+        success: false,
+        message: 'Title and description are required'
+      })
+    }
+    
+    if (!req.file) {
+      console.log('No file uploaded')
+      return res.status(400).json({
+        success: false,
+        message: 'PDF file is required'
+      })
+    }
+    
+    console.log('Creating resource with data:', {
+      title: title.trim(),
+      description: description.trim(),
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      fileSize: req.file.size,
+      mimeType: req.file.mimetype,
+      category,
+      uploadedBy: req.admin._id
+    })
+    
+    const resource = new FarmerResource({
+      title: title.trim(),
+      description: description.trim(),
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      fileSize: req.file.size,
+      mimeType: req.file.mimetype,
+      category,
+      uploadedBy: req.admin._id
+    })
+    
+    await resource.save()
+    console.log('Resource saved successfully:', resource._id)
+    
+    res.status(201).json({
+      success: true,
+      message: 'Farmer resource created successfully',
+      data: resource
+    })
+  } catch (error) {
+    console.error('Create farmer resource error:', error)
+    console.error('Error stack:', error.stack)
+    
+    // Clean up uploaded file if database save fails
+    if (req.file) {
+      const filePath = path.join(__dirname, '../uploads/farmers', req.file.filename)
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath)
+        console.log('Cleaned up uploaded file:', req.file.filename)
+      }
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Error creating farmer resource',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// Update farmer resource (admin only)
+router.put('/resources/:id', protect, adminOnly, async (req, res) => {
+  try {
+    const { title, description, category, isActive } = req.body
+    
+    const resource = await FarmerResource.findById(req.params.id)
+    
+    if (!resource) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found'
+      })
+    }
+    
+    // Update fields if provided
+    if (title !== undefined) resource.title = title.trim()
+    if (description !== undefined) resource.description = description.trim()
+    if (category !== undefined) resource.category = category
+    if (isActive !== undefined) resource.isActive = isActive
+    
+    await resource.save()
+    
+    res.json({
+      success: true,
+      message: 'Farmer resource updated successfully',
+      data: resource
+    })
+  } catch (error) {
+    console.error('Update farmer resource error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error updating farmer resource'
+    })
+  }
+})
+
+// Delete farmer resource (admin only)
+router.delete('/resources/:id', protect, adminOnly, async (req, res) => {
+  try {
+    const resource = await FarmerResource.findById(req.params.id)
+    
+    if (!resource) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found'
+      })
+    }
+    
+    // Delete file from filesystem
+    const filePath = path.join(__dirname, '../uploads/farmers', resource.filename)
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath)
+    }
+    
+    // Delete from database
+    await FarmerResource.findByIdAndDelete(req.params.id)
+    
+    res.json({
+      success: true,
+      message: 'Farmer resource deleted successfully'
+    })
+  } catch (error) {
+    console.error('Delete farmer resource error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting farmer resource'
+    })
+  }
+})
+
+// Get all farmer resources for admin (includes inactive)
+router.get('/admin/resources', protect, adminOnly, async (req, res) => {
+  try {
+    const { category, limit = 20, page = 1, isActive } = req.query
+    
+    const query = {}
+    if (category) query.category = category
+    if (isActive !== undefined && isActive !== '') query.isActive = isActive === 'true'
+    
+    const skip = (page - 1) * limit
+    
+    const resources = await FarmerResource.find(query)
+      .sort({ createdAt: -1 })
+      .limit(parseInt(limit))
+      .skip(skip)
+      .populate('uploadedBy', 'name email')
+    
+    const total = await FarmerResource.countDocuments(query)
+    
+    res.json({
+      success: true,
+      data: {
+        resources,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          pages: Math.ceil(total / limit)
+        }
+      }
+    })
+  } catch (error) {
+    console.error('Get admin farmer resources error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching farmer resources'
+    })
+  }
+})
+
+// ========== EXISTING EMAIL FUNCTIONALITY ==========
 
 module.exports = router

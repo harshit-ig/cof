@@ -2,8 +2,16 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Phone, Mail, MapPin, Clock, Globe, Building } from 'lucide-react'
 import Card from '../components/common/Card'
+import { useSettings } from '../context/SettingsContext'
 
 const Contact = () => {
+  const { 
+    siteName, 
+    contactEmail, 
+    contactPhone, 
+    address 
+  } = useSettings()
+  
   const location = useLocation()
   const hash = location.hash.substring(1)
 
@@ -38,7 +46,7 @@ const Contact = () => {
               Contact Us
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Get in Touch with College of Fishery, Jabalpur
+              Get in Touch with {siteName}
             </p>
           </div>
         </div>
@@ -65,7 +73,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">+91-761-2681969</p>
+                  <p className="text-gray-700 text-sm">{contactPhone}</p>
                   <p className="text-gray-700 text-sm">Office: +91-761-2681971</p>
                   <p className="text-gray-700 text-sm">Fax: +91-761-2681970</p>
                 </div>
@@ -82,7 +90,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">dean.fishery@ndvsu.ac.in</p>
+                  <p className="text-gray-700 text-sm">{contactEmail}</p>
                   <p className="text-gray-700 text-sm">registrar@ndvsu.ac.in</p>
                   <p className="text-gray-700 text-sm">info.cof@ndvsu.ac.in</p>
                 </div>

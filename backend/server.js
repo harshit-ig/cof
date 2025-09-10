@@ -76,6 +76,7 @@ app.use('/api/upload', require('./routes/upload'));
 app.use('/api/proxy', require('./routes/proxy'));
 app.use('/api/placement', require('./routes/placement'));
 app.use('/api/incubation', require('./routes/incubation'));
+app.use('/api/farmers', require('./routes/farmers'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

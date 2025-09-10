@@ -280,5 +280,27 @@ export const incubationAPI = {
   }),
 }
 
+export const farmersAPI = {
+  // Public endpoints
+  getResources: (params = {}) => api.get('/farmers/resources', { params }),
+  getResource: (id) => api.get(`/farmers/resources/${id}`),
+  downloadResource: (id) => {
+    // Create a direct download link
+    const baseURL = import.meta.env.VITE_SERVER_HOST || '/api'
+    const serverHost = baseURL.replace('/api', '')
+    return `${serverHost}/api/farmers/resources/${id}/download`
+  },
+  
+  // Admin endpoints
+  createResource: (formData) => uploadApi.post('/farmers/resources', formData),
+  updateResource: (id, data) => api.put(`/farmers/resources/${id}`, data),
+  deleteResource: (id) => api.delete(`/farmers/resources/${id}`),
+  getAdminResources: (params = {}) => api.get('/farmers/admin/resources', { params }),
+  
+  // Email endpoints (existing)
+  sendAdvisoryQuery: (data) => api.post('/farmers/advisory', data),
+  sendTrainingQuery: (data) => api.post('/farmers/training', data),
+}
+
 export default api
 
