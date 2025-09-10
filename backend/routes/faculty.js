@@ -94,8 +94,19 @@ router.post('/', protect, adminOnly, [
   body('email').optional().isEmail().normalizeEmail()
 ], async (req, res) => {
   try {
+    console.log('Faculty POST request received');
+    console.log('Request body:', req.body);
+    console.log('Required fields check:');
+    console.log('- name:', req.body.name);
+    console.log('- designation:', req.body.designation);
+    console.log('- department:', req.body.department);
+    console.log('- qualification:', req.body.qualification);
+    console.log('- specialization:', req.body.specialization);
+    console.log('- experience:', req.body.experience);
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({
         success: false,
         message: 'Validation errors',

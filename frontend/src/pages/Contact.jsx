@@ -101,8 +101,8 @@ const Contact = () => {
                 <div className="space-y-2">
                   <p className="text-gray-700 text-sm">College of Fishery</p>
                   <p className="text-gray-700 text-sm">Nanaji Deshmukh Veterinary Science University</p>
-                  <p className="text-gray-700 text-sm">Adhartal, Jabalpur</p>
-                  <p className="text-gray-700 text-sm">Madhya Pradesh - 482004, India</p>
+                  <p className="text-gray-700 text-sm">Adhartal, Jabalpur - 482004</p>
+                  <p className="text-gray-700 text-sm">Madhya Pradesh, India</p>
                 </div>
               </Card>
 

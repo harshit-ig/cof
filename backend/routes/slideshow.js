@@ -55,9 +55,12 @@ router.get('/', async (req, res) => {
 // GET /api/slideshow/admin - Get all slides for admin (including inactive)
 router.get('/admin', protect, async (req, res) => {
   try {
+    console.log('Admin slideshow fetch request');
     const slides = await Slideshow.find()
       .sort({ order: 1 })
       .select('-__v');
+
+    console.log('Found slides for admin:', slides.length);
 
     res.json({
       success: true,
@@ -105,7 +108,12 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, description, cta, link, order, isActive } = req.body;
 
+    console.log('Slideshow POST request received:');
+    console.log('Body:', req.body);
+    console.log('File:', req.file);
+
     if (!req.file) {
+      console.log('No file uploaded');
       return res.status(400).json({
         success: false,
         message: 'Image file is required'
@@ -130,8 +138,12 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
       isActive: isActive === 'true' || isActive === true
     };
 
+    console.log('Creating slide with data:', slideData);
+
     const slide = new Slideshow(slideData);
     await slide.save();
+
+    console.log('Slide created successfully:', slide._id);
 
     res.status(201).json({
       success: true,

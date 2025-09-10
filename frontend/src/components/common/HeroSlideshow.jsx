@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { slideshowAPI } from '../../services/api'
+import { slideshowAPI, uploadAPI } from '../../services/api'
 
 const HeroSlideshow = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -59,7 +59,11 @@ const HeroSlideshow = () => {
       if (response.data.success && response.data.data.slides.length > 0) {
         const formattedSlides = response.data.data.slides.map(slide => ({
           id: slide._id,
-          image: slide.image.startsWith('http') ? slide.image : slide.image,
+          image: slide.image.startsWith('http') 
+            ? slide.image 
+            : slide.image.startsWith('/uploads/slideshow/') 
+              ? `http://localhost:5001${slide.image}`
+              : uploadAPI.getImageUrl(slide.image, 'slideshow'),
           title: slide.title,
           subtitle: slide.subtitle,
           description: slide.description,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Eye, EyeOff, Move, Save, X, Upload } from 'lucide-react'
-import { slideshowAPI } from '../../services/api'
+import { slideshowAPI, uploadAPI } from '../../services/api'
 import LoadingSpinner from '../common/LoadingSpinner'
 import Card from '../common/Card'
 import toast from 'react-hot-toast'
@@ -359,9 +359,18 @@ const SlideshowManagement = () => {
                 
                 <div className="flex-shrink-0">
                   <img
-                    src={slide.image}
+                    src={slide.image.startsWith('http') 
+                      ? slide.image 
+                      : slide.image.startsWith('/uploads/slideshow/') 
+                        ? `http://localhost:5001${slide.image}`
+                        : uploadAPI.getImageUrl(slide.image, 'slideshow')
+                    }
                     alt={slide.title}
                     className="w-20 h-12 object-cover rounded-lg"
+                    onError={(e) => {
+                      console.error('Image failed to load:', slide.image);
+                      e.target.style.display = 'none';
+                    }}
                   />
                 </div>
 

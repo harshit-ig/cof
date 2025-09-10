@@ -45,10 +45,10 @@ const Home = () => {
       }
 
       // Process dean's welcome message with safety checks
-      if (welcomeResponse && !welcomeResponse.error) {
-        const welcomeData = await welcomeResponse.json()
-        if (welcomeData.success && welcomeData.data.content) {
-          const content = welcomeData.data.content
+      if (welcomeResponse && !welcomeResponse.error && welcomeResponse.data?.success) {
+        const data = welcomeResponse.data
+        if (data.data.content) {
+          const content = data.data.content
           let welcomeInfo = {}
           
           // Parse the content based on type

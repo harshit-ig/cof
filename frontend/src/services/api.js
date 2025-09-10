@@ -3,16 +3,19 @@ import placeholderImage from '../assets/placeholder-image.jpg'
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_HOST,
+  baseURL: import.meta.env.VITE_SERVER_HOST || '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
   },
 })
 
 // Create a separate axios instance for file uploads without Content-Type header
 const uploadApi = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_HOST,
+  baseURL: import.meta.env.VITE_SERVER_HOST || '/api',
   timeout: 30000, // Longer timeout for file uploads
 })
 
@@ -21,6 +24,13 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
+  }
+  // Add timestamp to prevent caching
+  if (config.method === 'get') {
+    config.params = {
+      ...config.params,
+      _t: Date.now()
+    }
   }
   return config
 })
@@ -199,13 +209,13 @@ export const uploadAPI = {
 
     // Handle external URLs (proxy through backend)
     if (filename.startsWith('http')) {
-      const baseURL = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
+      const baseURL = import.meta.env.VITE_SERVER_HOST || '/api'
       return `${baseURL}/proxy/image?url=${encodeURIComponent(filename)}`
     }
 
     // Handle local files
     // Get the base URL from environment variable
-    const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
+    const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001'
     const baseURL = serverHost.replace('/api', '')
     return `${baseURL}/uploads/${type}/${filename}`
   },
