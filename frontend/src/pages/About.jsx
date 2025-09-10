@@ -100,7 +100,7 @@ const About = () => {
               <img 
                 src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : welcomeData.deanPhoto} 
                 alt={welcomeData.deanName} 
-                className="w-full max-w-md h-80 object-cover rounded-lg shadow-lg mx-auto"
+                className="w-full max-w-sm h-80 object-contain rounded-lg shadow-lg mx-auto border-4 border-gray-200 bg-white"
                 onError={(e) => {
                   if (!e.target.dataset.fallbackUsed) {
                     e.target.dataset.fallbackUsed = 'true'
