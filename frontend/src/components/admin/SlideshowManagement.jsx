@@ -361,9 +361,7 @@ const SlideshowManagement = () => {
                   <img
                     src={slide.image.startsWith('http') 
                       ? slide.image 
-                      : slide.image.startsWith('/uploads/slideshow/') 
-                        ? `${import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001'}${slide.image}`
-                        : uploadAPI.getImageUrl(slide.image, 'slideshow')
+                      : uploadAPI.getImageUrl(slide.image, 'slideshow')
                     }
                     alt={slide.title}
                     className="w-20 h-12 object-cover rounded-lg"

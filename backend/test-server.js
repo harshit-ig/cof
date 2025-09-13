@@ -23,7 +23,7 @@ try {
   console.error('Error loading placement route:', error.message);
 }
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Test server running on port ${PORT}`);
 });

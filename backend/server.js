@@ -36,7 +36,10 @@ app.use(cors({
     'X-Upload-Category',
     'Accept',
     'Origin',
-    'X-Requested-With'
+    'X-Requested-With',
+    'Cache-Control',
+    'Pragma',
+    'Expires'
   ]
 }));
 

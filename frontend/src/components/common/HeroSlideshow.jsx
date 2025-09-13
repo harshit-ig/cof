@@ -61,9 +61,7 @@ const HeroSlideshow = () => {
           id: slide._id,
           image: slide.image.startsWith('http') 
             ? slide.image 
-            : slide.image.startsWith('/uploads/slideshow/') 
-              ? `${import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001'}${slide.image}`
-              : uploadAPI.getImageUrl(slide.image, 'slideshow'),
+            : uploadAPI.getImageUrl(slide.image, 'slideshow'),
           title: slide.title,
           subtitle: slide.subtitle,
           description: slide.description,

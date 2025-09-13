@@ -98,7 +98,7 @@ const About = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
               <img 
-                src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : welcomeData.deanPhoto} 
+                src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : uploadAPI.getImageUrl(welcomeData.deanPhoto, 'dean')} 
                 alt={welcomeData.deanName} 
                 className="w-full max-w-sm h-80 object-contain rounded-lg shadow-lg mx-auto border-4 border-gray-200 bg-white"
                 onError={(e) => {

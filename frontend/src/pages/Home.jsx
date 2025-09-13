@@ -130,7 +130,7 @@ const Home = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="md:col-span-1">
                     <img
-                      src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : welcomeData.deanPhoto}
+                      src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : uploadAPI.getImageUrl(welcomeData.deanPhoto, 'dean')}
                       alt={welcomeData.deanName}
                       className="w-full h-48 md:h-56 lg:h-64 object-cover rounded-lg shadow-md"
                       sizes="(max-width: 768px) 100vw, 33vw"

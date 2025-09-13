@@ -213,10 +213,16 @@ export const uploadAPI = {
       return `${baseURL}/proxy/image?url=${encodeURIComponent(filename)}`
     }
 
-    // Handle local files
     // Get the base URL from environment variable
-    const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5001'
+    const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
     const baseURL = serverHost.replace('/api', '')
+    
+    // Handle files that already have the full path
+    if (filename.startsWith('/uploads/')) {
+      return `${baseURL}${filename}`
+    }
+    
+    // Handle relative filenames
     return `${baseURL}/uploads/${type}/${filename}`
   },
 }

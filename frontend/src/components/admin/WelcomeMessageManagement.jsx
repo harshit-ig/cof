@@ -45,7 +45,15 @@ const WelcomeMessageManagement = () => {
           welcomeInfo = content.metadata || {}
         }
         
-        const photoUrl = welcomeInfo.deanPhoto || ''
+        let photoUrl = welcomeInfo.deanPhoto || ''
+        
+        // Extract filename from full URL if needed (for backward compatibility)
+        if (photoUrl.startsWith('http')) {
+          const urlParts = photoUrl.split('/')
+          photoUrl = urlParts[urlParts.length - 1] // Get the filename from the URL
+          console.log('Extracted filename from URL:', photoUrl)
+        }
+        
         setWelcomeData({
           deanName: welcomeInfo.deanName || '',
           deanTitle: welcomeInfo.deanTitle || '',
@@ -54,9 +62,9 @@ const WelcomeMessageManagement = () => {
           isPublished: content.isPublished
         })
         
-        // Set photo preview - if it's a relative path, make it absolute
+        // Set photo preview using the uploadAPI for consistency
         if (photoUrl) {
-          const fullPhotoUrl = photoUrl.startsWith('http') ? photoUrl : uploadAPI.getImageUrl(photoUrl, 'dean')
+          const fullPhotoUrl = uploadAPI.getImageUrl(photoUrl, 'dean')
           setPhotoPreview(fullPhotoUrl)
         }
       } else {
@@ -109,8 +117,8 @@ const WelcomeMessageManagement = () => {
       console.log('Upload response data:', data)
       
       if (data.success) {
-        console.log('Upload successful, returning URL:', data.data.url)
-        return data.data.url // Return the full URL instead of path
+        console.log('Upload successful, returning filename:', data.data.filename)
+        return data.data.filename // Return only the filename, not the full URL
       } else {
         throw new Error(data.message)
       }
