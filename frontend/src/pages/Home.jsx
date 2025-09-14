@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen } from 'lucide-react'
 import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
+import LogoSlider from '../components/common/LogoSlider'
 import { newsAPI, eventsAPI, contentAPI, uploadAPI } from '../services/api'
 
 const Home = () => {
@@ -114,7 +115,7 @@ const Home = () => {
       {/* Hero Slideshow */}
       <HeroSlideshow />
 
-      {/* Main Content */}
+      {/* Dean's Welcome Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -287,6 +288,10 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Partner Logos Slider */}
+      <LogoSlider />
+
     </div>
   )
 }
