@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure upload directories exist
-const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean', 'uploads/gallery'];
+const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean', 'uploads/gallery', 'uploads/partners'];
 uploadDirs.forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -29,7 +29,9 @@ const storage = multer.diskStorage({
     console.log('Final category:', finalCategory);
     
     // Check URL path first for most specific matching
-    if (url.includes('/news/upload')) {
+    if (url.includes('/partners') || finalCategory === 'partners') {
+      uploadPath = 'uploads/partners';
+    } else if (url.includes('/news/upload')) {
       uploadPath = 'uploads/news';
     } else if (url.includes('/gallery') || finalCategory === 'gallery') {
       uploadPath = 'uploads/gallery';
@@ -41,6 +43,10 @@ const storage = multer.diskStorage({
       uploadPath = 'uploads/dean';
     } else if (finalCategory === 'news') {
       uploadPath = 'uploads/news';
+    } else if (referer && referer.includes('/admin/partners')) {
+      // If the upload is coming from the partners admin page, assume it's for partners
+      uploadPath = 'uploads/partners';
+      console.log('Detected partners upload from referer');
     } else if (referer && referer.includes('/admin/news')) {
       // If the upload is coming from the news admin page, assume it's for news
       uploadPath = 'uploads/news';

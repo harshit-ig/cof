@@ -37,6 +37,30 @@ const settingsSchema = new mongoose.Schema({
     default: 'College of Fishery, Jabalpur, Madhya Pradesh'
   },
   
+  // Location/Map Settings
+  location: {
+    latitude: {
+      type: Number,
+      default: 23.1815  // Jabalpur, MP coordinates
+    },
+    longitude: {
+      type: Number,
+      default: 79.9864
+    },
+    zoom: {
+      type: Number,
+      default: 15
+    },
+    mapTitle: {
+      type: String,
+      default: 'College of Fishery, Jabalpur'
+    },
+    mapDescription: {
+      type: String,
+      default: 'Visit us at our campus in Jabalpur, Madhya Pradesh'
+    }
+  },
+  
   // Social Media
   socialMedia: {
     facebook: { type: String, default: '' },

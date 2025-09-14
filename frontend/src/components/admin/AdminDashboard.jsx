@@ -16,7 +16,8 @@ import {
   X,
   User,
   Image,
-  Tractor
+  Tractor,
+  Globe
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -30,6 +31,7 @@ import GalleryManagement from './GalleryManagement'
 import SlideshowManagement from './SlideshowManagement'
 import ResearchManagement from './ResearchManagement'
 import FarmersResourceManagement from './FarmersResourceManagement'
+import PartnersManagement from './PartnersManagement'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -223,6 +225,7 @@ const AdminSettings = () => {
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
     { id: 'contact', name: 'Contact Info', icon: User },
+    { id: 'location', name: 'Location & Map', icon: Globe },
     { id: 'social', name: 'Social Media', icon: Briefcase }
   ]
 
@@ -371,6 +374,128 @@ const AdminSettings = () => {
           </div>
         )}
 
+        {/* Location & Map Settings */}
+        {activeTab === 'location' && (
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Location & Map Settings</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Latitude
+                  </label>
+                  <input
+                    type="number"
+                    step="0.000001"
+                    value={settings.location?.latitude || 23.1815}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      location: {
+                        ...settings.location,
+                        latitude: parseFloat(e.target.value) || 0
+                      }
+                    })}
+                    placeholder="23.1815"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Decimal degrees (e.g., 23.1815)</p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Longitude
+                  </label>
+                  <input
+                    type="number"
+                    step="0.000001"
+                    value={settings.location?.longitude || 79.9864}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      location: {
+                        ...settings.location,
+                        longitude: parseFloat(e.target.value) || 0
+                      }
+                    })}
+                    placeholder="79.9864"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Decimal degrees (e.g., 79.9864)</p>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Map Zoom Level
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="20"
+                  value={settings.location?.zoom || 15}
+                  onChange={(e) => setSettings({
+                    ...settings,
+                    location: {
+                      ...settings.location,
+                      zoom: parseInt(e.target.value) || 15
+                    }
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">1-20, where higher numbers show more detail</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Map Title
+                </label>
+                <input
+                  type="text"
+                  value={settings.location?.mapTitle || 'College of Fishery, Jabalpur'}
+                  onChange={(e) => setSettings({
+                    ...settings,
+                    location: {
+                      ...settings.location,
+                      mapTitle: e.target.value
+                    }
+                  })}
+                  placeholder="College of Fishery, Jabalpur"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Map Description
+                </label>
+                <textarea
+                  value={settings.location?.mapDescription || 'Visit us at our campus in Jabalpur, Madhya Pradesh'}
+                  onChange={(e) => setSettings({
+                    ...settings,
+                    location: {
+                      ...settings.location,
+                      mapDescription: e.target.value
+                    }
+                  })}
+                  rows={3}
+                  placeholder="Visit us at our campus in Jabalpur, Madhya Pradesh"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="text-sm font-medium text-blue-900 mb-2">📍 How to find coordinates:</h4>
+                <ol className="text-sm text-blue-800 space-y-1">
+                  <li>1. Go to <a href="https://maps.google.com" target="_blank" rel="noopener" className="underline">Google Maps</a></li>
+                  <li>2. Search for your location</li>
+                  <li>3. Right-click on the exact spot</li>
+                  <li>4. Click the coordinates that appear at the top</li>
+                  <li>5. Copy the latitude and longitude values</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Social Media Settings */}
         {activeTab === 'social' && (
           <div className="bg-white p-6 rounded-lg shadow">
@@ -382,10 +507,13 @@ const AdminSettings = () => {
                 </label>
                 <input
                   type="url"
-                  value={settings.socialMedia.facebook}
+                  value={settings.socialMedia?.facebook || ''}
                   onChange={(e) => setSettings({
                     ...settings, 
-                    socialMedia: {...settings.socialMedia, facebook: e.target.value}
+                    socialMedia: {
+                      ...settings.socialMedia,
+                      facebook: e.target.value
+                    }
                   })}
                   placeholder="https://facebook.com/yourpage"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -398,10 +526,13 @@ const AdminSettings = () => {
                 </label>
                 <input
                   type="url"
-                  value={settings.socialMedia.twitter}
+                  value={settings.socialMedia?.twitter || ''}
                   onChange={(e) => setSettings({
                     ...settings, 
-                    socialMedia: {...settings.socialMedia, twitter: e.target.value}
+                    socialMedia: {
+                      ...settings.socialMedia,
+                      twitter: e.target.value
+                    }
                   })}
                   placeholder="https://twitter.com/yourhandle"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -414,10 +545,13 @@ const AdminSettings = () => {
                 </label>
                 <input
                   type="url"
-                  value={settings.socialMedia.linkedin}
+                  value={settings.socialMedia?.linkedin || ''}
                   onChange={(e) => setSettings({
                     ...settings, 
-                    socialMedia: {...settings.socialMedia, linkedin: e.target.value}
+                    socialMedia: {
+                      ...settings.socialMedia,
+                      linkedin: e.target.value
+                    }
                   })}
                   placeholder="https://linkedin.com/in/yourprofile"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -430,10 +564,13 @@ const AdminSettings = () => {
                 </label>
                 <input
                   type="url"
-                  value={settings.socialMedia.instagram}
+                  value={settings.socialMedia?.instagram || ''}
                   onChange={(e) => setSettings({
                     ...settings, 
-                    socialMedia: {...settings.socialMedia, instagram: e.target.value}
+                    socialMedia: {
+                      ...settings.socialMedia,
+                      instagram: e.target.value
+                    }
                   })}
                   placeholder="https://instagram.com/yourhandle"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -478,6 +615,7 @@ const AdminDashboard = () => {
     { name: 'Faculty', href: '/admin/faculty', icon: Users },
     { name: 'Research Topics', href: '/admin/research', icon: FileText },
     { name: 'Gallery', href: '/admin/gallery', icon: Image },
+    { name: 'Partners', href: '/admin/partners', icon: Globe },
     // { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
     // { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
         { name: 'News', href: '/admin/news', icon: Newspaper },
@@ -670,6 +808,7 @@ const AdminDashboard = () => {
                 <Route path="/faculty" element={<FacultyManagement />} />
                 <Route path="/research" element={<ResearchManagement />} />
                 <Route path="/gallery" element={<GalleryManagement />} />
+                <Route path="/partners" element={<PartnersManagement />} />
                 <Route path="/news" element={<NewsManagement />} />
                 <Route path="/events" element={<EventsManagement />} />
                 <Route path="/farmers" element={<FarmersResourceManagement />} />

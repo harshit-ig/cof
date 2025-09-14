@@ -9,11 +9,30 @@ const Contact = () => {
     siteName, 
     contactEmail, 
     contactPhone, 
-    address 
+    address,
+    location: locationSettings
   } = useSettings()
   
   const location = useLocation()
   const hash = location.hash.substring(1)
+
+  // Generate Google Maps embed URL from location settings
+  const getMapEmbedUrl = () => {
+    // Use default values if settings not loaded yet
+    const latitude = locationSettings?.latitude || 23.1815
+    const longitude = locationSettings?.longitude || 79.9864
+    const zoom = locationSettings?.zoom || 15
+    
+    // Use a simpler Google Maps embed format
+    return `https://maps.google.com/maps?width=100%25&height=600&hl=en&q=${latitude},${longitude}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`
+  }
+
+  // Generate Google Maps URL for "Open in Google Maps" button
+  const getMapUrl = () => {
+    const latitude = locationSettings?.latitude || 23.1815
+    const longitude = locationSettings?.longitude || 79.9864
+    return `https://maps.google.com/?q=${latitude},${longitude}`
+  }
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -140,28 +159,32 @@ const Contact = () => {
                     <Globe className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Location Map</h3>
-                    <p className="text-blue-600 text-sm">Find Us Here</p>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {locationSettings?.mapTitle || 'Location Map'}
+                    </h3>
+                    <p className="text-blue-600 text-sm">
+                      {locationSettings?.mapDescription || 'Find Us Here'}
+                    </p>
                   </div>
                 </div>
                 
                 {/* Google Map Embed */}
                 <div className="w-full h-80 bg-gray-200 rounded-lg overflow-hidden">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3662.123456789!2d79.9864!3d23.1815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981ae1434355555%3A0x6f1e46e4b1234567!2sNanaji%20Deshmukh%20Veterinary%20Science%20University%2C%20Jabalpur!5e0!3m2!1sen!2sin!4v1234567890!5m2!1sen!2sin"
+                    src={getMapEmbedUrl()}
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title="College of Fishery Location"
+                    title={locationSettings?.mapTitle || 'College of Fishery Location'}
                   ></iframe>
                 </div>
                 
                 <div className="mt-4 text-center">
                   <a
-                    href="https://maps.google.com/?q=College+of+Fisheries+Jabalpur+NDVSU"
+                    href={getMapUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"

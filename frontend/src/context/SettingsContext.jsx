@@ -21,6 +21,13 @@ export const SettingsProvider = ({ children }) => {
     established: '2018',
     affiliatedUniversity: 'JNKVV, Jabalpur',
     principalName: 'Dr. Principal Name',
+    location: {
+      latitude: 23.1815,
+      longitude: 79.9864,
+      zoom: 15,
+      mapTitle: 'College of Fishery, Jabalpur',
+      mapDescription: 'Visit us at our campus in Jabalpur, Madhya Pradesh'
+    },
     socialMedia: {
       facebook: '',
       twitter: '',
@@ -103,6 +110,7 @@ export const SettingsProvider = ({ children }) => {
     established: settings.established,
     affiliatedUniversity: settings.affiliatedUniversity,
     principalName: settings.principalName,
+    location: settings.location,
     socialMedia: settings.socialMedia,
     admissionOpen: settings.admissionOpen,
     maintenanceMode: settings.maintenanceMode,

@@ -1,22 +1,47 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { partnersAPI, uploadAPI } from '../../services/api'
 
 const LogoSlider = () => {
-  // Partner/client logos with links
-  const logos = [
-    { name: 'DOF', src: '/dof.jpg', alt: 'India Department of Fisheries Logo', link: 'https://dof.gov.in/' },
-    { name: 'NFDB', src: '/nfdb.jpg', alt: 'National Fisheries Development Board Logo', link: 'http://nfdb.gov.in/' },
-    { name: 'ICAR-CMFRI', src: '/icar-cmfri.jpg', alt: 'ICAR-CMFRI Logo', link: 'https://www.cmfri.org.in/' },
-    { name: 'CIFRI', src: '/cifri.jpeg', alt: 'CIFRI Logo', link: 'http://cifri.icar.gov.in/' },
-    { name: 'CIFA', src: '/cifa.jpeg', alt: 'CIFA Logo', link: 'http://cifa.nic.in/' },
-    { name: 'CIBA', src: '/ciba.png', alt: 'CIBA Logo', link: 'https://ciba.icar.gov.in/' },
-    { name: 'CIFT', src: '/cift.png', alt: 'CIFT Logo', link: 'https://cift.res.in/' },
-    { name: 'CIFE', src: '/cife.jpeg', alt: 'CIFE Logo', link: 'https://www.cife.edu.in/' },
-    { name: 'NBFGR', src: '/nbfgr.jpeg', alt: 'NBFGR Logo', link: 'https://nbfgr.res.in/' },
-    { name: 'DCFR', src: '/dcfr.png', alt: 'DCFR Logo', link: 'https://dcfr.res.in/' },
-  ]
+  const [logos, setLogos] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchPartners()
+  }, [])
+
+  const fetchPartners = async () => {
+    try {
+      setLoading(true)
+      const response = await partnersAPI.getAll()
+      
+      if (response.data.success) {
+        // Transform partners data to match the expected logo format
+        const partnersData = response.data.data.partners.map(partner => ({
+          name: partner.name,
+          src: uploadAPI.getImageUrl(partner.logo, 'partners'),
+          alt: partner.altText,
+          link: partner.link,
+          category: partner.category,
+          description: partner.description
+        }))
+        setLogos(partnersData)
+      }
+    } catch (error) {
+      console.error('Error fetching partners:', error)
+      // Fallback to empty array if API fails
+      setLogos([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Don't render anything while loading or if no partners
+  if (loading || logos.length === 0) {
+    return null
+  }
 
   // Duplicate logos for seamless infinite scroll
-  const duplicatedLogos = [...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,...logos, ...logos ,]
+  const duplicatedLogos = [...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos, ...logos]
 
   return (
     <section className="py-12 bg-white border-t border-b border-gray-200">
@@ -35,10 +60,7 @@ const LogoSlider = () => {
           
           {/* Sliding Container */}
           <div 
-            className="flex animate-scroll-left"
-            style={{
-              animation: 'scroll-left 30s linear infinite'
-            }}
+            className="flex animate-scroll-infinite"
           >
             {duplicatedLogos.map((logo, index) => (
               <div
@@ -49,6 +71,7 @@ const LogoSlider = () => {
                   href={logo.link} 
                   target="_blank" 
                   rel="noopener noreferrer"
+                  title={logo.description || logo.alt} 
                   className="block h-16 lg:h-20 w-24 lg:w-32 flex items-center justify-center bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300 shadow-sm hover:shadow-md"
                 >
                   <img
@@ -74,23 +97,6 @@ const LogoSlider = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes scroll-left {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .animate-scroll-left {
-            animation-duration: 20s !important;
-          }
-        }
-      `}</style>
     </section>
   )
 }

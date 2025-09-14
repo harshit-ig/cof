@@ -43,6 +43,7 @@ router.get('/public', async (req, res) => {
       contactEmail: settings.contactEmail,
       contactPhone: settings.contactPhone,
       address: settings.address,
+      location: settings.location, // Add location data for map functionality
       socialMedia: settings.socialMedia,
       admissionOpen: settings.admissionOpen,
       maintenanceMode: settings.maintenanceMode,

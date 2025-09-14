@@ -1,5 +1,4 @@
 import axios from 'axios'
-import placeholderImage from '../assets/placeholder-image.jpg'
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -200,13 +199,6 @@ export const uploadAPI = {
   },
   delete: (filename) => api.delete(`/upload/${filename}`),
   getImageUrl: (filename, type = 'images') => {
-    if (!filename) return placeholderImage
-    
-    // Return placeholder for missing/null filenames to prevent endless requests
-    if (filename === 'null' || filename === 'undefined' || filename === '') {
-      return placeholderImage // Use the imported placeholder image
-    }
-
     // Handle external URLs (proxy through backend)
     if (filename.startsWith('http')) {
       const baseURL = import.meta.env.VITE_SERVER_HOST || '/api'
@@ -306,6 +298,25 @@ export const farmersAPI = {
   // Email endpoints (existing)
   sendAdvisoryQuery: (data) => api.post('/farmers/advisory', data),
   sendTrainingQuery: (data) => api.post('/farmers/training', data),
+}
+
+export const partnersAPI = {
+  getAll: () => api.get('/partners'),
+  getAllAdmin: (params) => api.get('/partners/admin', { params }),
+  getById: (id) => api.get(`/partners/${id}`),
+  create: (formData) => uploadApi.post('/partners', formData, {
+    headers: {
+      'X-Upload-Category': 'partners',
+    },
+  }),
+  update: (id, formData) => uploadApi.put(`/partners/${id}`, formData, {
+    headers: {
+      'X-Upload-Category': 'partners',
+    },
+  }),
+  delete: (id) => api.delete(`/partners/${id}`),
+  bulkDelete: (ids) => api.delete('/partners/bulk/delete', { data: { ids } }),
+  reorder: (partners) => api.post('/partners/reorder', { partners }),
 }
 
 export default api

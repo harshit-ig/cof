@@ -289,6 +289,26 @@ body {
   100% { transform: rotate(360deg); }
 }
 
+/* Logo slider animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-infinite {
+  animation: scroll-left 30s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .animate-scroll-infinite {
+    animation-duration: 20s;
+  }
+}
+
 /* Line clamp utilities */
 .line-clamp-3 {
   overflow: hidden;
