@@ -20,6 +20,10 @@ router.get('/', async (req, res) => {
       query.department = new RegExp(req.query.department, 'i');
     }
 
+    if (req.query.staffType) {
+      query.staffType = req.query.staffType;
+    }
+
     if (req.query.search) {
       query.$text = { $search: req.query.search };
     }

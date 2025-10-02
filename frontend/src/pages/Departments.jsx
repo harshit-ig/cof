@@ -24,7 +24,7 @@ const Departments = () => {
       description: 'Focus on disease prevention, diagnosis, and treatment in aquatic animals.',
       courses: ['B.F.Sc.', 'M.F.Sc.', 'Ph.D.'],
       facilities: ['Diagnostic Lab', 'Pathology Unit', 'Quarantine Facility'],
-      color: 'from-green-500 to-green-600'
+      color: 'from-blue-500 to-blue-600'
     },
     {
       id: 'aquatic-environment',
@@ -133,7 +133,7 @@ const Departments = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+      <section className="bg-blue-600 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Departments</h1>

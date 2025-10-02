@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Building, Book, Home, Factory, Microscope, Fish, FlaskConical, Monitor, Wifi, Users } from 'lucide-react'
+import { Building, Book, Home, Factory, Microscope, Fish, FlaskConical, Monitor, Wifi, Users, Brain, Beaker } from 'lucide-react'
 import Card from '../components/common/Card'
 
 const Infrastructure = () => {
@@ -31,7 +31,7 @@ const Infrastructure = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+            <section className="section-padding bg-blue-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -112,6 +112,36 @@ const Infrastructure = () => {
                 Spacious academic buildings with modern amenities and facilities.
               </p>
             </Card>
+            
+            <Card className="p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                  <Brain className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">AI Lab</h3>
+                  <p className="text-purple-600 text-sm">Artificial Intelligence Laboratory</p>
+                </div>
+              </div>
+              <p className="text-gray-700 text-sm">
+                Advanced AI and machine learning laboratory for modern aquaculture research.
+              </p>
+            </Card>
+            
+            <Card className="p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                  <Beaker className="w-6 h-6 text-indigo-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">WET Lab</h3>
+                  <p className="text-indigo-600 text-sm">Water Environment Technology Lab</p>
+                </div>
+              </div>
+              <p className="text-gray-700 text-sm">
+                Specialized laboratory for water quality analysis and environmental testing.
+              </p>
+            </Card>
           </div>
         </div>
       </section>
@@ -124,7 +154,7 @@ const Infrastructure = () => {
             <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card className="p-6 text-center">
               <Fish className="w-8 h-8 text-blue-500 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Hatchery</h3>
@@ -139,6 +169,11 @@ const Infrastructure = () => {
               <Building className="w-8 h-8 text-accent-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">RAS Units</h3>
               <p className="text-gray-700 text-sm">Recirculating Aquaculture Systems for intensive farming</p>
+            </Card>
+            <Card className="p-6 text-center">
+              <Factory className="w-8 h-8 text-orange-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Feed Unit</h3>
+              <p className="text-gray-700 text-sm">On-site fish feed manufacturing and quality testing facility</p>
             </Card>
           </div>
         </div>

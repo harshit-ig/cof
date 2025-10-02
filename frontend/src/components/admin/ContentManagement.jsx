@@ -1,40 +1,58 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Tractor } from 'lucide-react'
-import FarmersResourceManagement from './FarmersResourceManagement'
+import { FileText, Image, Newspaper, Calendar } from 'lucide-react'
+import GalleryManagement from './GalleryManagement'
+import NewsManagement from './NewsManagement'
+import EventsManagement from './EventsManagement'
 
-const ResourcesManagement = () => {
+const ContentManagement = () => {
   const location = useLocation()
   const navigate = useNavigate()
   
-  // Extract tab from URL or default to farmers
+  // Extract tab from URL or default to gallery
   const getActiveTabFromUrl = () => {
     const searchParams = new URLSearchParams(location.search)
-    return searchParams.get('tab') || 'farmers'
+    return searchParams.get('tab') || 'gallery'
   }
   
   const [activeTab, setActiveTab] = useState(getActiveTabFromUrl())
 
   const tabs = [
     { 
-      id: 'farmers', 
-      name: 'Farmers Resources', 
-      icon: Tractor,
-      description: 'Resources and guidance for farmers'
+      id: 'gallery', 
+      name: 'Gallery', 
+      icon: Image,
+      description: 'Photo gallery and media'
+    },
+    { 
+      id: 'news', 
+      name: 'News', 
+      icon: Newspaper,
+      description: 'News articles and updates'
+    },
+    { 
+      id: 'events', 
+      name: 'Events', 
+      icon: Calendar,
+      description: 'Events and announcements'
     }
   ]
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
-    navigate(`/admin/resources?tab=${tabId}`)
+    navigate(`/admin/content?tab=${tabId}`)
   }
 
   const renderTabContent = () => {
     switch (activeTab) {
-      case 'farmers':
-        return <FarmersResourceManagement />
+      case 'gallery':
+        return <GalleryManagement />
+      case 'news':
+        return <NewsManagement />
+      case 'events':
+        return <EventsManagement />
       default:
-        return <FarmersResourceManagement />
+        return <GalleryManagement />
     }
   }
 
@@ -43,12 +61,12 @@ const ResourcesManagement = () => {
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-            <Tractor className="w-5 h-5 text-orange-600" />
+          <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+            <FileText className="w-5 h-5 text-purple-600" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Resources Management</h1>
-            <p className="text-gray-600">Manage resources and educational materials</p>
+            <h1 className="text-2xl font-bold text-gray-900">Content Management</h1>
+            <p className="text-gray-600">Manage website content, media, and updates</p>
           </div>
         </div>
 
@@ -62,16 +80,14 @@ const ResourcesManagement = () => {
                 onClick={() => handleTabChange(tab.id)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
                   activeTab === tab.id
-                    ? 'bg-orange-600 text-white shadow-lg'
+                    ? 'bg-purple-600 text-white shadow-lg'
                     : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
                 <IconComponent className="w-5 h-5" />
                 <div className="text-left">
-                  <div className="font-semibold">{tab.name}</div>
-                  <div className={`text-xs ${activeTab === tab.id ? 'text-orange-100' : 'text-gray-500'}`}>
-                    {tab.description}
-                  </div>
+                  <div className="font-medium">{tab.name}</div>
+                  <div className="text-xs opacity-75">{tab.description}</div>
                 </div>
               </button>
             )
@@ -80,11 +96,11 @@ const ResourcesManagement = () => {
       </div>
 
       {/* Tab Content */}
-      <div>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         {renderTabContent()}
       </div>
     </div>
   )
 }
 
-export default ResourcesManagement
+export default ContentManagement

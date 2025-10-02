@@ -151,6 +151,8 @@ export const contentAPI = {
   getByKey: (key) => api.get(`/content/key/${key}`),
   getAll: (params) => api.get('/content/admin/all', { params }),
   create: (data) => api.post('/content', data),
+  createOrUpdate: (data) => api.post('/content', data), // Backend handles create or update based on key
+  updateByKey: (key, data) => api.post('/content', { key, ...data }), // Create or update by key
   update: (id, data) => api.put(`/content/${id}`, data),
   delete: (id) => api.delete(`/content/${id}`),
 }

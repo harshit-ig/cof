@@ -10,6 +10,16 @@ const facultySchema = new mongoose.Schema({
     type: String,
     required: [true, 'Designation is required']
   },
+  customDesignation: {
+    type: String,
+    trim: true
+  },
+  staffType: {
+    type: String,
+    enum: ['Teaching Staff', 'Non-Teaching Staff'],
+    default: 'Teaching Staff',
+    required: [true, 'Staff type is required']
+  },
   department: {
     type: String,
     required: [true, 'Department is required']

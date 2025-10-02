@@ -54,7 +54,7 @@ const Research = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+      <section className="section-padding bg-blue-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">

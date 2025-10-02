@@ -18,7 +18,7 @@ export const SettingsProvider = ({ children }) => {
     contactEmail: 'info@fisherycollege.edu',
     contactPhone: '+91-761-2345678',
     address: 'College of Fishery, Jabalpur, Madhya Pradesh',
-    established: '2018',
+    established: '2012',
     affiliatedUniversity: 'JNKVV, Jabalpur',
     principalName: 'Dr. Principal Name',
     location: {

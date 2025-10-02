@@ -66,7 +66,7 @@ const ResearchDetail = () => {
   return (
     <div className="min-h-screen">
       {/* Header Section */}
-      <Section background="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+      <Section background="bg-blue-600 text-white">
         <div className="mb-4">
           <Link 
             to="/research" 

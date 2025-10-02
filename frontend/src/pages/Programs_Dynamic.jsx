@@ -125,7 +125,7 @@ const Programs = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+      <div className="bg-blue-600 text-white">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">Academic Programs</h1>

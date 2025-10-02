@@ -10,6 +10,7 @@ const Home = () => {
   const [latestNews, setLatestNews] = useState([])
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [deanMessage, setDeanMessage] = useState('')
+  const [importantNotices, setImportantNotices] = useState([])
   const [welcomeData, setWelcomeData] = useState({
     deanName: 'Dr. Shashikant Mahajan',
     deanTitle: 'Dean, College of Fishery, Jabalpur',
@@ -30,10 +31,11 @@ const Home = () => {
       const promises = [
         newsAPI.getAll({ limit: 4, featured: true }).catch(err => ({ error: true, message: err.message })),
         eventsAPI.getUpcoming({ limit: 3 }).catch(err => ({ error: true, message: err.message })),
-        contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message }))
+        contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message })),
+        contentAPI.getByKey('important-notices').catch(err => ({ error: true, message: err.message }))
       ]
 
-      const [newsResponse, eventsResponse, welcomeResponse] = await Promise.all(promises)
+      const [newsResponse, eventsResponse, welcomeResponse, noticesResponse] = await Promise.all(promises)
 
       // Process news data with safety checks
       if (newsResponse && !newsResponse.error && newsResponse.data?.success) {
@@ -73,6 +75,31 @@ const Home = () => {
             welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fishery, Jabalpur. We are committed to excellence in aquaculture education and research, developing skilled professionals for sustainable fishery management.'
           })
         }
+      }
+
+      // Process important notices with safety checks
+      if (noticesResponse && !noticesResponse.error && noticesResponse.data?.success) {
+        try {
+          const contentData = noticesResponse.data.data.content
+          const noticesData = JSON.parse(contentData.content || contentData)
+          const activeNotices = Array.isArray(noticesData) 
+            ? noticesData.filter(notice => notice.isActive) 
+            : []
+          setImportantNotices(activeNotices)
+        } catch (e) {
+          console.warn('Failed to parse notices content')
+          setImportantNotices([])
+        }
+      } else {
+        // Set default notice if none exist or there's an error
+        setImportantNotices([{
+          id: 1,
+          title: 'Important Notice',
+          message: 'Admission process for B.F.Sc (Bachelor of Fishery Science) program 2025-26 is now open.',
+          link: '/student-corner',
+          linkText: 'Learn More',
+          isActive: true
+        }])
       }
 
     } catch (error) {
@@ -267,23 +294,29 @@ const Home = () => {
                 </div>
               </Card>
 
-              {/* Important Notice */}
-              <Card className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200">
-                <div className="flex items-center mb-3">
-                  <FileText className="w-5 h-5 text-green-600 mr-2" />
-                  <h3 className="text-lg font-semibold text-gray-900">Important Notice</h3>
+              {/* Important Notices */}
+              {importantNotices.length > 0 && (
+                <div className="space-y-4">
+                  {importantNotices.map((notice) => (
+                    <Card key={notice.id} className="bg-blue-50 border border-blue-200">
+                      <div className="flex items-center mb-3">
+                        <FileText className="w-5 h-5 text-blue-600 mr-2" />
+                        <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
+                      </div>
+                      <p className="text-gray-700 mb-3">
+                        {notice.message}
+                      </p>
+                      <Link
+                        to={notice.link}
+                        className="inline-flex items-center text-blue-700 hover:text-blue-800 font-medium"
+                      >
+                        {notice.linkText}
+                        <ExternalLink className="ml-1 h-4 w-4" />
+                      </Link>
+                    </Card>
+                  ))}
                 </div>
-                <p className="text-gray-700 mb-3">
-                  Admission process for B.F.Sc (Bachelor of Fishery Science) program 2025-26 is now open.
-                </p>
-                <Link
-                  to="/student-corner"
-                  className="inline-flex items-center text-green-700 hover:text-green-800 font-medium"
-                >
-                  Learn More
-                  <ExternalLink className="ml-1 h-4 w-4" />
-                </Link>
-              </Card>
+              )}
             </div>
           </div>
         </div>

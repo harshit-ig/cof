@@ -33,6 +33,7 @@ import StudentCorner from './pages/StudentCorner'
 import Academics from './pages/Academics'
 import Placement from './pages/Placement'
 import FarmersCorner from './pages/FarmersCorner'
+import Alumni from './pages/Alumni'
 
 // Admin Components
 import AdminLogin from './components/admin/AdminLogin'
@@ -84,6 +85,7 @@ function App() {
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/collaborations" element={<Collaborations />} />
               <Route path="/farmers-corner" element={<FarmersCorner />} />
+              <Route path="/alumni" element={<Alumni />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               

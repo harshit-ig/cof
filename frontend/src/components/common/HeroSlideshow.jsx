@@ -11,39 +11,19 @@ const HeroSlideshow = () => {
   const fallbackSlides = [
     {
       id: 1,
-      image: '/slider.jpg',
-      title: 'College of Fishery, Jabalpur',
-      subtitle: 'Excellence in Fishery Education & Research',
-      description: 'Leading institution under Nanaji Deshmukh Veterinary Science University for fishery science education, committed to nurturing future professionals in aquaculture and fishery management.',
-      cta: 'Learn More',
-      link: '/about'
+      image: '/slider.jpg'
     },
     {
       id: 2,
-      image: '/slider-2.jpg',
-      title: 'State-of-the-Art Facilities',
-      subtitle: 'Modern Infrastructure for Quality Education',
-      description: 'Well-equipped laboratories, research facilities, and comprehensive infrastructure to provide hands-on learning experience.',
-      cta: 'Explore Facilities',
-      link: '/infrastructure'
+      image: '/slider-2.jpg'
     },
     {
       id: 3,
-      image: '/slider-3.jpg',
-      title: 'Research & Innovation',
-      subtitle: 'Advancing Fishery Science',
-      description: 'Cutting-edge research programs contributing to sustainable fishery development and aquaculture innovation.',
-      cta: 'View Research',
-      link: '/research'
+      image: '/slider-3.jpg'
     },
     {
       id: 4,
-      image: '/slider-4.jpg',
-      title: 'Campus Life & Activities',
-      subtitle: 'Vibrant Student Community',
-      description: 'Experience a dynamic campus environment with various student activities, cultural events, and academic programs.',
-      cta: 'Explore Campus',
-      link: '/about'
+      image: '/slider-4.jpg'
     }
   ]
 
@@ -119,7 +99,7 @@ const HeroSlideshow = () => {
   // Show message if no slides available
   if (slides.length === 0) {
     return (
-      <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden bg-gradient-to-r from-blue-800 to-green-700 flex items-center justify-center">
+            <div className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden flex items-center justify-center">
         <div className="text-white text-center">
           <h1 className="text-4xl font-bold mb-4">College of Fishery, Jabalpur</h1>
           <p className="text-xl">Excellence in Fishery Education & Research</p>
@@ -173,57 +153,7 @@ const HeroSlideshow = () => {
             loading="eager"
           />
           
-          {/* Overlay */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'linear-gradient(rgba(0, 51, 102, 0.7), rgba(0, 102, 51, 0.7))'
-            }}
-          />
-          
-
-          
-          {/* Content */}
-          <div className="relative z-10 h-full flex items-center">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-              <div className="max-w-3xl">
-                <div className="mb-4">
-                  <span className="inline-block bg-yellow-400 text-blue-900 text-sm font-semibold px-3 py-1 rounded-full">
-                    Government of Madhya Pradesh
-                  </span>
-                </div>
-                <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-                  {slide.title}
-                </h1>
-                <h2 className="text-xl md:text-2xl lg:text-3xl text-green-200 font-medium mb-6">
-                  {slide.subtitle}
-                </h2>
-                <p className="text-lg md:text-xl text-gray-200 mb-8 leading-relaxed max-w-2xl">
-                  {slide.description}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href={slide.link}
-                    className="inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-lg transition-colors duration-200"
-                  >
-                    {slide.cta}
-                    <ChevronRight className="ml-2 h-5 w-5" />
-                  </a>
-                  <a
-                    href="/contact"
-                    className="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white hover:bg-white hover:text-blue-900 text-lg font-semibold rounded-lg transition-colors duration-200"
-                  >
-                    Contact Us
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Just the image - no overlay or text content */}
         </div>
       ))}
 
@@ -265,7 +195,7 @@ const HeroSlideshow = () => {
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white bg-opacity-20">
         <div 
-          className="h-full bg-green-400 transition-all duration-300 ease-linear"
+          className="h-full bg-blue-400 transition-all duration-300 ease-linear"
           style={{ 
             width: `${((currentSlide + 1) / slides.length) * 100}%` 
           }}

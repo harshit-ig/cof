@@ -106,7 +106,7 @@ router.get('/:id', async (req, res) => {
 // POST /api/slideshow - Create new slide
 router.post('/', protect, upload.single('image'), async (req, res) => {
   try {
-    const { title, subtitle, description, cta, link, order, isActive } = req.body;
+    const { order, isActive } = req.body;
 
     console.log('Slideshow POST request received:');
     console.log('Body:', req.body);
@@ -128,12 +128,7 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
     }
 
     const slideData = {
-      title: title.trim(),
-      subtitle: subtitle.trim(),
-      description: description.trim(),
       image: `/uploads/slideshow/${req.file.filename}`,
-      cta: cta.trim(),
-      link: link.trim(),
       order: slideOrder,
       isActive: isActive === 'true' || isActive === true
     };
@@ -163,7 +158,7 @@ router.post('/', protect, upload.single('image'), async (req, res) => {
 // PUT /api/slideshow/:id - Update slide
 router.put('/:id', protect, upload.single('image'), async (req, res) => {
   try {
-    const { title, subtitle, description, cta, link, order, isActive } = req.body;
+    const { order, isActive } = req.body;
 
     const slide = await Slideshow.findById(req.params.id);
     if (!slide) {
@@ -174,11 +169,6 @@ router.put('/:id', protect, upload.single('image'), async (req, res) => {
     }
 
     const updateData = {
-      title: title.trim(),
-      subtitle: subtitle.trim(), 
-      description: description.trim(),
-      cta: cta.trim(),
-      link: link.trim(),
       order: order !== undefined ? parseInt(order) || slide.order : slide.order,
       isActive: isActive === 'true' || isActive === true
     };

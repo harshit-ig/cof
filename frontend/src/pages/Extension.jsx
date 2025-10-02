@@ -283,7 +283,7 @@ const Extension = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+      <section className="bg-blue-600 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Extension & Outreach</h1>

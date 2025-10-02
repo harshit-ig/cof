@@ -12,7 +12,7 @@ const settingsSchema = new mongoose.Schema({
   },
   established: {
     type: String,
-    default: '2018'
+    default: '2012'
   },
   affiliatedUniversity: {
     type: String,

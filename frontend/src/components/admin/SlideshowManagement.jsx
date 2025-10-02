@@ -13,11 +13,6 @@ const SlideshowManagement = () => {
   const [draggedItem, setDraggedItem] = useState(null)
 
   const [formData, setFormData] = useState({
-    title: '',
-    subtitle: '',
-    description: '',
-    cta: 'Learn More',
-    link: '/about',
     image: null,
     isActive: true
   })
@@ -46,11 +41,6 @@ const SlideshowManagement = () => {
     
     try {
       const submitData = new FormData()
-      submitData.append('title', formData.title)
-      submitData.append('subtitle', formData.subtitle)
-      submitData.append('description', formData.description)
-      submitData.append('cta', formData.cta)
-      submitData.append('link', formData.link)
       submitData.append('isActive', formData.isActive)
       
       // Add order field - keep existing order when editing, or get next available order for new slides
@@ -70,7 +60,6 @@ const SlideshowManagement = () => {
       }
 
       console.log('Submitting form data:', {
-        title: formData.title,
         editing: !!editingSlide,
         hasImage: !!formData.image
       })
@@ -98,11 +87,6 @@ const SlideshowManagement = () => {
   const handleEdit = (slide) => {
     setEditingSlide(slide)
     setFormData({
-      title: slide.title,
-      subtitle: slide.subtitle,
-      description: slide.description,
-      cta: slide.cta,
-      link: slide.link,
       image: null, // Don't set existing image for file input
       isActive: slide.isActive
     })
@@ -126,11 +110,6 @@ const SlideshowManagement = () => {
 
   const resetForm = () => {
     setFormData({
-      title: '',
-      subtitle: '',
-      description: '',
-      cta: 'Learn More',
-      link: '/about',
       image: null,
       isActive: true
     })
@@ -192,7 +171,7 @@ const SlideshowManagement = () => {
         <h2 className="text-2xl font-bold text-gray-900">Hero Slideshow Management</h2>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 flex items-center gap-2"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
           Add New Slide
@@ -215,80 +194,6 @@ const SlideshowManagement = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Title
-                </label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({...formData, title: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                  maxLength={100}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Subtitle
-                </label>
-                <input
-                  type="text"
-                  value={formData.subtitle}
-                  onChange={(e) => setFormData({...formData, subtitle: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                  maxLength={150}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                rows={3}
-                required
-                maxLength={300}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Call to Action Text
-                </label>
-                <input
-                  type="text"
-                  value={formData.cta}
-                  onChange={(e) => setFormData({...formData, cta: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                  maxLength={50}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Link URL
-                </label>
-                <input
-                  type="text"
-                  value={formData.link}
-                  onChange={(e) => setFormData({...formData, link: e.target.value})}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                  required
-                  placeholder="/about, /programs, etc."
-                />
-              </div>
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Slide Image {editingSlide && '(Leave empty to keep current image)'}
@@ -301,6 +206,9 @@ const SlideshowManagement = () => {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 required={!editingSlide}
               />
+              <p className="text-sm text-gray-500 mt-1">
+                Upload a high-quality image for the slideshow. Recommended size: 1920x1080px
+              </p>
             </div>
 
             <div className="flex items-center">
@@ -326,7 +234,7 @@ const SlideshowManagement = () => {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
               >
                 <Save className="w-4 h-4" />
                 {editingSlide ? 'Update' : 'Create'} Slide
@@ -363,8 +271,8 @@ const SlideshowManagement = () => {
                       ? slide.image 
                       : uploadAPI.getImageUrl(slide.image, 'slideshow')
                     }
-                    alt={slide.title}
-                    className="w-20 h-12 object-cover rounded-lg"
+                    alt={`Slide ${slide.order + 1}`}
+                    className="w-32 h-20 object-cover rounded-lg"
                     onError={(e) => {
                       console.error('Image failed to load:', slide.image);
                       e.target.style.display = 'none';
@@ -373,16 +281,15 @@ const SlideshowManagement = () => {
                 </div>
 
                 <div className="flex-grow">
-                  <h3 className="font-semibold text-gray-900">{slide.title}</h3>
-                  <p className="text-sm text-gray-600">{slide.subtitle}</p>
-                  <p className="text-xs text-gray-500 mt-1">
-                    CTA: "{slide.cta}" → {slide.link}
+                  <h3 className="font-semibold text-gray-900">Slide #{slide.order + 1}</h3>
+                  <p className="text-sm text-gray-600">
+                    Image: {slide.image.length > 30 ? `${slide.image.substring(0, 30)}...` : slide.image}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <span className={`px-2 py-1 rounded-full text-xs ${
-                    slide.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    slide.isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
                   }`}>
                     {slide.isActive ? (
                       <>

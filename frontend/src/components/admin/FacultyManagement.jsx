@@ -10,6 +10,7 @@ const FacultyManagement = () => {
   const [faculty, setFaculty] = useState([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
+  const [activeTab, setActiveTab] = useState('Teaching Staff')
   const [showModal, setShowModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [editingFaculty, setEditingFaculty] = useState(null)
@@ -23,6 +24,7 @@ const FacultyManagement = () => {
     email: '',
     phone: '',
     designation: '',
+    staffType: 'Teaching Staff',
     department: '',
     qualification: '',
     specialization: '',
@@ -40,15 +42,6 @@ const FacultyManagement = () => {
     }
   })
 
-  const designations = [
-    { value: 'Professor', label: 'Professor' },
-    { value: 'Associate Professor', label: 'Associate Professor' },
-    { value: 'Assistant Professor', label: 'Assistant Professor' },
-    { value: 'Lecturer', label: 'Lecturer' },
-    { value: 'Research Fellow', label: 'Research Fellow' },
-    { value: 'Visiting Faculty', label: 'Visiting Faculty' }
-  ]
-
   const departments = [
     { value: 'Fishery Science', label: 'Fishery Science' },
     { value: 'Aquaculture', label: 'Aquaculture' },
@@ -60,12 +53,12 @@ const FacultyManagement = () => {
 
   useEffect(() => {
     fetchFaculty()
-  }, [searchTerm])
+  }, [searchTerm, activeTab])
 
   const fetchFaculty = async () => {
     try {
       setLoading(true)
-      const params = { page: 1, limit: 20 }
+      const params = { page: 1, limit: 20, staffType: activeTab }
       if (searchTerm) params.search = searchTerm
 
       const response = await facultyAPI.getAll(params)
@@ -123,6 +116,7 @@ const FacultyManagement = () => {
       email: facultyMember.email,
       phone: facultyMember.phone,
       designation: facultyMember.designation,
+      staffType: facultyMember.staffType || 'Teaching Staff',
       department: facultyMember.department,
       qualification: facultyMember.qualification,
       specialization: facultyMember.specialization,
@@ -204,6 +198,7 @@ const FacultyManagement = () => {
       email: '',
       phone: '',
       designation: '',
+      staffType: activeTab,
       department: '',
       qualification: '',
       specialization: '',
@@ -259,13 +254,34 @@ const FacultyManagement = () => {
         </button>
       </div>
 
+      {/* Tab Navigation */}
+      <div className="mb-6">
+        <div className="border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8">
+            {['Teaching Staff', 'Non-Teaching Staff'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                  activeTab === tab
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       {/* Search */}
       <div className="mb-6">
         <div className="relative w-full sm:max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
           <input
             type="text"
-            placeholder="Search faculty..."
+            placeholder={`Search ${activeTab.toLowerCase()}...`}
             className="form-input pl-10 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -442,24 +458,38 @@ const FacultyManagement = () => {
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-3">Professional Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <FormGroup label="Designation" required>
+              <FormGroup label="Staff Type" required>
                 <Select
+                  name="staffType"
+                  value={formData.staffType}
+                  onChange={handleChange}
+                  options={[
+                    { value: 'Teaching Staff', label: 'Teaching Staff' },
+                    { value: 'Non-Teaching Staff', label: 'Non-Teaching Staff' }
+                  ]}
+                  placeholder="Select staff type"
+                  required
+                />
+              </FormGroup>
+
+              <FormGroup label="Designation" required>
+                <Input
+                  type="text"
                   name="designation"
                   value={formData.designation}
                   onChange={handleChange}
-                  options={designations}
-                  placeholder="Select designation"
+                  placeholder="Enter designation"
                   required
                 />
               </FormGroup>
 
               <FormGroup label="Department" required>
-                <Select
+                <Input
+                  type="text"
                   name="department"
                   value={formData.department}
                   onChange={handleChange}
-                  options={departments}
-                  placeholder="Select department"
+                  placeholder="Enter department"
                   required
                 />
               </FormGroup>

@@ -17,7 +17,10 @@ import {
   User,
   Image,
   Tractor,
-  Globe
+  Globe,
+  Info,
+  Home,
+  GraduationCap
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -32,6 +35,12 @@ import SlideshowManagement from './SlideshowManagement'
 import ResearchManagement from './ResearchManagement'
 import FarmersResourceManagement from './FarmersResourceManagement'
 import PartnersManagement from './PartnersManagement'
+import AboutPageManagement from './AboutPageManagement'
+
+import HomePageManagement from './HomePageManagement'
+import AcademicManagement from './AcademicManagement'
+import ContentManagement from './ContentManagement'
+import ResourcesManagement from './ResourcesManagement'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -158,7 +167,7 @@ const AdminSettings = () => {
     contactEmail: 'info@fisherycollege.edu',
     contactPhone: '+91-761-2345678',
     address: 'College of Fishery, Jabalpur, Madhya Pradesh',
-    established: '2018',
+    established: '2012',
     affiliatedUniversity: 'JNKVV, Jabalpur',
     principalName: 'Dr. Principal Name',
     socialMedia: {
@@ -608,19 +617,11 @@ const AdminDashboard = () => {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard, exact: true },
-    { name: 'Welcome Message', href: '/admin/welcome', icon: User },
-    { name: 'Hero Slideshow', href: '/admin/slideshow', icon: Image },
-    // { name: 'Academic Programs', href: '/admin/academic-programs', icon: BookOpen },
-    { name: 'Programs', href: '/admin/programs', icon: BookOpen },
-    { name: 'Faculty', href: '/admin/faculty', icon: Users },
-    { name: 'Research Topics', href: '/admin/research', icon: FileText },
-    { name: 'Gallery', href: '/admin/gallery', icon: Image },
-    { name: 'Partners', href: '/admin/partners', icon: Globe },
-    // { name: 'Infrastructure Gallery', href: '/admin/infrastructure-gallery', icon: Building },
-    // { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
-        { name: 'News', href: '/admin/news', icon: Newspaper },
-    { name: 'Events', href: '/admin/events', icon: Calendar },
-    { name: 'Farmers Resources', href: '/admin/farmers', icon: Tractor },
+    { name: 'Home Page', href: '/admin/homepage', icon: Home },
+    { name: 'About Page', href: '/admin/about', icon: Info },
+    { name: 'Academic', href: '/admin/academic', icon: GraduationCap },
+    { name: 'Content', href: '/admin/content', icon: FileText },
+    { name: 'Resources', href: '/admin/resources', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -802,16 +803,11 @@ const AdminDashboard = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
               <Routes>
                 <Route path="/" element={<DashboardHome />} />
-                <Route path="/welcome" element={<WelcomeMessageManagement />} />
-                <Route path="/slideshow" element={<SlideshowManagement />} />
-                <Route path="/programs" element={<ProgramsManagement />} />
-                <Route path="/faculty" element={<FacultyManagement />} />
-                <Route path="/research" element={<ResearchManagement />} />
-                <Route path="/gallery" element={<GalleryManagement />} />
-                <Route path="/partners" element={<PartnersManagement />} />
-                <Route path="/news" element={<NewsManagement />} />
-                <Route path="/events" element={<EventsManagement />} />
-                <Route path="/farmers" element={<FarmersResourceManagement />} />
+                <Route path="/homepage" element={<HomePageManagement />} />
+                <Route path="/about" element={<AboutPageManagement />} />
+                <Route path="/academic" element={<AcademicManagement />} />
+                <Route path="/content" element={<ContentManagement />} />
+                <Route path="/resources" element={<ResourcesManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>

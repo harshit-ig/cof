@@ -13,6 +13,32 @@ const About = () => {
     deanPhoto: '/cllg.jpg',
     welcomeMessage: 'Welcome to the College of Fishery, Jabalpur. Our institution is committed to providing quality education in fishery science and aquaculture, fostering innovation and sustainable practices. We prepare our students to become leaders in the fishery sector, contributing to food security and sustainable development.'
   })
+  
+  const [aboutContent, setAboutContent] = useState({
+    vision: 'To be a globally recognized institution for excellence in fishery education, research, and extension services, fostering innovation and sustainable practices.',
+    mission: 'To provide quality education in fishery science and aquaculture, conduct cutting-edge research, and disseminate knowledge for sustainable development of the fishery sector.',
+    history: 'The College of Veterinary Science and Animal Husbandry, Jabalpur was started on October 2012 as per the gazette of Madhya Pradesh Government. This college is previously working as a department of Fisheries at Faculty of Veterinary Science, JNKVV, Jabalpur (Estt. 1964). The department of fisheries is look over the than five decades of its existence of Aquatic body name as Adhartal Tank which was developed by the Senapati of Gondwana State Shri Diwan Adhar Singh. The aquatic body has been able to make an overall development of fish production and management through its impressive teaching, research and extension activities in basic and applied fields. Consequent to the establishment of Madhya Pradesh Pashu Chikitsha Vigyan Viswavidyalaya (renamed as Nanaji Deshmukh Veterinary Science University) the college became a constitution institution of the new Viswa Vidyalaya with effect from 04.10.2012.'
+  })
+
+  const [mandateContent, setMandateContent] = useState({
+    core: [
+      'Human Resource Development in Fisheries',
+      'Basic, applied and adaptive research on emerging problems in fisheries',
+      'Transfer of technology to fish farmers, entrepreneurs and industry',
+      'To develop college as center for demonstrations and training to unemployed youth, tribal and fish farmers',
+      'To impart the latest technology of composite fish culture to increase fish production from an average of 700 kg/ha to 4000 kg/ha'
+    ],
+    objectives: [
+      'Human Resource Development',
+      'Fish production and productivity enhancement',
+      'Development of fishery through lab to land programme'
+    ],
+    thrust: [
+      'Imparting education in the field of fisheries to generate technical graduates',
+      'To exploits the maximum areas of fisheries through Research and Development activity',
+      'To impart latest technology (Lab to land programme) to fish farmers through extension activities'
+    ]
+  })
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -35,9 +61,10 @@ const About = () => {
     }
   }, [hash])
 
-  // Fetch dean's welcome message
+  // Fetch dean's welcome message and about content
   useEffect(() => {
     fetchWelcomeData()
+    fetchAboutContent()
   }, [])
 
   const fetchWelcomeData = async () => {
@@ -76,17 +103,91 @@ const About = () => {
     }
   }
 
+  const fetchAboutContent = async () => {
+    try {
+      // Fetch all about sections including mandate
+      const [visionRes, missionRes, historyRes, mandateCoreRes, mandateObjectivesRes, mandateThrustRes] = await Promise.allSettled([
+        contentAPI.getByKey('about-vision'),
+        contentAPI.getByKey('about-mission'),
+        contentAPI.getByKey('about-history'),
+        contentAPI.getByKey('about-mandate-core'),
+        contentAPI.getByKey('about-mandate-objectives'),
+        contentAPI.getByKey('about-mandate-thrust')
+      ])
+
+      const newContent = { ...aboutContent }
+      const newMandateContent = { ...mandateContent }
+
+      // Process vision
+      if (visionRes.status === 'fulfilled' && visionRes.value.data.success) {
+        newContent.vision = visionRes.value.data.data.content.content || newContent.vision
+      }
+
+      // Process mission
+      if (missionRes.status === 'fulfilled' && missionRes.value.data.success) {
+        newContent.mission = missionRes.value.data.data.content.content || newContent.mission
+      }
+
+      // Process history
+      if (historyRes.status === 'fulfilled' && historyRes.value.data.success) {
+        newContent.history = historyRes.value.data.data.content.content || newContent.history
+      }
+
+      // Process mandate core
+      if (mandateCoreRes.status === 'fulfilled' && mandateCoreRes.value.data.success) {
+        const content = mandateCoreRes.value.data.data.content.content
+        if (content) {
+          try {
+            newMandateContent.core = JSON.parse(content)
+          } catch (e) {
+            newMandateContent.core = content.split('\n').filter(item => item.trim())
+          }
+        }
+      }
+
+      // Process mandate objectives
+      if (mandateObjectivesRes.status === 'fulfilled' && mandateObjectivesRes.value.data.success) {
+        const content = mandateObjectivesRes.value.data.data.content.content
+        if (content) {
+          try {
+            newMandateContent.objectives = JSON.parse(content)
+          } catch (e) {
+            newMandateContent.objectives = content.split('\n').filter(item => item.trim())
+          }
+        }
+      }
+
+      // Process mandate thrust
+      if (mandateThrustRes.status === 'fulfilled' && mandateThrustRes.value.data.success) {
+        const content = mandateThrustRes.value.data.data.content.content
+        if (content) {
+          try {
+            newMandateContent.thrust = JSON.parse(content)
+          } catch (e) {
+            newMandateContent.thrust = content.split('\n').filter(item => item.trim())
+          }
+        }
+      }
+
+      setAboutContent(newContent)
+      setMandateContent(newMandateContent)
+    } catch (error) {
+      console.error('Error fetching about content:', error)
+      // Continue with default content if API fails
+    }
+  }
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-blue-400 via-blue-500 to-green-400 text-white">
+            <section className="section-padding bg-blue-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               About Our College
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Excellence in Fishery Education & Research since 2018
+              Excellence in Fishery Education & Research since 2012
             </p>
           </div>
         </div>
@@ -137,10 +238,7 @@ const About = () => {
                 <Eye className="w-6 h-6 text-blue-500" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
-              <p className="text-gray-700">
-                To be a globally recognized institution for excellence in fishery education, research, 
-                and extension services, fostering innovation and sustainable practices.
-              </p>
+              <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
             </Card>
             
             <Card className="text-center p-6">
@@ -148,168 +246,84 @@ const About = () => {
                 <Target className="w-6 h-6 text-secondary-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
-              <p className="text-gray-700">
-                To provide quality education in fishery science and aquaculture, conduct cutting-edge research, 
-                and disseminate knowledge for sustainable development of the fishery sector.
-              </p>
+              <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.mission }} />
             </Card>
           </div>
         </div>
       </section>
 
-      {/* Organizational Structure */}
-      <section id="structure" className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Organizational Structure</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <User className="w-6 h-6 text-blue-500" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Dean</h3>
-              <p className="text-gray-600 text-sm">Academic & Administrative Leadership</p>
-            </Card>
-            
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-secondary-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Faculty</h3>
-              <p className="text-gray-600 text-sm">Academic & Research Staff</p>
-            </Card>
-            
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Settings className="w-6 h-6 text-accent-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Administration</h3>
-              <p className="text-gray-600 text-sm">Support & Operations</p>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Governing Body */}
-      <section id="governing-body" className="section-padding bg-white">
+      {/* History */}
+      <section id="history" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Governing Body</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">History of College</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our college is governed by a distinguished body of academics, administrators, and industry experts 
-              who provide strategic direction and oversight for institutional excellence.
-            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Chairman */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <User className="w-10 h-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Chairman</h3>
-              <p className="text-blue-600 font-medium mb-2">Vice Chancellor</p>
-              <p className="text-sm text-gray-600">Nanaji Deshmukh Veterinary Science University</p>
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8">
+              <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.history }} />
             </Card>
-
-            {/* Dean */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-10 h-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Dean & Director</h3>
-              <p className="text-blue-600 font-medium mb-2">Ex-Officio Member</p>
-              <p className="text-sm text-gray-600">College of Fishery, Jabalpur</p>
-            </Card>
-
-            {/* Registrar */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Settings className="w-10 h-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Registrar</h3>
-              <p className="text-blue-600 font-medium mb-2">Ex-Officio Member</p>
-              <p className="text-sm text-gray-600">Administrative Affairs</p>
-            </Card>
-
-            {/* Director Research */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-10 h-10 text-gray-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Director of Research</h3>
-              <p className="text-gray-600 font-medium mb-2">Ex-Officio Member</p>
-              <p className="text-sm text-gray-600">Research & Development</p>
-            </Card>
-
-            {/* Government Representative */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Building className="w-10 h-10 text-gray-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Government Representative</h3>
-              <p className="text-gray-600 font-medium mb-2">Nominated Member</p>
-              <p className="text-sm text-gray-600">Ministry of Fishery, Animal Husbandry & Dairying</p>
-            </Card>
-
-            {/* Industry Expert */}
-            <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Globe className="w-10 h-10 text-gray-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Industry Expert</h3>
-              <p className="text-gray-600 font-medium mb-2">External Member</p>
-              <p className="text-sm text-gray-600">Aquaculture & Fishery Industry</p>
-            </Card>
-          </div>
-
-          {/* Additional Information */}
-          <div className="mt-12 bg-gray-50 rounded-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Key Responsibilities</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                  <Target className="w-5 h-5 text-blue-500 mr-2" />
-                  Strategic Governance
-                </h4>
-                <ul className="text-gray-700 space-y-2 text-sm">
-                  <li>• Policy formulation and implementation</li>
-                  <li>• Academic quality assurance</li>
-                  <li>• Resource allocation and planning</li>
-                  <li>• Institutional development oversight</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center">
-                  <Award className="w-5 h-5 text-blue-500 mr-2" />
-                  Academic Excellence
-                </h4>
-                <ul className="text-gray-700 space-y-2 text-sm">
-                  <li>• Curriculum development and review</li>
-                  <li>• Faculty appointment and promotion</li>
-                  <li>• Research program evaluation</li>
-                  <li>• Student welfare and development</li>
-                </ul>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Us */}
-      <section className="section-padding bg-blue-500 text-white">
+      {/* Mandate */}
+      <section id="mandate" className="section-padding bg-white">
         <div className="container-max">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Contact Us</h2>
-            <p className="text-blue-100 text-sm mb-4">Get in touch with our college for admissions and inquiries</p>
-            <div className="space-y-2 text-sm">
-              <p>📧 cofjabalpur@email.com</p>
-              <p>📞 +91-761-2345678</p>
-              <p>📍 Jabalpur, Madhya Pradesh</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mandate</h2>
+            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Core Mandate */}
+            <Card className="p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                <Target className="w-6 h-6 text-blue-500 mr-2" />
+                Core Mandate
+              </h3>
+              <ul className="space-y-3 text-gray-700">
+                {mandateContent.core.map((item, index) => (
+                  <li key={index} className="flex items-start">
+                    <span className="text-blue-500 mr-2">•</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </Card>
+
+            {/* Objectives & Thrust Areas */}
+            <div className="space-y-6">
+              <Card className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Award className="w-6 h-6 text-green-500 mr-2" />
+                  Objectives
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  {mandateContent.objectives.map((item, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-green-500 mr-2">•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Card className="p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <BookOpen className="w-6 h-6 text-purple-500 mr-2" />
+                  Thrust Areas
+                </h3>
+                <ul className="space-y-2 text-gray-700">
+                  {mandateContent.thrust.map((item, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-purple-500 mr-2">•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </Card>
             </div>
           </div>
         </div>

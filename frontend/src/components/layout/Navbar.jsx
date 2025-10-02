@@ -22,11 +22,10 @@ const Navbar = () => {
       name: 'About Us',
       href: '/about',
       dropdown: [
-        { name: 'History and Vision', href: '/about', section: 'history' },
-        { name: 'Mission & Objectives', href: '/about', section: 'mission' },
-        { name: 'Message from the Dean', href: '/about', section: 'dean-message' },
-        { name: 'Organizational Structure', href: '/about', section: 'structure' },
-        { name: 'Governing Body', href: '/about', section: 'governing-body' }
+        { name: 'History', href: '/about', section: 'history' },
+        { name: 'Mission & Vision', href: '/about', section: 'vision' },
+        { name: 'Mandate', href: '/about', section: 'mandate' },
+        { name: 'Message from the Dean', href: '/about', section: 'dean-message' }
       ]
     },
     {
@@ -58,7 +57,6 @@ const Navbar = () => {
       dropdown: [
         { name: 'Farmer Training Programs', href: '/extension', section: 'farmer-training' },
         { name: 'FFPO and SHG Support', href: '/extension', section: 'ffpo-shg' },
-        { name: 'Matsya Vigyan Kendra (MVK)', href: '/extension', section: 'mvk' },
         { name: 'Aquaculture Demonstrations', href: '/extension', section: 'demonstrations' },
         { name: 'Success Stories', href: '/extension', section: 'success-stories' }
       ]
@@ -83,8 +81,19 @@ const Navbar = () => {
         { name: 'Admission Guidelines', href: '/student-corner', section: 'admissions' },
         { name: 'Scholarships & Fellowships', href: '/student-corner', section: 'scholarships' },
         { name: 'Student Council / Clubs', href: '/student-corner', section: 'clubs' },
-        { name: 'Alumni Testimonials', href: '/student-corner', section: 'alumni' },
         { name: 'Internship & Placement', href: '/student-corner', section: 'placement' }
+      ]
+    },
+    { name: 'Collaborations', href: '/collaborations' },
+    { name: 'Farmers Corner', href: '/farmers-corner' },
+    {
+      name: 'Alumni',
+      href: '/alumni',
+      dropdown: [
+        { name: 'Alumni Directory', href: '/alumni', section: 'directory' },
+        { name: 'Alumni Testimonials', href: '/alumni', section: 'testimonials' },
+        { name: 'Alumni Events', href: '/alumni', section: 'events' },
+        { name: 'Alumni Registration', href: '/alumni', section: 'registration' }
       ]
     },
     {
@@ -98,8 +107,6 @@ const Navbar = () => {
         { name: 'Press Releases', href: '/news', section: 'press-releases' }
       ]
     },
-    { name: 'Collaborations', href: '/collaborations' },
-    { name: 'Farmers Corner', href: '/farmers-corner' },
     { name: 'Contact Us', href: '/contact' }
   ]
 
@@ -239,7 +246,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Menu - sticks to top */}
-      <nav className="bg-gradient-to-r from-blue-700 to-green-600 sticky top-0 z-50 shadow-lg">
+            <nav className="bg-blue-800 sticky top-0 z-50 shadow-lg">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             {/* Mobile menu button */}

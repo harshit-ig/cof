@@ -75,7 +75,15 @@ router.get('/key/:key', async (req, res) => {
 // @access  Private (Admin only)
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    const { key } = req.body;
+    const { key, content } = req.body;
+    
+    // Validate content field - ensure it's a string
+    if (content !== undefined && typeof content !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Content must be a string. Arrays should be JSON stringified.'
+      });
+    }
     
     // Check if content with this key already exists
     const existingContent = await Content.findOne({ key });
@@ -130,13 +138,23 @@ router.post('/', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin only)
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const content = await Content.findByIdAndUpdate(
+    const { content: contentValue } = req.body;
+    
+    // Validate content field - ensure it's a string
+    if (contentValue !== undefined && typeof contentValue !== 'string') {
+      return res.status(400).json({
+        success: false,
+        message: 'Content must be a string. Arrays should be JSON stringified.'
+      });
+    }
+    
+    const updatedContent = await Content.findByIdAndUpdate(
       req.params.id,
       { ...req.body, lastModifiedBy: req.admin._id },
       { new: true, runValidators: true }
     );
 
-    if (!content) {
+    if (!updatedContent) {
       return res.status(404).json({
         success: false,
         message: 'Content not found'
@@ -146,11 +164,18 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
     res.json({
       success: true,
       message: 'Content updated successfully',
-      data: { content }
+      data: { content: updatedContent }
     });
 
   } catch (error) {
     console.error('Update content error:', error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: Object.values(error.errors).map(err => err.message)
+      });
+    }
     res.status(500).json({
       success: false,
       message: 'Server error updating content'

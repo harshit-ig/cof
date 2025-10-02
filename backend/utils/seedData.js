@@ -355,7 +355,7 @@ const seedData = async () => {
           'Water circulation system',
           'Temperature control system'
         ],
-        yearEstablished: 2018,
+        yearEstablished: 2012,
         incharge: 'Mr. Suresh Kumar',
         operatingHours: '24/7 monitoring',
         isActive: true,
