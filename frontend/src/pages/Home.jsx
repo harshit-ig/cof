@@ -19,6 +19,14 @@ const Home = () => {
   })
   const [loading, setLoading] = useState(true)
 
+  // Helper function to truncate text
+  const truncateText = (text, maxLength = 200) => {
+    if (text.length <= maxLength) return text
+    const truncated = text.substring(0, maxLength)
+    const lastSpaceIndex = truncated.lastIndexOf(' ')
+    return lastSpaceIndex > 0 ? truncated.substring(0, lastSpaceIndex) + '...' : truncated + '...'
+  }
+
   useEffect(() => {
     fetchHomeData()
   }, [])
@@ -151,7 +159,7 @@ const Home = () => {
             <div className="lg:col-span-2">
               <Card className="mb-8">
                 <div className="flex items-center mb-6">
-                  <div className="w-1 h-8 bg-green-600 rounded mr-3"></div>
+                  <div className="w-1 h-8 bg-blue-600 rounded mr-3"></div>
                   <h2 className="text-2xl font-bold text-gray-900">Welcome from the Dean</h2>
                 </div>
                 
@@ -174,7 +182,7 @@ const Home = () => {
                   
                   <div className="md:col-span-2">
                     <blockquote className="text-gray-700 text-lg leading-relaxed italic mb-4">
-                      "{welcomeData.welcomeMessage}"
+                      "{truncateText(welcomeData.welcomeMessage, 180)}"
                     </blockquote>
                     
                     <div className="border-t pt-4">
@@ -184,7 +192,7 @@ const Home = () => {
                     
                     <Link
                       to="/about"
-                      className="inline-flex items-center mt-4 text-green-700 hover:text-green-800 font-medium"
+                      className="inline-flex items-center mt-4 text-blue-700 hover:text-blue-800 font-medium"
                     >
                       Read Full Message
                       <ChevronRight className="ml-1 h-4 w-4" />

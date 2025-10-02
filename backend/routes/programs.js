@@ -120,6 +120,37 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @desc    Get program by slug
+// @route   GET /api/programs/slug/:slug
+// @access  Public
+router.get('/slug/:slug', async (req, res) => {
+  try {
+    const program = await Program.findOne({ 
+      slug: req.params.slug,
+      isActive: true 
+    }).populate('createdBy', 'username');
+
+    if (!program) {
+      return res.status(404).json({
+        success: false,
+        message: 'Program not found'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: program
+    });
+
+  } catch (error) {
+    console.error('Get program by slug error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error fetching program'
+    });
+  }
+});
+
 // @desc    Create new program
 // @route   POST /api/programs
 // @access  Private (Admin only)

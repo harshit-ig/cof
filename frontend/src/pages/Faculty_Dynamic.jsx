@@ -9,28 +9,74 @@ const Faculty = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState('all')
   const [selectedDesignation, setSelectedDesignation] = useState('all')
+  const [selectedStaffType, setSelectedStaffType] = useState('Teaching Staff')
   const [facultyMembers, setFacultyMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const departments = [
-    { id: 'all', name: 'All Departments', icon: Building },
-    { id: 'aquaculture', name: 'Aquaculture', icon: Fish },
-    { id: 'fish-health', name: 'Fish Health Management', icon: Microscope },
-    { id: 'processing', name: 'Fish Processing Technology', icon: Building },
-    { id: 'extension', name: 'Fisheries Extension', icon: Globe },
-    { id: 'biotechnology', name: 'Fish Biotechnology', icon: FlaskConical },
-    { id: 'economics', name: 'Fisheries Economics', icon: Calculator },
-    { id: 'environment', name: 'Aquatic Environment', icon: Leaf }
-  ]
+  // Generate departments dynamically from faculty data
+  const getDepartments = () => {
+    const uniqueDepartments = [...new Set(facultyMembers.map(f => f.department).filter(Boolean))]
+    const departmentIcons = {
+      'Fishery Science': Fish,
+      'Aquaculture': Fish,
+      'Fish Processing Technology': FlaskConical,
+      'Fishery Resource Management': Shield,
+      'Aquatic Environment Management': Leaf,
+      'Fish Genetics and Biotechnology': Microscope,
+      'Administration': Building,
+      'Library': BookOpen,
+      'IT Services': Globe2,
+      'Maintenance': Building,
+      'Accounts': Calculator,
+      'Security': Shield
+    }
+    
+    return [
+      { id: 'all', name: 'All Departments', icon: Building },
+      ...uniqueDepartments.sort().map(dept => ({
+        id: dept,
+        name: dept,
+        icon: departmentIcons[dept] || Building
+      }))
+    ]
+  }
 
-  const designations = [
-    { id: 'all', name: 'All Designations' },
-    { id: 'dean', name: 'Dean' },
-    { id: 'professor', name: 'Professor' },
-    { id: 'associate-professor', name: 'Associate Professor' },
-    { id: 'assistant-professor', name: 'Assistant Professor' },
-    { id: 'lecturer', name: 'Lecturer' }
+  // Generate teaching designations dynamically from faculty data
+  const getTeachingDesignations = () => {
+    const teachingFaculty = facultyMembers.filter(f => f.staffType === 'Teaching Staff')
+    const uniqueDesignations = [...new Set(teachingFaculty.map(f => f.designation).filter(Boolean))]
+    
+    return [
+      { id: 'all', name: 'All Designations' },
+      ...uniqueDesignations.sort().map(designation => ({
+        id: designation,
+        name: designation
+      }))
+    ]
+  }
+
+  // Generate non-teaching designations dynamically from faculty data
+  const getNonTeachingDesignations = () => {
+    const nonTeachingFaculty = facultyMembers.filter(f => f.staffType === 'Non-Teaching Staff')
+    const uniqueDesignations = [...new Set(nonTeachingFaculty.map(f => f.designation).filter(Boolean))]
+    
+    return [
+      { id: 'all', name: 'All Designations' },
+      ...uniqueDesignations.sort().map(designation => ({
+        id: designation,
+        name: designation
+      }))
+    ]
+  }
+
+  const departments = getDepartments()
+  const teachingDesignations = getTeachingDesignations()
+  const nonTeachingDesignations = getNonTeachingDesignations()
+
+  const staffTypes = [
+    { id: 'Teaching Staff', name: 'Teaching Staff', icon: GraduationCap },
+    { id: 'Non-Teaching Staff', name: 'Non-Teaching Staff', icon: Users }
   ]
 
   // Fetch faculty data from API
@@ -46,6 +92,11 @@ const Faculty = () => {
           const facultyData = response.data.data.faculty || []
           console.log('Faculty data:', facultyData)
           setFacultyMembers(facultyData)
+          
+          // Reset filters when new data is loaded
+          setSelectedDepartment('all')
+          setSelectedDesignation('all')
+          setSearchTerm('')
         } else {
           console.error('API returned unsuccessful response:', response.data)
           setError('Failed to load faculty data')
@@ -61,20 +112,44 @@ const Faculty = () => {
     fetchFaculty()
   }, [])
 
+  // Reset designation filter when staff type changes
+  useEffect(() => {
+    setSelectedDesignation('all')
+  }, [selectedStaffType])
+
   // Filter faculty based on search and filters
   const filteredFaculty = facultyMembers.filter((faculty) => {
     const matchesSearch = faculty.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          faculty.specialization?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         faculty.department?.toLowerCase().includes(searchTerm.toLowerCase())
+                         faculty.department?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         faculty.qualification?.toLowerCase().includes(searchTerm.toLowerCase())
     
     const matchesDepartment = selectedDepartment === 'all' || 
-                             faculty.department?.toLowerCase().includes(selectedDepartment.toLowerCase())
+                             faculty.department === selectedDepartment
     
     const matchesDesignation = selectedDesignation === 'all' || 
-                              faculty.designation?.toLowerCase().includes(selectedDesignation.toLowerCase())
+                              faculty.designation === selectedDesignation
 
-    return matchesSearch && matchesDepartment && matchesDesignation
+    const matchesStaffType = faculty.staffType === selectedStaffType
+
+    return matchesSearch && matchesDepartment && matchesDesignation && matchesStaffType
   })
+
+  // Get staff statistics
+  const getStaffStats = () => {
+    const teachingStaff = facultyMembers.filter(f => f.staffType === 'Teaching Staff')
+    const nonTeachingStaff = facultyMembers.filter(f => f.staffType === 'Non-Teaching Staff')
+    
+    return {
+      teaching: teachingStaff.length,
+      nonTeaching: nonTeachingStaff.length,
+      total: facultyMembers.length,
+      publications: teachingStaff.reduce((total, faculty) => total + (faculty.publications?.length || 0), 0),
+      avgExperience: Math.round(facultyMembers.reduce((total, faculty) => total + (faculty.experience || 0), 0) / facultyMembers.length) || 0
+    }
+  }
+
+  const stats = getStaffStats()
 
   const getImageUrl = (filename) => {
     if (!filename) return '/images/default-avatar.jpg'
@@ -118,29 +193,64 @@ const Faculty = () => {
               aquaculture, and marine biology. Our team combines academic excellence with practical 
               industry experience.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
                   <Users className="h-6 w-6" />
                 </div>
-                <div className="text-2xl font-bold">{facultyMembers.length}+</div>
-                <div className="text-blue-200">Faculty Members</div>
+                <div className="text-2xl font-bold">{stats.total}</div>
+                <div className="text-blue-200">Total Faculty & Staff</div>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                  <GraduationCap className="h-6 w-6" />
+                </div>
+                <div className="text-2xl font-bold">{stats.teaching}</div>
+                <div className="text-blue-200">Teaching Faculty</div>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
                   <Award className="h-6 w-6" />
                 </div>
-                <div className="text-2xl font-bold">50+</div>
-                <div className="text-blue-200">Research Publications</div>
+                <div className="text-2xl font-bold">{stats.publications}</div>
+                <div className="text-blue-200">Publications</div>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
-                  <BookOpen className="h-6 w-6" />
+                  <Clock className="h-6 w-6" />
                 </div>
-                <div className="text-2xl font-bold">15+</div>
-                <div className="text-blue-200">Years Experience</div>
+                <div className="text-2xl font-bold">{stats.avgExperience}</div>
+                <div className="text-blue-200">Avg. Experience (Years)</div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Staff Type Tabs */}
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4">
+          <div className="flex space-x-8">
+            {staffTypes.map((type) => (
+              <button
+                key={type.id}
+                onClick={() => {
+                  setSelectedStaffType(type.id)
+                  setSelectedDesignation('all')
+                }}
+                className={`flex items-center space-x-2 py-4 border-b-2 font-medium transition-colors ${
+                  selectedStaffType === type.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                <type.icon className="h-5 w-5" />
+                <span>{type.name}</span>
+                <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-sm">
+                  {facultyMembers.filter(f => f.staffType === type.id).length}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -186,7 +296,7 @@ const Faculty = () => {
                 onChange={(e) => setSelectedDesignation(e.target.value)}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                {designations.map((designation) => (
+                {(selectedStaffType === 'Teaching Staff' ? teachingDesignations : nonTeachingDesignations).map((designation) => (
                   <option key={designation.id} value={designation.id}>
                     {designation.name}
                   </option>
@@ -251,7 +361,7 @@ const Faculty = () => {
                     {faculty.experience && (
                       <div className="flex items-start space-x-2">
                         <Clock className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-gray-700">{faculty.experience}</span>
+                        <span className="text-sm text-gray-700">{faculty.experience} years experience</span>
                       </div>
                     )}
 
@@ -340,18 +450,27 @@ const Faculty = () => {
       {/* CTA Section */}
       <div className="bg-blue-50 py-12">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Faculty</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Team</h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Are you passionate about fisheries science and education? We're always looking for 
-            dedicated professionals to join our team.
+            Are you passionate about fisheries education and research? We welcome both teaching faculty 
+            and supporting staff to join our growing institution.
           </p>
-          <Link
-            to="/contact"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center"
-          >
-            Contact Us
-            <ChevronRight className="h-5 w-5 ml-2" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
+            >
+              Faculty Positions
+              <ChevronRight className="h-5 w-5 ml-2" />
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors inline-flex items-center justify-center"
+            >
+              Staff Positions
+              <ChevronRight className="h-5 w-5 ml-2" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>

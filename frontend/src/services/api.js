@@ -70,6 +70,7 @@ export const authAPI = {
 export const programsAPI = {
   getAll: (params) => api.get('/programs', { params }),
   getById: (id) => api.get(`/programs/${id}`),
+  getBySlug: (slug) => api.get(`/programs/slug/${slug}`),
   create: (data) => api.post('/programs', data),
   update: (id, data) => api.put(`/programs/${id}`, data),
   delete: (id) => api.delete(`/programs/${id}`),
@@ -78,6 +79,7 @@ export const programsAPI = {
 export const facultyAPI = {
   getAll: (params) => api.get('/faculty', { params }),
   getById: (id) => api.get(`/faculty/${id}`),
+  getMetadata: () => api.get('/faculty/metadata'),
   create: (data) => api.post('/faculty', data),
   update: (id, data) => api.put(`/faculty/${id}`, data),
   delete: (id) => api.delete(`/faculty/${id}`),
@@ -319,6 +321,17 @@ export const partnersAPI = {
   delete: (id) => api.delete(`/partners/${id}`),
   bulkDelete: (ids) => api.delete('/partners/bulk/delete', { data: { ids } }),
   reorder: (partners) => api.post('/partners/reorder', { partners }),
+}
+
+export const academicsAPI = {
+  // Get academics page content (public)
+  getPage: () => api.get('/academics/page'),
+  
+  // Update academics page content (admin only)
+  updatePage: (data) => api.put('/academics/page', data),
+  
+  // Reset academics page to default (admin only)
+  resetPage: () => api.delete('/academics/page/reset'),
 }
 
 export default api

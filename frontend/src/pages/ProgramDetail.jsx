@@ -19,223 +19,43 @@ import {
 import Card from '../components/common/Card'
 import Section, { SectionHeader } from '../components/common/Section'
 import LoadingSpinner from '../components/common/LoadingSpinner'
-import { contentAPI } from '../services/api'
+import { programsAPI } from '../services/api'
 
 const ProgramDetail = () => {
-  const { id } = useParams()
+  const { slug } = useParams()
   const [program, setProgram] = useState(null)
   const [loading, setLoading] = useState(true)
-
-  // Default program data structure
-  const defaultPrograms = {
-    'bfsc': {
-      id: 'bfsc',
-      name: 'Bachelor of Fishery Science (B.F.Sc.)',
-      shortName: 'B.F.Sc.',
-      duration: '4 Years (8 Semesters)',
-      seats: 60,
-      overview: 'Comprehensive undergraduate program covering all aspects of fishery science and aquaculture.',
-      description: 'The Bachelor of Fishery Science program is designed to provide students with comprehensive knowledge and practical skills in fishery science, aquaculture, and allied fields. Students gain hands-on experience through laboratory work, field visits, and internships.',
-      highlights: [
-        'Core fishery subjects',
-        'Practical training in hatcheries',
-        'Field visits and internships',
-        'Research project in final year',
-        'Industry exposure programs',
-        'Placement assistance'
-      ],
-      curriculum: {
-        semester1: [
-          'Mathematics and Statistics',
-          'Physics',
-          'Chemistry',
-          'Biology',
-          'Introduction to Fisheries',
-          'Computer Applications'
-        ],
-        semester2: [
-          'Biochemistry',
-          'Cell Biology',
-          'Genetics',
-          'Ecology',
-          'Fish Biology',
-          'Aquatic Environment'
-        ],
-        semester3: [
-          'Fish Physiology',
-          'Microbiology',
-          'Taxonomy',
-          'Limnology',
-          'Soil Science',
-          'Agricultural Extension'
-        ],
-        semester4: [
-          'Fish Nutrition',
-          'Fish Pathology',
-          'Aquaculture Engineering',
-          'Fish Breeding and Genetics',
-          'Fishery Statistics',
-          'Economics'
-        ],
-        semester5: [
-          'Aquaculture',
-          'Fish Processing Technology',
-          'Fishery Resource Management',
-          'Fish Feed Technology',
-          'Fishery Economics',
-          'Research Methodology'
-        ],
-        semester6: [
-          'Marine Fisheries',
-          'Inland Fisheries',
-          'Ornamental Fisheries',
-          'Fishery Extension',
-          'Fishery Legislation',
-          'Entrepreneurship Development'
-        ],
-        semester7: [
-          'Fishery Management',
-          'Fish Health Management',
-          'Fishery Project Planning',
-          'Industrial Training',
-          'Seminar',
-          'Research Project'
-        ],
-        semester8: [
-          'Advanced Aquaculture',
-          'Fishery Business Management',
-          'Research Project Completion',
-          'Comprehensive Viva',
-          'Practical Training',
-          'Dissertation'
-        ]
-      },
-      eligibility: {
-        qualification: '10+2 or equivalent',
-        subjects: 'Physics, Chemistry, Biology/Mathematics',
-        percentage: '50% aggregate marks',
-        age: 'No age limit',
-        additional: 'Valid JEE/NEET/State Entrance Test score'
-      },
-      fees: {
-        tuition: '₹50,000 per year',
-        hostel: '₹25,000 per year',
-        mess: '₹30,000 per year',
-        other: '₹10,000 per year',
-        total: '₹1,15,000 per year'
-      },
-      career: [
-        'Fishery Officer',
-        'Aquaculture Manager',
-        'Fish Farm Consultant',
-        'Research Assistant',
-        'Extension Officer',
-        'Quality Control Officer',
-        'Fish Feed Technologist',
-        'Hatchery Manager',
-        'Fish Processing Technologist',
-        'Fishery Entrepreneur'
-      ],
-      facilities: [
-        'Well-equipped laboratories',
-        'Fish culture ponds',
-        'Hatchery facilities',
-        'Library with latest books and journals',
-        'Computer lab with internet',
-        'Hostel accommodation',
-        'Sports facilities',
-        'Medical facilities'
-      ],
-      admission: {
-        process: 'Entrance Test + Counseling',
-        application: 'Online application process',
-        documents: [
-          '10th & 12th Mark sheets',
-          'Transfer Certificate',
-          'Character Certificate',
-          'Caste Certificate (if applicable)',
-          'Income Certificate (if applicable)',
-          'Medical Certificate',
-          'Passport size photographs'
-        ],
-        importantDates: [
-          { event: 'Application Start', date: 'March 1, 2025' },
-          { event: 'Application End', date: 'May 15, 2025' },
-          { event: 'Entrance Test', date: 'June 10, 2025' },
-          { event: 'Result Declaration', date: 'June 25, 2025' },
-          { event: 'Counseling Start', date: 'July 1, 2025' },
-          { event: 'Classes Begin', date: 'August 1, 2025' }
-        ]
-      }
-    },
-    'mfsc-aquaculture': {
-      id: 'mfsc-aquaculture',
-      name: 'Master of Fishery Science (M.F.Sc.) - Aquaculture',
-      shortName: 'M.F.Sc. (Aquaculture)',
-      duration: '2 Years (4 Semesters)',
-      seats: 15,
-      overview: 'Advanced specialization in aquaculture techniques and management.',
-      description: 'The Master of Fishery Science in Aquaculture is an advanced program designed for students who want to specialize in aquaculture research and development. The program focuses on cutting-edge aquaculture technologies, sustainable farming practices, and research methodologies.',
-      highlights: [
-        'Advanced aquaculture methods',
-        'Research methodology',
-        'Thesis work',
-        'Industry collaboration',
-        'International exposure',
-        'Publication opportunities'
-      ],
-      eligibility: {
-        qualification: 'B.F.Sc. or B.Sc. in relevant field',
-        percentage: '60% aggregate marks',
-        entrance: 'Valid ICAR-AIEEA (PG) score',
-        additional: 'Work experience preferred'
-      },
-      fees: {
-        tuition: '₹30,000 per year',
-        total: '₹60,000 for 2 years'
-      },
-      career: [
-        'Research Scientist',
-        'Assistant Professor',
-        'Senior Aquaculture Manager',
-        'Consultant',
-        'Project Manager'
-      ]
-    }
-  }
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     fetchProgramDetails()
-  }, [id])
+  }, [slug])
 
   const fetchProgramDetails = async () => {
     try {
       setLoading(true)
+      setError(null)
       
-      // Try to fetch from API first
-      const response = await contentAPI.getByKey(`program-details-${id}`)
+      console.log('Fetching program details for slug:', slug)
       
-      if (response.data.success && response.data.data.content) {
-        const programData = JSON.parse(response.data.data.content.content)
-        setProgram(programData)
+      // First try to fetch by slug
+      let response;
+      try {
+        response = await programsAPI.getBySlug(slug)
+      } catch (slugError) {
+        // If slug fails, try by ID (backward compatibility)
+        console.log('Slug fetch failed, trying by ID:', slugError.message)
+        response = await programsAPI.getById(slug)
+      }
+      
+      if (response.data.success && response.data.data) {
+        setProgram(response.data.data)
       } else {
-        // Fall back to default data
-        const defaultProgram = defaultPrograms[id]
-        if (defaultProgram) {
-          setProgram(defaultProgram)
-        } else {
-          setProgram(null)
-        }
+        setError('Program not found')
       }
     } catch (error) {
       console.error('Error fetching program details:', error)
-      // Use default data
-      const defaultProgram = defaultPrograms[id]
-      if (defaultProgram) {
-        setProgram(defaultProgram)
-      } else {
-        setProgram(null)
-      }
+      setError('Failed to load program details')
     } finally {
       setLoading(false)
     }
@@ -245,13 +65,13 @@ const ProgramDetail = () => {
     return <LoadingSpinner />
   }
 
-  if (!program) {
+  if (error || !program) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Section>
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Program Not Found</h1>
-            <p className="text-gray-600 mb-6">The program you're looking for doesn't exist.</p>
+            <p className="text-gray-600 mb-6">{error || "The program you're looking for doesn't exist."}</p>
             <Link to="/programs" className="btn-primary">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Programs
@@ -260,6 +80,11 @@ const ProgramDetail = () => {
         </Section>
       </div>
     )
+  }
+
+  // Helper function to safely get nested values
+  const safeGet = (obj, path, defaultValue = '') => {
+    return path.split('.').reduce((current, key) => current && current[key], obj) || defaultValue
   }
 
   return (
@@ -271,8 +96,8 @@ const ProgramDetail = () => {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to All Programs
           </Link>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">{program.name}</h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">{program.overview}</p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{program.title}</h1>
+          <p className="text-xl text-blue-100 max-w-3xl mx-auto">{program.overview || program.description}</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-3xl mx-auto">
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
@@ -283,12 +108,12 @@ const ProgramDetail = () => {
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <Users className="w-6 h-6 mx-auto mb-2" />
               <div className="font-semibold">Seats</div>
-              <div className="text-blue-100">{program.seats}</div>
+              <div className="text-blue-100">{program.intake || program.seats || 'Contact for details'}</div>
             </div>
             <div className="bg-white bg-opacity-10 rounded-lg p-4">
               <Award className="w-6 h-6 mx-auto mb-2" />
               <div className="font-semibold">Degree</div>
-              <div className="text-blue-100">{program.shortName}</div>
+              <div className="text-blue-100">{program.shortName || program.level}</div>
             </div>
           </div>
         </div>
@@ -313,15 +138,19 @@ const ProgramDetail = () => {
               <h3 className="text-xl font-semibold text-gray-900 mb-4">About the Program</h3>
               <p className="text-gray-700 mb-6">{program.description}</p>
               
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Program Highlights</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {program.highlights.map((highlight, index) => (
-                  <div key={index} className="flex items-center">
-                    <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
-                    <span className="text-gray-700">{highlight}</span>
+              {program.highlights && program.highlights.length > 0 && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Program Highlights</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {program.highlights.map((highlight, index) => (
+                      <div key={index} className="flex items-center">
+                        <CheckCircle className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
+                        <span className="text-gray-700">{highlight}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </>
+              )}
             </Card>
           </div>
 
@@ -336,12 +165,14 @@ const ProgramDetail = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Seats:</span>
-                  <span className="font-medium">{program.seats}</span>
+                  <span className="font-medium">{program.intake || program.seats || 'Contact for details'}</span>
                 </div>
                 {program.fees && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Annual Fee:</span>
-                    <span className="font-medium">{program.fees.total}</span>
+                    <span className="font-medium">
+                      {program.fees.total || `₹${program.fees.annual?.toLocaleString() || 'Contact for details'}`}
+                    </span>
                   </div>
                 )}
               </div>
@@ -369,27 +200,49 @@ const ProgramDetail = () => {
       </Section>
 
       {/* Curriculum */}
-      {program.curriculum && (
+      {(program.detailedCurriculum || program.curriculum) && (
         <Section id="curriculum" background="bg-gray-50">
           <SectionHeader title="Curriculum Structure" align="left" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {Object.entries(program.curriculum).map(([semester, subjects], index) => (
-              <Card key={semester} className="p-6">
-                <div className="flex items-center mb-4">
-                  <BookOpen className="w-5 h-5 text-blue-600 mr-2" />
-                  <h3 className="font-semibold text-gray-900">
-                    Semester {index + 1}
-                  </h3>
-                </div>
-                <ul className="space-y-2">
-                  {subjects.map((subject, idx) => (
-                    <li key={idx} className="text-sm text-gray-700">
-                      {subject}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
+            {program.detailedCurriculum ? (
+              Object.entries(program.detailedCurriculum).map(([semester, subjects], index) => (
+                subjects && subjects.length > 0 && (
+                  <Card key={semester} className="p-6">
+                    <div className="flex items-center mb-4">
+                      <BookOpen className="w-5 h-5 text-blue-600 mr-2" />
+                      <h3 className="font-semibold text-gray-900">
+                        Semester {index + 1}
+                      </h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {subjects.map((subject, idx) => (
+                        <li key={idx} className="text-sm text-gray-700">
+                          {subject}
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                )
+              ))
+            ) : (
+              program.curriculum.map((sem, index) => (
+                <Card key={index} className="p-6">
+                  <div className="flex items-center mb-4">
+                    <BookOpen className="w-5 h-5 text-blue-600 mr-2" />
+                    <h3 className="font-semibold text-gray-900">
+                      {sem.semester || `Semester ${index + 1}`}
+                    </h3>
+                  </div>
+                  <ul className="space-y-2">
+                    {sem.subjects.map((subject, idx) => (
+                      <li key={idx} className="text-sm text-gray-700">
+                        {subject}
+                      </li>
+                    ))}
+                  </ul>
+                </Card>
+              ))
+            )}
           </div>
         </Section>
       )}
@@ -405,20 +258,24 @@ const ProgramDetail = () => {
                 <h3 className="text-xl font-semibold text-gray-900">Eligibility Criteria</h3>
               </div>
               <div className="space-y-3">
-                <div>
-                  <span className="font-medium text-gray-900">Qualification: </span>
-                  <span className="text-gray-700">{program.eligibility.qualification}</span>
-                </div>
+                {program.eligibility.qualification && (
+                  <div>
+                    <span className="font-medium text-gray-900">Qualification: </span>
+                    <span className="text-gray-700">{program.eligibility.qualification}</span>
+                  </div>
+                )}
                 {program.eligibility.subjects && (
                   <div>
                     <span className="font-medium text-gray-900">Subjects: </span>
                     <span className="text-gray-700">{program.eligibility.subjects}</span>
                   </div>
                 )}
-                <div>
-                  <span className="font-medium text-gray-900">Percentage: </span>
-                  <span className="text-gray-700">{program.eligibility.percentage}</span>
-                </div>
+                {program.eligibility.percentage && (
+                  <div>
+                    <span className="font-medium text-gray-900">Percentage: </span>
+                    <span className="text-gray-700">{program.eligibility.percentage}</span>
+                  </div>
+                )}
                 {program.eligibility.entrance && (
                   <div>
                     <span className="font-medium text-gray-900">Entrance: </span>
@@ -428,14 +285,14 @@ const ProgramDetail = () => {
               </div>
             </Card>
 
-            {program.admission && (
+            {program.admissionProcess && program.admissionProcess.importantDates && (
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <Calendar className="w-6 h-6 text-blue-600 mr-3" />
                   <h3 className="text-xl font-semibold text-gray-900">Important Dates</h3>
                 </div>
                 <div className="space-y-3">
-                  {program.admission.importantDates.map((item, index) => (
+                  {program.admissionProcess.importantDates.map((item, index) => (
                     <div key={index} className="flex justify-between">
                       <span className="text-gray-700">{item.event}</span>
                       <span className="font-medium text-gray-900">{item.date}</span>
@@ -459,16 +316,24 @@ const ProgramDetail = () => {
                 <h3 className="text-xl font-semibold text-gray-900">Annual Fees</h3>
               </div>
               <div className="space-y-4">
-                {Object.entries(program.fees).map(([key, value]) => (
-                  <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-0">
-                    <span className="text-gray-700 capitalize">
-                      {key === 'total' ? 'Total Annual Fee' : key}:
-                    </span>
-                    <span className={`font-medium ${key === 'total' ? 'text-blue-600 text-lg' : 'text-gray-900'}`}>
-                      {value}
-                    </span>
+                {typeof program.fees === 'object' && program.fees !== null ? (
+                  Object.entries(program.fees).map(([key, value]) => (
+                    value && value !== '' && (
+                      <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-0">
+                        <span className="text-gray-700 capitalize">
+                          {key === 'annual' ? 'Annual Fee' : key}:
+                        </span>
+                        <span className={`font-medium ${key === 'total' || key === 'annual' ? 'text-blue-600 text-lg' : 'text-gray-900'}`}>
+                          {typeof value === 'number' ? `₹${value.toLocaleString()}` : String(value)}
+                        </span>
+                      </div>
+                    )
+                  ))
+                ) : (
+                  <div className="text-center text-gray-700">
+                    {typeof program.fees === 'string' ? program.fees : 'Contact for fee details'}
                   </div>
-                ))}
+                )}
               </div>
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-800">
@@ -481,11 +346,11 @@ const ProgramDetail = () => {
       )}
 
       {/* Career Opportunities */}
-      {program.career && (
+      {program.careerOpportunities && program.careerOpportunities.length > 0 && (
         <Section>
           <SectionHeader title="Career Opportunities" align="left" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {program.career.map((career, index) => (
+            {program.careerOpportunities.map((career, index) => (
               <Card key={index} className="p-6 text-center">
                 <Briefcase className="w-8 h-8 text-blue-600 mx-auto mb-3" />
                 <h3 className="font-semibold text-gray-900">{career}</h3>

@@ -277,14 +277,22 @@ const Programs = () => {
                       {program.eligibility && (
                         <div className="flex items-start space-x-2">
                           <Award className="h-4 w-4 text-gray-400 mt-0.5" />
-                          <span className="text-sm text-gray-700">Eligibility: {program.eligibility}</span>
+                          <span className="text-sm text-gray-700">
+                            Eligibility: {typeof program.eligibility === 'object' ? 
+                              program.eligibility.qualification || 'Check program details' : 
+                              program.eligibility}
+                          </span>
                         </div>
                       )}
 
                       {program.fees && (
                         <div className="flex items-center space-x-2">
                           <Building className="h-4 w-4 text-gray-400" />
-                          <span className="text-sm text-gray-700">Fees: {program.fees}</span>
+                          <span className="text-sm text-gray-700">
+                            Fees: {typeof program.fees === 'object' ? 
+                              program.fees.total || (program.fees.annual ? `₹${program.fees.annual.toLocaleString()}` : 'Contact for details') : 
+                              program.fees}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -354,7 +362,7 @@ const Programs = () => {
                     {/* Action Buttons */}
                     <div className="flex space-x-3 pt-4 border-t border-gray-100">
                       <Link
-                        to={`/programs/${program._id}`}
+                        to={`/programs/${program.slug || program._id}`}
                         className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
                       >
                         View Details
@@ -405,32 +413,8 @@ const Programs = () => {
           </div>
         </div>
       </div>
+    </div>
 
-      {/* CTA Section */}
-      <div className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
-          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
-            Join thousands of successful graduates who have launched their careers through our comprehensive programs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
-            >
-              Apply Now
-              <ChevronRight className="h-5 w-5 ml-2" />
-            </Link>
-            <Link
-              to="/contact"
-              className="border border-gray-300 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors inline-flex items-center justify-center"
-            >
-              Download Brochure
-            </Link>
-          </div>
-        </div>
-        </div>
-      </div>
     </div>
   )
 }

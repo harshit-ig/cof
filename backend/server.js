@@ -81,6 +81,7 @@ app.use('/api/placement', require('./routes/placement'));
 app.use('/api/incubation', require('./routes/incubation'));
 app.use('/api/farmers', require('./routes/farmers'));
 app.use('/api/partners', require('./routes/partners'));
+app.use('/api/academics', require('./routes/academics'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

@@ -1,6 +1,5 @@
 import React from 'react'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
-import { Link } from 'react-router-dom'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -46,13 +45,13 @@ class ErrorBoundary extends React.Component {
                   Refresh Page
                 </button>
                 
-                <Link
-                  to="/"
+                <button
+                  onClick={() => window.location.href = '/'}
                   className="btn-outline w-full flex items-center justify-center"
                 >
                   <Home className="w-4 h-4 mr-2" />
                   Go Home
-                </Link>
+                </button>
               </div>
               
               {process.env.NODE_ENV === 'development' && this.state.error && (

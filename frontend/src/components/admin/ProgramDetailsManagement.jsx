@@ -93,21 +93,45 @@ const ProgramDetailsManagement = () => {
         }, {})
       }
 
-      await contentAPI.updateByKey(`program-details-${formData.id}`, {
+      const contentKey = `program-details-${formData.id}`
+      const contentData = {
         content: JSON.stringify(cleanedData),
         section: 'academic',
         subsection: 'programs',
         title: `Program Details - ${cleanedData.name}`,
         type: 'json',
         isPublished: true
-      })
+      }
+
+      // Check if content already exists
+      try {
+        const existingContent = await contentAPI.getByKey(contentKey)
+        if (existingContent.data.success && existingContent.data.data) {
+          // Update existing content
+          await contentAPI.updateByKey(contentKey, contentData)
+          toast.success('Program details updated successfully')
+        } else {
+          // Create new content
+          await contentAPI.create({
+            ...contentData,
+            key: contentKey
+          })
+          toast.success('Program details created successfully')
+        }
+      } catch (error) {
+        // If content doesn't exist, create it
+        await contentAPI.create({
+          ...contentData,
+          key: contentKey
+        })
+        toast.success('Program details created successfully')
+      }
 
       await fetchPrograms()
       resetForm()
-      toast.success(editingProgram ? 'Program updated successfully' : 'Program created successfully')
     } catch (error) {
       console.error('Error saving program:', error)
-      toast.error('Failed to save program')
+      toast.error('Failed to save program details')
     }
   }
 

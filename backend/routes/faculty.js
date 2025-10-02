@@ -204,6 +204,52 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
+// @desc    Get faculty metadata (departments, designations, etc.)
+// @route   GET /api/faculty/metadata
+// @access  Public
+router.get('/metadata', async (req, res) => {
+  try {
+    // Get all active faculty
+    const faculty = await Faculty.find({ isActive: true }).select('department designation staffType');
+    
+    // Extract unique departments
+    const departments = [...new Set(faculty.map(f => f.department).filter(Boolean))].sort();
+    
+    // Extract unique designations by staff type
+    const teachingFaculty = faculty.filter(f => f.staffType === 'Teaching Staff');
+    const nonTeachingFaculty = faculty.filter(f => f.staffType === 'Non-Teaching Staff');
+    
+    const teachingDesignations = [...new Set(teachingFaculty.map(f => f.designation).filter(Boolean))].sort();
+    const nonTeachingDesignations = [...new Set(nonTeachingFaculty.map(f => f.designation).filter(Boolean))].sort();
+    
+    // Get staff counts
+    const staffCounts = {
+      total: faculty.length,
+      teaching: teachingFaculty.length,
+      nonTeaching: nonTeachingFaculty.length
+    };
+    
+    res.json({
+      success: true,
+      data: {
+        departments,
+        designations: {
+          teaching: teachingDesignations,
+          nonTeaching: nonTeachingDesignations
+        },
+        staffCounts
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching faculty metadata:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error fetching faculty metadata'
+    });
+  }
+});
+
 module.exports = router;
 
 

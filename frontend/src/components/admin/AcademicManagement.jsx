@@ -1,35 +1,35 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { GraduationCap, BookOpen, Users, FileText, Info } from 'lucide-react'
+import { GraduationCap, BookOpen, Users, FileText, Layout } from 'lucide-react'
 import ProgramsManagement from './ProgramsManagement'
 import FacultyManagement from './FacultyManagement'
 import ResearchManagement from './ResearchManagement'
-import ProgramDetailsManagement from './ProgramDetailsManagement'
+import AcademicsPageManagement from './AcademicsPageManagement'
 
 const AcademicManagement = () => {
   const location = useLocation()
   const navigate = useNavigate()
   
-  // Extract tab from URL or default to programs
+  // Extract tab from URL or default to academics-page
   const getActiveTabFromUrl = () => {
     const searchParams = new URLSearchParams(location.search)
-    return searchParams.get('tab') || 'programs'
+    return searchParams.get('tab') || 'academics-page'
   }
   
   const [activeTab, setActiveTab] = useState(getActiveTabFromUrl())
 
   const tabs = [
     { 
+      id: 'academics-page', 
+      name: 'Academics Page', 
+      icon: Layout,
+      description: 'Manage academics page content'
+    },
+    { 
       id: 'programs', 
       name: 'Programs', 
       icon: BookOpen,
       description: 'Academic programs and courses'
-    },
-    { 
-      id: 'program-details', 
-      name: 'Program Details', 
-      icon: Info,
-      description: 'Detailed program information and curriculum'
     },
     { 
       id: 'faculty', 
@@ -52,16 +52,16 @@ const AcademicManagement = () => {
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'academics-page':
+        return <AcademicsPageManagement />
       case 'programs':
         return <ProgramsManagement />
-      case 'program-details':
-        return <ProgramDetailsManagement />
       case 'faculty':
         return <FacultyManagement />
       case 'research':
         return <ResearchManagement />
       default:
-        return <ProgramsManagement />
+        return <AcademicsPageManagement />
     }
   }
 
