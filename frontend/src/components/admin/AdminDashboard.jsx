@@ -42,7 +42,6 @@ import StudentCornerManagement from './StudentCornerManagement'
 import HomePageManagement from './HomePageManagement'
 import AcademicManagement from './AcademicManagement'
 import ContentManagement from './ContentManagement'
-import ResourcesManagement from './ResourcesManagement'
 import ExtensionManagement from './ExtensionManagement'
 import InfrastructureStatic from './InfrastructureStatic'
 import IncubationManagement from './IncubationManagement'
@@ -630,7 +629,7 @@ const AdminDashboard = () => {
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'Incubation', href: '/admin/incubation', icon: Briefcase },
     { name: 'Content', href: '/admin/content', icon: FileText },
-    { name: 'Resources', href: '/admin/resources', icon: Tractor },
+    { name: 'Farmer Corner', href: '/admin/resources', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -820,7 +819,7 @@ const AdminDashboard = () => {
                 <Route path="/infrastructure" element={<InfrastructureStatic />} />
                 <Route path="/incubation" element={<IncubationManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
-                <Route path="/resources" element={<ResourcesManagement />} />
+                <Route path="/resources" element={<FarmersResourceManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>
