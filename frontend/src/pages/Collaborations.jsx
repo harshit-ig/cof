@@ -482,33 +482,6 @@ const Collaborations = () => {
           </div>
         </div>
       </section>
-
-      {/* Call to Action */}
-      <section className="section-padding bg-blue-500 text-white">
-        <div className="container-max text-center">
-          <h2 className="text-3xl font-bold mb-4">Partner with Us</h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Interested in collaborating with College of Fishery? We welcome partnerships 
-            that contribute to fisheries education, research, and sustainable development.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="btn-accent"
-            >
-              Partnership Inquiry
-            </Link>
-            
-            <Link
-              to="/about"
-              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
-            >
-              Learn More About Us
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

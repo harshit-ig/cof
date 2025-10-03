@@ -231,16 +231,29 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Banner - scrolls away normally */}
-      <div className="bg-white">
-        <div className="max-w-full mx-auto">
-          <Link to="/">
-            <img 
-              src="/top_banner.png" 
-              alt={`${siteName} Banner`}
-              className="w-full h-auto object-contain"
-            />
-          </Link>
+      {/* Top Banner */}
+      <div className="bg-white border-b-4 border-blue-600">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
+              <img 
+                src="/cof_logo.png" 
+                alt="COF Logo"
+                className="h-20 sm:h-24 md:h-32 lg:h-36 xl:h-40 w-auto object-contain"
+              />
+            </Link>
+            
+            {/* Text Content */}
+            <div className="flex-1 px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
+              <h1 className="text-sm sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl font-bold text-blue-800 mb-1">
+                COLLEGE OF FISHERY SCIENCE
+              </h1>
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-600 font-medium">
+                NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

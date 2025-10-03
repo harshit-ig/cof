@@ -100,32 +100,22 @@ const ProgramDetail = () => {
           <p className="text-xl text-blue-100 max-w-3xl mx-auto">{program.overview || program.description}</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 max-w-3xl mx-auto">
-            <div className="bg-white bg-opacity-10 rounded-lg p-4">
-              <Clock className="w-6 h-6 mx-auto mb-2" />
-              <div className="font-semibold">Duration</div>
-              <div className="text-blue-100">{program.duration}</div>
+            <div className="bg-white rounded-lg p-6 text-center shadow-lg">
+              <Clock className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+              <div className="font-semibold text-gray-700">Duration</div>
+              <div className="text-gray-900 font-bold text-lg">{program.duration}</div>
             </div>
-            <div className="bg-white bg-opacity-10 rounded-lg p-4">
-              <Users className="w-6 h-6 mx-auto mb-2" />
-              <div className="font-semibold">Seats</div>
-              <div className="text-blue-100">{program.intake || program.seats || 'Contact for details'}</div>
+            <div className="bg-white rounded-lg p-6 text-center shadow-lg">
+              <Users className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+              <div className="font-semibold text-gray-700">Seats</div>
+              <div className="text-gray-900 font-bold text-lg">{program.intake || program.seats || 'Contact for details'}</div>
             </div>
-            <div className="bg-white bg-opacity-10 rounded-lg p-4">
-              <Award className="w-6 h-6 mx-auto mb-2" />
-              <div className="font-semibold">Degree</div>
-              <div className="text-blue-100">{program.shortName || program.level}</div>
+            <div className="bg-white rounded-lg p-6 text-center shadow-lg">
+              <Award className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+              <div className="font-semibold text-gray-700">Degree</div>
+              <div className="text-gray-900 font-bold text-lg">{program.shortName || program.level}</div>
             </div>
           </div>
-        </div>
-      </Section>
-
-      {/* Quick Actions */}
-      <Section background="bg-white">
-        <div className="flex flex-wrap gap-4 justify-center">
-          <a href="#curriculum" className="btn-primary">View Curriculum</a>
-          <a href="#admission" className="btn-outline">Admission Process</a>
-          <a href="#fees" className="btn-outline">Fee Structure</a>
-          <Link to="/contact" className="btn-outline">Contact Us</Link>
         </div>
       </Section>
 
