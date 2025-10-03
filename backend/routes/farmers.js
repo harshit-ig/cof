@@ -120,7 +120,7 @@ router.post('/advisory', async (req, res) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #10b981, #3b82f6); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
             <h2 style="margin: 0;">Query Received Successfully</h2>
-            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fisheries, Jabalpur</p>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fishery, Jabalpur</p>
           </div>
           
           <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
@@ -159,7 +159,7 @@ router.post('/advisory', async (req, res) => {
             <p style="margin: 0; font-size: 14px;">
               Best regards,<br>
               <strong>Advisory Services Team</strong><br>
-              College of Fisheries, Jabalpur
+              College of Fishery, Jabalpur
             </p>
           </div>
         </div>
@@ -260,7 +260,7 @@ router.post('/training', async (req, res) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #3b82f6, #10b981); color: white; padding: 20px; border-radius: 8px 8px 0 0;">
             <h2 style="margin: 0;">Registration Confirmed</h2>
-            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fisheries, Jabalpur</p>
+            <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fishery, Jabalpur</p>
           </div>
           
           <div style="padding: 20px; background-color: #f8fafc; border: 1px solid #e2e8f0;">
@@ -273,7 +273,7 @@ router.post('/training', async (req, res) => {
               <div style="background-color: #ecfdf5; padding: 20px; border-radius: 8px; border-left: 4px solid #10b981; margin: 20px 0;">
                 <h3 style="margin-top: 0; color: #047857;">Training Program Details</h3>
                 <p style="margin: 5px 0; color: #1f2937;"><strong>Program:</strong> ${program}</p>
-                <p style="margin: 5px 0; color: #1f2937;"><strong>Venue:</strong> College of Fisheries, Jabalpur</p>
+                <p style="margin: 5px 0; color: #1f2937;"><strong>Venue:</strong> College of Fishery, Jabalpur</p>
                 <p style="margin: 5px 0; color: #4b5563;">Detailed joining instructions and schedule will be sent to you within 2-3 working days.</p>
               </div>
               
@@ -311,7 +311,7 @@ router.post('/training', async (req, res) => {
             <p style="margin: 0; font-size: 14px;">
               Best regards,<br>
               <strong>Training & Development Team</strong><br>
-              College of Fisheries, Jabalpur
+              College of Fishery, Jabalpur
             </p>
           </div>
         </div>

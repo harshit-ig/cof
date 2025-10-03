@@ -108,61 +108,6 @@ const Extension = () => {
     }
   ]
 
-  const mvkInitiatives = [
-    {
-      title: 'Technology Demonstration Programs',
-      description: 'Demonstrating latest aquaculture technologies and best practices at farmer fields.',
-      components: [
-        'Demonstration ponds setup',
-        'New technology trials',
-        'Farmer field schools',
-        'Technology validation',
-        'Impact assessment studies'
-      ],
-      reach: '50+ villages',
-      farmers: '500+ direct beneficiaries'
-    },
-    {
-      title: 'Skill Development Training',
-      description: 'Comprehensive skill development programs for youth and farmers in modern aquaculture techniques.',
-      components: [
-        'Hands-on training sessions',
-        'Certificate courses',
-        'Equipment operation training',
-        'Digital literacy programs',
-        'Entrepreneurship development'
-      ],
-      reach: '25+ training centers',
-      farmers: '300+ trainees annually'
-    },
-    {
-      title: 'Extension Advisory Services',
-      description: 'Regular advisory services through field visits, helpline, and digital platforms.',
-      components: [
-        'Weekly field visits',
-        'Helpline services (24/7)',
-        'Mobile app advisory',
-        'SMS-based alerts',
-        'Video calling consultations'
-      ],
-      reach: '100+ villages',
-      farmers: '1000+ farmers covered'
-    },
-    {
-      title: 'Input Supply Chain Management',
-      description: 'Ensuring timely availability of quality inputs through improved supply chain systems.',
-      components: [
-        'Quality seed supply',
-        'Feed distribution network',
-        'Medicine availability',
-        'Equipment rental services',
-        'Emergency support system'
-      ],
-      reach: '75+ locations',
-      farmers: '800+ farmers served'
-    }
-  ]
-
   const demonstrations = [
     {
       title: 'Biofloc Technology Demonstration',
@@ -409,56 +354,6 @@ const Extension = () => {
                         <p className="text-blue-600 text-sm">Impact Achieved</p>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Matsya Vigyan Kendra (MVK) Initiatives */}
-      <section id="mvk-initiatives" className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Matsya Vigyan Kendra (MVK) Initiatives</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Technology demonstration, transfer, and extension services to bridge the gap between 
-              research and field application for sustainable aquaculture development.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {mvkInitiatives.map((initiative, index) => (
-              <Card key={index} className="p-6">
-                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                  <Lightbulb className="w-6 h-6 text-yellow-600" />
-                </div>
-                
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{initiative.title}</h3>
-                <p className="text-gray-700 mb-4">{initiative.description}</p>
-                
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-900 mb-3">Program Components</h4>
-                  <ul className="space-y-2">
-                    {initiative.components.map((component, idx) => (
-                      <li key={idx} className="flex items-center text-sm text-gray-700">
-                        <div className="w-2 h-2 bg-yellow-500 rounded-full mr-3"></div>
-                        {component}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Coverage</p>
-                    <p className="font-semibold text-gray-900">{initiative.reach}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-sm text-gray-600">Beneficiaries</p>
-                    <p className="font-semibold text-gray-900">{initiative.farmers}</p>
                   </div>
                 </div>
               </Card>
