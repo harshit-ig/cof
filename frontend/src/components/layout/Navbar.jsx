@@ -78,10 +78,9 @@ const Navbar = () => {
       name: 'Students Corner',
       href: '/student-corner',
       dropdown: [
-        { name: 'Admission Guidelines', href: '/student-corner', section: 'admissions' },
+        { name: 'Admission Guidelines', href: '/student-corner', section: 'admission-guidelines' },
         { name: 'Scholarships & Fellowships', href: '/student-corner', section: 'scholarships' },
-        { name: 'Student Council / Clubs', href: '/student-corner', section: 'clubs' },
-        { name: 'Internship & Placement', href: '/student-corner', section: 'placement' }
+        { name: 'Student Council / Clubs', href: '/student-corner', section: 'student-council' }
       ]
     },
     { name: 'Collaborations', href: '/collaborations' },
