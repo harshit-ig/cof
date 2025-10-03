@@ -781,25 +781,7 @@ const Placement = () => {
             )}
           </Card>
 
-          {/* Contact Information */}
-          <div className="mt-16 text-center">
-            <Card className="max-w-2xl mx-auto p-6">
-              <h3 className="text-xl font-semibold mb-4">Need Help?</h3>
-              <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <span>hr@fisherycollege.edu</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span>+91 761 234 5678</span>
-                </div>
-              </div>
-              <p className="mt-4 text-xs text-gray-500">
-                For any queries related to applications, please contact our HR department during working hours (9:00 AM - 5:00 PM, Monday to Friday)
-              </p>
-            </Card>
-          </div>
+
         </div>
       </Section>
     </div>
