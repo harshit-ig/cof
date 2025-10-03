@@ -20,7 +20,8 @@ import {
   Globe,
   Info,
   Home,
-  GraduationCap
+  GraduationCap,
+  Target
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -41,6 +42,8 @@ import HomePageManagement from './HomePageManagement'
 import AcademicManagement from './AcademicManagement'
 import ContentManagement from './ContentManagement'
 import ResourcesManagement from './ResourcesManagement'
+import ExtensionManagement from './ExtensionManagement'
+import InfrastructureStatic from './InfrastructureStatic'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -620,6 +623,8 @@ const AdminDashboard = () => {
     { name: 'Home Page', href: '/admin/homepage', icon: Home },
     { name: 'About Page', href: '/admin/about', icon: Info },
     { name: 'Academic', href: '/admin/academic', icon: GraduationCap },
+    { name: 'Extension', href: '/admin/extension', icon: Target },
+    { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Resources', href: '/admin/resources', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
@@ -806,6 +811,8 @@ const AdminDashboard = () => {
                 <Route path="/homepage" element={<HomePageManagement />} />
                 <Route path="/about" element={<AboutPageManagement />} />
                 <Route path="/academic" element={<AcademicManagement />} />
+                <Route path="/extension" element={<ExtensionManagement />} />
+                <Route path="/infrastructure" element={<InfrastructureStatic />} />
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/resources" element={<ResourcesManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />

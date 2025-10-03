@@ -348,5 +348,29 @@ export const academicsAPI = {
   resetPage: () => api.delete('/academics/page/reset'),
 }
 
+export const extensionAPI = {
+  getAll: (params) => api.get('/extension', { params }),
+  getPublic: (params) => api.get('/extension', { params }), // Public endpoint alias
+  getAdmin: (params) => api.get('/extension/admin', { params }),
+  getById: (id) => api.get(`/extension/${id}`),
+  create: (data) => {
+    // If data is FormData (for file uploads), use uploadApi
+    if (data instanceof FormData) {
+      return uploadApi.post('/extension', data);
+    }
+    // Otherwise use regular api
+    return api.post('/extension', data);
+  },
+  update: (id, data) => {
+    // If data is FormData (for file uploads), use uploadApi
+    if (data instanceof FormData) {
+      return uploadApi.put(`/extension/${id}`, data);
+    }
+    // Otherwise use regular api
+    return api.put(`/extension/${id}`, data);
+  },
+  delete: (id) => api.delete(`/extension/${id}`),
+}
+
 export default api
 
