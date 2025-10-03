@@ -11,6 +11,10 @@ const Research = require('../models/Research');
 const Infrastructure = require('../models/Infrastructure');
 const Collaboration = require('../models/Collaboration');
 const Content = require('../models/Content');
+const StudentCorner = require('../models/StudentCorner');
+
+// Import seed functions
+const { seedStudentCorner } = require('./seedStudentCorner');
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -39,7 +43,8 @@ const seedData = async () => {
       Research.deleteMany({}),
       Infrastructure.deleteMany({}),
       Collaboration.deleteMany({}),
-      Content.deleteMany({})
+      Content.deleteMany({}),
+      StudentCorner.deleteMany({})
     ]);
 
     // Create admin user
@@ -57,6 +62,7 @@ const seedData = async () => {
     const programs = await Program.insertMany([
       {
         title: 'Bachelor of Fishery Science (B.F.Sc)',
+        slug: 'bachelor-fishery-science',
         description: 'A comprehensive 4-year undergraduate program covering all aspects of fishery science including aquaculture, fish biology, fishery management, and processing technology.',
         duration: '4 Years',
         eligibility: '10+2 with PCB/PCM with minimum 50% marks',
@@ -70,7 +76,9 @@ const seedData = async () => {
             subjects: ['Fish Biology', 'Water Chemistry', 'Statistics', 'Economics', 'Environmental Science']
           }
         ],
-        fees: 50000,
+        fees: {
+          annual: 50000
+        },
         intake: 60,
         department: 'Fishery Science',
         level: 'undergraduate',
@@ -79,6 +87,7 @@ const seedData = async () => {
       },
       {
         title: 'Master of Fishery Science (M.F.Sc)',
+        slug: 'master-fishery-science',
         description: 'Advanced 2-year postgraduate program with specializations in Aquaculture, Fish Processing Technology, and Fishery Resource Management.',
         duration: '2 Years',
         eligibility: 'B.F.Sc or equivalent degree with minimum 60% marks',
@@ -88,7 +97,9 @@ const seedData = async () => {
             subjects: ['Advanced Aquaculture', 'Research Methodology', 'Biostatistics', 'Fish Nutrition']
           }
         ],
-        fees: 60000,
+        fees: {
+          annual: 60000
+        },
         intake: 30,
         department: 'Fishery Science',
         level: 'postgraduate',
@@ -97,10 +108,13 @@ const seedData = async () => {
       },
       {
         title: 'Diploma in Aquaculture Technology',
+        slug: 'diploma-aquaculture-technology',
         description: 'Practical-oriented 1-year diploma program focusing on modern aquaculture techniques, pond management, and fish farming practices.',
         duration: '1 Year',
         eligibility: '10+2 in any stream with minimum 45% marks',
-        fees: 25000,
+        fees: {
+          annual: 25000
+        },
         intake: 40,
         department: 'Aquaculture',
         level: 'diploma',
@@ -109,10 +123,13 @@ const seedData = async () => {
       },
       {
         title: 'Certificate in Fish Processing & Value Addition',
+        slug: 'certificate-fish-processing',
         description: 'Short-term 6-month certificate program covering fish processing, preservation techniques, and value addition methods.',
         duration: '6 Months',
         eligibility: '10th Pass with basic knowledge of science',
-        fees: 15000,
+        fees: {
+          annual: 15000
+        },
         intake: 25,
         department: 'Fish Processing',
         level: 'certificate',
@@ -507,6 +524,9 @@ const seedData = async () => {
       }
     ]);
     console.log(`${content.length} content items seeded`);
+
+    // Seed Student Corner data
+    await seedStudentCorner();
 
     console.log('\n✅ Database seeded successfully!');
     console.log('\nAdmin Login Credentials:');

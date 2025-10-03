@@ -37,6 +37,7 @@ import ResearchManagement from './ResearchManagement'
 import FarmersResourceManagement from './FarmersResourceManagement'
 import PartnersManagement from './PartnersManagement'
 import AboutPageManagement from './AboutPageManagement'
+import StudentCornerManagement from './StudentCornerManagement'
 
 import HomePageManagement from './HomePageManagement'
 import AcademicManagement from './AcademicManagement'
@@ -624,6 +625,7 @@ const AdminDashboard = () => {
     { name: 'Home Page', href: '/admin/homepage', icon: Home },
     { name: 'About Page', href: '/admin/about', icon: Info },
     { name: 'Academic', href: '/admin/academic', icon: GraduationCap },
+    { name: 'Student Corner', href: '/admin/student-corner', icon: Users },
     { name: 'Extension', href: '/admin/extension', icon: Target },
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'Incubation', href: '/admin/incubation', icon: Briefcase },
@@ -813,6 +815,7 @@ const AdminDashboard = () => {
                 <Route path="/homepage" element={<HomePageManagement />} />
                 <Route path="/about" element={<AboutPageManagement />} />
                 <Route path="/academic" element={<AcademicManagement />} />
+                <Route path="/student-corner" element={<StudentCornerManagement />} />
                 <Route path="/extension" element={<ExtensionManagement />} />
                 <Route path="/infrastructure" element={<InfrastructureStatic />} />
                 <Route path="/incubation" element={<IncubationManagement />} />

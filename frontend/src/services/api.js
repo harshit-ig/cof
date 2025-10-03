@@ -372,5 +372,13 @@ export const extensionAPI = {
   delete: (id) => api.delete(`/extension/${id}`),
 }
 
+export const studentCornerAPI = {
+  getAll: (params) => api.get('/student-corner', { params }),
+  getById: (id) => api.get(`/student-corner/${id}`),
+  create: (data) => api.post('/student-corner', data),
+  update: (id, data) => api.put(`/student-corner/${id}`, data),
+  delete: (id) => api.delete(`/student-corner/${id}`),
+}
+
 export default api
 
