@@ -127,8 +127,22 @@ export const eventsAPI = {
 export const researchAPI = {
   getAll: (params) => api.get('/research', { params }),
   getById: (id) => api.get(`/research/${id}`),
-  create: (data) => api.post('/research', data),
-  update: (id, data) => api.put(`/research/${id}`, data),
+  create: (data) => {
+    // If data is FormData (for file uploads), use uploadApi
+    if (data instanceof FormData) {
+      return uploadApi.post('/research', data);
+    }
+    // Otherwise use regular api
+    return api.post('/research', data);
+  },
+  update: (id, data) => {
+    // If data is FormData (for file uploads), use uploadApi
+    if (data instanceof FormData) {
+      return uploadApi.put(`/research/${id}`, data);
+    }
+    // Otherwise use regular api
+    return api.put(`/research/${id}`, data);
+  },
   delete: (id) => api.delete(`/research/${id}`),
 }
 

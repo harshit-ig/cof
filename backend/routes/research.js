@@ -1,6 +1,34 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const path = require('path');
 const Research = require('../models/Research');
 const { protect, adminOnly } = require('../middleware/auth');
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/documents/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '_' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed!'), false);
+    }
+  },
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  }
+});
 
 const router = express.Router();
 
@@ -55,12 +83,13 @@ router.get('/', async (req, res) => {
 // @desc    Create new research
 // @route   POST /api/research
 // @access  Private (Admin only)
-router.post('/', protect, adminOnly, async (req, res) => {
+router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
   console.log('=== RESEARCH CREATION REQUEST ===');
   console.log('Method:', req.method);
   console.log('URL:', req.url);
   console.log('Headers:', req.headers);
   console.log('Body:', JSON.stringify(req.body, null, 2));
+  console.log('File:', req.file);
   console.log('Admin:', req.admin);
   console.log('=== END REQUEST LOG ===');
   
@@ -69,6 +98,12 @@ router.post('/', protect, adminOnly, async (req, res) => {
       ...req.body,
       createdBy: req.admin._id
     };
+
+    // If PDF file is uploaded, add filename and originalName like FarmerResource
+    if (req.file) {
+      researchData.filename = req.file.filename;
+      researchData.originalName = req.file.originalname;
+    }
 
     const research = await Research.create(researchData);
 
@@ -103,15 +138,144 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', protect, adminOnly, async (req, res) => {
+router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+  console.log('=== RESEARCH UPDATE REQUEST ===');
+  console.log('Method:', req.method);
+  console.log('URL:', req.url);
+  console.log('Params:', req.params);
+  console.log('Body:', JSON.stringify(req.body, null, 2));
+  console.log('Admin:', req.admin);
+  console.log('=== END REQUEST LOG ===');
+  
   try {
-    const research = await Research.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!research) {
-      return res.status(404).json({ success: false, message: 'Research not found' });
+    // Validate ObjectId
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid research ID format'
+      });
     }
-    res.json({ success: true, data: { research } });
+
+    // Clean the data to remove undefined values
+    const cleanData = {};
+    Object.keys(req.body).forEach(key => {
+      if (req.body[key] !== undefined && req.body[key] !== null) {
+        cleanData[key] = req.body[key];
+      }
+    });
+
+    console.log('Cleaned data:', JSON.stringify(cleanData, null, 2));
+
+    // If PDF file is uploaded, add filename and originalName like FarmerResource
+    if (req.file) {
+      cleanData.filename = req.file.filename;
+      cleanData.originalName = req.file.originalname;
+      console.log('PDF file uploaded:', req.file.filename);
+    }
+
+    // Convert string numbers to actual numbers where needed
+    if (cleanData.budget && typeof cleanData.budget === 'string') {
+      cleanData.budget = parseFloat(cleanData.budget) || undefined;
+    }
+
+    // Handle nested objects with proper validation
+    if (cleanData.publicationDetails) {
+      if (cleanData.publicationDetails.year && typeof cleanData.publicationDetails.year === 'string') {
+        cleanData.publicationDetails.year = parseInt(cleanData.publicationDetails.year) || undefined;
+      }
+      if (cleanData.publicationDetails.impactFactor && typeof cleanData.publicationDetails.impactFactor === 'string') {
+        cleanData.publicationDetails.impactFactor = parseFloat(cleanData.publicationDetails.impactFactor) || undefined;
+      }
+    }
+
+    if (cleanData.studentDetails && cleanData.studentDetails.completionYear && typeof cleanData.studentDetails.completionYear === 'string') {
+      cleanData.studentDetails.completionYear = parseInt(cleanData.studentDetails.completionYear) || undefined;
+    }
+
+    console.log('Data after type conversion:', JSON.stringify(cleanData, null, 2));
+
+    // Handle documents separately if they exist
+    let research;
+    if (cleanData.documents && Array.isArray(cleanData.documents)) {
+      // Separate documents from other data
+      const { documents, ...otherData } = cleanData;
+      
+      console.log('Updating with documents separately');
+      console.log('Documents to set:', JSON.stringify(documents, null, 2));
+      console.log('Other data:', JSON.stringify(otherData, null, 2));
+      
+      // First update other fields
+      research = await Research.findByIdAndUpdate(
+        req.params.id, 
+        otherData, 
+        { new: true, runValidators: true }
+      );
+      
+      if (!research) {
+        return res.status(404).json({ 
+          success: false, 
+          message: 'Research not found' 
+        });
+      }
+
+      // Then update documents using direct MongoDB operation
+      await mongoose.connection.db.collection('researches').updateOne(
+        { _id: new mongoose.Types.ObjectId(req.params.id) },
+        { $set: { documents: documents } }
+      );
+
+      // Fetch the final updated document
+      research = await Research.findById(req.params.id);
+    } else {
+      // No documents to update, use regular update
+      research = await Research.findByIdAndUpdate(
+        req.params.id, 
+        cleanData, 
+        { new: true, runValidators: true }
+      );
+    }
+    
+    if (!research) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Research not found' 
+      });
+    }
+    
+    console.log('Research updated successfully:', research._id);
+    res.json({ 
+      success: true, 
+      message: 'Research updated successfully',
+      data: { research } 
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error' });
+    console.error('Update research error:', error);
+    
+    // Handle validation errors specifically
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      console.log('Validation errors:', validationErrors);
+      return res.status(400).json({ 
+        success: false,
+        message: 'Validation failed', 
+        errors: validationErrors,
+        details: error.errors
+      });
+    }
+    
+    // Handle cast errors (like invalid ObjectId references)
+    if (error.name === 'CastError') {
+      console.log('Cast error:', error.message);
+      return res.status(400).json({ 
+        success: false,
+        message: `Invalid ${error.path}: ${error.value}` 
+      });
+    }
+
+    res.status(500).json({ 
+      success: false, 
+      message: error.message || 'Server error updating research'
+    });
   }
 });
 
