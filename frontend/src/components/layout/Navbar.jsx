@@ -264,18 +264,18 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation - Centered */}
-            <div className="hidden lg:flex items-center justify-center flex-1 space-x-1">
+            <div className="hidden lg:flex items-center justify-center flex-1 h-full">
               {navigation.map((item, index) => (
               <div
                 key={item.name}
-                className="relative group"
+                className="relative group h-full flex items-center"
                 onMouseEnter={() => item.dropdown ? handleMouseEnter(index) : null}
                 onMouseLeave={() => item.dropdown ? handleMouseLeave() : null}
               >
                 {item.dropdown ? (
-                  <div className="relative">
+                  <div className="relative h-full flex items-center">
                     <button
-                      className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 flex items-center ${
+                      className={`h-full px-4 text-sm font-medium transition-all duration-200 flex items-center ${
                         isActive(item.href)
                           ? 'text-blue-900 bg-white bg-opacity-90'
                           : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
@@ -324,7 +324,7 @@ const Navbar = () => {
                 ) : (
                   <button
                     onClick={() => handleNavClick(item)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                    className={`h-full px-4 text-sm font-medium transition-all duration-200 flex items-center ${
                       isActive(item.href)
                         ? 'text-blue-900 bg-white bg-opacity-90'
                         : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
