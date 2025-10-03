@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/serve/:type/:filename', (req, res) => {
   try {
     const { type, filename } = req.params;
-    const validTypes = ['images', 'documents', 'faculty', 'news', 'research', 'dean', 'gallery'];
+    const validTypes = ['images', 'documents', 'faculty', 'news', 'research', 'dean', 'gallery', 'incubation'];
     
     if (!validTypes.includes(type)) {
       return res.status(400).json({

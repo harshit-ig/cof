@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Ensure upload directories exist
-const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean', 'uploads/gallery', 'uploads/partners'];
+const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean', 'uploads/gallery', 'uploads/partners', 'uploads/incubation'];
 uploadDirs.forEach(dir => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -31,6 +31,8 @@ const storage = multer.diskStorage({
     // Check URL path first for most specific matching
     if (url.includes('/partners') || finalCategory === 'partners') {
       uploadPath = 'uploads/partners';
+    } else if (url.includes('/incubation') || finalCategory === 'incubation') {
+      uploadPath = 'uploads/incubation';
     } else if (url.includes('/news/upload')) {
       uploadPath = 'uploads/news';
     } else if (url.includes('/gallery') || finalCategory === 'gallery') {

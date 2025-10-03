@@ -44,6 +44,7 @@ import ContentManagement from './ContentManagement'
 import ResourcesManagement from './ResourcesManagement'
 import ExtensionManagement from './ExtensionManagement'
 import InfrastructureStatic from './InfrastructureStatic'
+import IncubationManagement from './IncubationManagement'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -625,6 +626,7 @@ const AdminDashboard = () => {
     { name: 'Academic', href: '/admin/academic', icon: GraduationCap },
     { name: 'Extension', href: '/admin/extension', icon: Target },
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
+    { name: 'Incubation', href: '/admin/incubation', icon: Briefcase },
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Resources', href: '/admin/resources', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
@@ -813,6 +815,7 @@ const AdminDashboard = () => {
                 <Route path="/academic" element={<AcademicManagement />} />
                 <Route path="/extension" element={<ExtensionManagement />} />
                 <Route path="/infrastructure" element={<InfrastructureStatic />} />
+                <Route path="/incubation" element={<IncubationManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/resources" element={<ResourcesManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
