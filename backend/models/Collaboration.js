@@ -1,65 +1,59 @@
 const mongoose = require('mongoose');
 
 const collaborationSchema = new mongoose.Schema({
+  // Section type: 'mou', 'partnership', or 'impact'
+  section: {
+    type: String,
+    enum: ['mou', 'partnership', 'impact'],
+    required: [true, 'Section type is required']
+  },
+  
+  // Common fields
   title: {
     type: String,
-    required: [true, 'Collaboration title is required'],
+    required: [true, 'Title is required'],
     trim: true
-  },
-  partner: {
-    name: {
-      type: String,
-      required: [true, 'Partner name is required']
-    },
-    type: {
-      type: String,
-      enum: ['university', 'research_institute', 'government', 'industry', 'ngo', 'international'],
-      required: [true, 'Partner type is required']
-    },
-    country: {
-      type: String,
-      required: [true, 'Partner country is required']
-    },
-    website: String,
-    logo: String
-  },
-  type: {
-    type: String,
-    enum: ['mou', 'joint_research', 'student_exchange', 'faculty_exchange', 'training', 'consultancy'],
-    required: [true, 'Collaboration type is required']
   },
   description: {
     type: String,
     required: [true, 'Description is required']
   },
+  
+  // For MoU section
+  organization: String,
+  type: String, // Government Agency, Research Council, etc.
+  category: String, // Marketing & Distribution, Research & Education, etc.
+  signedDate: String,
+  duration: String,
   objectives: [String],
   activities: [String],
-  duration: {
-    startDate: {
-      type: Date,
-      required: [true, 'Start date is required']
-    },
-    endDate: Date
-  },
+  outcomes: String,
+  contactPerson: String,
   status: {
     type: String,
-    enum: ['active', 'completed', 'terminated', 'renewed'],
-    default: 'active'
+    enum: ['Active', 'Completed', 'Terminated', 'Renewed'],
+    default: 'Active'
   },
-  coordinator: {
-    type: String,
-    required: [true, 'Coordinator is required']
-  },
-  department: {
-    type: String,
-    required: [true, 'Department is required']
-  },
-  documents: [{
+  
+  // For Partnership section
+  partnerType: String, // Government Departments, Research Institutes, etc.
+  partners: [{
     name: String,
-    url: String,
-    type: String
+    description: String
   }],
-  outcomes: [String],
+  
+  // For Impact section
+  impactType: String, // financial, training, research, infrastructure, student
+  icon: String, // Icon name for display
+  value: String, // The numeric/text value
+  label: String, // The description label
+  color: String, // Color theme for the card
+  
+  // Common fields
+  sortOrder: {
+    type: Number,
+    default: 0
+  },
   isPublished: {
     type: Boolean,
     default: true
@@ -73,7 +67,7 @@ const collaborationSchema = new mongoose.Schema({
 });
 
 // Index for search functionality
-collaborationSchema.index({ title: 'text', 'partner.name': 'text', description: 'text' });
+collaborationSchema.index({ title: 'text', organization: 'text', description: 'text' });
 
 module.exports = mongoose.model('Collaboration', collaborationSchema);
 

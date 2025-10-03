@@ -10,13 +10,13 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 100;
     const skip = (page - 1) * limit;
 
     let query = { isPublished: true };
     
-    if (req.query.type) {
-      query.type = req.query.type;
+    if (req.query.section) {
+      query.section = req.query.section;
     }
     
     if (req.query.status) {
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 
     const collaborations = await Collaboration.find(query)
-      .sort({ 'duration.startDate': -1 })
+      .sort({ sortOrder: 1, createdAt: -1 })
       .skip(skip)
       .limit(limit);
 

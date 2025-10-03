@@ -15,6 +15,7 @@ const StudentCorner = require('../models/StudentCorner');
 
 // Import seed functions
 const { seedStudentCorner } = require('./seedStudentCorner');
+const { seedCollaborations } = require('./seedCollaborations');
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -527,6 +528,9 @@ const seedData = async () => {
 
     // Seed Student Corner data
     await seedStudentCorner();
+
+    // Seed Collaborations data
+    await seedCollaborations();
 
     console.log('\n✅ Database seeded successfully!');
     console.log('\nAdmin Login Credentials:');
