@@ -225,7 +225,8 @@ export const uploadAPI = {
 
     // Get the base URL from environment variable
     const serverHost = import.meta.env.VITE_SERVER_HOST || 'http://localhost:5000/api'
-    const baseURL = serverHost.replace('/api', '')
+    // Remove /api suffix and any trailing slashes
+    const baseURL = serverHost.replace('/api', '').replace(/\/+$/, '')
     
     // Handle files that already have the full path
     if (filename.startsWith('/uploads/')) {
