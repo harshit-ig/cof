@@ -13,7 +13,8 @@ const router = express.Router();
 router.get('/', [
   query('page').optional().isInt({ min: 1 }),
   query('limit').optional().isInt({ min: 1, max: 100 }),
-  query('type').optional().isIn(['news', 'event', 'announcement', 'seminar', 'workshop', 'visit']),
+  // Accept comma-separated or array for type
+  query('type').optional(),
   query('category').optional().isIn(['academic', 'research', 'extension', 'general', 'placement']),
   query('featured').optional().isBoolean(),
   query('search').optional().trim()
@@ -36,7 +37,16 @@ router.get('/', [
     let query = { isPublished: true };
 
     if (req.query.type) {
-      query.type = req.query.type;
+      // Support comma-separated or array for type
+      let types = req.query.type;
+      if (typeof types === 'string' && types.includes(',')) {
+        types = types.split(',').map(t => t.trim()).filter(Boolean);
+      }
+      if (Array.isArray(types)) {
+        query.type = { $in: types };
+      } else {
+        query.type = types;
+      }
     }
 
     if (req.query.category) {
