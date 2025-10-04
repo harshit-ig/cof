@@ -90,8 +90,7 @@ const Navbar = () => {
       dropdown: [
         { name: 'Alumni Directory', href: '/alumni', section: 'directory' },
         { name: 'Alumni Testimonials', href: '/alumni', section: 'testimonials' },
-        { name: 'Alumni Events', href: '/alumni', section: 'events' },
-        { name: 'Alumni Registration', href: '/alumni', section: 'registration' }
+        { name: 'Alumni Events', href: '/alumni', section: 'events' }
       ]
     },
     {

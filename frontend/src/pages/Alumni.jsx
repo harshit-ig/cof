@@ -1,11 +1,64 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Users, Star, Calendar, Award, ExternalLink, Mail, Phone, MapPin, GraduationCap } from 'lucide-react'
+import { Users, Star, Calendar, Award, ExternalLink, Mail, Phone, MapPin, GraduationCap, X } from 'lucide-react'
 import Card from '../components/common/Card'
+import { alumniAPI } from '../services/api'
+import { toast } from 'react-hot-toast'
 
 const Alumni = () => {
   const location = useLocation()
   const hash = location.hash.substring(1)
+
+  const [testimonials, setTestimonials] = useState([])
+  const [events, setEvents] = useState([])
+  const [contacts, setContacts] = useState([])
+  const [stats, setStats] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [registrationData, setRegistrationData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    batch: '',
+    currentOrganization: '',
+    designation: ''
+  })
+
+  useEffect(() => {
+    fetchAlumniData()
+  }, [])
+
+  const fetchAlumniData = async () => {
+    try {
+      setLoading(true)
+      const [testimonialsRes, eventsRes, contactsRes, statsRes] = await Promise.all([
+        alumniAPI.getAll({ section: 'testimonial' }),
+        alumniAPI.getAll({ section: 'event' }),
+        alumniAPI.getAll({ section: 'contact' }),
+        alumniAPI.getAll({ section: 'stats' })
+      ])
+
+      if (testimonialsRes.data.success) {
+        setTestimonials(testimonialsRes.data.data.alumni || [])
+      }
+      if (eventsRes.data.success) {
+        setEvents(eventsRes.data.data.alumni || [])
+      }
+      if (contactsRes.data.success) {
+        setContacts(contactsRes.data.data.alumni || [])
+      }
+      if (statsRes.data.success) {
+        // Sort stats by order field
+        const sortedStats = (statsRes.data.data.alumni || []).sort((a, b) => a.order - b.order)
+        setStats(sortedStats)
+      }
+    } catch (error) {
+      console.error('Error fetching alumni data:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -28,106 +81,57 @@ const Alumni = () => {
     }
   }, [hash])
 
-  // Sample alumni data
-  const testimonials = [
-    {
-      id: 1,
-      name: "Dr. Rajesh Kumar",
-      batch: "2018",
-      position: "Senior Aquaculture Scientist",
-      company: "ICAR-CIFE, Mumbai",
-      image: "/api/placeholder/300/300",
-      testimonial: "The comprehensive education and practical training I received at COF Jabalpur laid the foundation for my successful career in aquaculture research. The faculty's guidance and state-of-the-art facilities prepared me well for the challenges in the field."
-    },
-    {
-      id: 2,
-      name: "Ms. Priya Sharma",
-      batch: "2019",
-      position: "Fish Farm Manager",
-      company: "Blue Revolution Technologies",
-      image: "/api/placeholder/300/300",
-      testimonial: "The hands-on experience with modern aquaculture techniques and business management aspects taught at COF helped me establish my own successful fish farming enterprise. The college truly bridges the gap between academics and industry."
-    },
-    {
-      id: 3,
-      name: "Mr. Amit Singh",
-      batch: "2020",
-      position: "Fishery Extension Officer",
-      company: "Madhya Pradesh Fisheries Department",
-      image: "/api/placeholder/300/300",
-      testimonial: "The extension and outreach programs during my studies gave me valuable insights into rural fishery development. Today, I'm able to help farmers adopt sustainable aquaculture practices and improve their livelihoods."
-    }
-  ]
+  const handleRegisterClick = (event) => {
+    setSelectedEvent(event)
+    setShowRegistrationModal(true)
+  }
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "Annual Alumni Meet 2025",
-      date: "December 15, 2025",
-      time: "10:00 AM - 6:00 PM",
-      venue: "COF Campus, Jabalpur",
-      description: "Join us for our annual gathering to reconnect with classmates, faculty, and contribute to the college's growth.",
-      registrationOpen: true
-    },
-    {
-      id: 2,
-      title: "Industry Expert Talk Series",
-      date: "November 20, 2025",
-      time: "2:00 PM - 4:00 PM",
-      venue: "Virtual Event",
-      description: "Alumni sharing industry insights and career guidance with current students.",
-      registrationOpen: true
-    },
-    {
-      id: 3,
-      title: "Alumni Achievement Awards Ceremony",
-      date: "January 10, 2026",
-      time: "5:00 PM - 8:00 PM",
-      venue: "COF Auditorium, Jabalpur",
-      description: "Recognizing outstanding achievements of our alumni in various fields of fisheries and aquaculture.",
-      registrationOpen: false
+  const handleRegistrationSubmit = async (e) => {
+    e.preventDefault()
+    
+    try {
+      // Here you would typically send the registration data to your backend
+      // For now, we'll just show a success message
+      toast.success(`Successfully registered for ${selectedEvent.title}!`)
+      
+      // Reset form
+      setRegistrationData({
+        name: '',
+        email: '',
+        phone: '',
+        batch: '',
+        currentOrganization: '',
+        designation: ''
+      })
+      setShowRegistrationModal(false)
+      setSelectedEvent(null)
+      
+      // You can add API call here:
+      // await alumniAPI.registerForEvent(selectedEvent._id, registrationData)
+      
+    } catch (error) {
+      toast.error('Registration failed. Please try again.')
+      console.error('Registration error:', error)
     }
-  ]
-
-  const [registrationForm, setRegistrationForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    batchYear: '',
-    degree: '',
-    currentPosition: '',
-    organization: '',
-    workLocation: '',
-    linkedIn: '',
-    achievements: '',
-    message: ''
-  })
+  }
 
   const handleInputChange = (e) => {
-    setRegistrationForm({
-      ...registrationForm,
+    setRegistrationData({
+      ...registrationData,
       [e.target.name]: e.target.value
     })
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log('Alumni registration:', registrationForm)
-    alert('Thank you for registering! We will contact you soon.')
-    // Reset form
-    setRegistrationForm({
+  const closeModal = () => {
+    setShowRegistrationModal(false)
+    setSelectedEvent(null)
+    setRegistrationData({
       name: '',
       email: '',
       phone: '',
-      batchYear: '',
-      degree: '',
-      currentPosition: '',
-      organization: '',
-      workLocation: '',
-      linkedIn: '',
-      achievements: '',
-      message: ''
+      batch: '',
+      currentOrganization: '',
+      designation: ''
     })
   }
 
@@ -143,26 +147,6 @@ const Alumni = () => {
             <p className="text-xl text-blue-100 mb-8">
               Connecting Generations of Fishery Professionals
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <button 
-                onClick={() => scrollToSection('testimonials')}
-                className="btn-primary bg-white text-blue-600 hover:bg-gray-100"
-              >
-                View Testimonials
-              </button>
-              <button 
-                onClick={() => scrollToSection('events')}
-                className="btn-outline border-white text-white hover:bg-white hover:text-blue-600"
-              >
-                Upcoming Events
-              </button>
-              <button 
-                onClick={() => scrollToSection('registration')}
-                className="btn-secondary bg-blue-700 hover:bg-blue-800"
-              >
-                Alumni Registration
-              </button>
-            </div>
           </div>
         </div>
       </section>
@@ -170,36 +154,35 @@ const Alumni = () => {
       {/* Alumni Stats */}
       <section className="section-padding bg-white">
         <div className="container-max">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <GraduationCap className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">500+</h3>
-              <p className="text-gray-600">Alumni Worldwide</p>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Award className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">50+</h3>
-              <p className="text-gray-600">Industry Leaders</p>
+          ) : stats.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No statistics available at the moment.</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">25+</h3>
-              <p className="text-gray-600">Countries</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {stats.map((stat, index) => {
+                // Get icon component
+                const IconComponent = stat.icon === 'GraduationCap' ? GraduationCap :
+                                     stat.icon === 'Award' ? Award :
+                                     stat.icon === 'Users' ? Users :
+                                     stat.icon === 'Star' ? Star : GraduationCap
+                
+                return (
+                  <div key={stat._id || index} className="text-center">
+                    <div className={`w-16 h-16 bg-${stat.color || 'blue'}-100 rounded-full flex items-center justify-center mx-auto mb-4`}>
+                      <IconComponent className={`w-8 h-8 text-${stat.color || 'blue'}-600`} />
+                    </div>
+                    <h3 className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</h3>
+                    <p className="text-gray-600">{stat.label}</p>
+                  </div>
+                )
+              })}
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Star className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-2">95%</h3>
-              <p className="text-gray-600">Employment Rate</p>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -214,29 +197,41 @@ const Alumni = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <Card key={testimonial.id} className="p-6">
-                <div className="text-center mb-4">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="text-lg font-semibold text-gray-900">{testimonial.name}</h3>
-                  <p className="text-blue-600 text-sm">Batch of {testimonial.batch}</p>
-                  <p className="text-gray-600 text-sm">{testimonial.position}</p>
-                  <p className="text-gray-500 text-xs">{testimonial.company}</p>
-                </div>
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700 text-sm italic">"{testimonial.testimonial}"</p>
-              </Card>
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No testimonials available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial) => (
+                <Card key={testimonial._id} className="p-6">
+                  <div className="text-center mb-4">
+                    {testimonial.image && (
+                      <img
+                        src={testimonial.image}
+                        alt={testimonial.name}
+                        className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+                      />
+                    )}
+                    <h3 className="text-lg font-semibold text-gray-900">{testimonial.name}</h3>
+                    <p className="text-blue-600 text-sm">Batch of {testimonial.batch}</p>
+                    <p className="text-gray-600 text-sm">{testimonial.position}</p>
+                    <p className="text-gray-500 text-xs">{testimonial.company}</p>
+                  </div>
+                  <div className="flex justify-center mb-4">
+                    {[...Array(testimonial.rating || 5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 text-sm italic">"{testimonial.testimonial || testimonial.description}"</p>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -251,197 +246,53 @@ const Alumni = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map((event) => (
-              <Card key={event.id} className="p-6">
-                <div className="flex items-center mb-4">
-                  <Calendar className="w-6 h-6 text-blue-500 mr-2" />
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
-                    <p className="text-blue-600 text-sm">{event.date}</p>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            </div>
+          ) : events.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No events scheduled at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {events.map((event) => (
+                <Card key={event._id} className="p-6">
+                  <div className="flex items-center mb-4">
+                    <Calendar className="w-6 h-6 text-blue-500 mr-2" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">{event.title}</h3>
+                      <p className="text-blue-600 text-sm">{event.date}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-2 mb-4">
-                  <p className="text-gray-600 text-sm flex items-center">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    {event.time}
-                  </p>
-                  <p className="text-gray-600 text-sm flex items-center">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    {event.venue}
-                  </p>
-                </div>
-                <p className="text-gray-700 text-sm mb-4">{event.description}</p>
-                <button 
-                  className={`w-full py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                    event.registrationOpen 
-                      ? 'bg-blue-500 text-white hover:bg-blue-600' 
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                  disabled={!event.registrationOpen}
-                >
-                  {event.registrationOpen ? 'Register Now' : 'Registration Closed'}
-                </button>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Alumni Registration */}
-      <section id="registration" className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Alumni Registration</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Join our alumni network and stay connected with your alma mater
-            </p>
-          </div>
-          
-          <div className="max-w-4xl mx-auto">
-            <Card className="p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="form-label">Full Name *</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={registrationForm.name}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                  <div className="space-y-2 mb-4">
+                    {event.time && (
+                      <p className="text-gray-600 text-sm flex items-center">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        {event.time}
+                      </p>
+                    )}
+                    <p className="text-gray-600 text-sm flex items-center">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      {event.venue}
+                    </p>
                   </div>
-                  <div>
-                    <label className="form-label">Email Address *</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={registrationForm.email}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="form-label">Phone Number</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={registrationForm.phone}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-                  <div>
-                    <label className="form-label">Batch Year *</label>
-                    <input
-                      type="text"
-                      name="batchYear"
-                      value={registrationForm.batchYear}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="e.g., 2020"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="form-label">Degree/Program *</label>
-                    <select
-                      name="degree"
-                      value={registrationForm.degree}
-                      onChange={handleInputChange}
-                      className="form-select"
-                      required
-                    >
-                      <option value="">Select Degree</option>
-                      <option value="B.F.Sc">B.F.Sc (Bachelor of Fishery Science)</option>
-                      <option value="M.F.Sc">M.F.Sc (Master of Fishery Science)</option>
-                      <option value="Ph.D">Ph.D in Fishery Science</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="form-label">Current Position</label>
-                    <input
-                      type="text"
-                      name="currentPosition"
-                      value={registrationForm.currentPosition}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-                  <div>
-                    <label className="form-label">Organization/Company</label>
-                    <input
-                      type="text"
-                      name="organization"
-                      value={registrationForm.organization}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
-                  </div>
-                  <div>
-                    <label className="form-label">Work Location</label>
-                    <input
-                      type="text"
-                      name="workLocation"
-                      value={registrationForm.workLocation}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      placeholder="City, State, Country"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="form-label">LinkedIn Profile</label>
-                  <input
-                    type="url"
-                    name="linkedIn"
-                    value={registrationForm.linkedIn}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="https://linkedin.com/in/your-profile"
-                  />
-                </div>
-                
-                <div>
-                  <label className="form-label">Professional Achievements</label>
-                  <textarea
-                    name="achievements"
-                    value={registrationForm.achievements}
-                    onChange={handleInputChange}
-                    className="form-textarea"
-                    rows="3"
-                    placeholder="Share your notable achievements, awards, or recognitions..."
-                  ></textarea>
-                </div>
-                
-                <div>
-                  <label className="form-label">Message to College</label>
-                  <textarea
-                    name="message"
-                    value={registrationForm.message}
-                    onChange={handleInputChange}
-                    className="form-textarea"
-                    rows="3"
-                    placeholder="Any message, feedback, or suggestions for the college..."
-                  ></textarea>
-                </div>
-                
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    className="btn-primary px-8 py-3"
+                  <p className="text-gray-700 text-sm mb-4">{event.description}</p>
+                  <button 
+                    onClick={() => handleRegisterClick(event)}
+                    className={`w-full py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                      event.registrationOpen 
+                        ? 'bg-blue-500 text-white hover:bg-blue-600' 
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                    disabled={!event.registrationOpen}
                   >
-                    Register as Alumni
+                    {event.registrationOpen ? 'Register Now' : 'Registration Closed'}
                   </button>
-                </div>
-              </form>
-            </Card>
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -453,30 +304,191 @@ const Alumni = () => {
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="p-6 text-center">
-              <Mail className="w-8 h-8 text-blue-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Email</h3>
-              <p className="text-gray-600">alumni@cofjabalpur.edu.in</p>
-            </Card>
-            
-            <Card className="p-6 text-center">
-              <Phone className="w-8 h-8 text-blue-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone</h3>
-              <p className="text-gray-600">+91 761 2681239</p>
-            </Card>
-            
-            <Card className="p-6 text-center">
-              <MapPin className="w-8 h-8 text-blue-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Address</h3>
-              <p className="text-gray-600">
-                College of Fishery Science<br />
-                Jabalpur, Madhya Pradesh
-              </p>
-            </Card>
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            </div>
+          ) : contacts.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">No contact information available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {contacts.map((contact) => {
+                // Determine icon based on contact type
+                const ContactIcon = contact.contactType === 'email' ? Mail :
+                                   contact.contactType === 'phone' ? Phone :
+                                   contact.contactType === 'address' ? MapPin : Mail
+                
+                // Get the contact value based on type
+                const contactValue = contact.email || contact.phone || contact.address
+                
+                return (
+                  <Card key={contact._id} className="p-6 text-center">
+                    <ContactIcon className="w-8 h-8 text-blue-500 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{contact.title}</h3>
+                    <p className="text-gray-600">
+                      {contact.contactType === 'address' ? (
+                        <>{contactValue?.split(',').map((line, i) => <React.Fragment key={i}>{line.trim()}<br /></React.Fragment>)}</>
+                      ) : (
+                        contactValue
+                      )}
+                    </p>
+                    {contact.description && (
+                      <p className="text-sm text-gray-500 mt-2">{contact.description}</p>
+                    )}
+                  </Card>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
+
+      {/* Event Registration Modal */}
+      {showRegistrationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">Register for Event</h2>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {selectedEvent && (
+                <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{selectedEvent.title}</h3>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      {selectedEvent.date} at {selectedEvent.time}
+                    </p>
+                    <p className="flex items-center">
+                      <MapPin className="w-4 h-4 mr-2" />
+                      {selectedEvent.venue}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleRegistrationSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={registrationData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={registrationData.email}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={registrationData.phone}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="+91 98765 43210"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Batch Year <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="batch"
+                    value={registrationData.batch}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="e.g., 2018"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Organization <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="currentOrganization"
+                    value={registrationData.currentOrganization}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Your current company/organization"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Designation <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="designation"
+                    value={registrationData.designation}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Your current position"
+                  />
+                </div>
+
+                <div className="flex gap-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                  >
+                    Submit Registration
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

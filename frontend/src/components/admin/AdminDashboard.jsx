@@ -22,7 +22,8 @@ import {
   Home,
   GraduationCap,
   Target,
-  Network
+  Network,
+  UserCheck
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -40,6 +41,7 @@ import PartnersManagement from './PartnersManagement'
 import AboutPageManagement from './AboutPageManagement'
 import StudentCornerManagement from './StudentCornerManagement'
 import CollaborationsManagement from './CollaborationsManagement'
+import AlumniManagement from './AlumniManagement'
 
 import HomePageManagement from './HomePageManagement'
 import AcademicManagement from './AcademicManagement'
@@ -631,6 +633,7 @@ const AdminDashboard = () => {
     { name: 'Infrastructure', href: '/admin/infrastructure', icon: Building },
     { name: 'Incubation', href: '/admin/incubation', icon: Briefcase },
     { name: 'Collaborations', href: '/admin/collaborations', icon: Network },
+    { name: 'Alumni', href: '/admin/alumni', icon: UserCheck },
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Farmer Corner', href: '/admin/resources', icon: Tractor },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
@@ -822,6 +825,7 @@ const AdminDashboard = () => {
                 <Route path="/infrastructure" element={<InfrastructureStatic />} />
                 <Route path="/incubation" element={<IncubationManagement />} />
                 <Route path="/collaborations" element={<CollaborationsManagement />} />
+                <Route path="/alumni" element={<AlumniManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/resources" element={<FarmersResourceManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />

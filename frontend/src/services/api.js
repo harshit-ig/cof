@@ -162,6 +162,14 @@ export const collaborationsAPI = {
   delete: (id) => api.delete(`/collaborations/${id}`),
 }
 
+export const alumniAPI = {
+  getAll: (params) => api.get('/alumni', { params }),
+  getById: (id) => api.get(`/alumni/${id}`),
+  create: (data) => api.post('/alumni', data),
+  update: (id, data) => api.put(`/alumni/${id}`, data),
+  delete: (id) => api.delete(`/alumni/${id}`),
+}
+
 export const contentAPI = {
   getBySection: (section, params) => api.get(`/content/${section}`, { params }),
   getByKey: (key) => api.get(`/content/key/${key}`),
