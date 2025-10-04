@@ -168,6 +168,7 @@ export const alumniAPI = {
   create: (data) => api.post('/alumni', data),
   update: (id, data) => api.put(`/alumni/${id}`, data),
   delete: (id) => api.delete(`/alumni/${id}`),
+  registerForEvent: (data) => api.post('/alumni/register-event', data),
 }
 
 export const contentAPI = {

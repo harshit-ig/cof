@@ -163,7 +163,6 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
           <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0; color: #374151;">Contact Information</h3>
             <p style="margin: 5px 0;">📧 Email: ${adminEmail}</p>
-            <p style="margin: 5px 0;">📞 Phone: +91-XXXXXXXXXX</p>
           </div>
           
           <p style="margin-top: 30px;">

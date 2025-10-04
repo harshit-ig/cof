@@ -1,4 +1,5 @@
 const express = require('express');
+const nodemailer = require('nodemailer');
 const Alumni = require('../models/Alumni');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -106,6 +107,215 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
   } catch (error) {
     console.error('Delete alumni error:', error);
     res.status(500).json({ success: false, message: 'Server error deleting alumni item' });
+  }
+});
+
+// @desc    Register for alumni event
+// @route   POST /api/alumni/register-event
+// @access  Public
+router.post('/register-event', async (req, res) => {
+  try {
+    const {
+      eventId,
+      eventTitle,
+      name,
+      email,
+      phone,
+      batch,
+      currentOrganization,
+      designation
+    } = req.body;
+
+    // Validate required fields
+    if (!eventId || !eventTitle || !name || !email || !phone || !batch || !currentOrganization || !designation) {
+      return res.status(400).json({
+        success: false,
+        message: 'All fields are required'
+      });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please enter a valid email address'
+      });
+    }
+
+    // Create email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    // Admin notification email
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Alumni Event Registration - ${eventTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f9fafb; padding: 30px 20px; border-radius: 0 0 10px 10px; }
+            .info-row { margin: 15px 0; padding: 12px; background: white; border-left: 4px solid #3B82F6; border-radius: 4px; }
+            .label { font-weight: bold; color: #3B82F6; margin-bottom: 5px; }
+            .value { color: #4b5563; }
+            .event-box { background: #dbeafe; padding: 15px; border-radius: 8px; margin: 15px 0; border: 2px solid #3B82F6; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="margin: 0; font-size: 28px;">🎓 New Event Registration</h1>
+              <p style="margin: 10px 0 0 0; opacity: 0.9;">Alumni Network - COF Jabalpur</p>
+            </div>
+            <div class="content">
+              <div class="event-box">
+                <h2 style="color: #1E40AF; margin: 0 0 10px 0;">Event: ${eventTitle}</h2>
+              </div>
+              
+              <p style="font-size: 16px; color: #4b5563; margin-bottom: 20px;">An alumnus has registered for the event:</p>
+              
+              <div class="info-row">
+                <div class="label">👤 Name</div>
+                <div class="value">${name}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">📧 Email</div>
+                <div class="value">${email}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">📱 Phone</div>
+                <div class="value">${phone}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">🎓 Batch Year</div>
+                <div class="value">${batch}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">🏢 Current Organization</div>
+                <div class="value">${currentOrganization}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">💼 Designation</div>
+                <div class="value">${designation}</div>
+              </div>
+
+              <div class="footer">
+                <p><strong>Action Required:</strong> Please acknowledge this registration and add the attendee to the event list.</p>
+                <p style="margin-top: 10px;">This is an automated notification from the Alumni Event Registration system.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    // Applicant confirmation email
+    const applicantMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Event Registration Confirmed - ${eventTitle}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f9fafb; padding: 30px 20px; border-radius: 0 0 10px 10px; }
+            .success-icon { font-size: 60px; text-align: center; margin: 20px 0; }
+            .event-details { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #3B82F6; }
+            .info-box { background: #dbeafe; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="margin: 0; font-size: 28px;">✓ Registration Confirmed!</h1>
+              <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fishery, Jabalpur</p>
+            </div>
+            <div class="content">
+              <div class="success-icon">🎉</div>
+              
+              <h2 style="color: #3B82F6; text-align: center; margin-bottom: 20px;">Thank You, ${name}!</h2>
+              
+              <p style="text-align: center; font-size: 16px; color: #4b5563; margin-bottom: 30px;">
+                Your registration for the alumni event has been confirmed. We're excited to see you there!
+              </p>
+
+              <div class="event-details">
+                <h3 style="color: #1E40AF; margin-top: 0;">📋 Event Details</h3>
+                <p><strong>Event:</strong> ${eventTitle}</p>
+              </div>
+
+              <div class="info-box">
+                <h3 style="color: #1E40AF; margin-top: 0;">👤 Your Registration Details</h3>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Batch:</strong> ${batch}</p>
+                <p><strong>Organization:</strong> ${currentOrganization}</p>
+                <p><strong>Designation:</strong> ${designation}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+              </div>
+
+              <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <strong style="color: #92400e;">📞 Important</strong><br>
+                <span style="color: #78350f;">Please keep this confirmation email for your records. You may be asked to present it at the event check-in.</span>
+              </div>
+
+              <div style="background: #dcfce7; border-left: 4px solid #10b981; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <strong style="color: #065f46;">✉️ Contact Us</strong><br>
+                <span style="color: #047857;">If you have any questions or need to update your registration, please contact us at <a href="mailto:${process.env.ADMIN_EMAIL}" style="color: #3B82F6;">${process.env.ADMIN_EMAIL}</a></span>
+              </div>
+
+              <div class="footer">
+                <p><strong>College of Fishery, Jabalpur</strong></p>
+                <p>Alumni Network - Connecting Generations</p>
+                <p style="margin-top: 15px; font-size: 12px;">This is an automated confirmation email. Please do not reply to this message.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    // Send both emails
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(applicantMailOptions)
+    ]);
+
+    res.json({
+      success: true,
+      message: 'Registration submitted successfully! Check your email for confirmation.'
+    });
+
+  } catch (error) {
+    console.error('Alumni event registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit registration. Please try again later.'
+    });
   }
 });
 

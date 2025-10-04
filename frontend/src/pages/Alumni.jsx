@@ -14,6 +14,7 @@ const Alumni = () => {
   const [contacts, setContacts] = useState([])
   const [stats, setStats] = useState([])
   const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const [showRegistrationModal, setShowRegistrationModal] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState(null)
   const [registrationData, setRegistrationData] = useState({
@@ -89,29 +90,58 @@ const Alumni = () => {
   const handleRegistrationSubmit = async (e) => {
     e.preventDefault()
     
+    // Validation
+    if (!registrationData.name || !registrationData.email || !registrationData.phone || 
+        !registrationData.batch || !registrationData.currentOrganization || !registrationData.designation) {
+      toast.error('Please fill in all required fields')
+      return
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(registrationData.email)) {
+      toast.error('Please enter a valid email address')
+      return
+    }
+
+    // Phone validation (basic)
+    if (registrationData.phone.replace(/\D/g, '').length < 10) {
+      toast.error('Please enter a valid phone number')
+      return
+    }
+
+    setSubmitting(true)
+    
     try {
-      // Here you would typically send the registration data to your backend
-      // For now, we'll just show a success message
-      toast.success(`Successfully registered for ${selectedEvent.title}!`)
-      
-      // Reset form
-      setRegistrationData({
-        name: '',
-        email: '',
-        phone: '',
-        batch: '',
-        currentOrganization: '',
-        designation: ''
+      const response = await alumniAPI.registerForEvent({
+        eventId: selectedEvent._id,
+        eventTitle: selectedEvent.title,
+        ...registrationData
       })
-      setShowRegistrationModal(false)
-      setSelectedEvent(null)
-      
-      // You can add API call here:
-      // await alumniAPI.registerForEvent(selectedEvent._id, registrationData)
+
+      if (response.data.success) {
+        toast.success(response.data.message || 'Registration successful! Check your email for confirmation.')
+        
+        // Reset form
+        setRegistrationData({
+          name: '',
+          email: '',
+          phone: '',
+          batch: '',
+          currentOrganization: '',
+          designation: ''
+        })
+        setShowRegistrationModal(false)
+        setSelectedEvent(null)
+      } else {
+        toast.error(response.data.message || 'Registration failed. Please try again.')
+      }
       
     } catch (error) {
-      toast.error('Registration failed. Please try again.')
       console.error('Registration error:', error)
+      toast.error(error.response?.data?.message || 'Registration failed. Please try again.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -473,15 +503,24 @@ const Alumni = () => {
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                    disabled={submitting}
+                    className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    disabled={submitting}
+                    className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
-                    Submit Registration
+                    {submitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit Registration'
+                    )}
                   </button>
                 </div>
               </form>
