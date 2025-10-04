@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
 const { body, validationResult, query } = require('express-validator');
 const NewsEvent = require('../models/NewsEvent');
@@ -50,12 +51,13 @@ router.get('/', [
       query.$text = { $search: req.query.search };
     }
 
-    // Get news/events with pagination
+    // Get news/events with pagination - use lean() to avoid validation issues with attachments
     const newsEvents = await NewsEvent.find(query)
       .populate('createdBy', 'username')
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .lean();
 
     const total = await NewsEvent.countDocuments(query);
 
@@ -81,13 +83,36 @@ router.get('/', [
   }
 });
 
-// @desc    Get single news/event
-// @route   GET /api/news/:id
+// @desc    Get single news/event by ID or slug
+// @route   GET /api/news/:identifier
 // @access  Public
-router.get('/:id', async (req, res) => {
+router.get('/:identifier', async (req, res) => {
   try {
-    const newsEvent = await NewsEvent.findById(req.params.id)
-      .populate('createdBy', 'username');
+    console.log('=== GET NEWS/EVENT BY IDENTIFIER ===');
+    console.log('Identifier:', req.params.identifier);
+    
+    const identifier = req.params.identifier;
+    let newsEvent;
+
+    // Check if identifier is a valid MongoDB ObjectId
+    if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
+      console.log('Finding by ID');
+      // Find by ID - use lean() to get plain object and avoid validation issues
+      newsEvent = await NewsEvent.findById(identifier)
+        .populate('createdBy', 'username')
+        .lean();
+    } else {
+      console.log('Finding by slug');
+      // Find by slug - use lean() to get plain object and avoid validation issues
+      newsEvent = await NewsEvent.findOne({ slug: identifier })
+        .populate('createdBy', 'username')
+        .lean();
+    }
+
+    console.log('NewsEvent found:', newsEvent ? newsEvent._id : 'NOT FOUND');
+    if (newsEvent) {
+      console.log('NewsEvent attachments:', newsEvent.attachments);
+    }
 
     if (!newsEvent) {
       return res.status(404).json({
@@ -103,9 +128,14 @@ router.get('/:id', async (req, res) => {
       });
     }
 
-    // Increment views
-    newsEvent.views += 1;
-    await newsEvent.save();
+    // Increment views using direct MongoDB operation
+    await mongoose.connection.db.collection('newsevents').updateOne(
+      { _id: new mongoose.Types.ObjectId(newsEvent._id) },
+      { $inc: { views: 1 } }
+    );
+
+    // Manually increment the views in the current object for response
+    newsEvent.views = (newsEvent.views || 0) + 1;
 
     res.json({
       success: true,
@@ -116,15 +146,11 @@ router.get('/:id', async (req, res) => {
 
   } catch (error) {
     console.error('Get news/event error:', error);
-    if (error.name === 'CastError') {
-      return res.status(400).json({
-        success: false,
-        message: 'Invalid news/event ID'
-      });
-    }
+    console.error('Error stack:', error.stack);
     res.status(500).json({
       success: false,
-      message: 'Server error fetching news/event'
+      message: 'Server error fetching news/event',
+      error: error.message
     });
   }
 });
@@ -143,7 +169,11 @@ router.post('/', protect, adminOnly, [
   body('organizer').optional().trim()
 ], async (req, res) => {
   try {
-    console.log('Creating news/event - Request body:', req.body);
+    console.log('=== CREATE NEWS/EVENT DEBUG ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    console.log('req.body.attachments type:', typeof req.body.attachments);
+    console.log('req.body.attachments is array?:', Array.isArray(req.body.attachments));
+    console.log('req.body.attachments value:', req.body.attachments);
     console.log('Request user/admin:', req.admin ? req.admin._id : 'No admin found');
 
     const errors = validationResult(req);
@@ -210,6 +240,9 @@ router.put('/:id', protect, adminOnly, [
   body('organizer').optional().trim()
 ], async (req, res) => {
   try {
+    console.log('=== UPDATE NEWS/EVENT ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -219,9 +252,15 @@ router.put('/:id', protect, adminOnly, [
       });
     }
 
-    const newsEvent = await NewsEvent.findByIdAndUpdate(
+    // Separate images and attachments from other data
+    const { images, attachments, ...otherData } = req.body;
+    
+    let newsEvent;
+    
+    // First update other fields
+    newsEvent = await NewsEvent.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      otherData,
       { new: true, runValidators: true }
     );
 
@@ -231,6 +270,27 @@ router.put('/:id', protect, adminOnly, [
         message: 'News/Event not found'
       });
     }
+
+    // Update images and attachments using direct MongoDB operation if they exist
+    const updateFields = {};
+    if (images !== undefined) {
+      updateFields.images = images;
+    }
+    if (attachments !== undefined) {
+      updateFields.attachments = attachments;
+    }
+
+    if (Object.keys(updateFields).length > 0) {
+      await mongoose.connection.db.collection('newsevents').updateOne(
+        { _id: new mongoose.Types.ObjectId(req.params.id) },
+        { $set: updateFields }
+      );
+      
+      // Fetch the final updated document
+      newsEvent = await NewsEvent.findById(req.params.id);
+    }
+
+    console.log('News/Event updated successfully:', newsEvent._id);
 
     res.json({
       success: true,
@@ -315,6 +375,69 @@ router.post('/upload', protect, adminOnly, (req, res) => {
       res.status(500).json({
         success: false,
         message: 'Server error uploading image'
+      });
+    }
+  });
+});
+
+// @desc    Upload attachment (PDF/Document) for news/event
+// @route   POST /api/news/upload-attachment
+// @access  Private (Admin only)
+router.post('/upload-attachment', protect, adminOnly, (req, res) => {
+  console.log('News attachment upload route hit');
+  
+  // Use multer middleware for document uploads
+  const uploadSingle = require('../middleware/upload').upload.single('file');
+  
+  uploadSingle(req, res, (err) => {
+    if (err) {
+      console.error('Multer error:', err);
+      return res.status(400).json({
+        success: false,
+        message: err.message || 'File upload error'
+      });
+    }
+
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: 'No file uploaded'
+        });
+      }
+
+      // Validate file type - only allow PDF and documents
+      const allowedTypes = ['application/pdf', 'application/msword', 
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      
+      if (!allowedTypes.includes(req.file.mimetype)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Only PDF and DOC/DOCX files are allowed'
+        });
+      }
+
+      const attachmentUrl = `/api/upload/serve/documents/${req.file.filename}`;
+
+      console.log('Attachment uploaded successfully:', req.file.filename);
+      
+      res.json({
+        success: true,
+        message: 'Attachment uploaded successfully',
+        data: {
+          filename: req.file.filename,
+          originalName: req.file.originalname,
+          url: attachmentUrl,
+          size: req.file.size,
+          type: req.file.mimetype
+        }
+      });
+
+    } catch (error) {
+      console.error('News attachment upload error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error uploading attachment'
       });
     }
   });

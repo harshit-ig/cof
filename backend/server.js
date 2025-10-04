@@ -69,7 +69,6 @@ app.use('/api/news', require('./routes/news'));
 app.use('/api/faculty', require('./routes/faculty'));
 app.use('/api/research', require('./routes/research'));
 app.use('/api/infrastructure', require('./routes/infrastructure'));
-app.use('/api/events', require('./routes/events'));
 app.use('/api/collaborations', require('./routes/collaborations'));
 app.use('/api/content', require('./routes/content'));
 app.use('/api/gallery', require('./routes/gallery'));

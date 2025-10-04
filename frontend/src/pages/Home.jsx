@@ -4,7 +4,7 @@ import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, Boo
 import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
 import LogoSlider from '../components/common/LogoSlider'
-import { newsAPI, eventsAPI, contentAPI, uploadAPI } from '../services/api'
+import { newsAPI, contentAPI, uploadAPI } from '../services/api'
 
 const Home = () => {
   const [latestNews, setLatestNews] = useState([])
@@ -38,7 +38,7 @@ const Home = () => {
       // Fetch essential data only with proper error handling
       const promises = [
         newsAPI.getAll({ limit: 4, featured: true }).catch(err => ({ error: true, message: err.message })),
-        eventsAPI.getUpcoming({ limit: 3 }).catch(err => ({ error: true, message: err.message })),
+        newsAPI.getAll({ limit: 3, type: 'event,seminar,workshop' }).catch(err => ({ error: true, message: err.message })),
         contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message })),
         contentAPI.getByKey('important-notices').catch(err => ({ error: true, message: err.message }))
       ]
@@ -52,7 +52,7 @@ const Home = () => {
 
       // Process events data with safety checks
       if (eventsResponse && !eventsResponse.error && eventsResponse.data?.success) {
-        setUpcomingEvents(Array.isArray(eventsResponse.data.data?.events) ? eventsResponse.data.data.events : [])
+        setUpcomingEvents(Array.isArray(eventsResponse.data.data?.newsEvents) ? eventsResponse.data.data.newsEvents : [])
       }
 
       // Process dean's welcome message with safety checks
@@ -209,7 +209,7 @@ const Home = () => {
                     <h3 className="text-xl font-semibold text-gray-900">Latest Updates & Announcements</h3>
                   </div>
                   <Link
-                    to="/news"
+                    to="/news-and-events"
                     className="text-green-700 hover:text-green-800 text-sm font-medium"
                   >
                     View All
@@ -231,13 +231,13 @@ const Home = () => {
                       latestNews.map((news, index) => (
                         <div key={index} className="border-l-4 border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
                           <h4 className="font-medium text-gray-900 mb-1">
-                            <Link to={`/news/${news.id}`} className="hover:text-green-700">
+                            <Link to={`/news-and-events/${news.slug || news._id}`} className="hover:text-green-700">
                               {news.title}
                             </Link>
                           </h4>
-                          <p className="text-sm text-gray-600 mb-1">{news.summary}</p>
+                          <p className="text-sm text-gray-600 mb-1">{news.excerpt}</p>
                           <p className="text-xs text-gray-500">
-                            {new Date(news.date).toLocaleDateString('en-US', { 
+                            {new Date(news.createdAt || news.eventDate).toLocaleDateString('en-US', { 
                               year: 'numeric', 
                               month: 'long', 
                               day: 'numeric' 

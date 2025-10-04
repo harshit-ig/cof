@@ -19,10 +19,8 @@ import Extension from './pages/Extension'
 import Infrastructure from './pages/Infrastructure'
 import InfrastructureDetail from './pages/InfrastructureDetail'
 import Incubation from './pages/Incubation'
-import News from './pages/News'
-import NewsDetail from './pages/NewsDetail'
-import NewsEvents from './pages/NewsEvents_Dynamic'
-import EventDetail from './pages/EventDetail'
+import NewsAndEvents from './pages/NewsAndEvents'
+import NewsAndEventsDetail from './pages/NewsAndEventsDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
 import Gallery from './pages/Gallery'
@@ -89,10 +87,8 @@ function App() {
                   <Route path="/incubation" element={<Incubation />} />
                   <Route path="/student-corner" element={<StudentCorner />} />
                   <Route path="/placement" element={<Placement />} />
-                  <Route path="/news" element={<News />} />
-                  <Route path="/news/:id" element={<NewsDetail />} />
-                  <Route path="/events" element={<NewsEvents />} />
-                  <Route path="/events/:id" element={<EventDetail />} />
+                  <Route path="/news-and-events" element={<NewsAndEvents />} />
+                  <Route path="/news-and-events/:id" element={<NewsAndEventsDetail />} />
                   <Route path="/collaborations" element={<Collaborations />} />
                   <Route path="/farmers-corner" element={<FarmersCorner />} />
                   <Route path="/alumni" element={<Alumni />} />

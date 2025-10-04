@@ -29,8 +29,6 @@ import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
 
 import ProgramsManagement from './ProgramsManagement'
-import NewsManagement from './NewsManagement'
-import EventsManagement from './EventsManagement'
 import FacultyManagement from './FacultyManagement'
 import WelcomeMessageManagement from './WelcomeMessageManagement'
 import GalleryManagement from './GalleryManagement'

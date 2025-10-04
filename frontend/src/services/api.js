@@ -107,21 +107,12 @@ export const newsAPI = {
       },
     })
   },
-}
-
-export const eventsAPI = {
-  getAll: (params) => api.get('/events', { params }),
-  getUpcoming: (params) => api.get('/events/upcoming', { params }),
-  getById: (id) => api.get(`/events/${id}`),
-  create: (data) => {
-    console.log('eventsAPI.create called with:', data)
-    return api.post('/events', data)
+  uploadAttachment: (file) => {
+    console.log('newsAPI.uploadAttachment called with file:', file.name, file.size, 'bytes')
+    const formData = new FormData()
+    formData.append('file', file)
+    return uploadApi.post('/news/upload-attachment', formData)
   },
-  update: (id, data) => {
-    console.log('eventsAPI.update called with:', { id, data })
-    return api.put(`/events/${id}`, data)
-  },
-  delete: (id) => api.delete(`/events/${id}`),
 }
 
 export const researchAPI = {

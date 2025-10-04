@@ -108,15 +108,42 @@ body {
   }
   
   .form-input {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white;
+  }
+  
+  /* Specific styling for date inputs for better visibility */
+  .form-input[type="date"],
+  .form-input[type="datetime-local"],
+  .form-input[type="time"] {
+    @apply min-h-[42px] cursor-pointer;
+  }
+  
+  /* Make date input icon visible */
+  .form-input[type="date"]::-webkit-calendar-picker-indicator,
+  .form-input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+  .form-input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 1;
+    padding: 4px;
+    filter: invert(0.5) brightness(0.8);
+    width: 20px;
+    height: 20px;
+  }
+  
+  .form-input[type="date"]::-webkit-calendar-picker-indicator:hover,
+  .form-input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover,
+  .form-input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(0.3) brightness(0.6);
+    background-color: rgba(99, 102, 241, 0.1);
+    border-radius: 4px;
   }
   
   .form-textarea {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px];
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white;
   }
   
   .form-select {
-    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 bg-white;
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 bg-white appearance-none;
   }
   
   .form-label {

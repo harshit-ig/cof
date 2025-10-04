@@ -95,13 +95,16 @@ const Navbar = () => {
     },
     {
       name: 'News & Events',
-      href: '/events', // Changed to match the primary dropdown item
+      href: '/news-and-events',
       dropdown: [
-        { name: 'Seminars & Conferences', href: '/events', section: 'seminars' },
-        { name: 'Workshops and Training', href: '/events', section: 'workshops' },
-        { name: 'Field Visits & Exposure Trips', href: '/events', section: 'visits' },
-        { name: 'Photo Gallery', href: '/gallery', section: 'gallery' },
-        { name: 'Press Releases', href: '/news', section: 'press-releases' }
+        { name: 'All News & Events', href: '/news-and-events' },
+        { name: 'News Articles', href: '/news-and-events?type=news' },
+        { name: 'Announcements', href: '/news-and-events?type=announcement' },
+        { name: 'Seminars', href: '/news-and-events?type=seminar' },
+        { name: 'Workshops', href: '/news-and-events?type=workshop' },
+        { name: 'Events', href: '/news-and-events?type=event' },
+        { name: 'Field Visits', href: '/news-and-events?type=visit' },
+        { name: 'Photo Gallery', href: '/gallery' }
       ]
     },
     { name: 'Contact Us', href: '/contact' }
@@ -115,9 +118,9 @@ const Navbar = () => {
     if (href === '/academics') {
       return location.pathname === '/academics'
     }
-    // Special handling for events route
-    if (href === '/events') {
-      return location.pathname === '/events' || location.pathname === '/news'
+    // Special handling for news-and-events route
+    if (href === '/news-and-events') {
+      return location.pathname === '/news-and-events' || location.pathname.startsWith('/news-and-events/')
     }
     return location.pathname.startsWith(href)
   }

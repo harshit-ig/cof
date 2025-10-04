@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { FileText, Image, Newspaper, Calendar } from 'lucide-react'
+import { FileText, Image, Newspaper } from 'lucide-react'
 import GalleryManagement from './GalleryManagement'
-import NewsManagement from './NewsManagement'
-import EventsManagement from './EventsManagement'
+import NewsAndEventsManagement from './NewsAndEventsManagement'
 
 const ContentManagement = () => {
   const location = useLocation()
@@ -25,16 +24,10 @@ const ContentManagement = () => {
       description: 'Photo gallery and media'
     },
     { 
-      id: 'news', 
-      name: 'News', 
+      id: 'news-events', 
+      name: 'News & Events', 
       icon: Newspaper,
-      description: 'News articles and updates'
-    },
-    { 
-      id: 'events', 
-      name: 'Events', 
-      icon: Calendar,
-      description: 'Events and announcements'
+      description: 'News articles, announcements, and events'
     }
   ]
 
@@ -47,10 +40,8 @@ const ContentManagement = () => {
     switch (activeTab) {
       case 'gallery':
         return <GalleryManagement />
-      case 'news':
-        return <NewsManagement />
-      case 'events':
-        return <EventsManagement />
+      case 'news-events':
+        return <NewsAndEventsManagement />
       default:
         return <GalleryManagement />
     }
