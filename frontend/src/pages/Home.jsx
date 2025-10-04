@@ -127,7 +127,7 @@ const Home = () => {
     },
     {
       title: 'Academic Programs',
-      href: '/programs',
+      href: '/academics',
       icon: Award,
       description: 'Explore our undergraduate and postgraduate programs'
     },

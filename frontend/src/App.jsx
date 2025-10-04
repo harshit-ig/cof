@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import useDocumentTitle from './hooks/useDocumentTitle'
 
@@ -10,7 +10,6 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 // Public Pages
 import Home from './pages/Home'
 import About from './pages/About'
-import Programs from './pages/Programs_Dynamic'
 import ProgramDetail from './pages/ProgramDetail'
 import Faculty from './pages/Faculty_Dynamic'
 import FacultyDetail from './pages/FacultyDetail'
@@ -26,7 +25,6 @@ import NewsEvents from './pages/NewsEvents_Dynamic'
 import EventDetail from './pages/EventDetail'
 import Collaborations from './pages/Collaborations'
 import Contact from './pages/Contact'
-import Departments from './pages/Departments'
 import Gallery from './pages/Gallery'
 import NotFound from './pages/NotFound'
 import StudentCorner from './pages/StudentCorner'
@@ -50,6 +48,22 @@ const DocumentTitleUpdater = () => {
   return null
 }
 
+// Layout wrapper component to conditionally show Navbar and Footer
+const AppLayout = ({ children }) => {
+  const location = useLocation()
+  const isAdminRoute = location.pathname.startsWith('/admin')
+  
+  return (
+    <>
+      {!isAdminRoute && <Navbar />}
+      <main className="flex-grow">
+        {children}
+      </main>
+      {!isAdminRoute && <Footer />}
+    </>
+  )
+}
+
 function App() {
   return (
     <ErrorBoundary>
@@ -58,54 +72,48 @@ function App() {
           <DocumentTitleUpdater />
           <Router>
             <div className="min-h-screen bg-gray-50 flex flex-col">
-              <Navbar />
-              
-              <main className="flex-grow">
-              <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/academics" element={<Academics />} />
-              <Route path="/programs" element={<Programs />} />
-              <Route path="/programs/:slug" element={<ProgramDetail />} />
-              <Route path="/departments" element={<Departments />} />
-              <Route path="/faculty" element={<Faculty />} />
-              <Route path="/faculty/:id" element={<FacultyDetail />} />
-              <Route path="/research" element={<Research />} />
-              <Route path="/research/:id" element={<ResearchDetail />} />
-              <Route path="/extension" element={<Extension />} />
-              <Route path="/infrastructure" element={<Infrastructure />} />
-              <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
-              <Route path="/incubation" element={<Incubation />} />
-              <Route path="/student-corner" element={<StudentCorner />} />
-              <Route path="/placement" element={<Placement />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/news/:id" element={<NewsDetail />} />
-              <Route path="/events" element={<NewsEvents />} />
-              <Route path="/events/:id" element={<EventDetail />} />
-              <Route path="/collaborations" element={<Collaborations />} />
-              <Route path="/farmers-corner" element={<FarmersCorner />} />
-              <Route path="/alumni" element={<Alumni />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/contact" element={<Contact />} />
-              
-              {/* Admin Routes */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route 
-                path="/admin/*" 
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* 404 Route */}
-            <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          
-          <Footer />
+              <AppLayout>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/academics" element={<Academics />} />
+                  <Route path="/programs/:slug" element={<ProgramDetail />} />
+                  <Route path="/faculty" element={<Faculty />} />
+                  <Route path="/faculty/:id" element={<FacultyDetail />} />
+                  <Route path="/research" element={<Research />} />
+                  <Route path="/research/:id" element={<ResearchDetail />} />
+                  <Route path="/extension" element={<Extension />} />
+                  <Route path="/infrastructure" element={<Infrastructure />} />
+                  <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
+                  <Route path="/incubation" element={<Incubation />} />
+                  <Route path="/student-corner" element={<StudentCorner />} />
+                  <Route path="/placement" element={<Placement />} />
+                  <Route path="/news" element={<News />} />
+                  <Route path="/news/:id" element={<NewsDetail />} />
+                  <Route path="/events" element={<NewsEvents />} />
+                  <Route path="/events/:id" element={<EventDetail />} />
+                  <Route path="/collaborations" element={<Collaborations />} />
+                  <Route path="/farmers-corner" element={<FarmersCorner />} />
+                  <Route path="/alumni" element={<Alumni />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/contact" element={<Contact />} />
+                  
+                  {/* Admin Routes */}
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route 
+                    path="/admin/*" 
+                    element={
+                      <ProtectedRoute>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  
+                  {/* 404 Route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
           
           {/* Toast Notifications */}
           <Toaster

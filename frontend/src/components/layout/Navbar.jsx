@@ -30,12 +30,11 @@ const Navbar = () => {
     },
     {
       name: 'Academics',
-      href: '/programs', 
+      href: '/academics', 
       dropdown: [
-        { name: 'Programs Offered', href: '/programs', section: 'programs' },
+        { name: 'Programs Offered', href: '/academics', section: 'programs' },
         { name: 'Academic Calendar', href: '/academics', section: 'calendar' },
-        { name: 'Departments', href: '/departments', section: 'departments' },
-        { name: 'Course Curriculum', href: '/academics', section: 'curriculum' },
+        { name: 'Departments', href: '/academics', section: 'departments' },
         { name: 'Faculty Directory', href: '/faculty', section: 'faculty' },
         { name: 'Academic Regulations', href: '/academics', section: 'regulations' }
       ]
@@ -113,9 +112,9 @@ const Navbar = () => {
     if (href === '/') {
       return location.pathname === href
     }
-    // Special handling for academics route - now points to programs
-    if (href === '/programs') {
-      return location.pathname === '/programs' || location.pathname === '/academics'
+    // Special handling for academics route
+    if (href === '/academics') {
+      return location.pathname === '/academics'
     }
     // Special handling for events route
     if (href === '/events') {

@@ -4,6 +4,7 @@ import { Building, Users, FileText, Lightbulb, TrendingUp, Target, Award, Calend
 import Card from '../components/common/Card'
 import { toast } from 'react-hot-toast'
 import { incubationAPI, uploadAPI } from '../services/api'
+import IncubationModal from '../components/common/IncubationModal'
 
 const Incubation = () => {
   const location = useLocation()
@@ -14,6 +15,7 @@ const Incubation = () => {
     'management-committee': []
   })
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // Fetch incubation data
   useEffect(() => {
@@ -270,8 +272,8 @@ const Incubation = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => scrollToSection('registration')}
-                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-300 flex items-center justify-center space-x-2"
+                onClick={() => setIsModalOpen(true)}
+                className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
               >
                 <Send className="w-5 h-5" />
                 <span>Register for Program</span>
@@ -460,6 +462,12 @@ const Incubation = () => {
           </div>
         </div>
       </section>
+
+      {/* Incubation Modal */}
+      <IncubationModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   )
 }

@@ -19,6 +19,7 @@ import {
 import Card from '../components/common/Card'
 import Section, { SectionHeader } from '../components/common/Section'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import ApplicationModal from '../components/common/ApplicationModal'
 import { programsAPI } from '../services/api'
 
 const ProgramDetail = () => {
@@ -26,6 +27,7 @@ const ProgramDetail = () => {
   const [program, setProgram] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
 
   useEffect(() => {
     fetchProgramDetails()
@@ -72,7 +74,7 @@ const ProgramDetail = () => {
           <div className="text-center py-12">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">Program Not Found</h1>
             <p className="text-gray-600 mb-6">{error || "The program you're looking for doesn't exist."}</p>
-            <Link to="/programs" className="btn-primary">
+            <Link to="/academics" className="btn-primary">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Programs
             </Link>
@@ -92,7 +94,7 @@ const ProgramDetail = () => {
       {/* Hero Section */}
       <Section background="bg-blue-600">
         <div className="text-center text-white">
-          <Link to="/programs" className="inline-flex items-center text-blue-200 hover:text-white mb-4">
+          <Link to="/academics" className="inline-flex items-center text-blue-200 hover:text-white mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to All Programs
           </Link>
@@ -180,8 +182,14 @@ const ProgramDetail = () => {
                   <Mail className="w-4 h-4 text-blue-600 mr-3" />
                   <span className="text-gray-700">admission@cof.co.in</span>
                 </div>
-                <Link to="/contact" className="w-full btn-primary text-center">
-                  Contact Admission Office
+                <button
+                  onClick={() => setIsApplicationModalOpen(true)}
+                  className="w-full btn-primary text-center"
+                >
+                  Apply Now
+                </button>
+                <Link to="/contact" className="w-full btn-outline text-center">
+                  Contact Us
                 </Link>
               </div>
             </Card>
@@ -358,15 +366,26 @@ const ProgramDetail = () => {
             Join our prestigious program and embark on a rewarding career in fishery science.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/student-corner" className="btn-secondary">
-              Start Application
-            </Link>
+            <button
+              onClick={() => setIsApplicationModalOpen(true)}
+              className="btn-secondary"
+            >
+              Apply Now
+            </button>
             <Link to="/contact" className="btn-outline-white">
               Contact Admissions
             </Link>
           </div>
         </div>
       </Section>
+
+      {/* Application Modal */}
+      <ApplicationModal
+        isOpen={isApplicationModalOpen}
+        onClose={() => setIsApplicationModalOpen(false)}
+        programName={program?.name || program?.title}
+        programId={program?._id}
+      />
     </div>
   )
 }

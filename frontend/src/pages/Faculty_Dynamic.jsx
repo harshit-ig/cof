@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Award, BookOpen, Mail, Phone, MapPin, Globe, ChevronRight, Filter, Search, Building, Microscope, Fish, FlaskConical, Calculator, Leaf, Globe2, Shield, GraduationCap, Clock } from 'lucide-react'
 import Card from '../components/common/Card'
+import JobApplicationModal from '../components/common/JobApplicationModal'
 import { facultyAPI, uploadAPI } from '../services/api'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 
@@ -13,6 +14,8 @@ const Faculty = () => {
   const [facultyMembers, setFacultyMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false)
+  const [selectedPositionType, setSelectedPositionType] = useState('faculty')
 
   // Generate departments dynamically from faculty data
   const getDepartments = () => {
@@ -456,23 +459,36 @@ const Faculty = () => {
             and supporting staff to join our growing institution.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
+            <button
+              onClick={() => {
+                setSelectedPositionType('faculty')
+                setIsJobModalOpen(true)
+              }}
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
             >
               Faculty Positions
               <ChevronRight className="h-5 w-5 ml-2" />
-            </Link>
-            <Link
-              to="/contact"
+            </button>
+            <button
+              onClick={() => {
+                setSelectedPositionType('staff')
+                setIsJobModalOpen(true)
+              }}
               className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors inline-flex items-center justify-center"
             >
               Staff Positions
               <ChevronRight className="h-5 w-5 ml-2" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Job Application Modal */}
+      <JobApplicationModal
+        isOpen={isJobModalOpen}
+        onClose={() => setIsJobModalOpen(false)}
+        positionType={selectedPositionType}
+      />
     </div>
   )
 }

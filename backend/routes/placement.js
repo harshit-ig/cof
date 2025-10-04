@@ -53,15 +53,10 @@ const upload = multer({
 // Configure nodemailer
 const createTransporter = () => {
   return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: process.env.SMTP_PORT || 587,
-    secure: false, // true for 465, false for other ports
+    service: 'gmail',
     auth: {
-      user: process.env.SMTP_USER, // Your email
-      pass: process.env.SMTP_PASS  // Your app password
-    },
-    tls: {
-      rejectUnauthorized: false
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
     }
   })
 }
@@ -220,6 +215,135 @@ const createEmailTemplate = (type, formData) => {
   }
 }
 
+// Applicant confirmation email templates
+const createApplicantEmailTemplate = (type, formData) => {
+  const commonHeader = `
+    <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+      <div style="background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%); padding: 30px; text-align: center; color: white;">
+        <h1 style="margin: 0; font-size: 28px;">✓ Application Received!</h1>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">College of Fishery, Jabalpur</p>
+      </div>
+      <div style="padding: 30px; background: white;">
+  `
+
+  const commonFooter = `
+        <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 20px 0;">
+          <strong style="color: #92400e;">📞 Need Help?</strong><br>
+          <span style="color: #78350f;">If you have any questions, contact us at <a href="mailto:${process.env.ADMIN_EMAIL}" style="color: #3B82F6;">${process.env.ADMIN_EMAIL}</a></span>
+        </div>
+      </div>
+      <div style="background: #f8f9fa; padding: 20px; text-align: center; font-size: 14px; color: #666;">
+        <p style="margin: 0;"><strong>College of Fishery, Jabalpur</strong></p>
+        <p style="margin: 5px 0 0 0;">Building careers in fisheries and aquaculture</p>
+        <p style="margin: 10px 0 0 0; font-size: 12px;">This is an automated confirmation email.</p>
+      </div>
+    </div>
+  `
+
+  let content = ''
+  let subject = ''
+  let typeLabel = ''
+  let color = ''
+
+  switch (type) {
+    case 'join-us':
+      subject = 'Job Application Received - College of Fishery'
+      typeLabel = 'Job Application'
+      color = '#3B82F6'
+      content = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+          <h2 style="color: ${color}; margin: 0;">Thank You, ${formData.name}!</h2>
+        </div>
+        <p style="text-align: center; font-size: 16px; color: #4b5563; margin-bottom: 30px;">
+          We have successfully received your job application. We appreciate your interest in joining our team!
+        </p>
+        <div style="background: #f0f9ff; border-left: 4px solid ${color}; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="color: ${color}; margin-top: 0;">📋 Application Summary</h3>
+          <p><strong>Position Applied:</strong> ${formData.position}</p>
+          <p><strong>Experience:</strong> ${formData.experience || 'Not specified'}</p>
+          <p><strong>Email:</strong> ${formData.email}</p>
+          <p><strong>Phone:</strong> ${formData.phone}</p>
+        </div>
+      `
+      break
+
+    case 'careers':
+      subject = 'Career Application Received - College of Fishery'
+      typeLabel = 'Career Application'
+      color = '#10B981'
+      content = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+          <h2 style="color: ${color}; margin: 0;">Thank You, ${formData.name}!</h2>
+        </div>
+        <p style="text-align: center; font-size: 16px; color: #4b5563; margin-bottom: 30px;">
+          We have successfully received your career application. We're excited about the possibility of you joining our team!
+        </p>
+        <div style="background: #f0fdf4; border-left: 4px solid ${color}; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="color: ${color}; margin-top: 0;">📋 Application Summary</h3>
+          <p><strong>Preferred Department:</strong> ${formData.department}</p>
+          <p><strong>Experience:</strong> ${formData.yearsExperience}</p>
+          <p><strong>Current Position:</strong> ${formData.currentPosition || 'Not specified'}</p>
+          <p><strong>Email:</strong> ${formData.email}</p>
+          <p><strong>Phone:</strong> ${formData.phone}</p>
+        </div>
+      `
+      break
+
+    case 'internship':
+      subject = 'Internship Application Received - College of Fishery'
+      typeLabel = 'Internship Application'
+      color = '#8B5CF6'
+      content = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+          <h2 style="color: ${color}; margin: 0;">Thank You, ${formData.name}!</h2>
+        </div>
+        <p style="text-align: center; font-size: 16px; color: #4b5563; margin-bottom: 30px;">
+          We have successfully received your internship application. We're thrilled about your interest in learning with us!
+        </p>
+        <div style="background: #faf5ff; border-left: 4px solid ${color}; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+          <h3 style="color: ${color}; margin-top: 0;">📋 Application Summary</h3>
+          <p><strong>College/University:</strong> ${formData.college}</p>
+          <p><strong>Course:</strong> ${formData.course}</p>
+          <p><strong>Current Year:</strong> ${formData.year}</p>
+          <p><strong>Duration:</strong> ${formData.duration}</p>
+          <p><strong>Email:</strong> ${formData.email}</p>
+          <p><strong>Phone:</strong> ${formData.phone}</p>
+        </div>
+      `
+      break
+  }
+
+  const nextSteps = `
+    <div style="background: white; padding: 20px; border: 2px solid #e5e7eb; border-radius: 8px; margin-bottom: 20px;">
+      <h3 style="color: #374151; margin-top: 0;">🚀 What Happens Next?</h3>
+      <div style="padding: 12px; margin: 10px 0; background: #f3f4f6; border-radius: 6px; border-left: 4px solid ${color};">
+        <strong>1. Review Period (3-5 Days)</strong><br>
+        Our HR team will carefully review your application and qualifications.
+      </div>
+      <div style="padding: 12px; margin: 10px 0; background: #f3f4f6; border-radius: 6px; border-left: 4px solid ${color};">
+        <strong>2. Shortlisting</strong><br>
+        Qualified candidates will be shortlisted based on requirements.
+      </div>
+      <div style="padding: 12px; margin: 10px 0; background: #f3f4f6; border-radius: 6px; border-left: 4px solid ${color};">
+        <strong>3. Interview Invitation</strong><br>
+        Shortlisted candidates will be contacted for an interview.
+      </div>
+      <div style="padding: 12px; margin: 10px 0; background: #f3f4f6; border-radius: 6px; border-left: 4px solid ${color};">
+        <strong>4. Final Decision</strong><br>
+        You'll be notified about the outcome via email or phone.
+      </div>
+    </div>
+  `
+
+  return {
+    subject,
+    html: commonHeader + content + nextSteps + commonFooter
+  }
+}
+
 // POST route for form submission
 router.post('/submit', upload.single('resume'), async (req, res) => {
   try {
@@ -267,18 +391,19 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
 
     // Create email template
     console.log('Creating email template for type:', type)
-    const emailTemplate = createEmailTemplate(type, req.body)
+    const adminEmailTemplate = createEmailTemplate(type, req.body)
+    const applicantEmailTemplate = createApplicantEmailTemplate(type, req.body)
     
     // Create transporter
     console.log('Creating email transporter...')
     const transporter = createTransporter()
 
-    // Email options
-    const mailOptions = {
-      from: process.env.SMTP_FROM || process.env.SMTP_USER,
-      to: process.env.HR_EMAIL || 'hr@fisherycollege.edu',
-      subject: emailTemplate.subject,
-      html: emailTemplate.html,
+    // Admin email options
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: adminEmailTemplate.subject,
+      html: adminEmailTemplate.html,
       attachments: [
         {
           filename: `Resume_${req.body.name.replace(/\s+/g, '_')}_${Date.now()}${path.extname(req.file.originalname)}`,
@@ -287,10 +412,21 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
       ]
     }
 
-    console.log('Sending email to:', mailOptions.to)
-    // Send email
-    await transporter.sendMail(mailOptions)
-    console.log('Email sent successfully')
+    // Applicant confirmation email options
+    const applicantMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: req.body.email,
+      subject: applicantEmailTemplate.subject,
+      html: applicantEmailTemplate.html
+    }
+
+    console.log('Sending emails to HR and applicant...')
+    // Send both emails
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(applicantMailOptions)
+    ])
+    console.log('Emails sent successfully')
 
     // Optionally, you can also save the application to a database here
     // For now, we'll just send the email
@@ -299,8 +435,8 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
     // fs.unlinkSync(req.file.path)
 
     res.status(200).json({
-      message: 'Application submitted successfully! We will get back to you soon.',
-      applicationId: `APP-${Date.now()}`
+      success: true,
+      message: 'Application submitted successfully! Check your email for confirmation.'
     })
 
   } catch (error) {

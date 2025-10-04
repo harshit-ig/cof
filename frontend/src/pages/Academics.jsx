@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { BookOpen, Calendar, Building, FileText, Users, Award, GraduationCap, Clock, ChevronRight } from 'lucide-react'
 import Card from '../components/common/Card'
 import LoadingSpinner from '../components/common/LoadingSpinner'
+import ApplicationModal from '../components/common/ApplicationModal'
 import { programsAPI, academicsAPI } from '../services/api'
 
 const Academics = () => {
@@ -12,6 +13,8 @@ const Academics = () => {
   const [academicsContent, setAcademicsContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
+  const [selectedProgram, setSelectedProgram] = useState({ name: '', id: '' })
 
   // Fetch programs and academics content from API
   useEffect(() => {
@@ -134,10 +137,18 @@ const Academics = () => {
     }
   }
 
+  const handleApplyClick = (program) => {
+    setSelectedProgram({
+      name: program.name || program.title,
+      id: program._id
+    })
+    setIsApplicationModalOpen(true)
+  }
+
   // Scroll to section when hash changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (hash) {
-      setTimeout(() => scrollToSection(hash), 100)
+      setTimeout(() => scrollToSection(hash), 300)
     }
   }, [hash])
 
@@ -266,12 +277,12 @@ const Academics = () => {
                           >
                             View Details
                           </Link>
-                          <Link
-                            to="/contact"
-                            className="flex-1 border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors text-center"
+                          <button
+                            onClick={() => handleApplyClick(program)}
+                            className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
                           >
                             Apply
-                          </Link>
+                          </button>
                         </div>
                       </Card>
                     ))}
@@ -282,7 +293,7 @@ const Academics = () => {
               {/* View All Programs Button */}
               <div className="text-center mt-8">
                 <Link
-                  to="/programs"
+                  to="/academics#programs"
                   className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   View All Programs
@@ -390,6 +401,14 @@ const Academics = () => {
           </div>
         </section>
       )}
+
+      {/* Application Modal */}
+      <ApplicationModal
+        isOpen={isApplicationModalOpen}
+        onClose={() => setIsApplicationModalOpen(false)}
+        programName={selectedProgram.name}
+        programId={selectedProgram.id}
+      />
     </div>
   )
 }

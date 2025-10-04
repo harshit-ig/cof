@@ -380,5 +380,21 @@ export const studentCornerAPI = {
   delete: (id) => api.delete(`/student-corner/${id}`),
 }
 
+export const applicationAPI = {
+  submit: (formData) => uploadApi.post('/application/submit', formData, {
+    headers: {
+      'X-Upload-Category': 'resumes',
+    },
+  }),
+}
+
+export const jobApplicationAPI = {
+  submit: (formData) => uploadApi.post('/job-application/submit', formData, {
+    headers: {
+      'X-Upload-Category': 'resumes',
+    },
+  }),
+}
+
 export default api
 

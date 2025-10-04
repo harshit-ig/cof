@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const nodemailer = require('nodemailer');
 const Incubation = require('../models/Incubation');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -10,6 +11,8 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (file.fieldname === 'image') {
       cb(null, 'uploads/images/');
+    } else if (file.fieldname === 'businessPlan') {
+      cb(null, 'uploads/incubation/');
     } else {
       cb(null, 'uploads/documents/');
     }
@@ -330,6 +333,242 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error deleting incubation item'
+    });
+  }
+});
+
+// @desc    Submit incubation program registration
+// @route   POST /api/incubation/register
+// @access  Public
+router.post('/register', upload.single('businessPlan'), async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      phone,
+      organization,
+      businessIdea,
+      stage,
+      fundingRequired,
+      message
+    } = req.body;
+
+    // Create email transporter
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    // Prepare business plan attachment if provided
+    const attachments = [];
+    if (req.file) {
+      attachments.push({
+        filename: req.file.originalname,
+        path: req.file.path
+      });
+    }
+
+    // Email to admin
+    const adminMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Incubation Program Registration - ${name}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f9fafb; padding: 30px 20px; border-radius: 0 0 10px 10px; }
+            .info-row { margin: 15px 0; padding: 12px; background: white; border-left: 4px solid #7c3aed; border-radius: 4px; }
+            .label { font-weight: bold; color: #7c3aed; margin-bottom: 5px; }
+            .value { color: #4b5563; }
+            .idea-box { background: white; padding: 15px; border-radius: 8px; margin: 15px 0; border: 2px solid #e5e7eb; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+            .badge { display: inline-block; background: #ddd6fe; color: #5b21b6; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-top: 5px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="margin: 0; font-size: 28px;">💡 New Incubation Registration</h1>
+              <p style="margin: 10px 0 0 0; opacity: 0.9;">Fisheries Incubation Program</p>
+            </div>
+            <div class="content">
+              <p style="font-size: 16px; color: #4b5563;">A new applicant has registered for the incubation program:</p>
+              
+              <div class="info-row">
+                <div class="label">👤 Applicant Name</div>
+                <div class="value">${name}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">📧 Email Address</div>
+                <div class="value">${email}</div>
+              </div>
+
+              <div class="info-row">
+                <div class="label">📱 Phone Number</div>
+                <div class="value">${phone}</div>
+              </div>
+
+              ${organization ? `
+              <div class="info-row">
+                <div class="label">🏢 Organization</div>
+                <div class="value">${organization}</div>
+              </div>
+              ` : ''}
+
+              <div class="idea-box">
+                <div class="label" style="margin-bottom: 10px;">💡 Business Idea/Concept</div>
+                <div class="value" style="white-space: pre-wrap;">${businessIdea}</div>
+              </div>
+
+              ${stage ? `
+              <div class="info-row">
+                <div class="label">📊 Business Stage</div>
+                <div class="value">
+                  ${stage.charAt(0).toUpperCase() + stage.slice(1)} Stage
+                  <span class="badge">${stage}</span>
+                </div>
+              </div>
+              ` : ''}
+
+              ${fundingRequired ? `
+              <div class="info-row">
+                <div class="label">💰 Funding Required</div>
+                <div class="value">${fundingRequired}</div>
+              </div>
+              ` : ''}
+
+              ${message ? `
+              <div class="idea-box">
+                <div class="label" style="margin-bottom: 10px;">📝 Additional Information</div>
+                <div class="value" style="white-space: pre-wrap;">${message}</div>
+              </div>
+              ` : ''}
+
+              ${req.file ? `
+              <div class="info-row">
+                <div class="label">📎 Business Plan Attached</div>
+                <div class="value">✓ ${req.file.originalname}</div>
+              </div>
+              ` : ''}
+
+              <div class="footer">
+                <p><strong>Action Required:</strong> Please review this application and contact the applicant within 3-5 working days.</p>
+                <p style="margin-top: 10px;">This is an automated notification from the COF Incubation Program registration system.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+      attachments
+    };
+
+    // Email to applicant (confirmation)
+    const applicantMailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Incubation Program Registration Received',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+            .header { background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 10px 10px 0 0; }
+            .content { background: #f9fafb; padding: 30px 20px; border-radius: 0 0 10px 10px; }
+            .success-icon { font-size: 60px; text-align: center; margin: 20px 0; }
+            .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border: 2px solid #7c3aed; }
+            .next-steps { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; }
+            .step { padding: 12px; margin: 10px 0; background: #f3f4f6; border-radius: 6px; border-left: 4px solid #7c3aed; }
+            .footer { text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1 style="margin: 0; font-size: 28px;">✓ Registration Confirmed!</h1>
+              <p style="margin: 10px 0 0 0; opacity: 0.9;">Fisheries Incubation Program</p>
+            </div>
+            <div class="content">
+              <div class="success-icon">🎉</div>
+              
+              <h2 style="color: #7c3aed; text-align: center; margin-bottom: 20px;">Thank You, ${name}!</h2>
+              
+              <p style="text-align: center; font-size: 16px; color: #4b5563;">
+                We have successfully received your incubation program registration. Your innovative idea in fisheries/aquaculture has the potential to make a real impact!
+              </p>
+
+              <div class="info-box">
+                <h3 style="color: #7c3aed; margin-top: 0;">📋 Registration Summary</h3>
+                <p><strong>Business Idea:</strong> ${businessIdea.substring(0, 100)}${businessIdea.length > 100 ? '...' : ''}</p>
+                ${stage ? `<p><strong>Stage:</strong> ${stage.charAt(0).toUpperCase() + stage.slice(1)}</p>` : ''}
+                ${fundingRequired ? `<p><strong>Funding Required:</strong> ${fundingRequired}</p>` : ''}
+                ${req.file ? `<p><strong>Business Plan:</strong> ✓ Attached</p>` : ''}
+              </div>
+
+              <div class="next-steps">
+                <h3 style="color: #7c3aed; margin-top: 0;">🚀 What Happens Next?</h3>
+                <div class="step">
+                  <strong>1. Review Period (3-5 Days)</strong><br>
+                  Our team will carefully review your application and business concept.
+                </div>
+                <div class="step">
+                  <strong>2. Initial Contact</strong><br>
+                  We'll reach out via email or phone to discuss your idea further.
+                </div>
+                <div class="step">
+                  <strong>3. Evaluation Meeting</strong><br>
+                  If shortlisted, we'll schedule a meeting to explore collaboration opportunities.
+                </div>
+                <div class="step">
+                  <strong>4. Onboarding</strong><br>
+                  Upon selection, we'll guide you through our incubation program.
+                </div>
+              </div>
+
+              <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                <strong style="color: #92400e;">📞 Need Help?</strong><br>
+                <span style="color: #78350f;">If you have any questions, feel free to contact us at <a href="mailto:${process.env.ADMIN_EMAIL}" style="color: #7c3aed;">${process.env.ADMIN_EMAIL}</a></span>
+              </div>
+
+              <div class="footer">
+                <p><strong>College of Fisheries</strong></p>
+                <p>Empowering Innovation in Fisheries & Aquaculture</p>
+                <p style="margin-top: 15px; font-size: 12px;">This is an automated confirmation email. Please do not reply to this message.</p>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    // Send both emails
+    await Promise.all([
+      transporter.sendMail(adminMailOptions),
+      transporter.sendMail(applicantMailOptions)
+    ]);
+
+    res.json({
+      success: true,
+      message: 'Registration submitted successfully! Check your email for confirmation.'
+    });
+
+  } catch (error) {
+    console.error('Incubation registration error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to submit registration. Please try again later.'
     });
   }
 });

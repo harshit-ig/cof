@@ -420,33 +420,6 @@ const Extension = () => {
           </div>
         </div>
       </section>
-
-      {/* Call to Action */}
-      <section className="section-padding bg-blue-500 text-white">
-        <div className="container-max text-center">
-          <h2 className="text-3xl font-bold mb-4">Join Our Extension Programs</h2>
-          <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-            Be part of our comprehensive extension and outreach initiatives. Get trained, 
-            grow your income, and contribute to sustainable aquaculture development.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="btn-accent"
-            >
-              Register for Programs
-            </Link>
-            
-            <Link
-              to="/faculty"
-              className="btn-outline border-white text-white hover:bg-white hover:text-blue-500"
-            >
-              Meet Extension Team
-            </Link>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

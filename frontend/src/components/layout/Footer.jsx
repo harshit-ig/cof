@@ -17,8 +17,8 @@ const Footer = () => {
 
   const quickLinks = [
     { name: 'About CoF', href: '/about' },
-    { name: 'Academic Programmes', href: '/programs' },
-    { name: 'Departments', href: '/departments' },
+    { name: 'Academic Programmes', href: '/academics' },
+    { name: 'Departments', href: '/academics#departments' },
     { name: 'Faculty', href: '/faculty' },
     { name: 'Research Projects', href: '/research' },
     { name: 'Contact Us', href: '/contact' }
