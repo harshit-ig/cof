@@ -258,7 +258,7 @@ const Navbar = () => {
             {/* Right Logo */}
             <div className="flex-shrink-0 flex items-center h-full pr-1 sm:pr-2 md:pr-6">
               <img
-                src="/cof_logo.png"
+                src="/university.png"
                 alt="COF Logo Right"
                 className="h-12 xs:h-16 sm:h-20 md:h-28 lg:h-36 xl:h-40 w-auto object-contain"
                 style={{ minWidth: '48px' }}
