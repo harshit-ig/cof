@@ -232,27 +232,38 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Banner */}
-      <div className="bg-white border-b-4 border-blue-600">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center">
-            {/* Logo */}
-            <Link to="/" className="flex-shrink-0">
-              <img 
-                src="/cof_logo.png" 
-                alt="COF Logo"
-                className="h-20 sm:h-24 md:h-32 lg:h-36 xl:h-40 w-auto object-contain"
+      {/* Top Banner - matches reference image, now responsive for mobile */}
+      <div className="w-full border-b-4 border-blue-600" style={{
+        background: 'linear-gradient(90deg, #e3f0fa 0%, #cbe2f6 100%)',
+        minHeight: '80px',
+        padding: 0
+      }}>
+        <div className="max-w-full mx-auto px-0">
+          <div className="flex items-center justify-between w-full">
+            {/* Left Logo */}
+            <div className="flex-shrink-0 flex items-center h-full pl-1 sm:pl-2 md:pl-6">
+              <img
+                src="/cof_logo.png"
+                alt="COF Logo Left"
+                className="h-12 xs:h-16 sm:h-20 md:h-28 lg:h-36 xl:h-40 w-auto object-contain"
+                style={{ minWidth: '48px' }}
               />
-            </Link>
-            
-            {/* Text Content */}
-            <div className="flex-1 px-3 sm:px-4 md:px-6 py-3 sm:py-4 md:py-6">
-              <h1 className="text-sm sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl font-bold text-blue-800 mb-1">
-                COLLEGE OF FISHERY SCIENCE
-              </h1>
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-gray-600 font-medium">
-                NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR
-              </p>
+            </div>
+            {/* Centered Text */}
+            <div className="flex flex-col items-center flex-1 px-1 sm:px-2 md:px-6 py-1 sm:py-2 md:py-6">
+              <span className="text-[#2580c2] text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE</span>
+              <span className="block w-4/5 border-b-2 border-[#2580c2] my-0.5 sm:my-1 md:my-2"></span>
+              <span className="text-[#2580c2] text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय</span>
+              <span className="text-[#1a3570] text-[10px] xs:text-xs sm:text-base md:text-lg lg:text-2xl font-bold mt-1 sm:mt-2 text-center" style={{fontFamily: 'serif', letterSpacing: '0.5px'}}>NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR</span>
+            </div>
+            {/* Right Logo */}
+            <div className="flex-shrink-0 flex items-center h-full pr-1 sm:pr-2 md:pr-6">
+              <img
+                src="/cof_logo.png"
+                alt="COF Logo Right"
+                className="h-12 xs:h-16 sm:h-20 md:h-28 lg:h-36 xl:h-40 w-auto object-contain"
+                style={{ minWidth: '48px' }}
+              />
             </div>
           </div>
         </div>
