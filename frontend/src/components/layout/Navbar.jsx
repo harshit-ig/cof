@@ -252,7 +252,6 @@ const Navbar = () => {
             {/* Centered Text */}
             <div className="flex flex-col items-center flex-1 px-1 sm:px-2 md:px-6 py-1 sm:py-2 md:py-6">
               <span className="text-[#2580c2] text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE</span>
-              <span className="block w-4/5 border-b-2 border-[#2580c2] my-0.5 sm:my-1 md:my-2"></span>
               <span className="text-[#2580c2] text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय</span>
               <span className="text-[#1a3570] text-[10px] xs:text-xs sm:text-base md:text-lg lg:text-2xl font-bold mt-1 sm:mt-2 text-center" style={{fontFamily: 'serif', letterSpacing: '0.5px'}}>NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR</span>
             </div>
