@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Award, Target, Lightbulb, ChevronRight, MapPin, Calendar, TrendingUp, BookOpen, UserCheck, Download, FileText } from 'lucide-react'
 import Card from '../components/common/Card'
-import { getDocumentUrl } from '../services/files'
-import { extensionAPI } from '../services/api'
+import { getDocumentUrl, getImageUrl } from '../services/files'
+import { extensionAPI, uploadAPI } from '../services/api'
 
 const Extension = () => {
   const [loading, setLoading] = useState(true)
@@ -91,6 +91,20 @@ const Extension = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {farmerTrainingPrograms.length > 0 ? farmerTrainingPrograms.map((program, index) => (
               <Card key={program._id || index} className="p-6">
+                {/* Image Thumbnail */}
+                {program.imageUrl && (
+                  <div className="mb-4 -mx-6 -mt-6">
+                    <img
+                      src={uploadAPI.getImageUrl(program.imageUrl.split('/').pop(), 'images')}
+                      alt={program.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+                
                 <div className="flex items-start space-x-4 mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                     <BookOpen className="w-6 h-6 text-blue-500" />
@@ -177,6 +191,20 @@ const Extension = () => {
           <div className="space-y-8">
             {ffpoShgActivities.length > 0 ? ffpoShgActivities.map((activity, index) => (
               <Card key={activity._id || index} className="p-8">
+                {/* Image Thumbnail */}
+                {activity.imageUrl && (
+                  <div className="mb-6 -mx-8 -mt-8">
+                    <img
+                      src={uploadAPI.getImageUrl(activity.imageUrl.split('/').pop(), 'images')}
+                      alt={activity.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+                
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <div className="flex items-center space-x-3 mb-4">
@@ -267,6 +295,20 @@ const Extension = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {demonstrations.length > 0 ? demonstrations.map((demo, index) => (
               <Card key={demo._id || index} className="p-6">
+                {/* Image Thumbnail */}
+                {demo.imageUrl && (
+                  <div className="mb-4 -mx-6 -mt-6">
+                    <img
+                      src={uploadAPI.getImageUrl(demo.imageUrl.split('/').pop(), 'images')}
+                      alt={demo.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+
                 <div className="flex items-start space-x-4 mb-4">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
                     <Target className="w-6 h-6 text-green-600" />
@@ -351,6 +393,20 @@ const Extension = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {successStories.length > 0 ? successStories.map((story, index) => (
               <Card key={story._id || index} className="p-6">
+                {/* Image Thumbnail */}
+                {story.imageUrl && (
+                  <div className="mb-4 -mx-6 -mt-6">
+                    <img
+                      src={uploadAPI.getImageUrl(story.imageUrl.split('/').pop(), 'images')}
+                      alt={story.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+                
                 <div className="flex items-start space-x-4 mb-4">
                   <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                     <Award className="w-6 h-6 text-yellow-600" />

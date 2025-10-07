@@ -5,10 +5,14 @@ const path = require('path');
 const Extension = require('../models/Extension');
 const { protect, adminOnly } = require('../middleware/auth');
 
-// Configure multer for file uploads
+// Configure multer for file uploads (PDF + Images)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/documents/');
+    if (file.fieldname === 'image') {
+      cb(null, 'uploads/images/'); // Images go to images folder
+    } else {
+      cb(null, 'uploads/documents/'); // PDFs go to documents folder
+    }
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -19,10 +23,22 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'application/pdf') {
-      cb(null, true);
+    if (file.fieldname === 'image') {
+      // Allow images
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed for image field!'), false);
+      }
+    } else if (file.fieldname === 'pdf') {
+      // Allow PDFs
+      if (file.mimetype === 'application/pdf') {
+        cb(null, true);
+      } else {
+        cb(new Error('Only PDF files are allowed for pdf field!'), false);
+      }
     } else {
-      cb(new Error('Only PDF files are allowed!'), false);
+      cb(new Error('Invalid field name!'), false);
     }
   },
   limits: {
@@ -156,13 +172,13 @@ router.get('/:id', async (req, res) => {
 // @desc    Create new extension item
 // @route   POST /api/extension
 // @access  Private (Admin)
-router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+router.post('/', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1 }, { name: 'image', maxCount: 1 }]), async (req, res) => {
   console.log('=== EXTENSION CREATION REQUEST ===');
   console.log('Method:', req.method);
   console.log('URL:', req.url);
   console.log('Headers:', req.headers);
   console.log('Body:', JSON.stringify(req.body, null, 2));
-  console.log('File:', req.file);
+  console.log('Files:', req.files);
   console.log('Admin:', req.admin);
   console.log('=== END REQUEST LOG ===');
   
@@ -214,9 +230,21 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
     }
 
     // If PDF file is uploaded, add filename and originalName
-    if (req.file) {
-      extensionData.filename = req.file.filename;
-      extensionData.originalName = req.file.originalname;
+    // Handle PDF file if present
+    if (req.files && req.files.pdf && req.files.pdf[0]) {
+      extensionData.filename = req.files.pdf[0].filename;
+      extensionData.originalName = req.files.pdf[0].originalname;
+    }
+    
+    // Handle Image file if present
+    if (req.files && req.files.image && req.files.image[0]) {
+      const imageFile = req.files.image[0];
+      const imagePath = imageFile.path;
+      // Extract directory from path to construct URL
+      const pathParts = imagePath.split('\\').join('/').split('/');
+      const uploadType = pathParts[pathParts.length - 2]; // e.g., "images"
+      extensionData.imageUrl = `/uploads/${uploadType}/${imageFile.filename}`;
+      extensionData.imagePath = imagePath;
     }
 
     const extension = await Extension.create(extensionData);
@@ -239,13 +267,13 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
 // @desc    Update extension item
 // @route   PUT /api/extension/:id
 // @access  Private (Admin)
-router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1 }, { name: 'image', maxCount: 1 }]), async (req, res) => {
   console.log('=== EXTENSION UPDATE REQUEST ===');
   console.log('Method:', req.method);
   console.log('URL:', req.url);
   console.log('Params:', req.params);
   console.log('Body:', JSON.stringify(req.body, null, 2));
-  console.log('File:', req.file);
+  console.log('Files:', req.files);
   console.log('Admin:', req.admin);
   console.log('=== END REQUEST LOG ===');
   
@@ -269,10 +297,23 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
     console.log('Cleaned data:', JSON.stringify(cleanData, null, 2));
 
     // If PDF file is uploaded, add filename and originalName
-    if (req.file) {
-      cleanData.filename = req.file.filename;
-      cleanData.originalName = req.file.originalname;
-      console.log('PDF file uploaded:', req.file.filename);
+    // Handle PDF file if present
+    if (req.files && req.files.pdf && req.files.pdf[0]) {
+      cleanData.filename = req.files.pdf[0].filename;
+      cleanData.originalName = req.files.pdf[0].originalname;
+      console.log('PDF file uploaded:', req.files.pdf[0].filename);
+    }
+    
+    // Handle Image file if present
+    if (req.files && req.files.image && req.files.image[0]) {
+      const imageFile = req.files.image[0];
+      const imagePath = imageFile.path;
+      // Extract directory from path to construct URL
+      const pathParts = imagePath.split('\\').join('/').split('/');
+      const uploadType = pathParts[pathParts.length - 2]; // e.g., "images"
+      cleanData.imageUrl = `/uploads/${uploadType}/${imageFile.filename}`;
+      cleanData.imagePath = imagePath;
+      console.log('Image file uploaded:', imageFile.filename);
     }
 
     // Parse JSON strings for arrays

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Save, Eye, RefreshCw, BookOpen, Users, Target, Award, Plus, Edit, Trash2, Upload, FileText, Download, X } from 'lucide-react'
 import Card from '../common/Card'
 import toast from 'react-hot-toast'
-import { extensionAPI } from '../../services/api'
+import { extensionAPI, uploadAPI } from '../../services/api'
 import { getDocumentUrl } from '../../services/files'
 
 const ExtensionManagement = () => {
@@ -57,7 +57,9 @@ const ExtensionManagement = () => {
       description: '',
       order: 0,
       isPublished: true,
-      tags: []
+      tags: [],
+      pdf: null,
+      image: null
     }
 
     switch (section) {
@@ -168,16 +170,21 @@ const ExtensionManagement = () => {
     }))
   }
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (type, e) => {
     const file = e.target.files[0]
     if (file) {
-      if (file.type === 'application/pdf') {
+      if (type === 'pdf' && file.type === 'application/pdf') {
         setFormData(prev => ({
           ...prev,
           pdf: file
         }))
+      } else if (type === 'image' && file.type.startsWith('image/')) {
+        setFormData(prev => ({
+          ...prev,
+          image: file
+        }))
       } else {
-        toast.error('Please select a PDF file')
+        toast.error(`Please select a valid ${type === 'pdf' ? 'PDF' : 'image'} file`)
         e.target.value = ''
       }
     }
@@ -207,6 +214,11 @@ const ExtensionManagement = () => {
       // Add PDF file if selected
       if (formData.pdf) {
         formDataToSend.append('pdf', formData.pdf)
+      }
+      
+      // Add Image file if selected
+      if (formData.image) {
+        formDataToSend.append('image', formData.image)
       }
       
       // Add section-specific fields
@@ -818,6 +830,43 @@ const ExtensionManagement = () => {
                 </>
               )}
 
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Thumbnail Image (Optional)</label>
+                <div className="flex items-center space-x-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange('image', e)}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                  />
+                  {formData.image && (
+                    <span className="text-sm text-green-600">Image selected: {formData.image.name}</span>
+                  )}
+                  {editingItem?.imageUrl && !formData.image && (
+                    <span className="text-sm text-gray-600">Current image available</span>
+                  )}
+                </div>
+                {formData.image && (
+                  <div className="mt-3">
+                    <img
+                      src={URL.createObjectURL(formData.image)}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+                {editingItem?.imageUrl && !formData.image && (
+                  <div className="mt-3">
+                    <img
+                      src={uploadAPI.getImageUrl(editingItem.imageUrl.split('/').pop(), 'images')}
+                      alt="Current image"
+                      className="w-32 h-32 object-cover rounded-lg border"
+                    />
+                  </div>
+                )}
+              </div>
+
               {/* PDF Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">PDF Document (Optional)</label>
@@ -825,7 +874,7 @@ const ExtensionManagement = () => {
                   <input
                     type="file"
                     accept=".pdf"
-                    onChange={handleFileChange}
+                    onChange={(e) => handleFileChange('pdf', e)}
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   {formData.pdf && (

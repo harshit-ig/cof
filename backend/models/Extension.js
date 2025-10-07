@@ -52,9 +52,13 @@ const extensionSchema = new mongoose.Schema({
   impactPoints: [String], // Impact achieved array
   year: String,
   
-  // File attachment
+  // File attachment (PDF)
   filename: String,
   originalName: String,
+  
+  // Image attachment (for thumbnails)
+  imageUrl: String, // Public URL path like /uploads/images/filename.jpg
+  imagePath: String, // Full file system path
   
   // SEO and metadata
   tags: [String],
