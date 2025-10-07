@@ -11,7 +11,7 @@ const Students = () => {
   const studentData = {
     admission: {
       programs: [
-        {
+        { 
           name: 'Bachelor of Fishery Science (B.F.Sc.)',
           duration: '4 years (8 semesters)',
           seats: '60 seats',
