@@ -59,6 +59,16 @@ const studentCornerSchema = new mongoose.Schema({
     trim: true
   }],
   
+  // Optional PDF document attached to the item (same pattern as Research/Extension)
+  filename: {
+    type: String,
+    trim: true
+  },
+  originalName: {
+    type: String,
+    trim: true
+  },
+  
   // Common metadata
   isActive: {
     type: Boolean,

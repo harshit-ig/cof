@@ -376,8 +376,18 @@ export const extensionAPI = {
 export const studentCornerAPI = {
   getAll: (params) => api.get('/student-corner', { params }),
   getById: (id) => api.get(`/student-corner/${id}`),
-  create: (data) => api.post('/student-corner', data),
-  update: (id, data) => api.put(`/student-corner/${id}`, data),
+  create: (data) => {
+    if (typeof FormData !== 'undefined' && data instanceof FormData) {
+      return uploadApi.post('/student-corner', data)
+    }
+    return api.post('/student-corner', data)
+  },
+  update: (id, data) => {
+    if (typeof FormData !== 'undefined' && data instanceof FormData) {
+      return uploadApi.put(`/student-corner/${id}`, data)
+    }
+    return api.put(`/student-corner/${id}`, data)
+  },
   delete: (id) => api.delete(`/student-corner/${id}`),
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Users, Award, Target, Lightbulb, ChevronRight, MapPin, Calendar, TrendingUp, BookOpen, UserCheck, Download, FileText } from 'lucide-react'
 import Card from '../components/common/Card'
+import { getDocumentUrl } from '../services/files'
 import { extensionAPI } from '../services/api'
 
 const Extension = () => {
@@ -139,7 +140,7 @@ const Extension = () => {
                 {program.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
-                      href={`http://localhost:5000/uploads/documents/${program.filename}`}
+                      href={getDocumentUrl(program.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
@@ -205,7 +206,7 @@ const Extension = () => {
                     {activity.filename && (
                       <div className="mt-4 pt-4 border-t border-gray-200">
                         <a
-                          href={`http://localhost:5000/uploads/documents/${activity.filename}`}
+                          href={getDocumentUrl(activity.filename)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
@@ -313,7 +314,7 @@ const Extension = () => {
                 {demo.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
-                      href={`http://localhost:5000/uploads/documents/${demo.filename}`}
+                      href={getDocumentUrl(demo.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
@@ -399,7 +400,7 @@ const Extension = () => {
                 {story.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
-                      href={`http://localhost:5000/uploads/documents/${story.filename}`}
+                      href={getDocumentUrl(story.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"

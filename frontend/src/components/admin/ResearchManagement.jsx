@@ -3,6 +3,7 @@ import { Save, Eye, RefreshCw, FlaskConical, BookOpen, Users, Building, Graduati
 import Card from '../common/Card'
 import toast from 'react-hot-toast'
 import { researchAPI, uploadAPI } from '../../services/api'
+import { getDocumentUrl } from '../../services/files'
 
 const ResearchManagement = () => {
   const [activeTab, setActiveTab] = useState('ongoing-projects')
@@ -722,7 +723,7 @@ const ResearchManagement = () => {
           {editingItem && editingItem.filename && (
             <div className="mt-2 p-2 bg-gray-50 rounded">
               <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-              <a href={`http://localhost:5000/uploads/documents/${editingItem.filename}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
+              <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
                 View Current PDF
               </a>
             </div>
@@ -867,7 +868,7 @@ const ResearchManagement = () => {
                           <FileText className="w-4 h-4 text-blue-500" />
                           <span className="text-sm text-gray-700">{item.originalName || item.filename}</span>
                           <a
-                            href={`http://localhost:5000/uploads/documents/${item.filename}`}
+                            href={getDocumentUrl(item.filename)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"

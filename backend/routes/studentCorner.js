@@ -1,8 +1,33 @@
 const express = require('express');
 const StudentCorner = require('../models/StudentCorner');
+const multer = require('multer');
+const path = require('path');
 const { protect, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
+
+// Configure multer for PDF uploads (mirror extension/research pattern)
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/documents/');
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + '_' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype === 'application/pdf') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF files are allowed!'), false);
+    }
+  },
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+});
 
 // @desc    Get all student corner data (public endpoint)
 // @route   GET /api/student-corner
@@ -91,7 +116,7 @@ router.get('/:id', async (req, res) => {
 // @desc    Create new student corner item
 // @route   POST /api/student-corner
 // @access  Private (Admin only)
-router.post('/', protect, adminOnly, async (req, res) => {
+router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
   try {
     const {
       type,
@@ -160,7 +185,9 @@ router.post('/', protect, adminOnly, async (req, res) => {
       role,
       activities: Array.isArray(activities) ? activities : [],
       positions: Array.isArray(positions) ? positions : [],
-      sortOrder: sortOrder || 0
+      sortOrder: sortOrder || 0,
+      // If PDF file is uploaded, set filename and originalName
+      ...(req.file ? { filename: req.file.filename, originalName: req.file.originalname } : {})
     });
 
     const savedItem = await studentCornerItem.save();
@@ -193,7 +220,7 @@ router.post('/', protect, adminOnly, async (req, res) => {
 // @desc    Update student corner item
 // @route   PUT /api/student-corner/:id
 // @access  Private (Admin only)
-router.put('/:id', protect, adminOnly, async (req, res) => {
+router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) => {
   try {
     const item = await StudentCorner.findById(req.params.id);
     
@@ -234,6 +261,11 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
     if (role !== undefined) item.role = role;
     if (activities !== undefined) item.activities = Array.isArray(activities) ? activities : [];
     if (positions !== undefined) item.positions = Array.isArray(positions) ? positions : [];
+    // If PDF file is uploaded, update filename and originalName
+    if (req.file) {
+      item.filename = req.file.filename;
+      item.originalName = req.file.originalname;
+    }
     if (sortOrder !== undefined) item.sortOrder = sortOrder;
     if (isActive !== undefined) item.isActive = isActive;
 

@@ -3,6 +3,7 @@ import { Save, Eye, RefreshCw, BookOpen, Users, Target, Award, Plus, Edit, Trash
 import Card from '../common/Card'
 import toast from 'react-hot-toast'
 import { extensionAPI } from '../../services/api'
+import { getDocumentUrl } from '../../services/files'
 
 const ExtensionManagement = () => {
   const [loading, setLoading] = useState(true)
@@ -407,7 +408,7 @@ const ExtensionManagement = () => {
                           <FileText className="w-4 h-4 text-blue-500" />
                           <span className="text-sm text-gray-700">{item.originalName || item.filename}</span>
                           <a
-                            href={`http://localhost:5000/uploads/documents/${item.filename}`}
+                            href={getDocumentUrl(item.filename)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"

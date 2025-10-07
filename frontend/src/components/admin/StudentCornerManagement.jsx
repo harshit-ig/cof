@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Search, Users, Award, GraduationCap, Calendar, FileText, Upload, Save, X } from 'lucide-react'
+import { Plus, Edit, Trash2, Search, Users, Award, GraduationCap, Calendar, FileText, Upload, Save, X, Download } from 'lucide-react'
 import { studentCornerAPI, uploadAPI } from '../../services/api'
+import { getDocumentUrl } from '../../services/files'
 import LoadingSpinner, { LoadingCard } from '../common/LoadingSpinner'
 import Modal, { ConfirmModal } from '../common/Modal'
 import { Form, FormGroup, Input, Textarea, Select, SubmitButton } from '../common/Form'
@@ -37,7 +38,8 @@ const StudentCornerManagement = () => {
     testimonial: '',
     achievements: [],
     contact: '',
-    image: ''
+    image: '',
+    pdf: null
   })
 
   const tabs = [
@@ -73,32 +75,51 @@ const StudentCornerManagement = () => {
     setSubmitting(true)
 
     try {
-      const data = {
-        ...formData,
-        activities: Array.isArray(formData.activities) 
-          ? formData.activities 
-          : formData.activities.split('\n').filter(Boolean),
-        positions: Array.isArray(formData.positions) 
-          ? formData.positions 
-          : formData.positions.split('\n').filter(Boolean),
-        benefits: Array.isArray(formData.benefits) 
-          ? formData.benefits 
-          : formData.benefits.split('\n').filter(Boolean),
-        guidelines: Array.isArray(formData.guidelines) 
-          ? formData.guidelines 
-          : formData.guidelines.split('\n').filter(Boolean),
-        achievements: Array.isArray(formData.achievements) 
-          ? formData.achievements 
-          : formData.achievements.split('\n').filter(Boolean),
-        type: activeTab
-      }
+      const toArray = (v) => Array.isArray(v) ? v : (typeof v === 'string' ? v.split('\n').filter(Boolean) : [])
 
-      if (editingItem) {
-        await studentCornerAPI.update(editingItem._id, data)
-        toast.success('Item updated successfully')
+      if (formData.pdf) {
+        const fd = new FormData()
+        fd.append('type', activeTab)
+        if (formData.category) fd.append('category', formData.category)
+        if (formData.description) fd.append('description', formData.description)
+        if (formData.name) fd.append('name', formData.name)
+        if (formData.eligibility) fd.append('eligibility', formData.eligibility)
+        if (formData.amount) fd.append('amount', formData.amount)
+        if (formData.duration) fd.append('duration', formData.duration)
+        toArray(formData.benefits).forEach(b => fd.append('benefits', b))
+        toArray(formData.guidelines).forEach(g => fd.append('guidelines', g))
+        if (formData.role) fd.append('role', formData.role)
+        toArray(formData.activities).forEach(a => fd.append('activities', a))
+        toArray(formData.positions).forEach(p => fd.append('positions', p))
+        if (typeof formData.sortOrder === 'number') fd.append('sortOrder', String(formData.sortOrder))
+        if (typeof formData.isActive === 'boolean') fd.append('isActive', String(formData.isActive))
+        fd.append('pdf', formData.pdf)
+
+        if (editingItem) {
+          await studentCornerAPI.update(editingItem._id, fd)
+          toast.success('Item updated successfully')
+        } else {
+          await studentCornerAPI.create(fd)
+          toast.success('Item created successfully')
+        }
       } else {
-        await studentCornerAPI.create(data)
-        toast.success('Item created successfully')
+        const data = {
+          ...formData,
+          activities: toArray(formData.activities),
+          positions: toArray(formData.positions),
+          benefits: toArray(formData.benefits),
+          guidelines: toArray(formData.guidelines),
+          achievements: toArray(formData.achievements),
+          type: activeTab
+        }
+
+        if (editingItem) {
+          await studentCornerAPI.update(editingItem._id, data)
+          toast.success('Item updated successfully')
+        } else {
+          await studentCornerAPI.create(data)
+          toast.success('Item created successfully')
+        }
       }
 
       setShowModal(false)
@@ -131,7 +152,8 @@ const StudentCornerManagement = () => {
       testimonial: item.testimonial || '',
       achievements: Array.isArray(item.achievements) ? item.achievements.join('\n') : '',
       contact: item.contact || '',
-      image: item.image || ''
+      image: item.image || '',
+      pdf: null
     })
     setShowModal(true)
   }
@@ -191,7 +213,8 @@ const StudentCornerManagement = () => {
       testimonial: '',
       achievements: [],
       contact: '',
-      image: ''
+      image: '',
+      pdf: null
     })
     setEditingItem(null)
   }
@@ -249,6 +272,32 @@ const StudentCornerManagement = () => {
                 rows={6}
                 required
               />
+            </FormGroup>
+            <FormGroup>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files && e.target.files[0]
+                  if (!file) return
+                  if (file.type !== 'application/pdf') {
+                    toast.error('Please select a PDF file')
+                    return
+                  }
+                  setFormData(prev => ({ ...prev, pdf: file }))
+                }}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.pdf && (
+                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              )}
+              {editingItem?.filename && !formData.pdf && (
+                <div className="mt-2 p-2 bg-gray-50 rounded">
+                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
+                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
+                </div>
+              )}
             </FormGroup>
           </div>
         )
@@ -320,6 +369,32 @@ const StudentCornerManagement = () => {
                 required
               />
             </FormGroup>
+            <FormGroup>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files && e.target.files[0]
+                  if (!file) return
+                  if (file.type !== 'application/pdf') {
+                    toast.error('Please select a PDF file')
+                    return
+                  }
+                  setFormData(prev => ({ ...prev, pdf: file }))
+                }}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.pdf && (
+                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              )}
+              {editingItem?.filename && !formData.pdf && (
+                <div className="mt-2 p-2 bg-gray-50 rounded">
+                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
+                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
+                </div>
+              )}
+            </FormGroup>
           </div>
         )
 
@@ -378,6 +453,32 @@ const StudentCornerManagement = () => {
                 required
               />
             </FormGroup>
+            <FormGroup>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files && e.target.files[0]
+                  if (!file) return
+                  if (file.type !== 'application/pdf') {
+                    toast.error('Please select a PDF file')
+                    return
+                  }
+                  setFormData(prev => ({ ...prev, pdf: file }))
+                }}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.pdf && (
+                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              )}
+              {editingItem?.filename && !formData.pdf && (
+                <div className="mt-2 p-2 bg-gray-50 rounded">
+                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
+                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
+                </div>
+              )}
+            </FormGroup>
           </div>
         )
 
@@ -426,6 +527,24 @@ const StudentCornerManagement = () => {
               <p className="text-sm text-gray-700">
                 {item.description}
               </p>
+            )}
+            {item.filename && (
+              <div className="mt-3">
+                <p className="text-xs text-gray-500 mb-1">PDF Document:</p>
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-blue-500" />
+                  <span className="text-sm text-gray-700">{item.originalName || item.filename}</span>
+                  <a
+                    href={getDocumentUrl(item.filename)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
+                  >
+                    <Download className="w-3 h-3 mr-1" />
+                    View PDF
+                  </a>
+                </div>
+              </div>
             )}
           </div>
         </div>

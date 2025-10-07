@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FlaskConical, Users, Award, BookOpen, Globe, Building, Fish, Microscope, Calendar, User, ExternalLink, DollarSign, FileText, Target, GraduationCap, Beaker, MapPin } from 'lucide-react'
 import Card from '../components/common/Card'
+import { getDocumentUrl } from '../services/files'
 import { researchAPI } from '../services/api'
 
 const Research = () => {
@@ -203,7 +204,7 @@ const Research = () => {
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
                               <a
-                                href={`http://localhost:5000/uploads/documents/${project.filename}`}
+                                href={getDocumentUrl(project.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full hover:bg-blue-200 transition-colors"
@@ -309,7 +310,7 @@ const Research = () => {
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
                               <a
-                                href={`http://localhost:5000/uploads/documents/${publication.filename}`}
+                                href={getDocumentUrl(publication.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full hover:bg-green-200 transition-colors"
@@ -415,7 +416,7 @@ const Research = () => {
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
                               <a
-                                href={`http://localhost:5000/uploads/documents/${research.filename}`}
+                                href={getDocumentUrl(research.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full hover:bg-orange-200 transition-colors"
@@ -528,7 +529,7 @@ const Research = () => {
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
                               <a
-                                href={`http://localhost:5000/uploads/documents/${collaboration.filename}`}
+                                href={getDocumentUrl(collaboration.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
@@ -643,7 +644,7 @@ const Research = () => {
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
                               <a
-                                href={`http://localhost:5000/uploads/documents/${facility.filename}`}
+                                href={getDocumentUrl(facility.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full hover:bg-indigo-200 transition-colors"
