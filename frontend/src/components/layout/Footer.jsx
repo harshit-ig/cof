@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, ExternalLink } from 'lucide-react'
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, ExternalLink, Globe } from 'lucide-react'
 import { useSettings } from '../../context/SettingsContext'
 
 const Footer = () => {
@@ -10,10 +10,29 @@ const Footer = () => {
     contactPhone, 
     address, 
     socialMedia, 
-    footerText 
+    footerText,
+    location: locationSettings
   } = useSettings()
   
   const currentYear = new Date().getFullYear()
+
+  // Generate Google Maps embed URL from location settings
+  const getMapEmbedUrl = () => {
+    // Use default values if settings not loaded yet
+    const latitude = locationSettings?.latitude || 23.1815
+    const longitude = locationSettings?.longitude || 79.9864
+    const zoom = locationSettings?.zoom || 15
+    
+    // Use a simpler Google Maps embed format
+    return `https://maps.google.com/maps?width=100%25&height=300&hl=en&q=${latitude},${longitude}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`
+  }
+
+  // Generate Google Maps URL for "Open in Google Maps" button
+  const getMapUrl = () => {
+    const latitude = locationSettings?.latitude || 23.1815
+    const longitude = locationSettings?.longitude || 79.9864
+    return `https://maps.google.com/?q=${latitude},${longitude}`
+  }
 
   const quickLinks = [
     { name: 'About CoF', href: '/about' },
@@ -132,6 +151,37 @@ const Footer = () => {
                   </svg>
                 </a>
               )}
+            </div>
+            
+            {/* Google Map Section */}
+            <div className="mt-6">
+              <h4 className="text-lg font-semibold mb-3 flex items-center">
+                <Globe className="w-5 h-5 mr-2" />
+                Find Us
+              </h4>
+              <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden">
+                <iframe
+                  src={getMapEmbedUrl()}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title={`${siteName} Location`}
+                ></iframe>
+              </div>
+              <div className="mt-3 text-center">
+                <a
+                  href={getMapUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+                >
+                  <MapPin className="w-4 h-4 mr-2" />
+                  Open in Google Maps
+                </a>
+              </div>
             </div>
           </div>
         </div>
