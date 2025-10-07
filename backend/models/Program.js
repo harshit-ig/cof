@@ -58,7 +58,8 @@ const programSchema = new mongoose.Schema({
     total: String,
     annual: {
       type: Number,
-      required: [true, 'Annual fee is required']
+      // Annual numeric fee is optional; use `total` or text fields if preferred
+      required: false
     }
   },
   intake: {

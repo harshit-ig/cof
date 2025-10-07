@@ -66,7 +66,6 @@ router.get('/', [
         }
       }
     });
-
   } catch (error) {
     console.error('Get programs error:', error);
     res.status(500).json({
@@ -158,8 +157,8 @@ router.post('/', protect, adminOnly, [
   body('title').notEmpty().trim().escape(),
   body('description').notEmpty().trim(),
   body('duration').notEmpty().trim(),
-  body('eligibility').notEmpty().trim(),
-  body('fees').isNumeric(),
+  body('eligibility').optional(),
+  body('fees').optional(),
   body('intake').isInt({ min: 1 }),
   body('department').notEmpty().trim(),
   body('level').isIn(['undergraduate', 'postgraduate', 'diploma', 'certificate'])
@@ -175,10 +174,17 @@ router.post('/', protect, adminOnly, [
       });
     }
 
-    const programData = {
-      ...req.body,
-      createdBy: req.admin._id
-    };
+    const programData = { ...req.body, createdBy: req.admin._id };
+    // If `fees` is numeric (legacy), convert to object
+    if (typeof programData.fees === 'number') {
+      programData.fees = { annual: programData.fees };
+    }
+    // Coerce `fees.annual` to number when possible
+    if (programData.fees && typeof programData.fees === 'object' && programData.fees.annual !== undefined) {
+      const n = Number(programData.fees.annual)
+      if (!Number.isNaN(n)) programData.fees.annual = n
+      else delete programData.fees.annual
+    }
 
     const program = await Program.create(programData);
 
@@ -213,8 +219,8 @@ router.put('/:id', protect, adminOnly, [
   body('title').optional().notEmpty().trim().escape(),
   body('description').optional().notEmpty().trim(),
   body('duration').optional().notEmpty().trim(),
-  body('eligibility').optional().notEmpty().trim(),
-  body('fees').optional().isNumeric(),
+  body('eligibility').optional(),
+  body('fees').optional(),
   body('intake').optional().isInt({ min: 1 }),
   body('department').optional().notEmpty().trim(),
   body('level').optional().isIn(['undergraduate', 'postgraduate', 'diploma', 'certificate'])
@@ -230,9 +236,20 @@ router.put('/:id', protect, adminOnly, [
       });
     }
 
+    // Normalize update payload (handle legacy numeric fees and coerce annual)
+    const updateData = { ...req.body };
+    if (typeof updateData.fees === 'number') {
+      updateData.fees = { annual: updateData.fees };
+    }
+    if (updateData.fees && typeof updateData.fees === 'object' && updateData.fees.annual !== undefined) {
+      const n = Number(updateData.fees.annual)
+      if (!Number.isNaN(n)) updateData.fees.annual = n
+      else delete updateData.fees.annual
+    }
+
     const program = await Program.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       { new: true, runValidators: true }
     );
 

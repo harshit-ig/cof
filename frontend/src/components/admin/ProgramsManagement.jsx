@@ -189,8 +189,9 @@ const ProgramsManagement = () => {
         return
       }
 
-      if (!formData.fees?.annual || parseFloat(formData.fees.annual) <= 0) {
-        toast.error('Please enter a valid annual fee amount')
+      // Annual fee is optional; if provided, it must be a positive number
+      if (formData.fees?.annual && parseFloat(formData.fees.annual) <= 0) {
+        toast.error('Annual fee must be a positive number if provided')
         setSubmitting(false)
         return
       }
@@ -204,10 +205,17 @@ const ProgramsManagement = () => {
         overview: formData.overview?.trim() || '',
         duration: formData.duration.trim(),
         eligibility: formData.eligibility || {},
-        fees: {
-          ...formData.fees,
-          annual: parseFloat(formData.fees.annual)
-        },
+        fees: (() => {
+          const f = { ...formData.fees }
+          if (f.annual === '' || f.annual === undefined || f.annual === null) {
+            delete f.annual
+          } else {
+            const n = parseFloat(f.annual)
+            if (!Number.isNaN(n)) f.annual = n
+            else delete f.annual
+          }
+          return f
+        })(),
         intake: parseInt(formData.intake),
         department: formData.department.trim(),
         level: formData.level,
@@ -907,13 +915,12 @@ const ProgramsManagement = () => {
                       placeholder="e.g., ₹1,15,000"
                     />
                   </FormGroup>
-                  <FormGroup label="Annual Fee (Numeric)" required>
+                  <FormGroup label="Annual Fee (Numeric)">
                     <Input
                       type="number"
                       value={formData.fees?.annual || ''}
                       onChange={(e) => handleNestedChange('fees.annual', e.target.value)}
                       placeholder="115000"
-                      required
                     />
                   </FormGroup>
                 </div>

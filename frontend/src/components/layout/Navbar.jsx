@@ -22,11 +22,11 @@ const Navbar = () => {
       name: 'About Us',
       href: '/about',
       dropdown: [
-        { name: 'History', href: '/about', section: 'history' },
+           { name: 'Message from the Dean', href: '/about', section: 'dean-message' },
         { name: 'Mission & Vision', href: '/about', section: 'vision' },
-        { name: 'Mandate', href: '/about', section: 'mandate' },
-        { name: 'Message from the Dean', href: '/about', section: 'dean-message' }
-      ]
+          { name: 'History', href: '/about', section: 'history' },
+        { name: 'Mandate', href: '/about', section: 'mandate' }
+         ]
     },
     {
       name: 'Academics',
@@ -72,7 +72,7 @@ const Navbar = () => {
       ]
     },
     { name: 'Incubation Centre', href: '/incubation' },
-    { name: 'Placement', href: '/placement' },
+    { name: 'Placement Cell', href: '/placement' },
     {
       name: 'Students Corner',
       href: '/student-corner',
@@ -85,12 +85,12 @@ const Navbar = () => {
     { name: 'Collaborations', href: '/collaborations' },
     { name: 'Farmers Corner', href: '/farmers-corner' },
     {
-      name: 'Alumni',
+      name: 'Alumni Association',
       href: '/alumni',
       dropdown: [
-        { name: 'Alumni Directory', href: '/alumni', section: 'directory' },
         { name: 'Alumni Testimonials', href: '/alumni', section: 'testimonials' },
-        { name: 'Alumni Events', href: '/alumni', section: 'events' }
+        { name: 'Alumni Events', href: '/alumni', section: 'events' },
+        { name: 'Alumni Office', href: '/alumni', section: 'office' },
       ]
     },
     {
@@ -251,8 +251,8 @@ const Navbar = () => {
             </div>
             {/* Centered Text */}
             <div className="flex flex-col items-center flex-1 px-1 sm:px-2 md:px-6 py-1 sm:py-2 md:py-6">
-              <span className="text-[#2580c2] text-base xs:text-lg sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE</span>
-              <span className="text-[#2580c2] text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय</span>
+              <span className="text-[#2580c2] text-xs xs:text-lg sm:text-lg md:text-xl lg:text-3xl xl:text-4xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE, JABALPUR</span>
+              <span className="text-[#2580c2] text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय, जबलपुर</span>
               <span className="text-[#1a3570] text-[10px] xs:text-xs sm:text-base md:text-lg lg:text-2xl font-bold mt-1 sm:mt-2 text-center" style={{fontFamily: 'serif', letterSpacing: '0.5px'}}>NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR</span>
             </div>
             {/* Right Logo */}

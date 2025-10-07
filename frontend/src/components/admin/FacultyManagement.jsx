@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Search, User, Mail, Phone, Award } from 'lucide-react'
-import { facultyAPI, uploadAPI } from '../../services/api'
+import { facultyAPI, uploadAPI, academicsAPI } from '../../services/api'
 import LoadingSpinner, { LoadingCard } from '../common/LoadingSpinner'
 import Modal, { ConfirmModal } from '../common/Modal'
 import { Form, FormGroup, Input, Textarea, Select, SubmitButton } from '../common/Form'
@@ -42,14 +42,21 @@ const FacultyManagement = () => {
     }
   })
 
-  const departments = [
-    { value: 'Fishery Science', label: 'Fishery Science' },
-    { value: 'Aquaculture', label: 'Aquaculture' },
-    { value: 'Fish Processing Technology', label: 'Fish Processing Technology' },
-    { value: 'Fishery Resource Management', label: 'Fishery Resource Management' },
-    { value: 'Aquatic Environment Management', label: 'Aquatic Environment Management' },
-    { value: 'Fish Genetics and Biotechnology', label: 'Fish Genetics and Biotechnology' }
-  ]
+  const [departments, setDepartments] = useState([])
+  // Fetch departments from academics API
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await academicsAPI.getPage()
+        if (response.data.success && response.data.data.departments) {
+          setDepartments(response.data.data.departments.map(d => ({ value: d.name, label: d.name })))
+        }
+      } catch (err) {
+        console.error('Failed to fetch departments', err)
+      }
+    }
+    fetchDepartments()
+  }, [])
 
   useEffect(() => {
     fetchFaculty()
@@ -484,12 +491,12 @@ const FacultyManagement = () => {
               </FormGroup>
 
               <FormGroup label="Department" required>
-                <Input
-                  type="text"
+                <Select
                   name="department"
                   value={formData.department}
                   onChange={handleChange}
-                  placeholder="Enter department"
+                  options={departments}
+                  placeholder="Select department"
                   required
                 />
               </FormGroup>

@@ -327,7 +327,7 @@ const Alumni = () => {
       </section>
 
       {/* Contact Alumni Office */}
-      <section className="section-padding bg-white">
+      <section id='office' className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Contact Alumni Office</h2>

@@ -127,19 +127,23 @@ export const Select = ({
   ...props 
 }) => {
   const errorClass = error ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : ''
-  
   return (
-    <select
-      className={`form-select ${errorClass} ${className}`}
-      {...props}
-    >
-      <option value="">{placeholder}</option>
-      {options.map((option, index) => (
-        <option key={index} value={option.value || option}>
-          {option.label || option}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <select
+        className={`form-select ${errorClass} ${className}`}
+        {...props}
+      >
+        <option value="">{placeholder}</option>
+        {options.map((option, index) => (
+          <option key={index} value={option.value || option}>
+            {option.label || option}
+          </option>
+        ))}
+      </select>
+      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400">
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+      </span>
+    </div>
   )
 }
 
