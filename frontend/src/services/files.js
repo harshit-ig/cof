@@ -1,30 +1,38 @@
-// Utilities to build file URLs based on environment configuration
-// We mirror axios base host but strip trailing /api so that static uploads point to the server root
+// Utilities to build environment-aware URLs for static uploaded files
 
-const getBaseHost = () => {
-  const raw = import.meta.env.VITE_SERVER_HOST || ''
-  // If provided and ends with /api, remove it for static assets
-  if (raw && raw.endsWith('/api')) return raw.slice(0, -4)
-  return raw
+// Derive the base host from VITE_SERVER_HOST (e.g., https://domain.tld or https://domain.tld/api)
+// - Strips a trailing "/api" if present (API base vs static base)
+// - Removes a single trailing slash
+export const getBaseHost = () => {
+  const raw = (import.meta?.env?.VITE_SERVER_HOST || '').toString()
+  if (!raw) return ''
+  const trimmed = raw.replace(/\/$/, '')
+  return trimmed.endsWith('/api') ? trimmed.slice(0, -4) : trimmed
 }
 
+// Base for uploads. If no host provided, use relative path for same-origin setups
 export const getUploadsBase = () => {
   const host = getBaseHost()
-  // When host is empty, use relative path which works with same-origin/proxy setups
-  return host ? `${host}/uploads` : `/uploads`
+  return host ? `${host.replace(/\/$/, '')}/uploads` : '/uploads'
 }
 
+// Document (PDFs) URL builder
 export const getDocumentUrl = (filename) => {
   if (!filename) return ''
-  return `${getUploadsBase()}/documents/${filename}`
+  const clean = String(filename).replace(/^\/+/, '')
+  return `${getUploadsBase()}/documents/${clean}`
 }
 
+// Generic image/file URL builder for sub-directories inside uploads
 export const getImageUrl = (subdir, filename) => {
   if (!filename) return ''
-  return `${getUploadsBase()}/${subdir}/${filename}`
+  const clean = String(filename).replace(/^\/+/, '')
+  const dir = String(subdir || '').replace(/^\/+|\/+$/g, '')
+  return `${getUploadsBase()}/${dir}/${clean}`
 }
 
 export default {
+  getBaseHost,
   getUploadsBase,
   getDocumentUrl,
   getImageUrl,
