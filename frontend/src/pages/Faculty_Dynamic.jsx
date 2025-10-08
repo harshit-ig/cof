@@ -432,17 +432,6 @@ const Faculty = () => {
                       )}
                     </div>
                   )}
-
-                  {/* View Profile Link */}
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <Link
-                      to={`/faculty/${faculty._id}`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
-                    >
-                      View Full Profile
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </Link>
-                  </div>
                 </div>
               </Card>
             ))}

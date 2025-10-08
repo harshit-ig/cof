@@ -12,10 +12,10 @@ const Home = () => {
   const [deanMessage, setDeanMessage] = useState('')
   const [importantNotices, setImportantNotices] = useState([])
   const [welcomeData, setWelcomeData] = useState({
-    deanName: 'Dr. Shashikant Mahajan',
-    deanTitle: 'Dean, College of Fishery, Jabalpur',
-    deanPhoto: '/cllg.jpg',
-    welcomeMessage: 'Welcome to the College of Fishery, Jabalpur. We are committed to excellence in aquaculture education and research, developing skilled professionals for sustainable fishery management.'
+    deanName: '',
+    deanTitle: '',
+    deanPhoto: '',
+    welcomeMessage: ''
   })
   const [loading, setLoading] = useState(true)
 
@@ -77,10 +77,10 @@ const Home = () => {
           
           // Update welcome data with fetched information
           setWelcomeData({
-            deanName: welcomeInfo.deanName || 'Dr. Shashikant Mahajan',
-            deanTitle: welcomeInfo.deanTitle || 'Dean, College of Fishery, Jabalpur',
-            deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
-            welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fishery, Jabalpur. We are committed to excellence in aquaculture education and research, developing skilled professionals for sustainable fishery management.'
+            deanName: welcomeInfo.deanName || '',
+            deanTitle: welcomeInfo.deanTitle || '',
+            deanPhoto: welcomeInfo.deanPhoto || '',
+            welcomeMessage: welcomeInfo.welcomeMessage || ''
           })
         }
       }
@@ -99,15 +99,8 @@ const Home = () => {
           setImportantNotices([])
         }
       } else {
-        // Set default notice if none exist or there's an error
-        setImportantNotices([{
-          id: 1,
-          title: 'Important Notice',
-          message: 'Admission process for B.F.Sc (Bachelor of Fishery Science) program 2025-26 is now open.',
-          link: '/student-corner',
-          linkText: 'Learn More',
-          isActive: true
-        }])
+        // No notices available
+        setImportantNotices([])
       }
 
     } catch (error) {
@@ -246,27 +239,8 @@ const Home = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="space-y-4">
-                        <div className="border-l-4 border-yellow-500 pl-4 py-2">
-                          <h4 className="font-medium text-gray-900 mb-1">Academic Calendar 2025-26</h4>
-                          <p className="text-sm text-gray-600 mb-1">New academic session begins with orientation program</p>
-                          <p className="text-xs text-gray-500">September 15, 2025</p>
-                        </div>
-                        <div className="border-l-4 border-blue-500 pl-4 py-2">
-                          <h4 className="font-medium text-gray-900 mb-1">Admission Open for B.F.Sc Program</h4>
-                          <p className="text-sm text-gray-600 mb-1">Applications are now being accepted for the new session</p>
-                          <p className="text-xs text-gray-500">August 20, 2025</p>
-                        </div>
-                        <div className="border-l-4 border-green-500 pl-4 py-2">
-                          <h4 className="font-medium text-gray-900 mb-1">Research Conference on Aquaculture</h4>
-                          <p className="text-sm text-gray-600 mb-1">International conference on sustainable fishery practices</p>
-                          <p className="text-xs text-gray-500">August 25, 2025</p>
-                        </div>
-                        <div className="border-l-4 border-purple-500 pl-4 py-2">
-                          <h4 className="font-medium text-gray-900 mb-1">New Research Publications</h4>
-                          <p className="text-sm text-gray-600 mb-1">Faculty publications in international journals</p>
-                          <p className="text-xs text-gray-500">August 18, 2025</p>
-                        </div>
+                      <div className="text-center py-8">
+                        <p className="text-gray-500">No news updates available at this time.</p>
                       </div>
                     )}
                   </div>

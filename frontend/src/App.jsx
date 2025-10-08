@@ -12,7 +12,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import ProgramDetail from './pages/ProgramDetail'
 import Faculty from './pages/Faculty_Dynamic'
-import FacultyDetail from './pages/FacultyDetail'
 import Research from './pages/Research'
 import ResearchDetail from './pages/ResearchDetail'
 import Extension from './pages/Extension'
@@ -78,7 +77,6 @@ function App() {
                   <Route path="/academics" element={<Academics />} />
                   <Route path="/programs/:slug" element={<ProgramDetail />} />
                   <Route path="/faculty" element={<Faculty />} />
-                  <Route path="/faculty/:id" element={<FacultyDetail />} />
                   <Route path="/research" element={<Research />} />
                   <Route path="/research/:id" element={<ResearchDetail />} />
                   <Route path="/extension" element={<Extension />} />

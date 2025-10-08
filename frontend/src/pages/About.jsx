@@ -8,36 +8,22 @@ const About = () => {
   const location = useLocation()
   const hash = location.hash.substring(1)
   const [welcomeData, setWelcomeData] = useState({
-    deanName: 'Dean',
-    deanTitle: 'College of Fishery, Jabalpur',
-    deanPhoto: '/cllg.jpg',
-    welcomeMessage: 'Welcome to the College of Fishery, Jabalpur. Our institution is committed to providing quality education in fishery science and aquaculture, fostering innovation and sustainable practices. We prepare our students to become leaders in the fishery sector, contributing to food security and sustainable development.'
+    deanName: '',
+    deanTitle: '',
+    deanPhoto: '',
+    welcomeMessage: ''
   })
   
   const [aboutContent, setAboutContent] = useState({
-    vision: 'To be a globally recognized institution for excellence in fishery education, research, and extension services, fostering innovation and sustainable practices.',
-    mission: 'To provide quality education in fishery science and aquaculture, conduct cutting-edge research, and disseminate knowledge for sustainable development of the fishery sector.',
-    history: 'The College of Fishery, Jabalpur was established in 2012 as per the gazette of Madhya Pradesh Government. This college was previously working as a department of Fisheries at Faculty of Veterinary Science, JNKVV, Jabalpur (Estt. 1964). The department of fisheries looked over more than five decades of its existence at the Aquatic body named Adhartal Tank which was developed by the Senapati of Gondwana State Shri Diwan Adhar Singh. The college has been able to make overall development of fish production and management through its impressive teaching, research and extension activities in basic and applied fields. Consequent to the establishment of Madhya Pradesh Pashu Chikitsha Vigyan Viswavidyalaya (renamed as Nanaji Deshmukh Veterinary Science University) the college became a constituent institution of the new Viswa Vidyalaya with effect from 04.10.2012.'
+    vision: '',
+    mission: '',
+    history: ''
   })
 
   const [mandateContent, setMandateContent] = useState({
-    core: [
-      'Human Resource Development in Fisheries',
-      'Basic, applied and adaptive research on emerging problems in fisheries',
-      'Transfer of technology to fish farmers, entrepreneurs and industry',
-      'To develop college as center for demonstrations and training to unemployed youth, tribal and fish farmers',
-      'To impart the latest technology of composite fish culture to increase fish production from an average of 700 kg/ha to 4000 kg/ha'
-    ],
-    objectives: [
-      'Human Resource Development',
-      'Fish production and productivity enhancement',
-      'Development of fishery through lab to land programme'
-    ],
-    thrust: [
-      'Imparting education in the field of fisheries to generate technical graduates',
-      'To exploits the maximum areas of fisheries through Research and Development activity',
-      'To impart latest technology (Lab to land programme) to fish farmers through extension activities'
-    ]
+    core: [],
+    objectives: [],
+    thrust: []
   })
 
   const scrollToSection = (sectionId) => {
@@ -91,10 +77,10 @@ const About = () => {
         
         // Update welcome data with fetched information
         setWelcomeData({
-          deanName: welcomeInfo.deanName || 'Dean',
-          deanTitle: welcomeInfo.deanTitle || 'College of Fishery, Jabalpur',
-          deanPhoto: welcomeInfo.deanPhoto || '/cllg.jpg',
-          welcomeMessage: welcomeInfo.welcomeMessage || 'Welcome to the College of Fishery, Jabalpur. Our institution is committed to providing quality education in fishery science and aquaculture, fostering innovation and sustainable practices.'
+          deanName: welcomeInfo.deanName || '',
+          deanTitle: welcomeInfo.deanTitle || '',
+          deanPhoto: welcomeInfo.deanPhoto || '',
+          welcomeMessage: welcomeInfo.welcomeMessage || ''
         })
       }
     } catch (error) {
