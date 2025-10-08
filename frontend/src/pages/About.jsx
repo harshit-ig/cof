@@ -196,16 +196,22 @@ const About = () => {
 
       {/* Dean's Message */}
       <section id="dean-message" className="section-padding bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 right-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+        {/* Enhanced background decorative elements */}
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute top-10 right-10 w-36 h-36 bg-blue-400 rounded-full blur-4xl"></div>
+          <div className="absolute bottom-20 left-20 w-32 h-32 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-teal-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 right-1/3 w-24 h-24 bg-indigo-400 rounded-full blur-2xl"></div>
         </div>
         
-        {/* Floating shapes */}
+        {/* Enhanced floating academic elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-4 h-4 bg-blue-200 rounded-full opacity-30 animate-bounce" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-16 right-1/4 w-3 h-6 bg-green-200 opacity-25 animate-pulse" style={{animationDelay: '1s'}}></div>
+          {/* Academic/leadership themed elements */}
+          <div className="absolute top-20 left-1/4 w-6 h-6 bg-blue-200/25 rounded-full animate-bounce" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-16 right-1/4 w-8 h-6 bg-green-200/30 rounded-lg animate-pulse transform rotate-12" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-4 h-8 bg-teal-200/20 rounded animate-float" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute bottom-1/3 left-1/4 w-10 h-5 bg-indigo-200/25 rounded-full animate-bounce transform -rotate-12" style={{animationDelay: '2.5s'}}></div>
+          <div className="absolute top-40 right-40 w-5 h-5 bg-blue-300/20 rounded animate-pulse" style={{animationDelay: '3s'}}></div>
         </div>
         
         <div className="container-max relative z-10">
@@ -263,30 +269,46 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="p-6 bg-gradient-to-br from-white to-blue-50 border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-              {/* Decorative corner */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200 to-transparent opacity-30"></div>
+            <Card className="p-6 bg-gradient-to-br from-white to-blue-50 border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+              {/* Enhanced decorative elements */}
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-teal-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              
+              {/* Floating vision elements */}
+              <div className="absolute top-4 left-4 w-3 h-3 bg-blue-300/30 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute bottom-4 right-4 w-6 h-3 bg-blue-400/20 rounded-full animate-float transform rotate-12" style={{animationDelay: '2s'}}></div>
+              <div className="absolute top-1/2 right-3 w-2 h-4 bg-teal-300/25 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
               
               <div className="text-center mb-4 relative z-10">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
-                  <Eye className="w-6 h-6 text-blue-500" />
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg">
+                  <Eye className="w-7 h-7 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">Our Vision</h3>
               </div>
-              <div className="text-gray-700 text-left relative z-10" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
+              <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-4 rounded-lg border border-blue-200/50 relative z-10">
+                <div className="text-gray-700 text-left leading-relaxed" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
+              </div>
             </Card>
             
-            <Card className="p-6 bg-gradient-to-br from-white to-cyan-50 border-l-4 border-secondary-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-              {/* Decorative corner */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-cyan-200 to-transparent opacity-30"></div>
+            <Card className="p-6 bg-gradient-to-br from-white to-cyan-50 border-l-4 border-secondary-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+              {/* Enhanced decorative elements */}
+              <div className="absolute top-0 right-0 w-18 h-18 bg-gradient-to-bl from-cyan-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-secondary-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              
+              {/* Floating mission elements */}
+              <div className="absolute top-3 right-4 w-4 h-4 bg-secondary-300/25 rounded animate-bounce" style={{animationDelay: '2s'}}></div>
+              <div className="absolute bottom-3 left-4 w-5 h-3 bg-cyan-300/30 rounded-full animate-float transform -rotate-12" style={{animationDelay: '1s'}}></div>
+              <div className="absolute top-1/2 left-2 w-2 h-2 bg-secondary-400/30 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
               
               <div className="text-center mb-4 relative z-10">
-                <div className="w-12 h-12 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-lg flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300">
-                  <Target className="w-6 h-6 text-secondary-600" />
+                <div className="w-14 h-14 bg-gradient-to-br from-secondary-100 to-secondary-200 rounded-xl flex items-center justify-center mx-auto mb-4 transform hover:scale-110 transition-transform duration-300 shadow-md group-hover:shadow-lg">
+                  <Target className="w-7 h-7 text-secondary-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-secondary-600 transition-colors duration-300">Our Mission</h3>
               </div>
-              <div className="text-gray-700 text-left relative z-10" dangerouslySetInnerHTML={{ __html: aboutContent.mission }} />
+              <div className="bg-gradient-to-r from-cyan-50 to-secondary-50 p-4 rounded-lg border border-cyan-200/50 relative z-10">
+                <div className="text-gray-700 text-left leading-relaxed" dangerouslySetInnerHTML={{ __html: aboutContent.mission }} />
+              </div>
             </Card>
           </div>
         </div>
@@ -313,12 +335,19 @@ const About = () => {
           </div>
           
           <div className="max-w-4xl mx-auto">
-            <Card className="p-8 bg-gradient-to-br from-white to-yellow-50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-              {/* Decorative elements */}
-              <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-yellow-200 to-transparent opacity-30"></div>
-              <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-orange-200 to-transparent opacity-25"></div>
+            <Card className="p-8 bg-gradient-to-br from-white to-yellow-50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+              {/* Enhanced decorative elements */}
+              <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-yellow-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-orange-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
               
-              <div className="prose prose-lg max-w-none text-gray-700 text-left relative z-10" dangerouslySetInnerHTML={{ __html: aboutContent.history }} />
+              {/* Floating history elements */}
+              <div className="absolute top-6 right-6 w-4 h-6 bg-yellow-300/25 rounded animate-float transform rotate-12" style={{animationDelay: '1s'}}></div>
+              <div className="absolute bottom-6 left-6 w-6 h-4 bg-orange-300/30 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+              <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-yellow-400/20 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
+              
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200/50 relative z-10">
+                <div className="prose prose-lg max-w-none text-gray-700 text-left leading-relaxed" dangerouslySetInnerHTML={{ __html: aboutContent.history }} />
+              </div>
             </Card>
           </div>
         </div>
@@ -348,66 +377,87 @@ const About = () => {
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Core Mandate */}
-            <Card className="p-6 bg-gradient-to-br from-white to-blue-50 border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-              {/* Decorative corner */}
-              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200 to-transparent opacity-30"></div>
+            <Card className="p-6 bg-gradient-to-br from-white to-blue-50 border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+              {/* Enhanced decorative elements */}
+              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-teal-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
               
-              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
-                  <Target className="w-4 h-4 text-white" />
+              {/* Floating mandate elements */}
+              <div className="absolute top-4 left-4 w-3 h-3 bg-blue-300/30 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute bottom-4 right-4 w-5 h-3 bg-blue-400/20 rounded-full animate-float transform rotate-45" style={{animationDelay: '2s'}}></div>
+              
+              <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10 group-hover:text-blue-600 transition-colors duration-300">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                  <Target className="w-5 h-5 text-white" />
                 </div>
                 Core Mandate
               </h3>
-              <ul className="space-y-3 text-gray-700 text-left relative z-10">
-                {mandateContent.core.map((item, index) => (
-                  <li key={index} className="flex items-start hover:bg-blue-50 p-2 rounded transition-colors duration-200">
-                    <span className="text-blue-500 mr-2 font-bold">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-4 rounded-lg border border-blue-200/50 relative z-10">
+                <ul className="space-y-3 text-gray-700 text-left">
+                  {mandateContent.core.map((item, index) => (
+                    <li key={index} className="flex items-start hover:bg-blue-100/50 p-2 rounded transition-colors duration-200">
+                      <span className="text-blue-500 mr-2 font-bold">•</span>
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </Card>
 
             {/* Objectives & Thrust Areas */}
             <div className="space-y-6">
-              <Card className="p-6 bg-gradient-to-br from-white to-green-50 border-l-4 border-green-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                {/* Decorative corner */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-green-200 to-transparent opacity-30"></div>
+              <Card className="p-6 bg-gradient-to-br from-white to-green-50 border-l-4 border-green-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+                {/* Enhanced decorative elements */}
+                <div className="absolute top-0 right-0 w-18 h-18 bg-gradient-to-bl from-green-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-emerald-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10">
-                  <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
-                    <Award className="w-4 h-4 text-white" />
+                {/* Floating objective elements */}
+                <div className="absolute top-3 left-3 w-4 h-4 bg-green-300/25 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
+                <div className="absolute bottom-3 right-3 w-3 h-5 bg-emerald-300/30 rounded animate-float transform -rotate-12" style={{animationDelay: '2.5s'}}></div>
+                
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10 group-hover:text-green-600 transition-colors duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-xl flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                    <Award className="w-5 h-5 text-white" />
                   </div>
                   Objectives
                 </h3>
-                <ul className="space-y-2 text-gray-700 text-left relative z-10">
-                  {mandateContent.objectives.map((item, index) => (
-                    <li key={index} className="flex items-start hover:bg-green-50 p-2 rounded transition-colors duration-200">
-                      <span className="text-green-500 mr-2 font-bold">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200/50 relative z-10">
+                  <ul className="space-y-2 text-gray-700 text-left">
+                    {mandateContent.objectives.map((item, index) => (
+                      <li key={index} className="flex items-start hover:bg-green-100/50 p-2 rounded transition-colors duration-200">
+                        <span className="text-green-500 mr-2 font-bold">•</span>
+                        <span className="leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </Card>
 
-              <Card className="p-6 bg-gradient-to-br from-white to-purple-50 border-l-4 border-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-                {/* Decorative corner */}
-                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-purple-200 to-transparent opacity-30"></div>
+              <Card className="p-6 bg-gradient-to-br from-white to-purple-50 border-l-4 border-purple-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+                {/* Enhanced decorative elements */}
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-200 to-transparent opacity-30 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-indigo-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
                 
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10">
-                  <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
-                    <BookOpen className="w-4 h-4 text-white" />
+                {/* Floating thrust elements */}
+                <div className="absolute top-4 right-4 w-3 h-3 bg-purple-300/30 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute bottom-4 left-4 w-6 h-3 bg-purple-400/20 rounded-full animate-float transform rotate-12" style={{animationDelay: '1s'}}></div>
+                
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center relative z-10 group-hover:text-purple-600 transition-colors duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mr-3 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                    <BookOpen className="w-5 h-5 text-white" />
                   </div>
                   Thrust Areas
                 </h3>
-                <ul className="space-y-2 text-gray-700 text-left relative z-10">
-                  {mandateContent.thrust.map((item, index) => (
-                    <li key={index} className="flex items-start hover:bg-purple-50 p-2 rounded transition-colors duration-200">
-                      <span className="text-purple-500 mr-2 font-bold">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200/50 relative z-10">
+                  <ul className="space-y-2 text-gray-700 text-left">
+                    {mandateContent.thrust.map((item, index) => (
+                      <li key={index} className="flex items-start hover:bg-purple-100/50 p-2 rounded transition-colors duration-200">
+                        <span className="text-purple-500 mr-2 font-bold">•</span>
+                        <span className="leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </Card>
             </div>
           </div>

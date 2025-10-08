@@ -211,38 +211,46 @@ const Research = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-3">{project.title}</h3>
                         <p className="text-gray-700 text-sm mb-4 line-clamp-3">{project.description}</p>
                         
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <User className="w-4 h-4 mr-2" />
-                            <span className="font-medium">PI:</span>
-                            <span className="ml-1">{project.principalInvestigator}</span>
+                        <div className="space-y-3 mb-4">
+                          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-3 rounded-lg border border-blue-200/50">
+                            <div className="flex items-center text-sm text-gray-700">
+                              <User className="w-4 h-4 mr-2 text-blue-600" />
+                              <span className="font-semibold">PI:</span>
+                              <span className="ml-1 font-medium">{project.principalInvestigator}</span>
+                            </div>
                           </div>
                           
                           {project.fundingAgency && (
-                            <div className="flex items-center text-xs">
-                              <Award className="w-3 h-3 mr-2 text-blue-500" />
-                              <span className="text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                                {project.fundingAgency}
-                              </span>
+                            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border border-green-200/50">
+                              <div className="flex items-center text-sm">
+                                <Award className="w-4 h-4 mr-2 text-green-600" />
+                                <span className="text-green-700 font-medium">
+                                  {project.fundingAgency}
+                                </span>
+                              </div>
                             </div>
                           )}
                           
                           {project.budget && (
-                            <div className="flex items-center text-xs">
-                              <DollarSign className="w-3 h-3 mr-2 text-green-500" />
-                              <span className="text-green-600 bg-green-50 px-2 py-1 rounded">
-                                ₹{(project.budget / 100000).toFixed(1)} Lakhs
-                              </span>
+                            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 p-3 rounded-lg border border-orange-200/50">
+                              <div className="flex items-center text-sm">
+                                <DollarSign className="w-4 h-4 mr-2 text-orange-600" />
+                                <span className="text-orange-700 font-medium">
+                                  ₹{(project.budget / 100000).toFixed(1)} Lakhs
+                                </span>
+                              </div>
                             </div>
                           )}
                           
                           {project.duration && (project.duration.startDate || project.duration.endDate) && (
-                            <div className="flex items-center text-xs">
-                              <Calendar className="w-3 h-3 mr-2 text-purple-500" />
-                              <span className="text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                                {project.duration.startDate && new Date(project.duration.startDate).getFullYear()} - 
-                                {project.duration.endDate ? new Date(project.duration.endDate).getFullYear() : 'Ongoing'}
-                              </span>
+                            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200/50">
+                              <div className="flex items-center text-sm">
+                                <Calendar className="w-4 h-4 mr-2 text-purple-600" />
+                                <span className="text-purple-700 font-medium">
+                                  {project.duration.startDate && new Date(project.duration.startDate).getFullYear()} - 
+                                  {project.duration.endDate ? new Date(project.duration.endDate).getFullYear() : 'Ongoing'}
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -333,28 +341,34 @@ const Research = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-3">{publication.title}</h3>
                         <p className="text-gray-700 text-sm mb-4 line-clamp-3">{publication.description}</p>
                         
-                        <div className="space-y-2 mb-4">
-                          <div className="flex items-center text-sm text-gray-600">
-                            <User className="w-4 h-4 mr-2" />
-                            <span className="font-medium">Author:</span>
-                            <span className="ml-1">{publication.principalInvestigator}</span>
+                        <div className="space-y-3 mb-4">
+                          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-3 rounded-lg border border-blue-200/50">
+                            <div className="flex items-center text-sm text-gray-700">
+                              <User className="w-4 h-4 mr-2 text-blue-600" />
+                              <span className="font-semibold">Author:</span>
+                              <span className="ml-1 font-medium">{publication.principalInvestigator}</span>
+                            </div>
                           </div>
                           
                           {publication.journal && (
-                            <div className="flex items-center text-xs">
-                              <BookOpen className="w-3 h-3 mr-2 text-green-500" />
-                              <span className="text-green-600 bg-green-50 px-2 py-1 rounded">
-                                {publication.journal}
-                              </span>
+                            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border border-green-200/50">
+                              <div className="flex items-center text-sm">
+                                <BookOpen className="w-4 h-4 mr-2 text-green-600" />
+                                <span className="text-green-700 font-medium">
+                                  {publication.journal}
+                                </span>
+                              </div>
                             </div>
                           )}
                           
                           {publication.publicationDate && (
-                            <div className="flex items-center text-xs">
-                              <Calendar className="w-3 h-3 mr-2 text-purple-500" />
-                              <span className="text-purple-600 bg-purple-50 px-2 py-1 rounded">
-                                {new Date(publication.publicationDate).getFullYear()}
-                              </span>
+                            <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200/50">
+                              <div className="flex items-center text-sm">
+                                <Calendar className="w-4 h-4 mr-2 text-purple-600" />
+                                <span className="text-purple-700 font-medium">
+                                  {new Date(publication.publicationDate).getFullYear()}
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>

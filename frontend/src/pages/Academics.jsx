@@ -266,20 +266,35 @@ const Academics = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
                     {levelPrograms.map((program, index) => (
-                      <Card key={program._id} className="p-6 bg-gradient-to-br from-white to-gray-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden group">
-                        {/* Decorative corner */}
-                        <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl opacity-20 group-hover:opacity-30 transition-opacity duration-300 ${
+                      <Card key={program._id} className="p-6 bg-gradient-to-br from-white to-gray-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden group hover:scale-105">
+                        {/* Enhanced decorative elements */}
+                        <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl opacity-20 group-hover:opacity-30 transition-opacity duration-300 ${
                           level === 'undergraduate' ? 'from-blue-200' : 
                           level === 'postgraduate' ? 'from-green-200' : 
                           level === 'diploma' ? 'from-orange-200' : 'from-purple-200'
                         } to-transparent`}></div>
+                        <div className={`absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr opacity-15 group-hover:opacity-25 transition-opacity duration-300 ${
+                          level === 'undergraduate' ? 'from-cyan-200' : 
+                          level === 'postgraduate' ? 'from-emerald-200' : 
+                          level === 'diploma' ? 'from-yellow-200' : 'from-pink-200'
+                        } to-transparent`}></div>
                         
-                        {/* Floating decorative dot */}
-                        <div className={`absolute top-3 left-3 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                        {/* Enhanced floating elements */}
+                        <div className={`absolute top-3 left-3 w-3 h-3 rounded-full opacity-40 animate-pulse ${
                           level === 'undergraduate' ? 'bg-blue-400' : 
                           level === 'postgraduate' ? 'bg-green-400' : 
                           level === 'diploma' ? 'bg-orange-400' : 'bg-purple-400'
                         }`} style={{animationDelay: `${index * 0.5}s`}}></div>
+                        <div className={`absolute bottom-4 right-4 w-6 h-3 rounded-full opacity-25 animate-float transform rotate-12 ${
+                          level === 'undergraduate' ? 'bg-blue-300/30' : 
+                          level === 'postgraduate' ? 'bg-green-300/30' : 
+                          level === 'diploma' ? 'bg-orange-300/30' : 'bg-purple-300/30'
+                        }`} style={{animationDelay: `${index * 0.7}s`}}></div>
+                        <div className={`absolute top-1/2 right-2 w-2 h-4 rounded opacity-30 animate-bounce ${
+                          level === 'undergraduate' ? 'bg-cyan-300/25' : 
+                          level === 'postgraduate' ? 'bg-emerald-300/25' : 
+                          level === 'diploma' ? 'bg-yellow-300/25' : 'bg-pink-300/25'
+                        }`} style={{animationDelay: `${index * 0.3}s`}}></div>
                         
                         <div className="flex items-start justify-between mb-4 relative z-10">
                           <div className="flex-1">
@@ -295,9 +310,15 @@ const Academics = () => {
                           </div>
                         </div>
                         
-                        <p className="text-gray-700 text-sm mb-4 line-clamp-3 relative z-10 group-hover:text-gray-800 transition-colors duration-300">
-                          {program.description}
-                        </p>
+                        <div className={`bg-gradient-to-r p-3 rounded-lg border mb-4 relative z-10 ${
+                          level === 'undergraduate' ? 'from-blue-50 to-cyan-50 border-blue-200/50' : 
+                          level === 'postgraduate' ? 'from-green-50 to-emerald-50 border-green-200/50' : 
+                          level === 'diploma' ? 'from-orange-50 to-yellow-50 border-orange-200/50' : 'from-purple-50 to-pink-50 border-purple-200/50'
+                        }`}>
+                          <p className="text-gray-700 text-sm line-clamp-3 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
+                            {program.description}
+                          </p>
+                        </div>
                         
                         <div className="space-y-2 mb-4 relative z-10">
                           {program.duration && (
@@ -408,20 +429,35 @@ const Academics = () => {
               {academicsContent.departments.map((dept, index) => {
                 const IconComponent = getIconComponent(dept.icon)
                 return (
-                  <Card key={index} className="p-6 bg-gradient-to-br from-white to-gray-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
-                    {/* Decorative corner */}
-                    <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl opacity-20 group-hover:opacity-30 transition-opacity duration-300 ${
+                  <Card key={index} className="p-6 bg-gradient-to-br from-white to-gray-50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group hover:scale-105">
+                    {/* Enhanced decorative elements */}
+                    <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl opacity-20 group-hover:opacity-30 transition-opacity duration-300 ${
                       index % 4 === 0 ? 'from-blue-200' : 
                       index % 4 === 1 ? 'from-green-200' : 
                       index % 4 === 2 ? 'from-orange-200' : 'from-purple-200'
                     } to-transparent`}></div>
+                    <div className={`absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr opacity-15 group-hover:opacity-25 transition-opacity duration-300 ${
+                      index % 4 === 0 ? 'from-cyan-200' : 
+                      index % 4 === 1 ? 'from-emerald-200' : 
+                      index % 4 === 2 ? 'from-yellow-200' : 'from-pink-200'
+                    } to-transparent`}></div>
                     
-                    {/* Floating dot */}
-                    <div className={`absolute top-3 left-3 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                    {/* Enhanced floating elements */}
+                    <div className={`absolute top-3 left-3 w-3 h-3 rounded-full opacity-40 animate-pulse ${
                       index % 4 === 0 ? 'bg-blue-400' : 
                       index % 4 === 1 ? 'bg-green-400' : 
                       index % 4 === 2 ? 'bg-orange-400' : 'bg-purple-400'
                     }`} style={{animationDelay: `${index * 0.3}s`}}></div>
+                    <div className={`absolute bottom-4 right-4 w-5 h-3 rounded-full opacity-25 animate-float transform rotate-45 ${
+                      index % 4 === 0 ? 'bg-blue-300/30' : 
+                      index % 4 === 1 ? 'bg-green-300/30' : 
+                      index % 4 === 2 ? 'bg-orange-300/30' : 'bg-purple-300/30'
+                    }`} style={{animationDelay: `${index * 0.6}s`}}></div>
+                    <div className={`absolute top-1/2 right-2 w-2 h-4 rounded opacity-20 animate-bounce ${
+                      index % 4 === 0 ? 'bg-cyan-300/25' : 
+                      index % 4 === 1 ? 'bg-emerald-300/25' : 
+                      index % 4 === 2 ? 'bg-yellow-300/25' : 'bg-pink-300/25'
+                    }`} style={{animationDelay: `${index * 0.4}s`}}></div>
                     
                     <div className="flex items-start space-x-4 relative z-10">
                       <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-md ${
@@ -432,8 +468,14 @@ const Academics = () => {
                         <IconComponent className={`w-6 h-6 ${getIconColor(index)}`} />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">{dept.name}</h3>
-                        <p className="text-gray-700 text-sm group-hover:text-gray-800 transition-colors duration-300">{dept.description}</p>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">{dept.name}</h3>
+                        <div className={`p-3 rounded-lg border ${
+                          index % 4 === 0 ? 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200/50' : 
+                          index % 4 === 1 ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200/50' : 
+                          index % 4 === 2 ? 'bg-gradient-to-r from-orange-50 to-yellow-50 border-orange-200/50' : 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200/50'
+                        }`}>
+                          <p className="text-gray-700 text-sm leading-relaxed group-hover:text-gray-800 transition-colors duration-300">{dept.description}</p>
+                        </div>
                       </div>
                     </div>
                   </Card>
