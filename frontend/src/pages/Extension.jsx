@@ -60,7 +60,7 @@ const Extension = () => {
     )
   }
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-left">
       {/* Hero Section */}
       <section className="bg-blue-600 text-white">
         <div className="container-max section-padding">
@@ -221,9 +221,9 @@ const Extension = () => {
                         <h4 className="font-semibold text-gray-900 mb-3">Key Activities</h4>
                         <ul className="space-y-2">
                           {activity.activities.map((item, idx) => (
-                            <li key={idx} className="flex items-center text-sm text-gray-700">
-                              <ChevronRight className="w-4 h-4 text-blue-500 mr-2" />
-                              {item}
+                            <li key={idx} className="flex items-start text-sm text-gray-700">
+                              <ChevronRight className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
+                              <span>{item}</span>
                             </li>
                           ))}
                         </ul>

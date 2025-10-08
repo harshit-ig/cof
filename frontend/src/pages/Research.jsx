@@ -72,7 +72,7 @@ const Research = () => {
   }, [hash])
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-left">
       {/* Hero Section */}
       <section className="section-padding bg-blue-600 text-white">
         <div className="container-max">

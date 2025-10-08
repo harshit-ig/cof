@@ -120,7 +120,7 @@ const NewsAndEventsDetail = () => {
 
   if (error || !item) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen bg-gray-50 py-12 text-left">
         <div className="container-max text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Item Not Found</h2>
           <p className="text-gray-600 mb-6">{error || 'The requested item could not be found.'}</p>
@@ -137,19 +137,7 @@ const NewsAndEventsDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb Header */}
-      <div className="bg-white shadow-sm">
-        <div className="container-max py-4">
-          <button
-            onClick={() => navigate('/news-and-events')}
-            className="inline-flex items-center text-gray-600 hover:text-blue-600 font-medium transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to All News & Events
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50 text-left">
 
       {/* Main Content */}
       <div className="container-max py-8">

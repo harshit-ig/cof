@@ -198,7 +198,7 @@ const About = () => {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Message from the Dean</h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-4 text-left">
                 {welcomeData.welcomeMessage}
               </p>
               <div className="border-t pt-4 mt-6">
@@ -219,20 +219,24 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Eye className="w-6 h-6 text-blue-500" />
+            <Card className="p-6">
+              <div className="text-center mb-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Eye className="w-6 h-6 text-blue-500" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
-              <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
+              <div className="text-gray-700 text-left" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
             </Card>
             
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Target className="w-6 h-6 text-secondary-600" />
+            <Card className="p-6">
+              <div className="text-center mb-4">
+                <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-6 h-6 text-secondary-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Our Mission</h3>
-              <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.mission }} />
+              <div className="text-gray-700 text-left" dangerouslySetInnerHTML={{ __html: aboutContent.mission }} />
             </Card>
           </div>
         </div>
@@ -248,7 +252,7 @@ const About = () => {
           
           <div className="max-w-4xl mx-auto">
             <Card className="p-8">
-              <div className="prose prose-lg max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.history }} />
+              <div className="prose prose-lg max-w-none text-gray-700 text-left" dangerouslySetInnerHTML={{ __html: aboutContent.history }} />
             </Card>
           </div>
         </div>
@@ -269,7 +273,7 @@ const About = () => {
                 <Target className="w-6 h-6 text-blue-500 mr-2" />
                 Core Mandate
               </h3>
-              <ul className="space-y-3 text-gray-700">
+              <ul className="space-y-3 text-gray-700 text-left">
                 {mandateContent.core.map((item, index) => (
                   <li key={index} className="flex items-start">
                     <span className="text-blue-500 mr-2">•</span>
@@ -286,7 +290,7 @@ const About = () => {
                   <Award className="w-6 h-6 text-green-500 mr-2" />
                   Objectives
                 </h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-gray-700 text-left">
                   {mandateContent.objectives.map((item, index) => (
                     <li key={index} className="flex items-start">
                       <span className="text-green-500 mr-2">•</span>
@@ -301,7 +305,7 @@ const About = () => {
                   <BookOpen className="w-6 h-6 text-purple-500 mr-2" />
                   Thrust Areas
                 </h3>
-                <ul className="space-y-2 text-gray-700">
+                <ul className="space-y-2 text-gray-700 text-left">
                   {mandateContent.thrust.map((item, index) => (
                     <li key={index} className="flex items-start">
                       <span className="text-purple-500 mr-2">•</span>

@@ -76,7 +76,7 @@ const StudentCorner = () => {
 
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-left">
       {/* Hero Section */}
       <section className="bg-blue-600 text-white">
         <div className="container-max section-padding">
@@ -125,8 +125,8 @@ const StudentCorner = () => {
                     <ul className="space-y-2">
                       {guideline.guidelines && guideline.guidelines.map((item, idx) => (
                         <li key={idx} className="flex items-start text-sm text-gray-700">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 mt-2"></div>
-                          {item}
+                          <div className="w-2 h-2 bg-blue-400 rounded-full mr-3 mt-1.5 flex-shrink-0"></div>
+                          <span>{item}</span>
                         </li>
                       ))}
                     </ul>

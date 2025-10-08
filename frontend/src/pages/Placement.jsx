@@ -681,7 +681,7 @@ const Placement = () => {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-left">
       {/* Hero Section */}
       <section className="bg-blue-600 text-white py-20">
         <div className="container-max">

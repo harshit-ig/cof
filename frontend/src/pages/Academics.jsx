@@ -234,7 +234,7 @@ const Academics = () => {
                     })}
                     {level === 'postgraduate' ? 'Postgraduate Programs' : `${level} Programs`}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
                     {levelPrograms.map((program) => (
                       <Card key={program._id} className="p-6 hover:shadow-lg transition-shadow">
                         <div className="flex items-start justify-between mb-4">
@@ -336,14 +336,18 @@ const Academics = () => {
               <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
               {academicsContent.departments.map((dept, index) => {
                 const IconComponent = getIconComponent(dept.icon)
                 return (
                   <Card key={index} className="p-6">
-                    <IconComponent className={`w-8 h-8 mb-3 ${getIconColor(index)}`} />
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
-                    <p className="text-gray-700 text-sm">{dept.description}</p>
+                    <div className="flex items-start space-x-4">
+                      <IconComponent className={`w-8 h-8 mt-1 flex-shrink-0 ${getIconColor(index)}`} />
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
+                        <p className="text-gray-700 text-sm">{dept.description}</p>
+                      </div>
+                    </div>
                   </Card>
                 )
               })}
@@ -394,7 +398,7 @@ const Academics = () => {
                 <Card key={index} className="p-6 text-center">
                   <FileText className={`w-8 h-8 mx-auto mb-3 ${getIconColor(index)}`} />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{regulation.title}</h3>
-                  <p className="text-gray-700 text-sm">{regulation.description}</p>
+                  <p className="text-gray-700 text-sm text-left">{regulation.description}</p>
                 </Card>
               ))}
             </div>

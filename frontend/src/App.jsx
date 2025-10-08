@@ -13,10 +13,8 @@ import About from './pages/About'
 import ProgramDetail from './pages/ProgramDetail'
 import Faculty from './pages/Faculty_Dynamic'
 import Research from './pages/Research'
-import ResearchDetail from './pages/ResearchDetail'
 import Extension from './pages/Extension'
 import Infrastructure from './pages/Infrastructure'
-import InfrastructureDetail from './pages/InfrastructureDetail'
 import Incubation from './pages/Incubation'
 import NewsAndEvents from './pages/NewsAndEvents'
 import NewsAndEventsDetail from './pages/NewsAndEventsDetail'
@@ -78,10 +76,8 @@ function App() {
                   <Route path="/programs/:slug" element={<ProgramDetail />} />
                   <Route path="/faculty" element={<Faculty />} />
                   <Route path="/research" element={<Research />} />
-                  <Route path="/research/:id" element={<ResearchDetail />} />
                   <Route path="/extension" element={<Extension />} />
                   <Route path="/infrastructure" element={<Infrastructure />} />
-                  <Route path="/infrastructure/:id" element={<InfrastructureDetail />} />
                   <Route path="/incubation" element={<Incubation />} />
                   <Route path="/student-corner" element={<StudentCorner />} />
                   <Route path="/placement" element={<Placement />} />

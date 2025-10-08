@@ -90,7 +90,7 @@ const ProgramDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 text-left">
       {/* Hero Section */}
       <Section background="bg-blue-600">
         <div className="text-center text-white">

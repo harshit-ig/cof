@@ -166,7 +166,7 @@ const Alumni = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen text-left">
       {/* Hero Section */}
             <section className="section-padding bg-blue-600 text-white">
         <div className="container-max">
@@ -257,7 +257,7 @@ const Alumni = () => {
                       <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-700 text-sm italic">"{testimonial.testimonial || testimonial.description}"</p>
+                  <p className="text-gray-700 text-sm italic text-left">"{testimonial.testimonial || testimonial.description}"</p>
                 </Card>
               ))}
             </div>

@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-gray-300">
+            <ul className="space-y-2 text-gray-300 text-left">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
@@ -98,7 +98,7 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Info</h3>
-            <p className="text-gray-300">
+            <p className="text-gray-300 text-left">
               {address}<br />
               Phone: {contactPhone}<br />
               Email: {contactEmail}
@@ -106,7 +106,7 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center">
               {socialMedia.facebook && (
                 <a
                   href={socialMedia.facebook}

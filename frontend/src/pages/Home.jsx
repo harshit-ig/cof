@@ -173,7 +173,7 @@ const Home = () => {
                     />
                   </div>
                   
-                  <div className="md:col-span-2">
+                  <div className="text-left md:col-span-2">
                     <blockquote className="text-gray-700 text-lg leading-relaxed italic mb-4">
                       "{truncateText(welcomeData.welcomeMessage, 180)}"
                     </blockquote>
@@ -222,7 +222,7 @@ const Home = () => {
                   <div className="space-y-4">
                     {latestNews.length > 0 ? (
                       latestNews.map((news, index) => (
-                        <div key={index} className="border-l-4 border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
+                        <div key={index} className="border-l-4  text-left border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
                           <h4 className="font-medium text-gray-900 mb-1">
                             <Link to={`/news-and-events/${news.slug || news._id}`} className="hover:text-green-700">
                               {news.title}
@@ -263,7 +263,7 @@ const Home = () => {
                         className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors group"
                       >
                         <IconComponent className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                        <div className="flex-1">
+                        <div className="flex-1  text-left">
                           <h4 className="font-medium text-gray-900 group-hover:text-green-700 mb-1">
                             {link.title}
                           </h4>
@@ -278,7 +278,7 @@ const Home = () => {
 
               {/* Important Notices */}
               {importantNotices.length > 0 && (
-                <div className="space-y-4">
+                <div className="space-y-4  text-left">
                   {importantNotices.map((notice) => (
                     <Card key={notice.id} className="bg-blue-50 border border-blue-200">
                       <div className="flex items-center mb-3">
