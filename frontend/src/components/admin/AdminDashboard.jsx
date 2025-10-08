@@ -107,55 +107,55 @@ const DashboardHome = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
+        <h1 className="text-3xl font-bold text-navy-900">Dashboard Overview</h1>
         <p className="text-gray-600 mt-2">Welcome back! Here's what's happening with your college.</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-gradient-to-br from-primary-50 to-primary-100 p-6 rounded-xl shadow-sm border border-primary-200">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <BookOpen className="h-6 w-6 text-blue-500" />
+            <div className="p-2 bg-primary-200 rounded-lg">
+              <BookOpen className="h-6 w-6 text-primary-700" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Programs</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.programs}</p>
+              <p className="text-sm font-medium text-primary-600">Total Programs</p>
+              <p className="text-2xl font-bold text-navy-900">{stats.programs}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 p-6 rounded-xl shadow-sm border border-secondary-200">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Users className="h-6 w-6 text-green-600" />
+            <div className="p-2 bg-secondary-200 rounded-lg">
+              <Users className="h-6 w-6 text-secondary-700" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Faculty Members</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.faculty}</p>
+              <p className="text-sm font-medium text-secondary-600">Faculty Members</p>
+              <p className="text-2xl font-bold text-navy-900">{stats.faculty}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-gradient-to-br from-accent-50 to-accent-100 p-6 rounded-xl shadow-sm border border-accent-200">
           <div className="flex items-center">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <Newspaper className="h-6 w-6 text-yellow-600" />
+            <div className="p-2 bg-accent-200 rounded-lg">
+              <Newspaper className="h-6 w-6 text-accent-700" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">News Articles</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.news}</p>
+              <p className="text-sm font-medium text-accent-600">News Articles</p>
+              <p className="text-2xl font-bold text-navy-900">{stats.news}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="bg-gradient-to-br from-government-50 to-government-100 p-6 rounded-xl shadow-sm border border-government-200">
           <div className="flex items-center">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <Calendar className="h-6 w-6 text-purple-600" />
+            <div className="p-2 bg-government-200 rounded-lg">
+              <Calendar className="h-6 w-6 text-government-700" />
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Events</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.events}</p>
+              <p className="text-sm font-medium text-government-600">Events</p>
+              <p className="text-2xl font-bold text-navy-900">{stats.events}</p>
             </div>
           </div>
         </div>
@@ -262,7 +262,7 @@ const AdminSettings = () => {
                 onClick={() => setActiveTab(tab.id)}
                 className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
                   activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
@@ -600,7 +600,7 @@ const AdminSettings = () => {
           <button
             type="submit"
             disabled={saving}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            className="bg-primary-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2 shadow-lg hover:shadow-xl"
           >
             {saving && (
               <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -655,7 +655,7 @@ const AdminDashboard = () => {
       <div className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? '' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         
-        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white shadow-xl">
+        <div className="relative flex-1 flex flex-col max-w-xs w-full bg-gradient-to-b from-navy-900 to-navy-800 shadow-xl">
           <div className="absolute top-0 right-0 -mr-12 pt-2">
             <button
               className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
@@ -669,12 +669,12 @@ const AdminDashboard = () => {
           <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
             <div className="flex-shrink-0 flex items-center px-4">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">FC</span>
                 </div>
                 <div className="ml-3">
-                  <h1 className="text-lg font-semibold text-gray-900">Fishery College</h1>
-                  <p className="text-sm text-gray-500">Admin Panel</p>
+                  <h1 className="text-lg font-semibold text-white">Fishery College</h1>
+                  <p className="text-sm text-primary-200">Admin Panel</p>
                 </div>
               </div>
             </div>
@@ -690,11 +690,11 @@ const AdminDashboard = () => {
                     onClick={() => setSidebarOpen(false)}
                     className={`${
                       active
-                        ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        ? 'bg-primary-600/20 text-white border-l-4 border-primary-400'
+                        : 'text-gray-300 hover:bg-navy-700 hover:text-white'
                     } group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200`}
                   >
-                    <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                    <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-primary-300' : 'text-gray-400 group-hover:text-gray-300'}`} />
                     {item.name}
                   </Link>
                 )
@@ -703,16 +703,16 @@ const AdminDashboard = () => {
           </div>
           
           {/* Mobile User Profile */}
-          <div className="flex-shrink-0 border-t border-gray-200 p-4">
+          <div className="flex-shrink-0 border-t border-navy-700 p-4">
             <div className="flex items-center">
-              <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                <User className="h-5 w-5 text-gray-600" />
+              <div className="w-10 h-10 bg-navy-600 rounded-full flex items-center justify-center">
+                <User className="h-5 w-5 text-gray-300" />
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-700">{admin?.username || 'Admin'}</p>
+                <p className="text-sm font-medium text-white">{admin?.username || 'Admin'}</p>
                 <button
                   onClick={handleLogout}
-                  className="text-xs text-gray-500 hover:text-red-600 flex items-center mt-1 transition-colors"
+                  className="text-xs text-gray-400 hover:text-red-400 flex items-center mt-1 transition-colors"
                 >
                   <LogOut className="h-3 w-3 mr-1" />
                   Logout
@@ -723,20 +723,19 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Desktop sidebar */}
       <div className="hidden md:flex md:flex-shrink-0">
         <div className="flex flex-col w-64">
-          <div className="flex flex-col h-0 flex-1 bg-white shadow-lg border-r border-gray-200">
+          <div className="flex flex-col h-0 flex-1 bg-gradient-to-b from-navy-900 to-navy-800 shadow-lg">
             {/* Logo/Header */}
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <div className="flex items-center">
-                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold">FC</span>
                   </div>
                   <div className="ml-3">
-                    <h1 className="text-lg font-semibold text-gray-900">Fishery College</h1>
-                    <p className="text-sm text-gray-500">Admin Panel</p>
+                    <h1 className="text-lg font-semibold text-white">Fishery College</h1>
+                    <p className="text-sm text-primary-200">Admin Panel</p>
                   </div>
                 </div>
               </div>
@@ -752,11 +751,11 @@ const AdminDashboard = () => {
                       to={item.href}
                       className={`${
                         active
-                          ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-600'
-                          : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                          ? 'bg-primary-600/20 text-white border-l-4 border-primary-400'
+                          : 'text-gray-300 hover:bg-navy-700 hover:text-white'
                       } group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200`}
                     >
-                      <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                      <Icon className={`mr-3 flex-shrink-0 h-5 w-5 ${active ? 'text-primary-300' : 'text-gray-400 group-hover:text-gray-300'}`} />
                       {item.name}
                     </Link>
                   )
@@ -765,16 +764,16 @@ const AdminDashboard = () => {
             </div>
             
             {/* User Profile */}
-            <div className="flex-shrink-0 border-t border-gray-200 p-4">
+            <div className="flex-shrink-0 border-t border-navy-700 p-4">
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                  <User className="h-5 w-5 text-gray-600" />
+                <div className="w-10 h-10 bg-navy-600 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-gray-300" />
                 </div>
                 <div className="ml-3 flex-1">
-                  <p className="text-sm font-medium text-gray-700">{admin?.username || 'Admin'}</p>
+                  <p className="text-sm font-medium text-white">{admin?.username || 'Admin'}</p>
                   <button
                     onClick={handleLogout}
-                    className="text-xs text-gray-500 hover:text-red-600 flex items-center mt-1 transition-colors"
+                    className="text-xs text-gray-400 hover:text-red-400 flex items-center mt-1 transition-colors"
                   >
                     <LogOut className="h-3 w-3 mr-1" />
                     Logout

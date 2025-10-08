@@ -304,7 +304,7 @@ const Placement = () => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
+        className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
       >
         {loading ? (
           <>
@@ -472,7 +472,7 @@ const Placement = () => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
+        className="w-full bg-secondary-600 hover:bg-secondary-700 disabled:bg-secondary-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
       >
         {loading ? (
           <>
@@ -663,7 +663,7 @@ const Placement = () => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
+        className="w-full bg-accent-500 hover:bg-accent-600 disabled:bg-accent-400 text-white py-3 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors"
       >
         {loading ? (
           <>
@@ -683,13 +683,13 @@ const Placement = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white py-20">
+      <section className="bg-gradient-to-r from-accent-500 to-accent-600 text-white py-20">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Join Our Team
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-white/90 mb-8">
               Explore career opportunities, apply for positions, and kickstart your journey with internships at College of Fishery, Jabalpur
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -723,14 +723,14 @@ const Placement = () => {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-3 px-6 py-4 rounded-xl font-medium transition-all ${
                     activeTab === tab.id
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-50'
+                      ? 'bg-primary-600 text-white shadow-lg'
+                      : 'text-gray-600 hover:bg-primary-50'
                   }`}
                 >
                   <IconComponent className="w-5 h-5" />
                   <div className="text-left">
                     <div className="font-semibold">{tab.label}</div>
-                    <div className={`text-xs ${activeTab === tab.id ? 'text-blue-100' : 'text-gray-500'}`}>
+                    <div className={`text-xs ${activeTab === tab.id ? 'text-primary-100' : 'text-gray-500'}`}>
                       {tab.description}
                     </div>
                   </div>
@@ -744,7 +744,7 @@ const Placement = () => {
             {activeTab === 'join-us' && (
               <div>
                 <div className="text-center mb-8">
-                  <Users className="w-16 h-16 text-blue-600 mx-auto mb-4" />
+                  <Users className="w-16 h-16 text-primary-600 mx-auto mb-4" />
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Us Now</h2>
                   <p className="text-gray-600">
                     Apply for immediate job openings at College of Fishery, Jabalpur. We're always looking for passionate individuals to join our team.
@@ -757,7 +757,7 @@ const Placement = () => {
             {activeTab === 'careers' && (
               <div>
                 <div className="text-center mb-8">
-                  <Briefcase className="w-16 h-16 text-green-600 mx-auto mb-4" />
+                  <Briefcase className="w-16 h-16 text-secondary-600 mx-auto mb-4" />
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">Career Opportunities</h2>
                   <p className="text-gray-600">
                     Explore long-term career opportunities and build your professional journey with us. We offer growth-oriented positions across various departments.
@@ -770,7 +770,7 @@ const Placement = () => {
             {activeTab === 'internship' && (
               <div>
                 <div className="text-center mb-8">
-                  <GraduationCap className="w-16 h-16 text-purple-600 mx-auto mb-4" />
+                  <GraduationCap className="w-16 h-16 text-accent-600 mx-auto mb-4" />
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">Internship Programs</h2>
                   <p className="text-gray-600">
                     Gain practical experience and enhance your skills through our comprehensive internship programs. Perfect for students and recent graduates.

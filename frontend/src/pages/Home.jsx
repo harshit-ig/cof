@@ -151,16 +151,16 @@ const Home = () => {
       <HeroSlideshow />
 
       {/* Dean's Welcome Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gradient-to-br from-secondary-100 to-government-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Dean's Welcome Message */}
             <div className="lg:col-span-2">
-              <Card className="mb-8">
+              <Card className="mb-8 bg-government-50 border-l-4 border-primary-500">
                 <div className="flex items-center mb-6">
-                  <div className="w-1 h-8 bg-blue-600 rounded mr-3"></div>
-                  <h2 className="text-2xl font-bold text-gray-900">Welcome from the Dean</h2>
+                  <div className="w-1 h-8 bg-primary-600 rounded mr-3"></div>
+                  <h2 className="text-2xl font-bold text-navy-900">Welcome from the Dean</h2>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -192,7 +192,7 @@ const Home = () => {
                     
                     <Link
                       to="/about"
-                      className="inline-flex items-center mt-4 text-blue-700 hover:text-blue-800 font-medium"
+                      className="inline-flex items-center mt-4 text-primary-600 hover:text-primary-700 font-medium"
                     >
                       Read Full Message
                       <ChevronRight className="ml-1 h-4 w-4" />
@@ -202,22 +202,22 @@ const Home = () => {
               </Card>
 
               {/* Latest Updates */}
-              <Card>
+              <Card className="bg-white">
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center">
-                    <Bell className="w-5 h-5 text-green-600 mr-2" />
-                    <h3 className="text-xl font-semibold text-gray-900">Latest Updates & Announcements</h3>
+                    <Bell className="w-5 h-5 text-secondary-600 mr-2" />
+                    <h3 className="text-xl font-semibold text-navy-900">Latest Updates & Announcements</h3>
                   </div>
                   <Link
                     to="/news-and-events"
-                    className="text-green-700 hover:text-green-800 text-sm font-medium"
+                    className="text-secondary-700 hover:text-secondary-800 text-sm font-medium"
                   >
                     View All
                   </Link>
                 </div>
                 
                 {loading ? (
-                  <div className="space-y-4">
+                      <div className="space-y-4">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="animate-pulse">
                         <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
@@ -229,9 +229,9 @@ const Home = () => {
                   <div className="space-y-4">
                     {latestNews.length > 0 ? (
                       latestNews.map((news, index) => (
-                        <div key={index} className="border-l-4 border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
+                        <div key={index} className="border-l-4 border-accent-500 pl-4 py-2 hover:bg-primary-50 transition-colors">
                           <h4 className="font-medium text-gray-900 mb-1">
-                            <Link to={`/news-and-events/${news.slug || news._id}`} className="hover:text-green-700">
+                            <Link to={`/news-and-events/${news.slug || news._id}`} className="hover:text-primary-700">
                               {news.title}
                             </Link>
                           </h4>
@@ -247,22 +247,22 @@ const Home = () => {
                       ))
                     ) : (
                       <div className="space-y-4">
-                        <div className="border-l-4 border-yellow-500 pl-4 py-2">
+                        <div className="border-l-4 border-secondary-500 pl-4 py-2">
                           <h4 className="font-medium text-gray-900 mb-1">Academic Calendar 2025-26</h4>
                           <p className="text-sm text-gray-600 mb-1">New academic session begins with orientation program</p>
                           <p className="text-xs text-gray-500">September 15, 2025</p>
                         </div>
-                        <div className="border-l-4 border-blue-500 pl-4 py-2">
+                        <div className="border-l-4 border-primary-500 pl-4 py-2">
                           <h4 className="font-medium text-gray-900 mb-1">Admission Open for B.F.Sc Program</h4>
                           <p className="text-sm text-gray-600 mb-1">Applications are now being accepted for the new session</p>
                           <p className="text-xs text-gray-500">August 20, 2025</p>
                         </div>
-                        <div className="border-l-4 border-green-500 pl-4 py-2">
+                        <div className="border-l-4 border-accent-500 pl-4 py-2">
                           <h4 className="font-medium text-gray-900 mb-1">Research Conference on Aquaculture</h4>
                           <p className="text-sm text-gray-600 mb-1">International conference on sustainable fishery practices</p>
                           <p className="text-xs text-gray-500">August 25, 2025</p>
                         </div>
-                        <div className="border-l-4 border-purple-500 pl-4 py-2">
+                        <div className="border-l-4 border-secondary-500 pl-4 py-2">
                           <h4 className="font-medium text-gray-900 mb-1">New Research Publications</h4>
                           <p className="text-sm text-gray-600 mb-1">Faculty publications in international journals</p>
                           <p className="text-xs text-gray-500">August 18, 2025</p>
@@ -286,16 +286,16 @@ const Home = () => {
                       <Link
                         key={index}
                         to={link.href}
-                        className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                        className="flex items-start p-3 rounded-lg hover:bg-primary-50 transition-colors group"
                       >
-                        <IconComponent className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
+                        <IconComponent className="w-5 h-5 text-primary-600 mr-3 mt-0.5 flex-shrink-0" />
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900 group-hover:text-green-700 mb-1">
+                          <h4 className="font-medium text-gray-900 group-hover:text-primary-700 mb-1">
                             {link.title}
                           </h4>
                           <p className="text-sm text-gray-600">{link.description}</p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 mt-1" />
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-primary-600 mt-1" />
                       </Link>
                     )
                   })}
@@ -306,9 +306,9 @@ const Home = () => {
               {importantNotices.length > 0 && (
                 <div className="space-y-4">
                   {importantNotices.map((notice) => (
-                    <Card key={notice.id} className="bg-blue-50 border border-blue-200">
+                    <Card key={notice.id} className="bg-primary-50 border border-primary-200">
                       <div className="flex items-center mb-3">
-                        <FileText className="w-5 h-5 text-blue-600 mr-2" />
+                        <FileText className="w-5 h-5 text-primary-600 mr-2" />
                         <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
                       </div>
                       <p className="text-gray-700 mb-3">
@@ -316,7 +316,7 @@ const Home = () => {
                       </p>
                       <Link
                         to={notice.link}
-                        className="inline-flex items-center text-blue-700 hover:text-blue-800 font-medium"
+                        className="inline-flex items-center text-primary-700 hover:text-primary-800 font-medium"
                       >
                         {notice.linkText}
                         <ExternalLink className="ml-1 h-4 w-4" />

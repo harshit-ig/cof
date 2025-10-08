@@ -176,13 +176,13 @@ const Academics = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-            <section className="section-padding bg-blue-600 text-white">
+            <section className="section-padding bg-gradient-to-r from-primary-600 to-navy-700 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Academics
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8">
               Quality Education in Fishery Science & Aquaculture
             </p>
           </div>
@@ -194,8 +194,8 @@ const Academics = () => {
       <section id="programs" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Programs Offered</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Programs Offered</h2>
+            <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
             <p className="text-gray-600 mt-4">Explore our comprehensive range of academic programs</p>
           </div>
           
@@ -236,12 +236,12 @@ const Academics = () => {
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {levelPrograms.map((program) => (
-                      <Card key={program._id} className="p-6 hover:shadow-lg transition-shadow">
+                      <Card key={program._id} className="p-6 hover:shadow-2xl transition-shadow bg-white border border-primary-200">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex-1">
                             <h4 className="text-lg font-semibold text-gray-900 mb-1">{program.title}</h4>
                             {program.shortName && (
-                              <p className="text-blue-600 text-sm font-medium">{program.shortName}</p>
+                              <p className="text-primary-600 text-sm font-medium">{program.shortName}</p>
                             )}
                           </div>
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getLevelColor(level)}`}>
@@ -273,13 +273,13 @@ const Academics = () => {
                         <div className="flex space-x-2">
                           <Link
                             to={`/programs/${program.slug || program._id}`}
-                            className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors text-center"
+                            className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors text-center"
                           >
                             View Details
                           </Link>
                           <button
                             onClick={() => handleApplyClick(program)}
-                            className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                            className="flex-1 bg-accent-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent-600 transition-colors"
                           >
                             Apply
                           </button>
@@ -294,7 +294,7 @@ const Academics = () => {
               <div className="text-center mt-8">
                 <Link
                   to="/academics#programs"
-                  className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
                 >
                   View All Programs
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -307,11 +307,11 @@ const Academics = () => {
 
       {/* Academic Calendar */}
       {academicsContent?.calendar?.events && (
-        <section id="calendar" className="section-padding bg-white">
+        <section id="calendar" className="section-padding bg-government-100">
           <div className="container-max">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Academic Calendar</h2>
-              <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+              <h2 className="text-2xl font-bold text-navy-900 mb-2">Academic Calendar</h2>
+              <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -332,8 +332,8 @@ const Academics = () => {
         <section id="departments" className="section-padding bg-gray-50">
           <div className="container-max">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Departments</h2>
-              <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+              <h2 className="text-2xl font-bold text-navy-900 mb-2">Departments</h2>
+              <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -356,22 +356,22 @@ const Academics = () => {
 
       {/* Faculty Directory */}
       {academicsContent?.faculty && (
-        <section id="faculty" className="section-padding bg-gray-50">
+        <section id="faculty" className="section-padding bg-primary-50">
           <div className="container-max">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Faculty Directory</h2>
-              <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+              <h2 className="text-2xl font-bold text-navy-900 mb-2">Faculty Directory</h2>
+              <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
             </div>
             
             <Card className="p-6 text-center">
-              <Users className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+              <Users className="w-12 h-12 text-primary-600 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">{academicsContent.faculty.title}</h3>
               <p className="text-gray-700 text-sm mb-4">
                 {academicsContent.faculty.description}
               </p>
               <Link
                 to="/faculty"
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors"
               >
                 View Faculty Profiles
               </Link>
@@ -385,8 +385,8 @@ const Academics = () => {
         <section id="regulations" className="section-padding bg-white">
           <div className="container-max">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Academic Regulations</h2>
-              <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+              <h2 className="text-2xl font-bold text-navy-900 mb-2">Academic Regulations</h2>
+              <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

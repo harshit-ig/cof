@@ -72,23 +72,23 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-gray-800 text-white py-8">
+    <footer className="bg-gradient-to-br from-navy-900 via-navy-800 to-navy-900 text-white py-8">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-xl font-bold mb-4">{siteName}</h3>
-            <p className="text-gray-300">
+            <p className="text-navy-100">
               Leading institution in fishery education and research
             </p>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2 text-gray-300">
+            <ul className="space-y-2 text-navy-100">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
-                    className="text-gray-300 hover:text-primary-400 transition-colors text-sm"
+                    className="hover:text-primary-300 transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -98,7 +98,7 @@ const Footer = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Info</h3>
-            <p className="text-gray-300">
+            <p className="text-navy-100">
               {address}<br />
               Phone: {contactPhone}<br />
               Email: {contactEmail}
@@ -112,7 +112,7 @@ const Footer = () => {
                   href={socialMedia.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                  className="text-navy-100 hover:text-primary-300 transition-colors"
                 >
                   <Facebook className="w-6 h-6" />
                 </a>
@@ -122,7 +122,7 @@ const Footer = () => {
                   href={socialMedia.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                  className="text-navy-100 hover:text-primary-300 transition-colors"
                 >
                   <Twitter className="w-6 h-6" />
                 </a>
@@ -132,7 +132,7 @@ const Footer = () => {
                   href={socialMedia.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
+                  className="text-navy-100 hover:text-primary-300 transition-colors"
                 >
                   <Linkedin className="w-6 h-6" />
                 </a>
@@ -142,7 +142,7 @@ const Footer = () => {
                   href={socialMedia.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-pink-400 transition-colors"
+                  className="text-navy-100 hover:text-accent-400 transition-colors"
                 >
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.017 0C8.396 0 7.931.013 6.727.06 5.525.107 4.73.28 4.088.527a5.82 5.82 0 0 0-2.119 1.442A5.82 5.82 0 0 0 .527 4.088C.28 4.73.107 5.526.06 6.727.013 7.931 0 8.396 0 12.017s.013 4.086.06 5.29c.047 1.201.22 1.997.467 2.64a5.82 5.82 0 0 0 1.442 2.118 5.82 5.82 0 0 0 2.119 1.442c.642.247 1.438.42 2.64.467 1.204.047 1.669.06 5.29.06s4.086-.013 5.29-.06c1.201-.047 1.997-.22 2.64-.467a5.82 5.82 0 0 0 2.118-1.442 5.82 5.82 0 0 0 1.442-2.118c.247-.643.42-1.44.467-2.64.047-1.204.06-1.669.06-5.29s-.013-4.086-.06-5.29c-.047-1.201-.22-1.997-.467-2.64a5.82 5.82 0 0 0-1.442-2.119A5.82 5.82 0 0 0 19.947.527c-.643-.247-1.44-.42-2.64-.467C16.103.013 15.638 0 12.017 0zm0 2.164c3.548 0 3.97.014 5.367.06 1.296.059 2.003.276 2.472.458a4.142 4.142 0 0 1 1.528.993 4.142 4.142 0 0 1 .993 1.528c.182.469.399 1.176.458 2.472.046 1.397.06 1.819.06 5.367s-.014 3.97-.06 5.367c-.059 1.296-.276 2.003-.458 2.472a4.142 4.142 0 0 1-.993 1.528 4.142 4.142 0 0 1-1.528.993c-.469.182-1.176.399-2.472.458-1.397.046-1.819.06-5.367.06s-3.97-.014-5.367-.06c-1.296-.059-2.003-.276-2.472-.458a4.142 4.142 0 0 1-1.528-.993 4.142 4.142 0 0 1-.993-1.528c-.182-.469-.399-1.176-.458-2.472-.046-1.397-.06-1.819-.06-5.367s.014-3.97.06-5.367c.059-1.296.276-2.003.458-2.472a4.142 4.142 0 0 1 .993-1.528A4.142 4.142 0 0 1 4.688 2.682c.469-.182 1.176-.399 2.472-.458 1.397-.046 1.819-.06 5.367-.06z"/>
@@ -176,7 +176,7 @@ const Footer = () => {
                   href={getMapUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-3 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+                  className="inline-flex items-center px-3 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors"
                 >
                   <MapPin className="w-4 h-4 mr-2" />
                   Open in Google Maps
@@ -185,7 +185,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+        <div className="border-t border-navy-700 mt-8 pt-8 text-center text-navy-100">
           <p>&copy; {currentYear} {siteName}. All rights reserved.</p>
           {footerText && footerText !== `${siteName} - Excellence in Fishery Education & Research` && (
             <p className="mt-2 text-sm">{footerText}</p>

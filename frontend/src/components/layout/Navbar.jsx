@@ -233,8 +233,7 @@ const Navbar = () => {
   return (
     <>
       {/* Top Banner - matches reference image, now responsive for mobile */}
-      <div className="w-full border-b-4 border-blue-600" style={{
-        background: 'linear-gradient(90deg, #e3f0fa 0%, #cbe2f6 100%)',
+      <div className="w-full border-b-4 border-primary-400 bg-gradient-to-r from-navy-800 via-navy-700 to-navy-800" style={{
         minHeight: '80px',
         padding: 0
       }}>
@@ -251,9 +250,9 @@ const Navbar = () => {
             </div>
             {/* Centered Text */}
             <div className="flex flex-col items-center flex-1 px-1 sm:px-2 md:px-6 py-1 sm:py-2 md:py-6">
-              <span className="text-[#2580c2] text-xs xs:text-lg sm:text-lg md:text-xl lg:text-3xl xl:text-4xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE, JABALPUR</span>
-              <span className="text-[#2580c2] text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय, जबलपुर</span>
-              <span className="text-[#1a3570] text-[10px] xs:text-xs sm:text-base md:text-lg lg:text-2xl font-bold mt-1 sm:mt-2 text-center" style={{fontFamily: 'serif', letterSpacing: '0.5px'}}>NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR</span>
+              <span className="text-primary-200 text-xs xs:text-lg sm:text-lg md:text-xl lg:text-3xl xl:text-4xl font-bold tracking-wide leading-tight text-center whitespace-nowrap" style={{fontFamily: 'serif'}}>COLLEGE OF FISHERY SCIENCE, JABALPUR</span>
+              <span className="text-primary-200 text-xs xs:text-base sm:text-lg md:text-2xl lg:text-4xl font-bold leading-tight text-center" style={{fontFamily: 'serif'}}>मत्स्य विज्ञान महाविद्यालय, जबलपुर</span>
+              <span className="text-navy-100 text-[10px] xs:text-xs sm:text-base md:text-lg lg:text-2xl font-bold mt-1 sm:mt-2 text-center" style={{fontFamily: 'serif', letterSpacing: '0.5px'}}>NANAJI DESHMUKH VETERINARY SCIENCE UNIVERSITY, JABALPUR</span>
             </div>
             {/* Right Logo */}
             <div className="flex-shrink-0 flex items-center h-full pr-1 sm:pr-2 md:pr-6">
@@ -269,7 +268,7 @@ const Navbar = () => {
       </div>
 
       {/* Navigation Menu - sticks to top */}
-            <nav className="bg-blue-800 sticky top-0 z-50 shadow-lg">
+            <nav className="bg-navy-700 sticky top-0 z-50 shadow-lg">
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             {/* Mobile menu button */}
@@ -298,10 +297,10 @@ const Navbar = () => {
                 {item.dropdown ? (
                   <div className="relative h-full flex items-center">
                     <button
-                      className={`h-full px-4 text-sm font-medium transition-all duration-200 flex items-center ${
+                    className={`h-full px-4 text-sm font-medium transition-all duration-200 flex items-center ${
                         isActive(item.href)
-                          ? 'text-blue-900 bg-white bg-opacity-90'
-                          : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
+                          ? 'border-b-2 border-primary-400 text-white'
+                          : 'text-white hover:bg-navy-600 hover:text-primary-200'
                       }`}
                       aria-haspopup="true"
                       aria-expanded={activeDropdown === index}
@@ -320,7 +319,7 @@ const Navbar = () => {
                     
                     {/* Dropdown Menu */}
                     <div
-                      className={`absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 transform transition-all duration-200 z-50 ${
+                      className={`absolute top-full left-0 mt-1 w-64 bg-white border border-primary-200 rounded-lg shadow-xl transform transition-all duration-200 z-50 ${
                         activeDropdown === index
                           ? 'opacity-100 visible translate-y-0'
                           : 'opacity-0 invisible -translate-y-2 pointer-events-none'
@@ -334,7 +333,7 @@ const Navbar = () => {
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className={`block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-all duration-150 font-medium border-l-4 border-transparent hover:border-blue-400 ${
+                            className={`block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-all duration-150 font-medium border-l-4 border-transparent hover:border-primary-400 ${
                               dropIndex === 0 ? 'rounded-t-lg' : ''
                             } ${dropIndex === item.dropdown.length - 1 ? 'rounded-b-lg' : ''}`}
                           >
@@ -349,8 +348,8 @@ const Navbar = () => {
                     onClick={() => handleNavClick(item)}
                     className={`h-full px-4 text-sm font-medium transition-all duration-200 flex items-center ${
                       isActive(item.href)
-                        ? 'text-blue-900 bg-white bg-opacity-90'
-                        : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
+                        ? 'border-b-2 border-primary-400 text-white'
+                        : 'text-white hover:bg-navy-600 hover:text-primary-200'
                     }`}
                   >
                     {item.name}
@@ -376,8 +375,8 @@ const Navbar = () => {
                         setActiveDropdown(null)
                       }}
                       onDoubleClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40 rounded-md transition-all duration-200 ${
-                        activeDropdown === index ? 'bg-white bg-opacity-25' : ''
+                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-primary-200 hover:bg-navy-600 rounded-md transition-all duration-200 ${
+                        activeDropdown === index ? 'bg-white/10' : ''
                       }`}
                     >
                       <span onClick={(e) => {
@@ -396,12 +395,12 @@ const Navbar = () => {
                     </button>
                     
                     {activeDropdown === index && (
-                      <div className="mt-2 ml-4 space-y-1 bg-white bg-opacity-15 rounded-lg p-3 border-l-4 border-white border-opacity-30">
+                      <div className="mt-2 ml-4 space-y-1 bg-white/10 rounded-lg p-3 border-l-4 border-primary-400/60">
                         {item.dropdown && item.dropdown.map((dropdownItem) => (
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-200 hover:text-gray-900 hover:bg-white hover:bg-opacity-40 rounded-md transition-all duration-200 font-medium"
+                            className="block w-full text-left px-3 py-2 text-sm text-white hover:text-primary-200 hover:bg-navy-600 rounded-md transition-all duration-200 font-medium"
                           >
                             {dropdownItem.name}
                           </button>
@@ -414,8 +413,8 @@ const Navbar = () => {
                     onClick={() => handleNavClick(item)}
                     className={`block w-full text-left px-3 py-2 text-base font-medium rounded-md transition-all duration-200 ${
                       isActive(item.href)
-                        ? 'text-blue-900 bg-white bg-opacity-90'
-                        : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
+                        ? 'bg-white/10 text-primary-200'
+                        : 'text-white hover:text-primary-200 hover:bg-navy-600'
                     }`}
                   >
                     {item.name}

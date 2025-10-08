@@ -31,13 +31,13 @@ const Infrastructure = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-            <section className="section-padding bg-blue-600 text-white">
+            <section className="section-padding bg-gradient-to-r from-navy-600 to-secondary-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Infrastructure
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-secondary-100 mb-8">
               Modern Facilities Supporting Excellence in Fishery Education
             </p>
           </div>
@@ -48,15 +48,15 @@ const Infrastructure = () => {
       <section id="classrooms" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Classrooms and Labs</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Classrooms and Labs</h2>
+            <div className="w-16 h-1 bg-secondary-500 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                  <Monitor className="w-6 h-6 text-blue-500" />
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                  <Monitor className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Smart Classrooms</h3>
@@ -100,8 +100,8 @@ const Infrastructure = () => {
             
             <Card className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                  <Building className="w-6 h-6 text-green-600" />
+                <div className="w-12 h-12 bg-government-100 rounded-lg flex items-center justify-center mr-4">
+                  <Building className="w-6 h-6 text-government-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">Academic Blocks</h3>
@@ -115,8 +115,8 @@ const Infrastructure = () => {
             
             <Card className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                  <Brain className="w-6 h-6 text-purple-600" />
+                <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
+                  <Brain className="w-6 h-6 text-secondary-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">AI Lab</h3>
@@ -130,8 +130,8 @@ const Infrastructure = () => {
             
             <Card className="p-6">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
-                  <Beaker className="w-6 h-6 text-indigo-600" />
+                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                  <Beaker className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">WET Lab</h3>
@@ -150,13 +150,13 @@ const Infrastructure = () => {
       <section id="hatcheries" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Hatcheries and Demo Units</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Hatcheries and Demo Units</h2>
+            <div className="w-16 h-1 bg-secondary-500 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <Card className="p-6 text-center">
-              <Fish className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+              <Fish className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Hatchery</h3>
               <p className="text-gray-700 text-sm">Modern hatchery facilities for breeding and seed production</p>
             </Card>
@@ -171,7 +171,7 @@ const Infrastructure = () => {
               <p className="text-gray-700 text-sm">Recirculating Aquaculture Systems for intensive farming</p>
             </Card>
             <Card className="p-6 text-center">
-              <Factory className="w-8 h-8 text-orange-500 mx-auto mb-3" />
+              <Factory className="w-8 h-8 text-accent-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Feed Unit</h3>
               <p className="text-gray-700 text-sm">On-site fish feed manufacturing and quality testing facility</p>
             </Card>
@@ -183,13 +183,13 @@ const Infrastructure = () => {
       <section id="library" className="section-padding bg-gray-50">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Library and e-Resources</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Library and e-Resources</h2>
+            <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="p-6">
-              <Book className="w-8 h-8 text-blue-500 mb-3" />
+              <Book className="w-8 h-8 text-primary-600 mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Central Library</h3>
               <p className="text-gray-700 text-sm">Extensive collection of books, journals, and research publications in fisheries science</p>
             </Card>
@@ -204,7 +204,7 @@ const Infrastructure = () => {
               <p className="text-gray-700 text-sm">High-speed internet and modern computers for research and learning</p>
             </Card>
             <Card className="p-6">
-              <Users className="w-8 h-8 text-green-600 mb-3" />
+              <Users className="w-8 h-8 text-government-600 mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Reading Halls</h3>
               <p className="text-gray-700 text-sm">Spacious and quiet study areas for individual and group study</p>
             </Card>
@@ -216,13 +216,13 @@ const Infrastructure = () => {
       <section id="hostels" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Hostels and Campus Facilities</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Hostels and Campus Facilities</h2>
+            <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="p-6 text-center">
-              <Home className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+              <Home className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Student Hostels</h3>
               <p className="text-gray-700 text-sm">Separate hostels for boys and girls with modern amenities</p>
             </Card>
@@ -237,17 +237,17 @@ const Infrastructure = () => {
               <p className="text-gray-700 text-sm">Hygienic dining facilities with nutritious meals</p>
             </Card>
             <Card className="p-6 text-center">
-              <Factory className="w-8 h-8 text-green-600 mx-auto mb-3" />
+              <Factory className="w-8 h-8 text-government-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Sports Complex</h3>
               <p className="text-gray-700 text-sm">Recreational and sports facilities for students</p>
             </Card>
             <Card className="p-6 text-center">
-              <Wifi className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+              <Wifi className="w-8 h-8 text-primary-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Wi-Fi Campus</h3>
               <p className="text-gray-700 text-sm">High-speed internet connectivity across the campus</p>
             </Card>
             <Card className="p-6 text-center">
-              <Monitor className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+              <Monitor className="w-8 h-8 text-secondary-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Medical Center</h3>
               <p className="text-gray-700 text-sm">Basic healthcare facilities and medical support</p>
             </Card>

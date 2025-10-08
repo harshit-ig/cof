@@ -62,11 +62,11 @@ const Extension = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white">
+      <section className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white">
         <div className="container-max section-padding">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Extension & Outreach</h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl text-primary-100 max-w-3xl mx-auto">
               Empowering fishing communities through comprehensive training programs, technology demonstrations, 
               and sustainable livelihood development initiatives.
             </p>
@@ -77,11 +77,11 @@ const Extension = () => {
 
 
       {/* Farmer Training Programs */}
-      <section id="farmer-training" className="section-padding bg-gray-50">
+      <section id="farmer-training" className="section-padding bg-secondary-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Farmer Training Programs</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">Farmer Training Programs</h2>
+            <div className="w-20 h-1 bg-primary-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Comprehensive skill development programs designed to enhance knowledge and technical capabilities 
               of fish farmers, youth, and women entrepreneurs.
@@ -90,7 +90,7 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {farmerTrainingPrograms.length > 0 ? farmerTrainingPrograms.map((program, index) => (
-              <Card key={program._id || index} className="p-6">
+              <Card key={program._id || index} className="p-6 bg-white border-l-4 border-secondary-500 hover:shadow-xl">
                 {/* Image Thumbnail */}
                 {program.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">
@@ -106,11 +106,11 @@ const Extension = () => {
                 )}
                 
                 <div className="flex items-start space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <BookOpen className="w-6 h-6 text-blue-500" />
+                  <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center">
+                    <BookOpen className="w-6 h-6 text-secondary-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{program.title}</h3>
+                    <h3 className="text-lg font-semibold text-navy-900 mb-2">{program.title}</h3>
                     <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 mb-3">
                       {program.duration && (
                         <div className="flex items-center">
@@ -138,11 +138,11 @@ const Extension = () => {
                 
                 {program.modules && program.modules.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-3">Training Modules</h4>
+                    <h4 className="font-semibold text-navy-900 mb-3">Training Modules</h4>
                     <ul className="space-y-2">
                       {program.modules.map((module, idx) => (
                         <li key={idx} className="flex items-center text-sm text-gray-700">
-                          <div className="w-2 h-2 bg-blue-400 rounded-full mr-3"></div>
+                          <div className="w-2 h-2 bg-secondary-400 rounded-full mr-3"></div>
                           {module}
                         </li>
                       ))}
@@ -157,7 +157,7 @@ const Extension = () => {
                       href={getDocumentUrl(program.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
+                      className="inline-flex items-center px-3 py-2 bg-primary-100 text-primary-700 text-sm rounded-md hover:bg-primary-200 transition-colors"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />
@@ -180,8 +180,8 @@ const Extension = () => {
       <section id="ffpo-shg" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">FFPO and SHG Support Activities</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">FFPO and SHG Support Activities</h2>
+            <div className="w-20 h-1 bg-primary-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Supporting Fish Farmer Producer Organizations and Self Help Groups to strengthen 
               collective farming, marketing, and livelihood development initiatives.
@@ -190,7 +190,7 @@ const Extension = () => {
 
           <div className="space-y-8">
             {ffpoShgActivities.length > 0 ? ffpoShgActivities.map((activity, index) => (
-              <Card key={activity._id || index} className="p-8">
+              <Card key={activity._id || index} className="p-8 bg-secondary-50 hover:bg-secondary-100 border border-secondary-200">
                 {/* Image Thumbnail */}
                 {activity.imageUrl && (
                   <div className="mb-6 -mx-8 -mt-8">
@@ -208,21 +208,21 @@ const Extension = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div className="lg:col-span-2">
                     <div className="flex items-center space-x-3 mb-4">
-                      <span className="px-3 py-1 bg-secondary-100 text-secondary-800 text-sm font-medium rounded-full">
+                      <span className="px-3 py-1 bg-secondary-200 text-secondary-800 text-sm font-medium rounded-full">
                         {activity.type}
                       </span>
                     </div>
                     
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{activity.title}</h3>
+                    <h3 className="text-2xl font-bold text-navy-900 mb-3">{activity.title}</h3>
                     <p className="text-gray-700 mb-6">{activity.description}</p>
                     
                     {activity.activities && activity.activities.length > 0 && (
                       <div className="mb-6">
-                        <h4 className="font-semibold text-gray-900 mb-3">Key Activities</h4>
+                        <h4 className="font-semibold text-navy-900 mb-3">Key Activities</h4>
                         <ul className="space-y-2">
                           {activity.activities.map((item, idx) => (
                             <li key={idx} className="flex items-center text-sm text-gray-700">
-                              <ChevronRight className="w-4 h-4 text-blue-500 mr-2" />
+                              <ChevronRight className="w-4 h-4 text-secondary-600 mr-2" />
                               {item}
                             </li>
                           ))}
@@ -237,7 +237,7 @@ const Extension = () => {
                           href={getDocumentUrl(activity.filename)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
+                          className="inline-flex items-center px-3 py-2 bg-primary-100 text-primary-700 text-sm rounded-md hover:bg-primary-200 transition-colors"
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           <Download className="w-4 h-4 mr-2" />
@@ -249,21 +249,21 @@ const Extension = () => {
                   
                   <div className="space-y-4">
                     {activity.beneficiaries && (
-                      <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                      <div className="p-4 bg-secondary-100 rounded-lg border border-secondary-300">
                         <div className="text-center">
-                          <Users className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                          <p className="text-green-800 font-medium">{activity.beneficiaries}</p>
-                          <p className="text-green-600 text-sm">Beneficiaries</p>
+                          <Users className="w-8 h-8 text-secondary-700 mx-auto mb-2" />
+                          <p className="text-secondary-800 font-medium">{activity.beneficiaries}</p>
+                          <p className="text-secondary-600 text-sm">Beneficiaries</p>
                         </div>
                       </div>
                     )}
                     
                     {activity.impact && (
-                      <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="p-4 bg-primary-100 rounded-lg border border-primary-300">
                         <div className="text-center">
-                          <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                          <p className="text-blue-800 font-medium text-sm">{activity.impact}</p>
-                          <p className="text-blue-600 text-sm">Impact Achieved</p>
+                          <TrendingUp className="w-8 h-8 text-primary-700 mx-auto mb-2" />
+                          <p className="text-primary-800 font-medium text-sm">{activity.impact}</p>
+                          <p className="text-primary-600 text-sm">Impact Achieved</p>
                         </div>
                       </div>
                     )}
@@ -281,11 +281,11 @@ const Extension = () => {
       </section>
 
       {/* Aquaculture Demonstrations */}
-      <section id="demonstrations" className="section-padding bg-white">
+      <section id="demonstrations" className="section-padding bg-government-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Aquaculture Demonstrations</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">Aquaculture Demonstrations</h2>
+            <div className="w-20 h-1 bg-primary-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Live demonstrations of advanced aquaculture technologies and practices to showcase 
               practical applications and benefits for farmers and students.
@@ -294,7 +294,7 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {demonstrations.length > 0 ? demonstrations.map((demo, index) => (
-              <Card key={demo._id || index} className="p-6">
+              <Card key={demo._id || index} className="p-6 bg-white border-l-4 border-accent-500 hover:shadow-xl">
                 {/* Image Thumbnail */}
                 {demo.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">
@@ -310,11 +310,11 @@ const Extension = () => {
                 )}
 
                 <div className="flex items-start space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Target className="w-6 h-6 text-green-600" />
+                  <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center">
+                    <Target className="w-6 h-6 text-accent-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{demo.title}</h3>
+                    <h3 className="text-lg font-semibold text-navy-900 mb-2">{demo.title}</h3>
                     {demo.location && (
                       <div className="flex items-center text-sm text-gray-600 mb-1">
                         <MapPin className="w-4 h-4 mr-1" />
@@ -331,11 +331,11 @@ const Extension = () => {
                 
                 {demo.features && demo.features.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-3">Key Features</h4>
+                    <h4 className="font-semibold text-navy-900 mb-3">Key Features</h4>
                     <ul className="space-y-2">
                       {demo.features.map((feature, idx) => (
                         <li key={idx} className="flex items-center text-sm text-gray-700">
-                          <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                          <div className="w-2 h-2 bg-accent-500 rounded-full mr-3"></div>
                           {feature}
                         </li>
                       ))}
@@ -345,9 +345,9 @@ const Extension = () => {
                 
                 {demo.results && (
                   <div className="mb-4">
-                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                      <p className="text-green-800 font-medium text-sm">Results Achieved</p>
-                      <p className="text-green-700 text-sm">{demo.results}</p>
+                    <div className="p-3 bg-accent-50 rounded-lg border border-accent-200">
+                      <p className="text-accent-800 font-medium text-sm">Results Achieved</p>
+                      <p className="text-accent-700 text-sm">{demo.results}</p>
                     </div>
                   </div>
                 )}
@@ -359,7 +359,7 @@ const Extension = () => {
                       href={getDocumentUrl(demo.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
+                      className="inline-flex items-center px-3 py-2 bg-primary-100 text-primary-700 text-sm rounded-md hover:bg-primary-200 transition-colors"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />
@@ -379,11 +379,11 @@ const Extension = () => {
       </section>
 
       {/* Success Stories */}
-      <section id="success-stories" className="section-padding bg-gray-50">
+      <section id="success-stories" className="section-padding bg-gradient-to-br from-government-50 to-primary-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Success Stories</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">Success Stories</h2>
+            <div className="w-20 h-1 bg-primary-400 rounded mx-auto mb-6"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Inspiring success stories from our extension programs showcasing the transformative 
               impact on farmers' lives and community development.
@@ -392,7 +392,7 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {successStories.length > 0 ? successStories.map((story, index) => (
-              <Card key={story._id || index} className="p-6">
+              <Card key={story._id || index} className="p-6 bg-white border-t-4 border-government-500 hover:shadow-xl">
                 {/* Image Thumbnail */}
                 {story.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">
@@ -408,11 +408,11 @@ const Extension = () => {
                 )}
                 
                 <div className="flex items-start space-x-4 mb-4">
-                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <Award className="w-6 h-6 text-yellow-600" />
+                  <div className="w-12 h-12 bg-government-100 rounded-lg flex items-center justify-center">
+                    <Award className="w-6 h-6 text-government-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{story.name || 'Success Story'}</h3>
+                    <h3 className="text-lg font-semibold text-navy-900 mb-1">{story.name || 'Success Story'}</h3>
                     {story.location && (
                       <div className="flex items-center text-sm text-gray-600 mb-1">
                         <MapPin className="w-4 h-4 mr-1" />
@@ -420,7 +420,7 @@ const Extension = () => {
                       </div>
                     )}
                     {story.program && (
-                      <span className="px-2 py-1 bg-blue-100 text-primary-800 text-xs rounded">
+                      <span className="px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded">
                         {story.program}
                       </span>
                     )}
@@ -431,8 +431,8 @@ const Extension = () => {
                 </div>
                 
                 {story.achievement && (
-                  <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-200 mb-4">
-                    <p className="text-yellow-800 font-medium text-sm">{story.achievement}</p>
+                  <div className="p-3 bg-government-100 rounded-lg border border-government-300 mb-4">
+                    <p className="text-government-800 font-medium text-sm">{story.achievement}</p>
                   </div>
                 )}
                 
@@ -440,11 +440,11 @@ const Extension = () => {
                 
                 {story.impactPoints && story.impactPoints.length > 0 && (
                   <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-3">Impact Achieved</h4>
+                    <h4 className="font-semibold text-navy-900 mb-3">Impact Achieved</h4>
                     <ul className="space-y-2">
                       {story.impactPoints.map((impact, idx) => (
                         <li key={idx} className="flex items-center text-sm text-gray-700">
-                          <UserCheck className="w-4 h-4 text-blue-500 mr-2" />
+                          <UserCheck className="w-4 h-4 text-primary-600 mr-2" />
                           {impact}
                         </li>
                       ))}
@@ -459,7 +459,7 @@ const Extension = () => {
                       href={getDocumentUrl(story.filename)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm rounded-md hover:bg-blue-200 transition-colors"
+                      className="inline-flex items-center px-3 py-2 bg-primary-100 text-primary-700 text-sm rounded-md hover:bg-primary-200 transition-colors"
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />

@@ -180,13 +180,13 @@ const About = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-            <section className="section-padding bg-blue-600 text-white">
+            <section className="section-padding bg-gradient-to-r from-navy-600 to-primary-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               About Our College
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8">
               Excellence in Fishery Education & Research since 2012
             </p>
           </div>
@@ -228,20 +228,20 @@ const About = () => {
       <section id="vision" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Vision & Mission</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Vision & Mission</h2>
+            <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="text-center p-6">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Eye className="w-6 h-6 text-blue-500" />
+            <Card className="text-center p-6 bg-gradient-to-br from-primary-50 to-secondary-100">
+              <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Eye className="w-6 h-6 text-primary-500" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Our Vision</h3>
               <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: aboutContent.vision }} />
             </Card>
             
-            <Card className="text-center p-6">
+            <Card className="text-center p-6 bg-gradient-to-br from-primary-50 to-secondary-100">
               <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Target className="w-6 h-6 text-secondary-600" />
               </div>
@@ -253,11 +253,11 @@ const About = () => {
       </section>
 
       {/* History */}
-      <section id="history" className="section-padding bg-gray-50">
+      <section id="history" className="section-padding bg-government-50">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">History of College</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">History of College</h2>
+            <div className="w-20 h-1 bg-primary-400 rounded mx-auto mb-6"></div>
           </div>
           
           <div className="max-w-4xl mx-auto">
@@ -272,21 +272,21 @@ const About = () => {
       <section id="mandate" className="section-padding bg-white">
         <div className="container-max">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mandate</h2>
-            <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+            <h2 className="text-3xl font-bold text-navy-900 mb-4">Mandate</h2>
+            <div className="w-20 h-1 bg-secondary-500 rounded mx-auto mb-6"></div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Core Mandate */}
-            <Card className="p-6">
+            <Card className="p-6 bg-white border-l-4 border-secondary-500 shadow-md hover:shadow-xl">
               <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <Target className="w-6 h-6 text-blue-500 mr-2" />
+                <Target className="w-6 h-6 text-primary-500 mr-2" />
                 Core Mandate
               </h3>
               <ul className="space-y-3 text-gray-700">
                 {mandateContent.core.map((item, index) => (
                   <li key={index} className="flex items-start">
-                    <span className="text-blue-500 mr-2">•</span>
+                    <span className="text-primary-500 mr-2">•</span>
                     {item}
                   </li>
                 ))}
@@ -295,30 +295,30 @@ const About = () => {
 
             {/* Objectives & Thrust Areas */}
             <div className="space-y-6">
-              <Card className="p-6">
+              <Card className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <Award className="w-6 h-6 text-green-500 mr-2" />
+                  <Award className="w-6 h-6 text-secondary-600 mr-2" />
                   Objectives
                 </h3>
                 <ul className="space-y-2 text-gray-700">
                   {mandateContent.objectives.map((item, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="text-green-500 mr-2">•</span>
+                      <span className="text-secondary-600 mr-2">•</span>
                       {item}
                     </li>
                   ))}
                 </ul>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <BookOpen className="w-6 h-6 text-purple-500 mr-2" />
+                  <BookOpen className="w-6 h-6 text-primary-600 mr-2" />
                   Thrust Areas
                 </h3>
                 <ul className="space-y-2 text-gray-700">
                   {mandateContent.thrust.map((item, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="text-purple-500 mr-2">•</span>
+                      <span className="text-primary-600 mr-2">•</span>
                       {item}
                     </li>
                   ))}

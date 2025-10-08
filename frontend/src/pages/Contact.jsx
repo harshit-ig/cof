@@ -58,37 +58,37 @@ const Contact = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="section-padding bg-blue-600 text-white">
+      <section className="section-padding bg-gradient-to-r from-navy-700 to-primary-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Contact Us
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8">
               Get in Touch with {siteName}
             </p>
           </div>
         </div>
       </section>
       {/* Contact Details & Google Map */}
-      <section id="contact-details" className="section-padding bg-gray-50">
+      <section id="contact-details" className="section-padding bg-secondary-50">
         <div className="container-max">
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Contact Details & Google Map</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+            <h2 className="text-2xl font-bold text-navy-900 mb-2">Contact Details & Google Map</h2>
+            <div className="w-16 h-1 bg-primary-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Details */}
             <div className="space-y-6">
-              <Card className="p-6">
+              <Card className="p-6 bg-white border-t-4 border-primary-500 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                    <Phone className="w-6 h-6 text-blue-500" />
+                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                    <Phone className="w-6 h-6 text-primary-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
-                    <p className="text-blue-500 text-sm">Main Office</p>
+                    <h3 className="text-lg font-semibold text-navy-900">Phone</h3>
+                    <p className="text-primary-600 text-sm">Main Office</p>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -98,13 +98,13 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-white border-t-4 border-secondary-500 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
                     <Mail className="w-6 h-6 text-secondary-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Email</h3>
+                    <h3 className="text-lg font-semibold text-navy-900">Email</h3>
                     <p className="text-secondary-600 text-sm">Official Communication</p>
                   </div>
                 </div>
@@ -115,13 +115,13 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-white border-t-4 border-accent-500 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
                     <MapPin className="w-6 h-6 text-accent-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Address</h3>
+                    <h3 className="text-lg font-semibold text-navy-900">Address</h3>
                     <p className="text-accent-600 text-sm">Main Campus Location</p>
                   </div>
                 </div>
@@ -133,14 +133,14 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-white border-t-4 border-government-500 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                    <Clock className="w-6 h-6 text-green-600" />
+                  <div className="w-12 h-12 bg-government-100 rounded-lg flex items-center justify-center mr-4">
+                    <Clock className="w-6 h-6 text-government-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Office Hours</h3>
-                    <p className="text-green-600 text-sm">Working Schedule</p>
+                    <h3 className="text-lg font-semibold text-navy-900">Office Hours</h3>
+                    <p className="text-government-600 text-sm">Working Schedule</p>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -153,23 +153,23 @@ const Contact = () => {
 
             {/* Google Map */}
             <div className="space-y-6">
-              <Card className="p-6">
+              <Card className="p-6 bg-government-50 border border-government-200 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                    <Globe className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mr-4">
+                    <Globe className="w-6 h-6 text-primary-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-navy-900">
                       {locationSettings?.mapTitle || 'Location Map'}
                     </h3>
-                    <p className="text-blue-600 text-sm">
+                    <p className="text-primary-600 text-sm">
                       {locationSettings?.mapDescription || 'Find Us Here'}
                     </p>
                   </div>
                 </div>
                 
                 {/* Google Map Embed */}
-                <div className="w-full h-80 bg-gray-200 rounded-lg overflow-hidden">
+                <div className="w-full h-80 bg-gray-200 rounded-lg overflow-hidden border border-primary-200">
                   <iframe
                     src={getMapEmbedUrl()}
                     width="100%"
@@ -187,7 +187,7 @@ const Contact = () => {
                     href={getMapUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+                    className="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors shadow-lg hover:shadow-xl"
                   >
                     <MapPin className="w-4 h-4 mr-2" />
                     Open in Google Maps
@@ -195,27 +195,27 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6">
+              <Card className="p-6 bg-white border-t-4 border-navy-500 hover:shadow-xl transition-shadow">
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                    <Building className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-navy-100 rounded-lg flex items-center justify-center mr-4">
+                    <Building className="w-6 h-6 text-navy-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Directions</h3>
-                    <p className="text-purple-600 text-sm">How to Reach</p>
+                    <h3 className="text-lg font-semibold text-navy-900">Directions</h3>
+                    <p className="text-navy-600 text-sm">How to Reach</p>
                   </div>
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">By Road:</p>
+                    <p className="font-medium text-navy-900 text-sm">By Road:</p>
                     <p className="text-gray-700 text-sm">NH 34 from Bhopal (300 km), NH 7 from Nagpur (250 km)</p>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">By Air:</p>
+                    <p className="font-medium text-navy-900 text-sm">By Air:</p>
                     <p className="text-gray-700 text-sm">Nearest airport: Jabalpur Airport (15 km)</p>
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 text-sm">By Train:</p>
+                    <p className="font-medium text-navy-900 text-sm">By Train:</p>
                     <p className="text-gray-700 text-sm">Jabalpur Railway Station (12 km from campus)</p>
                   </div>
                 </div>

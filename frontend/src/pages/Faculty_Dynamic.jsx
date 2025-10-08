@@ -187,43 +187,43 @@ const Faculty = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-blue-600 text-white">
+      <div className="bg-gradient-to-r from-navy-700 to-primary-600 text-white">
         <div className="container mx-auto px-4 py-16">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Faculty</h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8">
               Meet our distinguished faculty members who are leading experts in fisheries science, 
               aquaculture, and marine biology. Our team combines academic excellence with practical 
               industry experience.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-600 rounded-lg mb-3">
                   <Users className="h-6 w-6" />
                 </div>
                 <div className="text-2xl font-bold">{stats.total}</div>
-                <div className="text-blue-200">Total Faculty & Staff</div>
+                <div className="text-primary-100">Total Faculty & Staff</div>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-600 rounded-lg mb-3">
                   <GraduationCap className="h-6 w-6" />
                 </div>
                 <div className="text-2xl font-bold">{stats.teaching}</div>
-                <div className="text-blue-200">Teaching Faculty</div>
+                <div className="text-primary-100">Teaching Faculty</div>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-600 rounded-lg mb-3">
                   <Award className="h-6 w-6" />
                 </div>
                 <div className="text-2xl font-bold">{stats.publications}</div>
-                <div className="text-blue-200">Publications</div>
+                <div className="text-primary-100">Publications</div>
               </div>
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary-600 rounded-lg mb-3">
                   <Clock className="h-6 w-6" />
                 </div>
                 <div className="text-2xl font-bold">{stats.avgExperience}</div>
-                <div className="text-blue-200">Avg. Experience (Years)</div>
+                <div className="text-primary-100">Avg. Experience (Years)</div>
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ const Faculty = () => {
                 }}
                 className={`flex items-center space-x-2 py-4 border-b-2 font-medium transition-colors ${
                   selectedStaffType === type.id
-                    ? 'border-blue-500 text-blue-600'
+                    ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
               >
@@ -332,7 +332,7 @@ const Faculty = () => {
                     <img
                       src={getImageUrl(faculty.image)}
                       alt={faculty.name}
-                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-blue-100 group-hover:border-blue-200 transition-colors"
+                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-primary-100 group-hover:border-primary-200 transition-colors"
                       onError={(e) => {
                         if (!e.target.dataset.fallbackUsed) {
                           e.target.dataset.fallbackUsed = 'true'
@@ -341,7 +341,7 @@ const Faculty = () => {
                       }}
                     />
                     <h3 className="text-xl font-bold text-gray-900 mb-1">{faculty.name}</h3>
-                    <p className="text-blue-600 font-medium">{faculty.designation}</p>
+                    <p className="text-primary-600 font-medium">{faculty.designation}</p>
                     <p className="text-gray-600 text-sm">{faculty.department}</p>
                   </div>
 
@@ -373,7 +373,7 @@ const Faculty = () => {
                         <Mail className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                         <a
                           href={`mailto:${faculty.email}`}
-                          className="text-sm text-blue-600 hover:text-blue-800 break-all"
+                          className="text-sm text-primary-600 hover:text-primary-800 break-all"
                         >
                           {faculty.email}
                         </a>
@@ -385,7 +385,7 @@ const Faculty = () => {
                         <Phone className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                         <a
                           href={`tel:${faculty.phone}`}
-                          className="text-sm text-blue-600 hover:text-blue-800"
+                          className="text-sm text-primary-600 hover:text-primary-800"
                         >
                           {faculty.phone}
                         </a>
@@ -401,7 +401,7 @@ const Faculty = () => {
                         {faculty.researchInterests.slice(0, 3).map((area, index) => (
                           <span
                             key={index}
-                            className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                            className="inline-block px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-full"
                           >
                             {area}
                           </span>
@@ -420,7 +420,7 @@ const Faculty = () => {
                     <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between text-center">
                       {faculty.publications?.length > 0 && (
                         <div>
-                          <div className="text-lg font-bold text-blue-600">{faculty.publications.length}</div>
+                          <div className="text-lg font-bold text-primary-600">{faculty.publications.length}</div>
                           <div className="text-xs text-gray-600">Publications</div>
                         </div>
                       )}
@@ -437,7 +437,7 @@ const Faculty = () => {
                   <div className="mt-4 pt-4 border-t border-gray-100">
                     <Link
                       to={`/faculty/${faculty._id}`}
-                      className="inline-flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium"
+                      className="inline-flex items-center text-primary-600 hover:text-primary-800 text-sm font-medium"
                     >
                       View Full Profile
                       <ChevronRight className="h-4 w-4 ml-1" />
@@ -451,7 +451,7 @@ const Faculty = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-blue-50 py-12">
+      <div className="bg-primary-50 py-12">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Team</h2>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
@@ -464,7 +464,7 @@ const Faculty = () => {
                 setSelectedPositionType('faculty')
                 setIsJobModalOpen(true)
               }}
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center"
+              className="bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors inline-flex items-center justify-center"
             >
               Faculty Positions
               <ChevronRight className="h-5 w-5 ml-2" />
@@ -474,7 +474,7 @@ const Faculty = () => {
                 setSelectedPositionType('staff')
                 setIsJobModalOpen(true)
               }}
-              className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors inline-flex items-center justify-center"
+              className="bg-accent-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-accent-600 transition-colors inline-flex items-center justify-center"
             >
               Staff Positions
               <ChevronRight className="h-5 w-5 ml-2" />

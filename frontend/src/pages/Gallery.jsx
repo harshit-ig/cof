@@ -136,7 +136,7 @@ const Gallery = () => {
   return (
     <div className="min-h-screen">
       {/* Header Section */}
-      <Section background="bg-gray-50">
+      <Section background="bg-gradient-to-r from-primary-600 to-navy-700 text-white">
         <SectionHeader
           title="Photo Gallery"
           subtitle="Explore our campus, facilities, and academic environment through these images"
@@ -153,8 +153,8 @@ const Gallery = () => {
               onClick={() => setActiveFilter(category.id)}
               className={`px-6 py-2 rounded-full transition-colors ${
                 activeFilter === category.id
-                  ? 'bg-green-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-primary-600 text-white shadow-lg'
+                  : 'bg-white hover:bg-primary-50 border border-primary-300 text-primary-600'
               }`}
             >
               {category.name}
@@ -179,7 +179,7 @@ const Gallery = () => {
             {filteredImages.map((image, index) => (
               <Card 
                 key={image._id} 
-                className="overflow-hidden cursor-pointer group hover:shadow-lg transition-all duration-300"
+                className="overflow-hidden cursor-pointer group hover:shadow-2xl transition-all duration-300 border border-primary-100"
                 onClick={() => openLightbox(image, index)}
               >
                 <div className="relative overflow-hidden aspect-video">
@@ -200,12 +200,12 @@ const Gallery = () => {
                       console.log('Image loaded successfully:', image.title);
                     }}
                   />
-                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-primary-600 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
                     <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{image.title}</h3>
+                  <h3 className="text-lg font-semibold text-navy-900 mb-2">{image.title}</h3>
                   {image.description && (
                     <p className="text-gray-600 text-sm mb-2">{image.description}</p>
                   )}
@@ -224,12 +224,12 @@ const Gallery = () => {
 
       {/* Lightbox Modal */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-navy-900 bg-opacity-95 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Close Button */}
             <button
               onClick={closeLightbox}
-              className="absolute top-4 right-4 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70 transition-all"
+              className="absolute top-4 right-4 z-10 p-2 bg-navy-800 bg-opacity-70 text-white rounded-full hover:bg-opacity-90 transition-all"
             >
               <X className="w-6 h-6" />
             </button>
@@ -237,14 +237,14 @@ const Gallery = () => {
             {/* Navigation Buttons */}
             <button
               onClick={() => navigateImage('prev')}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70 transition-all"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-navy-800 bg-opacity-70 text-white rounded-full hover:bg-opacity-90 transition-all"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
 
             <button
               onClick={() => navigateImage('next')}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70 transition-all"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-2 bg-navy-800 bg-opacity-70 text-white rounded-full hover:bg-opacity-90 transition-all"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -259,10 +259,10 @@ const Gallery = () => {
             </div>
 
             {/* Image Info */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white p-4">
+            <div className="absolute bottom-0 left-0 right-0 bg-navy-900 bg-opacity-80 text-white p-4">
               <h3 className="text-xl font-semibold mb-2">{selectedImage.title}</h3>
               {selectedImage.description && (
-                <p className="text-gray-200 mb-2">{selectedImage.description}</p>
+                <p className="text-primary-200 mb-2">{selectedImage.description}</p>
               )}
               {selectedImage.date && (
                 <p className="text-xs text-gray-300 flex items-center">
@@ -273,7 +273,7 @@ const Gallery = () => {
             </div>
             
             {/* Image counter */}
-            <div className="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded-full text-sm">
+            <div className="absolute top-4 left-4 bg-navy-800 bg-opacity-70 text-white px-3 py-1 rounded-full text-sm">
               {currentImageIndex + 1} / {filteredImages.length}
             </div>
           </div>
@@ -281,9 +281,9 @@ const Gallery = () => {
       )}
 
       {/* Additional Information Section */}
-      <Section background="bg-gray-50">
+      <Section background="bg-secondary-50">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Visit Our Campus</h2>
+          <h2 className="text-3xl font-bold text-navy-900 mb-4">Visit Our Campus</h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-8">
             We welcome prospective students and their families to visit our campus and experience 
             our facilities firsthand. Schedule a visit to see why College of Fishery, Jabalpur 
@@ -292,13 +292,13 @@ const Gallery = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
-              className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors shadow-lg hover:shadow-xl"
             >
               Schedule a Visit
             </a>
             <a
               href="/infrastructure"
-              className="inline-flex items-center px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              className="inline-flex items-center px-6 py-3 bg-secondary-600 text-white rounded-lg hover:bg-secondary-700 transition-colors shadow-lg hover:shadow-xl"
             >
               Learn About Facilities
             </a>

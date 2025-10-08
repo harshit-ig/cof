@@ -74,13 +74,13 @@ const Research = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="section-padding bg-blue-600 text-white">
+      <section className="section-padding bg-gradient-to-r from-secondary-600 to-primary-600 text-white">
         <div className="container-max">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Research & Innovation
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-primary-100 mb-8">
               Advancing Fishery Science Through Cutting-Edge Research & Technology
             </p>
             
@@ -88,19 +88,19 @@ const Research = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">{stats.ongoingProjects}</div>
-                <div className="text-blue-200 text-sm">Ongoing Projects</div>
+                <div className="text-primary-100 text-sm">Ongoing Projects</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">{stats.publications}</div>
-                <div className="text-blue-200 text-sm">Publications</div>
+                <div className="text-primary-100 text-sm">Publications</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">₹{(stats.totalBudget / 100000).toFixed(1)}L</div>
-                <div className="text-blue-200 text-sm">Total Funding</div>
+                <div className="text-primary-100 text-sm">Total Funding</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">{stats.facilities}</div>
-                <div className="text-blue-200 text-sm">Research Facilities</div>
+                <div className="text-primary-100 text-sm">Research Facilities</div>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ const Research = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">Ongoing Projects</h2>
                   <p className="text-gray-600 mb-4">ICAR, NFDB, PMMSY, DBT and other funding agencies</p>
-                  <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+                  <div className="w-16 h-1 bg-secondary-500 rounded mx-auto"></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -140,10 +140,10 @@ const Research = () => {
                     <Card key={project._id} className="hover:shadow-xl transition-all duration-300">
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-4">
-                          <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                            <FlaskConical className="w-6 h-6 text-blue-600" />
+                          <div className="w-12 h-12 rounded-lg bg-secondary-100 flex items-center justify-center">
+                            <FlaskConical className="w-6 h-6 text-secondary-600" />
                           </div>
-                          <div className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                          <div className="bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded-full">
                             {project.status || 'ongoing'}
                           </div>
                         </div>
@@ -160,8 +160,8 @@ const Research = () => {
                           
                           {project.fundingAgency && (
                             <div className="flex items-center text-xs">
-                              <Award className="w-3 h-3 mr-2 text-blue-500" />
-                              <span className="text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                              <Award className="w-3 h-3 mr-2 text-primary-500" />
+                              <span className="text-primary-600 bg-primary-50 px-2 py-1 rounded">
                                 {project.fundingAgency}
                               </span>
                             </div>
@@ -169,8 +169,8 @@ const Research = () => {
                           
                           {project.budget && (
                             <div className="flex items-center text-xs">
-                              <DollarSign className="w-3 h-3 mr-2 text-green-500" />
-                              <span className="text-green-600 bg-green-50 px-2 py-1 rounded">
+                              <DollarSign className="w-3 h-3 mr-2 text-accent-600" />
+                              <span className="text-accent-700 bg-accent-50 px-2 py-1 rounded">
                                 ₹{(project.budget / 100000).toFixed(1)} Lakhs
                               </span>
                             </div>
@@ -178,8 +178,8 @@ const Research = () => {
                           
                           {project.duration && (project.duration.startDate || project.duration.endDate) && (
                             <div className="flex items-center text-xs">
-                              <Calendar className="w-3 h-3 mr-2 text-purple-500" />
-                              <span className="text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                              <Calendar className="w-3 h-3 mr-2 text-navy-500" />
+                              <span className="text-navy-600 bg-navy-50 px-2 py-1 rounded">
                                 {project.duration.startDate && new Date(project.duration.startDate).getFullYear()} - 
                                 {project.duration.endDate ? new Date(project.duration.endDate).getFullYear() : 'Ongoing'}
                               </span>
@@ -207,7 +207,7 @@ const Research = () => {
                                 href={getDocumentUrl(project.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full hover:bg-blue-200 transition-colors"
+                                className="flex items-center px-3 py-1 bg-primary-100 text-primary-700 text-xs rounded-full hover:bg-primary-200 transition-colors"
                               >
                                 <FileText className="w-3 h-3 mr-1" />
                                 View PDF
@@ -226,7 +226,7 @@ const Research = () => {
                                   href={doc.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full hover:bg-blue-200 transition-colors"
+                                  className="flex items-center px-3 py-1 bg-primary-100 text-primary-700 text-xs rounded-full hover:bg-primary-200 transition-colors"
                                 >
                                   <FileText className="w-3 h-3 mr-1" />
                                   View Details
@@ -254,7 +254,7 @@ const Research = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">Publications and Journals</h2>
                   <p className="text-gray-600 mb-4">Research publications and academic contributions</p>
-                  <div className="w-16 h-1 bg-green-400 rounded mx-auto"></div>
+                  <div className="w-16 h-1 bg-secondary-500 rounded mx-auto"></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -262,10 +262,10 @@ const Research = () => {
                     <Card key={publication._id} className="hover:shadow-xl transition-all duration-300">
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-4">
-                          <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center">
-                            <BookOpen className="w-6 h-6 text-green-600" />
+                          <div className="w-12 h-12 rounded-lg bg-secondary-100 flex items-center justify-center">
+                            <BookOpen className="w-6 h-6 text-secondary-600" />
                           </div>
-                          <div className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                          <div className="bg-primary-100 text-primary-800 text-xs px-2 py-1 rounded-full">
                             Publication
                           </div>
                         </div>
@@ -282,8 +282,8 @@ const Research = () => {
                           
                           {publication.journal && (
                             <div className="flex items-center text-xs">
-                              <BookOpen className="w-3 h-3 mr-2 text-green-500" />
-                              <span className="text-green-600 bg-green-50 px-2 py-1 rounded">
+                              <BookOpen className="w-3 h-3 mr-2 text-secondary-500" />
+                              <span className="text-secondary-600 bg-secondary-50 px-2 py-1 rounded">
                                 {publication.journal}
                               </span>
                             </div>
@@ -360,7 +360,7 @@ const Research = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">Student Research</h2>
                   <p className="text-gray-600 mb-4">M.F.Sc. and B.F.Sc. student research projects</p>
-                  <div className="w-16 h-1 bg-orange-400 rounded mx-auto"></div>
+                  <div className="w-16 h-1 bg-accent-500 rounded mx-auto"></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -368,10 +368,10 @@ const Research = () => {
                     <Card key={research._id} className="hover:shadow-xl transition-all duration-300">
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-4">
-                          <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
-                            <Users className="w-6 h-6 text-orange-600" />
+                          <div className="w-12 h-12 rounded-lg bg-accent-100 flex items-center justify-center">
+                            <Users className="w-6 h-6 text-accent-600" />
                           </div>
-                          <div className="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+                          <div className="bg-accent-100 text-accent-800 text-xs px-2 py-1 rounded-full">
                             Student Research
                           </div>
                         </div>
@@ -394,8 +394,8 @@ const Research = () => {
                           
                           {research.degree && (
                             <div className="flex items-center text-xs">
-                              <BookOpen className="w-3 h-3 mr-2 text-orange-500" />
-                              <span className="text-orange-600 bg-orange-50 px-2 py-1 rounded">
+                              <BookOpen className="w-3 h-3 mr-2 text-accent-500" />
+                              <span className="text-accent-600 bg-accent-50 px-2 py-1 rounded">
                                 {research.degree}
                               </span>
                             </div>
@@ -403,8 +403,8 @@ const Research = () => {
                           
                           {research.completionYear && (
                             <div className="flex items-center text-xs">
-                              <Calendar className="w-3 h-3 mr-2 text-purple-500" />
-                              <span className="text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                              <Calendar className="w-3 h-3 mr-2 text-navy-500" />
+                              <span className="text-navy-600 bg-navy-50 px-2 py-1 rounded">
                                 {research.completionYear}
                               </span>
                             </div>
@@ -419,7 +419,7 @@ const Research = () => {
                                 href={getDocumentUrl(research.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full hover:bg-orange-200 transition-colors"
+                                className="flex items-center px-3 py-1 bg-accent-100 text-accent-700 text-xs rounded-full hover:bg-accent-200 transition-colors"
                               >
                                 <FileText className="w-3 h-3 mr-1" />
                                 View PDF
@@ -438,7 +438,7 @@ const Research = () => {
                                   href={doc.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full hover:bg-orange-200 transition-colors"
+                                  className="flex items-center px-3 py-1 bg-accent-100 text-accent-700 text-xs rounded-full hover:bg-accent-200 transition-colors"
                                 >
                                   <FileText className="w-3 h-3 mr-1" />
                                   View Thesis
@@ -466,7 +466,7 @@ const Research = () => {
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">Research Collaborations</h2>
                   <p className="text-gray-600 mb-4">Strategic partnerships and collaborative initiatives</p>
-                  <div className="w-16 h-1 bg-purple-400 rounded mx-auto"></div>
+                  <div className="w-16 h-1 bg-secondary-500 rounded mx-auto"></div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -474,10 +474,10 @@ const Research = () => {
                     <Card key={collaboration._id} className="hover:shadow-xl transition-all duration-300">
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-4">
-                          <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
-                            <Users className="w-6 h-6 text-purple-600" />
+                          <div className="w-12 h-12 rounded-lg bg-secondary-100 flex items-center justify-center">
+                            <Users className="w-6 h-6 text-secondary-600" />
                           </div>
-                          <div className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">
+                          <div className="bg-secondary-100 text-secondary-800 text-xs px-2 py-1 rounded-full">
                             Collaboration
                           </div>
                         </div>
@@ -494,8 +494,8 @@ const Research = () => {
                           
                           {collaboration.collaborationType && (
                             <div className="flex items-center text-xs">
-                              <Globe className="w-3 h-3 mr-2 text-purple-500" />
-                              <span className="text-purple-600 bg-purple-50 px-2 py-1 rounded">
+                              <Globe className="w-3 h-3 mr-2 text-secondary-500" />
+                              <span className="text-secondary-600 bg-secondary-50 px-2 py-1 rounded">
                                 {collaboration.collaborationType}
                               </span>
                             </div>
@@ -503,8 +503,8 @@ const Research = () => {
                           
                           {collaboration.duration && (collaboration.duration.startDate || collaboration.duration.endDate) && (
                             <div className="flex items-center text-xs">
-                              <Calendar className="w-3 h-3 mr-2 text-blue-500" />
-                              <span className="text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                              <Calendar className="w-3 h-3 mr-2 text-primary-500" />
+                              <span className="text-primary-600 bg-primary-50 px-2 py-1 rounded">
                                 {collaboration.duration.startDate && new Date(collaboration.duration.startDate).getFullYear()} - 
                                 {collaboration.duration.endDate ? new Date(collaboration.duration.endDate).getFullYear() : 'Ongoing'}
                               </span>
@@ -532,7 +532,7 @@ const Research = () => {
                                 href={getDocumentUrl(collaboration.filename)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
+                                className="flex items-center px-3 py-1 bg-secondary-100 text-secondary-700 text-xs rounded-full hover:bg-secondary-200 transition-colors"
                               >
                                 <FileText className="w-3 h-3 mr-1" />
                                 View PDF
@@ -551,7 +551,7 @@ const Research = () => {
                                   href={doc.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
+                                  className="flex items-center px-3 py-1 bg-secondary-100 text-secondary-700 text-xs rounded-full hover:bg-secondary-200 transition-colors"
                                 >
                                   <FileText className="w-3 h-3 mr-1" />
                                   View Agreement
