@@ -31,8 +31,27 @@ const Infrastructure = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-            <section className="section-padding bg-blue-600 text-white">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-green-300 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-blue-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Building/structure shapes */}
+          <div className="absolute top-20 right-20 w-12 h-16 bg-white/10 rounded animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-10 h-14 bg-cyan-300/15 rounded animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Infrastructure bubbles */}
+          <div className="absolute top-1/3 left-1/4 w-8 h-8 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-6 h-6 bg-blue-300/20 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Infrastructure
@@ -45,15 +64,32 @@ const Infrastructure = () => {
       </section>
       
       {/* Classrooms and Labs */}
-      <section id="classrooms" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="classrooms" className="section-padding bg-gradient-to-br from-gray-50 via-blue-50 to-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 right-10 w-24 h-24 bg-blue-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-10 w-32 h-32 bg-purple-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-28 h-28 bg-indigo-400 rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating lab equipment elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-16 left-20 w-8 h-12 bg-blue-200/15 rounded animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute top-32 right-24 w-6 h-6 bg-purple-200/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute bottom-20 left-1/3 w-10 h-4 bg-indigo-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Classrooms and Labs</h2>
             <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute bottom-2 left-2 w-3 h-3 bg-blue-300 rounded-full opacity-30 animate-pulse" style={{animationDelay: '0.5s'}}></div>
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                   <Monitor className="w-6 h-6 text-blue-500" />
@@ -68,7 +104,11 @@ const Infrastructure = () => {
               </p>
             </Card>
             
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute top-0 left-0 w-12 h-12 bg-gradient-to-br from-green-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+              <div className="absolute bottom-3 right-3 w-2 h-2 bg-green-300 rounded-full opacity-40 animate-bounce" style={{animationDelay: '1s'}}></div>
+              
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
                   <Microscope className="w-6 h-6 text-secondary-600" />
@@ -83,7 +123,11 @@ const Infrastructure = () => {
               </p>
             </Card>
             
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-orange-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute top-0 right-0 w-14 h-14 bg-gradient-to-bl from-orange-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute bottom-2 left-3 w-2 h-2 bg-orange-300 rounded-full opacity-40 animate-pulse" style={{animationDelay: '1.5s'}}></div>
+              
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
                   <FlaskConical className="w-6 h-6 text-accent-600" />
@@ -98,7 +142,11 @@ const Infrastructure = () => {
               </p>
             </Card>
             
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute bottom-0 right-0 w-12 h-12 bg-gradient-to-tl from-green-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+              <div className="absolute top-3 left-2 w-3 h-3 bg-green-300 rounded-full opacity-30 animate-float" style={{animationDelay: '2s'}}></div>
+              
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                   <Building className="w-6 h-6 text-green-600" />
@@ -113,7 +161,11 @@ const Infrastructure = () => {
               </p>
             </Card>
             
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-purple-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-purple-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute bottom-4 right-4 w-2 h-2 bg-purple-300 rounded-full opacity-40 animate-bounce" style={{animationDelay: '2.5s'}}></div>
+              
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
                   <Brain className="w-6 h-6 text-purple-600" />
@@ -128,7 +180,11 @@ const Infrastructure = () => {
               </p>
             </Card>
             
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-indigo-50 relative overflow-hidden group">
+              {/* Decorative corner */}
+              <div className="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-indigo-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+              <div className="absolute top-2 right-3 w-3 h-3 bg-indigo-300 rounded-full opacity-30 animate-pulse" style={{animationDelay: '3s'}}></div>
+              
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
                   <Beaker className="w-6 h-6 text-indigo-600" />
@@ -147,30 +203,53 @@ const Infrastructure = () => {
       </section>
 
       {/* Hatcheries and Demo Units */}
-      <section id="hatcheries" className="section-padding bg-white">
-        <div className="container-max">
+      <section id="hatcheries" className="section-padding bg-gradient-to-br from-white via-green-50 to-blue-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-cyan-400 rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating hatchery elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-20 w-10 h-5 bg-blue-200/15 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 left-24 w-8 h-4 bg-green-200/20 rounded-full animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-cyan-200/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Hatcheries and Demo Units</h2>
             <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+              {/* Decorative elements */}
+              <div className="absolute top-1 right-1 w-8 h-8 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute bottom-2 left-2 w-2 h-2 bg-blue-300 rounded-full opacity-40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
               <Fish className="w-8 h-8 text-blue-500 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Hatchery</h3>
               <p className="text-gray-700 text-sm">Modern hatchery facilities for breeding and seed production</p>
             </Card>
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+              <div className="absolute top-1 left-1 w-6 h-6 bg-gradient-to-br from-green-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+              <div className="absolute bottom-3 right-3 w-2 h-2 bg-green-300 rounded-full opacity-40 animate-float" style={{animationDelay: '1s'}}></div>
               <Factory className="w-8 h-8 text-secondary-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Biofloc Systems</h3>
               <p className="text-gray-700 text-sm">Demonstration units for sustainable aquaculture technology</p>
             </Card>
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-orange-50 relative overflow-hidden group">
+              <div className="absolute bottom-1 right-1 w-8 h-8 bg-gradient-to-tl from-orange-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute top-2 left-3 w-2 h-2 bg-orange-300 rounded-full opacity-40 animate-bounce" style={{animationDelay: '1.5s'}}></div>
               <Building className="w-8 h-8 text-accent-600 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">RAS Units</h3>
               <p className="text-gray-700 text-sm">Recirculating Aquaculture Systems for intensive farming</p>
             </Card>
-            <Card className="p-6 text-center">
+            <Card className="p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-yellow-50 relative overflow-hidden group">
+              <div className="absolute top-1 right-1 w-10 h-10 bg-gradient-to-bl from-yellow-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+              <div className="absolute bottom-2 left-2 w-3 h-3 bg-yellow-300 rounded-full opacity-30 animate-pulse" style={{animationDelay: '2s'}}></div>
               <Factory className="w-8 h-8 text-orange-500 mx-auto mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fish Feed Unit</h3>
               <p className="text-gray-700 text-sm">On-site fish feed manufacturing and quality testing facility</p>
@@ -180,15 +259,22 @@ const Infrastructure = () => {
       </section>
 
       {/* Library and e-Resources */}
-      <section id="library" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="library" className="section-padding bg-gradient-to-br from-gray-50 via-purple-50 to-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 right-10 w-32 h-32 bg-purple-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-28 h-28 bg-indigo-400 rounded-full blur-2xl"></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Library and e-Resources</h2>
             <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6">
+            <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
               <Book className="w-8 h-8 text-blue-500 mb-3" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Central Library</h3>
               <p className="text-gray-700 text-sm">Extensive collection of books, journals, and research publications in fisheries science</p>
@@ -213,7 +299,12 @@ const Infrastructure = () => {
       </section>
 
       {/* Hostels and Campus Facilities */}
-      <section id="hostels" className="section-padding bg-white">
+      <section id="hostels" className="section-padding bg-gradient-to-br from-white via-green-50 to-blue-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+        </div>
         <div className="container-max">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Hostels and Campus Facilities</h2>
@@ -256,7 +347,12 @@ const Infrastructure = () => {
       </section>
 
       {/* Fish Processing & Feed Units */}
-      <section id="processing" className="section-padding bg-gray-50">
+      <section id="processing" className="section-padding bg-gradient-to-br from-gray-50 via-orange-50 to-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 right-10 w-30 h-30 bg-orange-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-10 w-32 h-32 bg-red-400 rounded-full blur-3xl"></div>
+        </div>
         <div className="container-max">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Fish Processing & Feed Units</h2>

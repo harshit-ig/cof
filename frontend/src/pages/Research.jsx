@@ -74,8 +74,28 @@ const Research = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-      <section className="section-padding bg-blue-600 text-white">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-green-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-10 right-1/3 w-36 h-36 bg-cyan-300 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-blue-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Simple fish-like shapes */}
+          <div className="absolute top-20 right-20 w-16 h-8 bg-white/10 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-14 h-7 bg-cyan-300/15 rounded-full animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Simple bubbles */}
+          <div className="absolute top-1/3 left-1/4 w-8 h-8 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-6 h-6 bg-blue-300/20 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Research & Innovation
@@ -86,20 +106,20 @@ const Research = () => {
             
             {/* Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">{stats.ongoingProjects}</div>
+              <div className="text-center group">
+                <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stats.ongoingProjects}</div>
                 <div className="text-blue-200 text-sm">Ongoing Projects</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">{stats.publications}</div>
+              <div className="text-center group">
+                <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stats.publications}</div>
                 <div className="text-blue-200 text-sm">Publications</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">₹{(stats.totalBudget / 100000).toFixed(1)}L</div>
+              <div className="text-center group">
+                <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">₹{(stats.totalBudget / 100000).toFixed(1)}L</div>
                 <div className="text-blue-200 text-sm">Total Funding</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white">{stats.facilities}</div>
+              <div className="text-center group">
+                <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stats.facilities}</div>
                 <div className="text-blue-200 text-sm">Research Facilities</div>
               </div>
             </div>
@@ -108,8 +128,37 @@ const Research = () => {
       </section>
 
       {/* Research Sections */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-br from-white via-blue-50 to-green-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-cyan-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-400 rounded-full blur-3xl"></div>
+        </div>
+        
+        {/* Large fishery-themed floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Large swimming fish shapes */}
+          <div className="absolute top-32 left-20 w-28 h-14 bg-blue-200/20 rounded-full animate-float transform rotate-12 blur-sm" style={{animationDelay: '0s'}}></div>
+          <div className="absolute top-96 right-24 w-32 h-16 bg-green-200/25 rounded-full animate-float transform -rotate-6 blur-sm" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-[600px] left-16 w-24 h-12 bg-cyan-200/20 rounded-full animate-float transform rotate-45 blur-sm" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-[800px] right-32 w-36 h-18 bg-purple-200/15 rounded-full animate-float transform -rotate-12 blur-sm" style={{animationDelay: '3s'}}></div>
+          
+          {/* Large bubble circles */}
+          <div className="absolute top-48 right-48 w-20 h-20 bg-blue-300/15 rounded-full animate-bounce blur-md" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute top-[400px] left-32 w-24 h-24 bg-green-300/12 rounded-full animate-bounce blur-md" style={{animationDelay: '1.8s'}}></div>
+          <div className="absolute top-[700px] right-20 w-28 h-28 bg-cyan-300/18 rounded-full animate-bounce blur-lg" style={{animationDelay: '2.5s'}}></div>
+          <div className="absolute top-[900px] left-48 w-16 h-16 bg-purple-300/15 rounded-full animate-bounce blur-md" style={{animationDelay: '3.2s'}}></div>
+          
+          {/* Water ripple effects */}
+          <div className="absolute top-64 left-1/3 w-40 h-8 bg-blue-200/10 rounded-full animate-pulse blur-xl transform rotate-3" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-[500px] right-1/3 w-48 h-10 bg-green-200/8 rounded-full animate-pulse blur-2xl transform -rotate-2" style={{animationDelay: '2.8s'}}></div>
+          <div className="absolute top-[750px] left-1/4 w-36 h-6 bg-cyan-200/12 rounded-full animate-pulse blur-xl transform rotate-6" style={{animationDelay: '4s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           {loading && (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
@@ -136,9 +185,20 @@ const Research = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getDataBySection('ongoing-projects').map((project) => (
-                    <Card key={project._id} className="hover:shadow-xl transition-all duration-300">
-                      <div className="p-6">
+                  {getDataBySection('ongoing-projects').map((project, index) => (
+                    <Card key={project._id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+                      {/* Floating decorative elements */}
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      <div className={`absolute top-2 left-2 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                        index % 3 === 0 ? 'bg-blue-400' : index % 3 === 1 ? 'bg-green-400' : 'bg-cyan-400'
+                      }`} style={{animationDelay: `${index * 0.5}s`}}></div>
+                      
+                      {/* Fish-like floating element */}
+                      <div className={`absolute bottom-3 right-3 w-6 h-3 rounded-full opacity-20 animate-float ${
+                        index % 3 === 0 ? 'bg-blue-300' : index % 3 === 1 ? 'bg-green-300' : 'bg-cyan-300'
+                      } transform rotate-12`} style={{animationDelay: `${index * 0.3}s`}}></div>
+                      
+                      <div className="p-6 relative z-10">
                         <div className="flex items-start justify-between mb-4">
                           <div className="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center">
                             <FlaskConical className="w-6 h-6 text-blue-600" />
@@ -364,9 +424,23 @@ const Research = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getDataBySection('student-research').map((research) => (
-                    <Card key={research._id} className="hover:shadow-xl transition-all duration-300">
-                      <div className="p-6">
+                  {getDataBySection('student-research').map((research, index) => (
+                    <Card key={research._id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-orange-50 relative overflow-hidden group">
+                      {/* Floating decorative elements */}
+                      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-orange-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      <div className="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-yellow-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                      
+                      {/* Swimming fish elements */}
+                      <div className={`absolute top-4 left-4 w-4 h-2 rounded-full opacity-30 animate-float ${
+                        index % 3 === 0 ? 'bg-orange-400' : index % 3 === 1 ? 'bg-yellow-400' : 'bg-red-400'
+                      } transform rotate-45`} style={{animationDelay: `${index * 0.7}s`}}></div>
+                      
+                      {/* Water bubbles */}
+                      <div className={`absolute bottom-4 right-6 w-3 h-3 rounded-full opacity-25 animate-bounce ${
+                        index % 2 === 0 ? 'bg-orange-300' : 'bg-yellow-300'
+                      }`} style={{animationDelay: `${index * 0.5}s`}}></div>
+                      
+                      <div className="p-6 relative z-10">
                         <div className="flex items-start justify-between mb-4">
                           <div className="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
                             <Users className="w-6 h-6 text-orange-600" />
@@ -470,9 +544,27 @@ const Research = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {getDataBySection('collaborations').map((collaboration) => (
-                    <Card key={collaboration._id} className="hover:shadow-xl transition-all duration-300">
-                      <div className="p-6">
+                  {getDataBySection('collaborations').map((collaboration, index) => (
+                    <Card key={collaboration._id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-purple-50 relative overflow-hidden group">
+                      {/* Floating decorative elements */}
+                      <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-pink-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                      
+                      {/* Swimming collaboration fish */}
+                      <div className={`absolute top-5 left-5 w-7 h-4 rounded-full opacity-25 animate-float ${
+                        index % 2 === 0 ? 'bg-purple-400' : 'bg-pink-400'
+                      } transform -rotate-12`} style={{animationDelay: `${index * 0.4}s`}}></div>
+                      
+                      {/* Partnership bubbles */}
+                      <div className={`absolute bottom-6 right-4 w-4 h-4 rounded-full opacity-30 animate-bounce ${
+                        index % 3 === 0 ? 'bg-purple-300' : index % 3 === 1 ? 'bg-pink-300' : 'bg-indigo-300'
+                      }`} style={{animationDelay: `${index * 0.6}s`}}></div>
+                      
+                      <div className={`absolute bottom-3 right-7 w-2 h-2 rounded-full opacity-25 animate-pulse ${
+                        index % 2 === 0 ? 'bg-purple-200' : 'bg-pink-200'
+                      }`} style={{animationDelay: `${index * 0.9}s`}}></div>
+                      
+                      <div className="p-6 relative z-10">
                         <div className="flex items-start justify-between mb-4">
                           <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center">
                             <Users className="w-6 h-6 text-purple-600" />
@@ -583,9 +675,27 @@ const Research = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getDataBySection('facilities').map((facility) => (
-                    <Card key={facility._id} className="hover:shadow-xl transition-all duration-300">
-                      <div className="p-6">
+                  {getDataBySection('facilities').map((facility, index) => (
+                    <Card key={facility._id} className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-indigo-50 relative overflow-hidden group">
+                      {/* Floating decorative elements */}
+                      <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-indigo-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                      <div className="absolute bottom-0 right-0 w-12 h-12 bg-gradient-to-tl from-purple-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                      
+                      {/* Fish tank bubbles */}
+                      <div className={`absolute top-3 right-5 w-2 h-2 rounded-full opacity-40 animate-bounce ${
+                        index % 3 === 0 ? 'bg-indigo-400' : index % 3 === 1 ? 'bg-purple-400' : 'bg-blue-400'
+                      }`} style={{animationDelay: `${index * 0.3}s`}}></div>
+                      
+                      <div className={`absolute top-6 right-3 w-1 h-1 rounded-full opacity-30 animate-pulse ${
+                        index % 2 === 0 ? 'bg-indigo-300' : 'bg-purple-300'
+                      }`} style={{animationDelay: `${index * 0.8}s`}}></div>
+                      
+                      {/* Laboratory equipment styled element */}
+                      <div className={`absolute bottom-4 left-4 w-6 h-3 rounded opacity-25 animate-float ${
+                        index % 2 === 0 ? 'bg-indigo-300' : 'bg-purple-300'
+                      } transform rotate-6`} style={{animationDelay: `${index * 0.6}s`}}></div>
+                      
+                      <div className="p-6 relative z-10">
                         <div className="flex items-start justify-between mb-4">
                           <div className="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center">
                             <Building className="w-6 h-6 text-indigo-600" />

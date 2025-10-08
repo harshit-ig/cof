@@ -144,24 +144,42 @@ const Home = () => {
       <HeroSlideshow />
 
       {/* Dean's Welcome Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-gradient-to-br from-blue-50 via-white to-green-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-yellow-400 rounded-full blur-2xl"></div>
+        </div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-16 right-16 w-6 h-6 bg-blue-200 rotate-45 opacity-20 animate-float"></div>
+          <div className="absolute bottom-32 left-20 w-4 h-4 bg-green-200 rounded-full opacity-30 animate-bounce"></div>
+          <div className="absolute top-40 left-1/4 w-3 h-8 bg-yellow-200 opacity-25 animate-pulse"></div>
+          <div className="absolute bottom-16 right-1/3 w-5 h-5 bg-indigo-200 rotate-12 opacity-20 animate-float" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-2 h-6 bg-pink-200 opacity-30 animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Dean's Welcome Message */}
             <div className="lg:col-span-2">
-              <Card className="mb-8">
+              <Card className="mb-8 bg-gradient-to-r from-white to-blue-50 border-l-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                 <div className="flex items-center mb-6">
-                  <div className="w-1 h-8 bg-blue-600 rounded mr-3"></div>
+                  <div className="w-1 h-8 bg-gradient-to-b from-blue-600 to-blue-800 rounded mr-3"></div>
                   <h2 className="text-2xl font-bold text-gray-900">Welcome from the Dean</h2>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="md:col-span-1">
+                  <div className="md:col-span-1 relative">
+                    <div className="absolute -top-2 -left-2 w-4 h-4 bg-blue-300 rounded-full opacity-40 animate-pulse"></div>
+                    <div className="absolute -bottom-2 -right-2 w-3 h-3 bg-green-300 rounded-full opacity-50 animate-bounce"></div>
                     <img
                       src={welcomeData.deanPhoto.startsWith('http') ? welcomeData.deanPhoto : uploadAPI.getImageUrl(welcomeData.deanPhoto, 'dean')}
                       alt={welcomeData.deanName}
-                      className="w-full h-48 md:h-56 lg:h-64 object-cover rounded-lg shadow-md"
+                      className="w-full h-48 md:h-56 lg:h-64 object-cover rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 33vw"
                       loading="lazy"
                       onError={(e) => {
@@ -195,10 +213,16 @@ const Home = () => {
               </Card>
 
               {/* Latest Updates */}
-              <Card>
-                <div className="flex items-center justify-between mb-6">
+              <Card className="bg-gradient-to-r from-white to-green-50 border-l-4 border-green-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                {/* Decorative corner element */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-green-200 to-transparent opacity-30"></div>
+                <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-blue-200 to-transparent opacity-20"></div>
+                
+                <div className="flex items-center justify-between mb-6 relative z-10">
                   <div className="flex items-center">
-                    <Bell className="w-5 h-5 text-green-600 mr-2" />
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
+                      <Bell className="w-4 h-4 text-white" />
+                    </div>
                     <h3 className="text-xl font-semibold text-gray-900">Latest Updates & Announcements</h3>
                   </div>
                   <Link
@@ -222,8 +246,9 @@ const Home = () => {
                   <div className="space-y-4">
                     {latestNews.length > 0 ? (
                       latestNews.map((news, index) => (
-                        <div key={index} className="border-l-4  text-left border-green-500 pl-4 py-2 hover:bg-gray-50 transition-colors">
-                          <h4 className="font-medium text-gray-900 mb-1">
+                        <div key={index} className="border-l-4 text-left border-green-500 pl-4 py-3 bg-gradient-to-r from-green-50 to-transparent hover:from-green-100 hover:to-green-50 transition-all duration-300 rounded-r-lg relative group">
+                          <div className="absolute left-0 top-1/2 w-1 h-6 bg-green-400 rounded-full transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <h4 className="font-medium text-gray-900 mb-1 group-hover:text-green-700 transition-colors duration-300">
                             <Link to={`/news-and-events/${news.slug || news._id}`} className="hover:text-green-700">
                               {news.title}
                             </Link>
@@ -251,8 +276,17 @@ const Home = () => {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Quick Links */}
-              <Card>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+              <Card className="bg-gradient-to-br from-white to-blue-50 border-t-4 border-blue-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                {/* Floating decorative elements */}
+                <div className="absolute top-2 right-2 w-3 h-3 bg-blue-300 rounded-full opacity-40 animate-pulse"></div>
+                <div className="absolute bottom-4 left-4 w-2 h-2 bg-yellow-300 rounded-full opacity-50 animate-bounce" style={{animationDelay: '1s'}}></div>
+                
+                <div className="flex items-center mb-4 relative z-10">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
+                    <BookOpen className="w-4 h-4 text-white" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
+                </div>
                 <div className="space-y-3">
                   {quickLinks.map((link, index) => {
                     const IconComponent = link.icon
@@ -260,16 +294,18 @@ const Home = () => {
                       <Link
                         key={index}
                         to={link.href}
-                        className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                        className="flex items-start p-3 rounded-lg bg-gradient-to-r from-white to-gray-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 group border border-gray-100 hover:border-blue-200 shadow-sm hover:shadow-md transform hover:-translate-y-0.5 relative overflow-hidden"
                       >
-                        <IconComponent className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0" />
-                        <div className="flex-1  text-left">
-                          <h4 className="font-medium text-gray-900 group-hover:text-green-700 mb-1">
+                        {/* Hover effect overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <IconComponent className="w-5 h-5 text-green-600 mr-3 mt-0.5 flex-shrink-0 group-hover:scale-110 group-hover:text-green-700 transition-all duration-300 relative z-10" />
+                        <div className="flex-1 text-left relative z-10">
+                          <h4 className="font-medium text-gray-900 group-hover:text-green-700 mb-1 transition-colors duration-300">
                             {link.title}
                           </h4>
-                          <p className="text-sm text-gray-600">{link.description}</p>
+                          <p className="text-sm text-gray-600 group-hover:text-gray-700 transition-colors duration-300">{link.description}</p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 mt-1" />
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 group-hover:translate-x-1 transition-all duration-300 mt-1 relative z-10" />
                       </Link>
                     )
                   })}
@@ -278,23 +314,35 @@ const Home = () => {
 
               {/* Important Notices */}
               {importantNotices.length > 0 && (
-                <div className="space-y-4  text-left">
+                <div className="space-y-4 text-left">
                   {importantNotices.map((notice) => (
-                    <Card key={notice.id} className="bg-blue-50 border border-blue-200">
-                      <div className="flex items-center mb-3">
-                        <FileText className="w-5 h-5 text-blue-600 mr-2" />
-                        <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
+                    <Card key={notice.id} className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                      {/* Decorative corner elements */}
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-blue-200 to-transparent opacity-50"></div>
+                      <div className="absolute bottom-0 left-0 w-8 h-8 bg-gradient-to-tr from-indigo-200 to-transparent opacity-40"></div>
+                      
+                      {/* Floating decorative dots */}
+                      <div className="absolute top-3 left-3 w-1 h-1 bg-blue-400 rounded-full opacity-60 animate-pulse"></div>
+                      <div className="absolute bottom-3 right-3 w-1.5 h-1.5 bg-indigo-400 rounded-full opacity-50 animate-bounce" style={{animationDelay: '1.5s'}}></div>
+                      
+                      <div className="relative z-10">
+                        <div className="flex items-center mb-3">
+                          <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
+                            <FileText className="w-4 h-4 text-white" />
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
+                        </div>
+                        <p className="text-gray-700 mb-3">
+                          {notice.message}
+                        </p>
+                        <Link
+                          to={notice.link}
+                          className="inline-flex items-center text-blue-700 hover:text-blue-800 font-medium transition-colors duration-300 hover:translate-x-1 transform"
+                        >
+                          {notice.linkText}
+                          <ExternalLink className="ml-1 h-4 w-4" />
+                        </Link>
                       </div>
-                      <p className="text-gray-700 mb-3">
-                        {notice.message}
-                      </p>
-                      <Link
-                        to={notice.link}
-                        className="inline-flex items-center text-blue-700 hover:text-blue-800 font-medium"
-                      >
-                        {notice.linkText}
-                        <ExternalLink className="ml-1 h-4 w-4" />
-                      </Link>
                     </Card>
                   ))}
                 </div>
@@ -305,7 +353,15 @@ const Home = () => {
       </section>
 
       {/* Partner Logos Slider */}
-      <LogoSlider />
+      <div className="relative">
+        {/* Additional floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-8 left-1/4 w-4 h-4 bg-blue-300 rounded-full opacity-20 animate-float" style={{animationDelay: '3s'}}></div>
+          <div className="absolute bottom-8 right-1/4 w-3 h-3 bg-green-300 rounded-full opacity-30 animate-bounce" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        <LogoSlider />
+      </div>
 
     </div>
   )

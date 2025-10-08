@@ -109,13 +109,34 @@ const Contact = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-      <section className="section-padding bg-blue-600 text-white">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-r from-teal-600 via-cyan-600 to-blue-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-teal-300 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-cyan-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Contact/communication themed floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Communication symbols */}
+          <div className="absolute top-20 right-20 w-10 h-8 bg-teal-300/15 rounded animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-8 h-8 bg-cyan-300/20 rounded-full animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Contact symbols */}
+          <div className="absolute top-1/3 left-1/4 w-6 h-6 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-12 h-6 bg-blue-300/25 rounded-lg animate-bounce transform rotate-45" style={{animationDelay: '3s'}}></div>
+          <div className="absolute top-1/4 right-1/3 w-4 h-8 bg-teal-300/20 rounded-full animate-pulse" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute bottom-1/4 left-1/3 w-8 h-4 bg-cyan-300/15 rounded-full animate-float" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Contact Us
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
+            <p className="text-xl text-teal-100 mb-8">
               Get in Touch with {contactData.contactInfo?.address?.institution || 'College of Fishery'}
             </p>
           </div>
@@ -123,197 +144,268 @@ const Contact = () => {
       </section>
 
       {/* Contact Details & Google Map */}
-      <section id="contact-details" className="section-padding bg-gray-50">
-        <div className="container-max">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Contact Details & Google Map</h2>
-            <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
+      <section id="contact-details" className="section-padding bg-gradient-to-br from-gray-50 via-teal-50 to-cyan-100 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute top-20 right-20 w-40 h-40 bg-teal-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-48 h-48 bg-cyan-400 rounded-full blur-4xl"></div>
+          <div className="absolute top-1/3 left-1/2 w-32 h-32 bg-blue-400 rounded-full blur-2xl"></div>
+        </div>
+
+        {/* Contact-themed floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-24 left-24 w-8 h-8 bg-teal-500/20 rounded-full animate-pulse" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-40 right-40 w-12 h-6 bg-cyan-500/25 rounded-lg animate-float transform rotate-45" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-blue-500/20 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+        </div>
+
+        <div className="container-max relative z-10">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Contact Details & Google Map</h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-teal-400 to-cyan-500 rounded mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Details */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Phone Numbers */}
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                    <Phone className="w-6 h-6 text-blue-500" />
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-teal-100/50 group hover:scale-105 relative overflow-hidden">
+                {/* Card corner decorations */}
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-teal-400/20 to-cyan-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-blue-400/15 to-teal-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-teal-100 to-cyan-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Phone className="w-7 h-7 text-teal-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">Phone</h3>
+                      <p className="text-teal-500 text-sm font-semibold">Main Office</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
-                    <p className="text-blue-500 text-sm">Main Office</p>
+                  <div className="space-y-3">
+                    {contactData.contactInfo?.phone?.main && (
+                      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-3 rounded-lg border border-teal-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.phone.main}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.phone?.office && (
+                      <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border border-cyan-200/50">
+                        <p className="text-gray-700 font-medium">Office: {contactData.contactInfo.phone.office}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.phone?.fax && (
+                      <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-3 rounded-lg border border-blue-200/50">
+                        <p className="text-gray-700 font-medium">Fax: {contactData.contactInfo.phone.fax}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {contactData.contactInfo?.phone?.main && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.phone.main}</p>
-                  )}
-                  {contactData.contactInfo?.phone?.office && (
-                    <p className="text-gray-700 text-sm">Office: {contactData.contactInfo.phone.office}</p>
-                  )}
-                  {contactData.contactInfo?.phone?.fax && (
-                    <p className="text-gray-700 text-sm">Fax: {contactData.contactInfo.phone.fax}</p>
-                  )}
-                </div>
-              </Card>
+              </div>
 
               {/* Email Addresses */}
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
-                    <Mail className="w-6 h-6 text-secondary-600" />
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-cyan-100/50 group hover:scale-105 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-teal-400/15 to-cyan-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-blue-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Mail className="w-7 h-7 text-cyan-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors duration-300">Email</h3>
+                      <p className="text-cyan-600 text-sm font-semibold">Official Communication</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Email</h3>
-                    <p className="text-secondary-600 text-sm">Official Communication</p>
+                  <div className="space-y-3">
+                    {contactData.contactInfo?.email?.main && (
+                      <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border border-cyan-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.email.main}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.email?.registrar && (
+                      <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-3 rounded-lg border border-blue-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.email.registrar}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.email?.info && (
+                      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-3 rounded-lg border border-teal-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.email.info}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {contactData.contactInfo?.email?.main && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.main}</p>
-                  )}
-                  {contactData.contactInfo?.email?.registrar && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.registrar}</p>
-                  )}
-                  {contactData.contactInfo?.email?.info && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.info}</p>
-                  )}
-                </div>
-              </Card>
+              </div>
 
               {/* Address */}
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
-                    <MapPin className="w-6 h-6 text-accent-600" />
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-blue-100/50 group hover:scale-105 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-teal-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-cyan-400/15 to-blue-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-teal-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <MapPin className="w-7 h-7 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">Address</h3>
+                      <p className="text-blue-600 text-sm font-semibold">Main Campus Location</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Address</h3>
-                    <p className="text-accent-600 text-sm">Main Campus Location</p>
+                  <div className="space-y-3">
+                    {contactData.contactInfo?.address?.institution && (
+                      <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-3 rounded-lg border border-blue-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.address.institution}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.address?.university && (
+                      <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-3 rounded-lg border border-teal-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.address.university}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.address?.street && contactData.contactInfo?.address?.city && (
+                      <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border border-cyan-200/50">
+                        <p className="text-gray-700 font-medium">
+                          {contactData.contactInfo.address.street}, {contactData.contactInfo.address.city}
+                          {contactData.contactInfo?.address?.pincode && ` - ${contactData.contactInfo.address.pincode}`}
+                        </p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.address?.state && contactData.contactInfo?.address?.country && (
+                      <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-3 rounded-lg border border-blue-200/50">
+                        <p className="text-gray-700 font-medium">
+                          {contactData.contactInfo.address.state}, {contactData.contactInfo.address.country}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {contactData.contactInfo?.address?.institution && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.address.institution}</p>
-                  )}
-                  {contactData.contactInfo?.address?.university && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.address.university}</p>
-                  )}
-                  {contactData.contactInfo?.address?.street && contactData.contactInfo?.address?.city && (
-                    <p className="text-gray-700 text-sm">
-                      {contactData.contactInfo.address.street}, {contactData.contactInfo.address.city}
-                      {contactData.contactInfo?.address?.pincode && ` - ${contactData.contactInfo.address.pincode}`}
-                    </p>
-                  )}
-                  {contactData.contactInfo?.address?.state && contactData.contactInfo?.address?.country && (
-                    <p className="text-gray-700 text-sm">
-                      {contactData.contactInfo.address.state}, {contactData.contactInfo.address.country}
-                    </p>
-                  )}
-                </div>
-              </Card>
+              </div>
 
               {/* Office Hours */}
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
-                    <Clock className="w-6 h-6 text-green-600" />
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-green-100/50 group hover:scale-105 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-green-400/20 to-teal-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-emerald-400/15 to-green-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-emerald-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Clock className="w-7 h-7 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors duration-300">Office Hours</h3>
+                      <p className="text-green-600 text-sm font-semibold">Working Schedule</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Office Hours</h3>
-                    <p className="text-green-600 text-sm">Working Schedule</p>
+                  <div className="space-y-3">
+                    {contactData.contactInfo?.officeHours?.weekdays && (
+                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border border-green-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.officeHours.weekdays}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.officeHours?.saturday && (
+                      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-3 rounded-lg border border-emerald-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.officeHours.saturday}</p>
+                      </div>
+                    )}
+                    {contactData.contactInfo?.officeHours?.sunday && (
+                      <div className="bg-gradient-to-r from-teal-50 to-green-50 p-3 rounded-lg border border-teal-200/50">
+                        <p className="text-gray-700 font-medium">{contactData.contactInfo.officeHours.sunday}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-2">
-                  {contactData.contactInfo?.officeHours?.weekdays && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.weekdays}</p>
-                  )}
-                  {contactData.contactInfo?.officeHours?.saturday && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.saturday}</p>
-                  )}
-                  {contactData.contactInfo?.officeHours?.sunday && (
-                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.sunday}</p>
-                  )}
-                </div>
-              </Card>
+              </div>
             </div>
 
             {/* Google Map */}
-            <div className="space-y-6">
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                    <Globe className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {contactData.mapConfig?.title || 'Location Map'}
-                    </h3>
-                    <p className="text-blue-600 text-sm">
-                      {contactData.mapConfig?.description || 'Find Us Here'}
-                    </p>
-                  </div>
-                </div>
+            <div className="space-y-8">
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-teal-100/50 group hover:scale-[1.02] relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-teal-400/20 to-blue-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-cyan-400/15 to-teal-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
                 
-                {/* Google Map Embed */}
-                <div className="w-full h-80 bg-gray-200 rounded-lg overflow-hidden">
-                  <iframe
-                    src={getMapEmbedUrl()}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={contactData.mapConfig?.title || 'College Location'}
-                  ></iframe>
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-teal-100 to-blue-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Globe className="w-7 h-7 text-teal-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-teal-600 transition-colors duration-300">
+                        {contactData.mapConfig?.title || 'Location Map'}
+                      </h3>
+                      <p className="text-teal-600 text-sm font-semibold">
+                        {contactData.mapConfig?.description || 'Find Us Here'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Google Map Embed */}
+                  <div className="w-full h-80 bg-gray-200 rounded-2xl overflow-hidden shadow-inner border-4 border-teal-100/50">
+                    <iframe
+                      src={getMapEmbedUrl()}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title={contactData.mapConfig?.title || 'College Location'}
+                    ></iframe>
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <a
+                      href={getMapUrl()}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-500 to-blue-600 text-white rounded-xl text-sm font-semibold hover:from-teal-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                    >
+                      <MapPin className="w-4 h-4 mr-2" />
+                      Open in Google Maps
+                    </a>
+                  </div>
                 </div>
-                
-                <div className="mt-4 text-center">
-                  <a
-                    href={getMapUrl()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
-                  >
-                    <MapPin className="w-4 h-4 mr-2" />
-                    Open in Google Maps
-                  </a>
-                </div>
-              </Card>
+              </div>
 
               {/* Directions */}
-              <Card className="p-6">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
-                    <Building className="w-6 h-6 text-purple-600" />
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-purple-100/50 group hover:scale-105 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-purple-400/20 to-indigo-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-indigo-400/15 to-purple-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-indigo-200 rounded-xl flex items-center justify-center mr-4 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Building className="w-7 h-7 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">Directions</h3>
+                      <p className="text-purple-600 text-sm font-semibold">How to Reach</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">Directions</h3>
-                    <p className="text-purple-600 text-sm">How to Reach</p>
+                  <div className="space-y-4">
+                    {contactData.directions?.byRoad && (
+                      <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200/50">
+                        <p className="font-semibold text-purple-600 text-sm mb-2">By Road:</p>
+                        <p className="text-gray-700 text-sm">{contactData.directions.byRoad}</p>
+                      </div>
+                    )}
+                    {contactData.directions?.byAir && (
+                      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-3 rounded-lg border border-indigo-200/50">
+                        <p className="font-semibold text-indigo-600 text-sm mb-2">By Air:</p>
+                        <p className="text-gray-700 text-sm">{contactData.directions.byAir}</p>
+                      </div>
+                    )}
+                    {contactData.directions?.byTrain && (
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg border border-blue-200/50">
+                        <p className="font-semibold text-blue-600 text-sm mb-2">By Train:</p>
+                        <p className="text-gray-700 text-sm">{contactData.directions.byTrain}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-3">
-                  {contactData.directions?.byRoad && (
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">By Road:</p>
-                      <p className="text-gray-700 text-sm">{contactData.directions.byRoad}</p>
-                    </div>
-                  )}
-                  {contactData.directions?.byAir && (
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">By Air:</p>
-                      <p className="text-gray-700 text-sm">{contactData.directions.byAir}</p>
-                    </div>
-                  )}
-                  {contactData.directions?.byTrain && (
-                    <div>
-                      <p className="font-medium text-gray-900 text-sm">By Train:</p>
-                      <p className="text-gray-700 text-sm">{contactData.directions.byTrain}</p>
-                    </div>
-                  )}
-                </div>
-              </Card>
+              </div>
             </div>
           </div>
         </div>
@@ -321,44 +413,76 @@ const Contact = () => {
 
       {/* Departments */}
       {contactData.departments && contactData.departments.length > 0 && (
-        <section id="departments" className="section-padding bg-white">
-          <div className="container-max">
+        <section id="departments" className="section-padding bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 relative overflow-hidden">
+          {/* Floating background elements */}
+          <div className="absolute top-20 left-20 w-24 h-24 bg-gradient-to-r from-cyan-400/20 to-blue-500/20 rounded-full animate-float"></div>
+          <div className="absolute top-40 right-32 w-16 h-16 bg-gradient-to-r from-blue-400/15 to-teal-500/15 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-r from-teal-400/20 to-cyan-500/20 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-20 right-20 w-12 h-12 bg-gradient-to-r from-cyan-400/15 to-blue-500/15 rounded-full animate-float" style={{animationDelay: '0.5s'}}></div>
+
+          <div className="container-max relative z-10">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Department Contacts</h2>
-              <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-700 bg-clip-text text-transparent mb-4">
+                Department Contacts
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-600 rounded mx-auto mb-6"></div>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Get in touch with specific departments for detailed information and support.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {contactData.departments.map((dept, index) => (
-                <Card key={index} className="p-6">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <Building className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
-                  {dept.head && (
-                    <p className="text-sm text-gray-600 mb-3">Head: {dept.head}</p>
-                  )}
-                  {dept.description && (
-                    <p className="text-sm text-gray-700 mb-4">{dept.description}</p>
-                  )}
-                  <div className="space-y-2">
-                    {dept.phone && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="w-4 h-4 mr-2" />
-                        {dept.phone}
+                <div key={index} className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-cyan-100/50 group hover:scale-105 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-blue-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-blue-400/15 to-cyan-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="w-14 h-14 bg-gradient-to-br from-cyan-100 to-blue-200 rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                      <Building className="w-7 h-7 text-cyan-600" />
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-cyan-600 transition-colors duration-300">
+                      {dept.name}
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      {dept.head && (
+                        <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border border-cyan-200/50">
+                          <p className="text-gray-700 font-medium text-sm">
+                            <span className="font-semibold text-cyan-600">Head:</span> {dept.head}
+                          </p>
+                        </div>
+                      )}
+                      
+                      {dept.description && (
+                        <div className="bg-gradient-to-r from-blue-50 to-teal-50 p-3 rounded-lg border border-blue-200/50">
+                          <p className="text-gray-700 text-sm">{dept.description}</p>
+                        </div>
+                      )}
+                      
+                      <div className="space-y-2">
+                        {dept.phone && (
+                          <div className="bg-gradient-to-r from-teal-50 to-cyan-50 p-3 rounded-lg border border-teal-200/50">
+                            <div className="flex items-center">
+                              <Phone className="w-4 h-4 text-teal-600 mr-2" />
+                              <span className="text-gray-700 font-medium">{dept.phone}</span>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {dept.email && (
+                          <div className="bg-gradient-to-r from-cyan-50 to-blue-50 p-3 rounded-lg border border-cyan-200/50">
+                            <div className="flex items-center">
+                              <Mail className="w-4 h-4 text-cyan-600 mr-2" />
+                              <span className="text-gray-700 font-medium text-sm">{dept.email}</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                    {dept.email && (
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Mail className="w-4 h-4 mr-2" />
-                        {dept.email}
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </Card>
+                </div>
               ))}
             </div>
           </div>
@@ -367,37 +491,68 @@ const Contact = () => {
 
       {/* Emergency Contacts */}
       {contactData.emergencyContacts && contactData.emergencyContacts.length > 0 && (
-        <section id="emergency" className="section-padding bg-red-50">
-          <div className="container-max">
+        <section id="emergency" className="section-padding bg-gradient-to-br from-red-50 via-orange-50 to-pink-50 relative overflow-hidden">
+          {/* Floating background elements */}
+          <div className="absolute top-20 left-20 w-24 h-24 bg-gradient-to-r from-red-400/20 to-orange-500/20 rounded-full animate-bounce"></div>
+          <div className="absolute top-40 right-32 w-16 h-16 bg-gradient-to-r from-orange-400/15 to-red-500/15 rounded-full animate-bounce" style={{animationDelay: '0.5s'}}></div>
+          <div className="absolute bottom-32 left-1/4 w-20 h-20 bg-gradient-to-r from-pink-400/20 to-red-500/20 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-20 right-20 w-12 h-12 bg-gradient-to-r from-red-400/15 to-orange-500/15 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+
+          <div className="container-max relative z-10">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Emergency Contacts</h2>
-              <div className="w-20 h-1 bg-red-400 rounded mx-auto mb-6"></div>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+              <h2 className="text-4xl font-bold bg-gradient-to-r from-red-600 to-orange-700 bg-clip-text text-transparent mb-4">
+                Emergency Contacts
+              </h2>
+              <div className="w-24 h-1 bg-gradient-to-r from-red-400 to-orange-600 rounded mx-auto mb-6"></div>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Important contact numbers for emergency situations and urgent matters.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {contactData.emergencyContacts.map((contact, index) => (
-                <Card key={index} className="p-6 border-l-4 border-red-500">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <AlertCircle className="w-6 h-6 text-red-500" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{contact.title}</h3>
-                      {contact.name && (
-                        <p className="text-sm text-gray-600 mb-2">Contact: {contact.name}</p>
-                      )}
-                      {contact.phone && (
-                        <p className="text-red-600 font-medium mb-2">📞 {contact.phone}</p>
-                      )}
-                      {contact.description && (
-                        <p className="text-sm text-gray-700">{contact.description}</p>
-                      )}
+                <div key={index} className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 border border-red-100/50 group hover:scale-105 relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-red-400/20 to-orange-500/20 rounded-full transform -translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-300"></div>
+                  <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-tl from-orange-400/15 to-red-500/15 rounded-full transform translate-x-12 translate-y-12 group-hover:scale-110 transition-transform duration-300"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-start space-x-4">
+                      <div className="w-14 h-14 bg-gradient-to-br from-red-100 to-orange-200 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow duration-300">
+                        <AlertCircle className="w-7 h-7 text-red-600" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-red-600 transition-colors duration-300">
+                          {contact.title}
+                        </h3>
+                        
+                        <div className="space-y-3">
+                          {contact.name && (
+                            <div className="bg-gradient-to-r from-red-50 to-orange-50 p-3 rounded-lg border border-red-200/50">
+                              <p className="text-gray-700 font-medium text-sm">
+                                <span className="font-semibold text-red-600">Contact:</span> {contact.name}
+                              </p>
+                            </div>
+                          )}
+                          
+                          {contact.phone && (
+                            <div className="bg-gradient-to-r from-orange-50 to-red-50 p-3 rounded-lg border border-orange-200/50">
+                              <div className="flex items-center">
+                                <Phone className="w-5 h-5 text-red-600 mr-2" />
+                                <span className="text-red-600 font-bold text-lg">{contact.phone}</span>
+                              </div>
+                            </div>
+                          )}
+                          
+                          {contact.description && (
+                            <div className="bg-gradient-to-r from-red-50 to-pink-50 p-3 rounded-lg border border-red-200/50">
+                              <p className="text-gray-700 text-sm">{contact.description}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </Card>
+                </div>
               ))}
             </div>
           </div>

@@ -78,8 +78,27 @@ const StudentCorner = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white">
-        <div className="container-max section-padding">
+      <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-green-300 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-blue-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Student/academic themed shapes */}
+          <div className="absolute top-20 right-20 w-10 h-8 bg-white/10 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-8 h-10 bg-cyan-300/15 rounded animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Student activity bubbles */}
+          <div className="absolute top-1/3 left-1/4 w-6 h-6 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-8 h-8 bg-blue-300/20 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Students Corner</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
@@ -92,8 +111,22 @@ const StudentCorner = () => {
 
 
       {/* Admission Guidelines */}
-      <section id="admission-guidelines" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="admission-guidelines" className="section-padding bg-gradient-to-br from-gray-50 via-blue-50 to-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-indigo-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-purple-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating admission elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-20 w-8 h-6 bg-blue-200/15 rounded-full animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 right-24 w-6 h-8 bg-indigo-200/20 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-10 h-4 bg-purple-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Admission Guidelines</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -106,7 +139,12 @@ const StudentCorner = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {admissionGuidelines.length > 0 ? (
               admissionGuidelines.map((guideline, index) => (
-                <Card key={index} className="p-6">
+                <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+                  {/* Decorative corner */}
+                  <div className="absolute top-0 right-0 w-14 h-14 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className={`absolute bottom-2 left-2 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                    index % 2 === 0 ? 'bg-blue-400' : 'bg-indigo-400'
+                  }`} style={{animationDelay: `${index * 0.5}s`}}></div>
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                     {guideline.category && guideline.category.includes('Eligibility') ? 
                       <GraduationCap className="w-6 h-6 text-blue-500" /> :
@@ -161,8 +199,22 @@ const StudentCorner = () => {
       </section>
 
       {/* Scholarships & Fellowships */}
-      <section id="scholarships" className="section-padding bg-white">
-        <div className="container-max">
+      <section id="scholarships" className="section-padding bg-gradient-to-br from-white via-yellow-50 to-orange-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-28 h-28 bg-yellow-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-orange-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-amber-400 rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating scholarship elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-24 right-20 w-8 h-6 bg-yellow-200/15 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 left-24 w-6 h-6 bg-orange-200/20 rounded-full animate-bounce" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-7 h-4 bg-amber-200/15 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Scholarships & Fellowships</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -175,7 +227,13 @@ const StudentCorner = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {scholarshipsFellowships.length > 0 ? (
               scholarshipsFellowships.map((scholarship, index) => (
-                <Card key={index} className="p-6">
+                <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-yellow-50 relative overflow-hidden group">
+                  {/* Decorative corner */}
+                  <div className="absolute top-0 left-0 w-12 h-12 bg-gradient-to-br from-yellow-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+                  <div className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-tl from-orange-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className={`absolute top-3 right-3 w-2 h-2 rounded-full opacity-40 animate-bounce ${
+                    index % 2 === 0 ? 'bg-yellow-400' : 'bg-orange-400'
+                  }`} style={{animationDelay: `${index * 0.7}s`}}></div>
                   <div className="flex items-start space-x-4 mb-4">
                     <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
                       <Award className="w-6 h-6 text-yellow-600" />
@@ -251,8 +309,22 @@ const StudentCorner = () => {
       </section>
 
       {/* Student Council / Clubs */}
-      <section id="student-council" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="student-council" className="section-padding bg-gradient-to-br from-gray-50 via-green-50 to-blue-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-blue-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-teal-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating club elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-20 w-8 h-6 bg-green-200/15 rounded-full animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 right-24 w-6 h-8 bg-blue-200/20 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-7 h-4 bg-teal-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Student Council / Clubs</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -265,7 +337,13 @@ const StudentCorner = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {studentCouncilClubs.length > 0 ? (
               studentCouncilClubs.map((club, index) => (
-                <Card key={index} className="p-6">
+                <Card key={index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+                  {/* Decorative corner */}
+                  <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-green-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                  <div className="absolute bottom-0 left-0 w-8 h-8 bg-gradient-to-tr from-blue-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                  <div className={`absolute top-2 left-2 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                    index % 3 === 0 ? 'bg-green-400' : index % 3 === 1 ? 'bg-blue-400' : 'bg-teal-400'
+                  }`} style={{animationDelay: `${index * 0.6}s`}}></div>
                   <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mb-4">
                     <Users className="w-6 h-6 text-secondary-600" />
                   </div>
@@ -335,8 +413,21 @@ const StudentCorner = () => {
 
 
       {/* Call to Action */}
-      <section className="section-padding bg-blue-500 text-white">
-        <div className="container-max text-center">
+      <section className="section-padding bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-28 h-28 bg-cyan-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-blue-300 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-16 right-16 w-8 h-8 bg-white/10 rounded-full animate-bounce" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-16 left-16 w-6 h-6 bg-cyan-300/15 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
+        </div>
+        
+        <div className="container-max text-center relative z-10">
           <h2 className="text-3xl font-bold mb-4">Ready to Join Our Student Community?</h2>
           <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
             Explore admission opportunities, connect with current students, and start your journey 

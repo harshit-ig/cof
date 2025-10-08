@@ -62,8 +62,27 @@ const Extension = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-      <section className="bg-blue-600 text-white">
-        <div className="container-max section-padding">
+      <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-green-300 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-blue-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Extension/outreach themed shapes */}
+          <div className="absolute top-20 right-20 w-12 h-8 bg-white/10 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-10 h-6 bg-cyan-300/15 rounded-full animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Community bubbles */}
+          <div className="absolute top-1/3 left-1/4 w-8 h-8 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-6 h-6 bg-blue-300/20 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Extension & Outreach</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
@@ -77,8 +96,14 @@ const Extension = () => {
 
 
       {/* Farmer Training Programs */}
-      <section id="farmer-training" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="farmer-training" className="section-padding bg-gradient-to-br from-gray-50 via-white to-green-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-32 h-32 bg-green-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-28 h-28 bg-blue-400 rounded-full blur-2xl"></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Farmer Training Programs</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -90,7 +115,12 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {farmerTrainingPrograms.length > 0 ? farmerTrainingPrograms.map((program, index) => (
-              <Card key={program._id || index} className="p-6">
+              <Card key={program._id || index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+                {/* Decorative corner */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-green-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className={`absolute bottom-3 left-3 w-3 h-3 rounded-full opacity-30 animate-pulse ${
+                  index % 2 === 0 ? 'bg-green-400' : 'bg-blue-400'
+                }`} style={{animationDelay: `${index * 0.5}s`}}></div>
                 {/* Image Thumbnail */}
                 {program.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">
@@ -177,8 +207,22 @@ const Extension = () => {
       </section>
 
       {/* FFPO and SHG Support Activities */}
-      <section id="ffpo-shg" className="section-padding bg-white">
-        <div className="container-max">
+      <section id="ffpo-shg" className="section-padding bg-gradient-to-br from-white via-blue-50 to-purple-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-purple-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-indigo-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating community elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-24 left-20 w-8 h-6 bg-blue-200/15 rounded-full animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 right-24 w-6 h-6 bg-purple-200/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-10 h-4 bg-indigo-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">FFPO and SHG Support Activities</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -190,7 +234,13 @@ const Extension = () => {
 
           <div className="space-y-8">
             {ffpoShgActivities.length > 0 ? ffpoShgActivities.map((activity, index) => (
-              <Card key={activity._id || index} className="p-8">
+              <Card key={activity._id || index} className="p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+                {/* Decorative elements */}
+                <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-tl from-purple-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                <div className={`absolute top-4 right-4 w-3 h-3 rounded-full opacity-40 animate-bounce ${
+                  index % 3 === 0 ? 'bg-blue-400' : index % 3 === 1 ? 'bg-purple-400' : 'bg-indigo-400'
+                }`} style={{animationDelay: `${index * 0.7}s`}}></div>
                 {/* Image Thumbnail */}
                 {activity.imageUrl && (
                   <div className="mb-6 -mx-8 -mt-8">
@@ -281,8 +331,22 @@ const Extension = () => {
       </section>
 
       {/* Aquaculture Demonstrations */}
-      <section id="demonstrations" className="section-padding bg-white">
-        <div className="container-max">
+      <section id="demonstrations" className="section-padding bg-gradient-to-br from-white via-green-50 to-cyan-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-cyan-400 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-teal-400 rounded-full blur-2xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating demo elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-20 w-10 h-5 bg-green-200/15 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 left-24 w-8 h-4 bg-cyan-200/20 rounded-full animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-teal-200/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Aquaculture Demonstrations</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -294,7 +358,12 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {demonstrations.length > 0 ? demonstrations.map((demo, index) => (
-              <Card key={demo._id || index} className="p-6">
+              <Card key={demo._id || index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+                {/* Decorative corner */}
+                <div className="absolute top-0 left-0 w-14 h-14 bg-gradient-to-br from-green-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+                <div className={`absolute bottom-2 right-3 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                  index % 2 === 0 ? 'bg-green-400' : 'bg-cyan-400'
+                }`} style={{animationDelay: `${index * 0.6}s`}}></div>
                 {/* Image Thumbnail */}
                 {demo.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">
@@ -379,8 +448,22 @@ const Extension = () => {
       </section>
 
       {/* Success Stories */}
-      <section id="success-stories" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="success-stories" className="section-padding bg-gradient-to-br from-gray-50 via-yellow-50 to-orange-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-yellow-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-orange-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-amber-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating success elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-24 left-20 w-8 h-6 bg-yellow-200/15 rounded-full animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 right-24 w-6 h-6 bg-orange-200/20 rounded-full animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-7 h-4 bg-amber-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Success Stories</h2>
             <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
@@ -392,7 +475,13 @@ const Extension = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {successStories.length > 0 ? successStories.map((story, index) => (
-              <Card key={story._id || index} className="p-6">
+              <Card key={story._id || index} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-yellow-50 relative overflow-hidden group">
+                {/* Decorative corner */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-yellow-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-orange-200 to-transparent opacity-15 group-hover:opacity-25 transition-opacity duration-300"></div>
+                <div className={`absolute top-3 left-3 w-3 h-3 rounded-full opacity-40 animate-bounce ${
+                  index % 3 === 0 ? 'bg-yellow-400' : index % 3 === 1 ? 'bg-orange-400' : 'bg-amber-400'
+                }`} style={{animationDelay: `${index * 0.8}s`}}></div>
                 {/* Image Thumbnail */}
                 {story.imageUrl && (
                   <div className="mb-4 -mx-6 -mt-6">

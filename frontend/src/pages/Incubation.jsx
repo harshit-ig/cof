@@ -261,8 +261,27 @@ const Incubation = () => {
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
-      <section className="section-padding bg-blue-600 text-white">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-16 left-16 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-32 h-32 bg-yellow-300 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/3 w-28 h-28 bg-green-300 rounded-full blur-2xl"></div>
+          <div className="absolute bottom-10 left-1/4 w-44 h-44 bg-blue-300 rounded-full blur-4xl"></div>
+        </div>
+        
+        {/* Subtle floating elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Innovation/startup themed shapes */}
+          <div className="absolute top-20 right-20 w-10 h-10 bg-white/10 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-24 left-24 w-8 h-12 bg-cyan-300/15 rounded animate-float transform -rotate-12" style={{animationDelay: '2s'}}></div>
+          
+          {/* Incubation bubbles */}
+          <div className="absolute top-1/3 left-1/4 w-6 h-6 bg-white/15 rounded-full animate-bounce" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-1/3 right-1/4 w-8 h-8 bg-blue-300/20 rounded-full animate-bounce" style={{animationDelay: '3s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Incubation Centre
@@ -290,8 +309,22 @@ const Incubation = () => {
       </section>
 
       {/* Activities */}
-      <section id="activities" className="section-padding bg-gray-50">
-        <div className="container-max">
+      <section id="activities" className="section-padding bg-gradient-to-br from-gray-50 via-blue-50 to-white relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 right-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 left-16 w-28 h-28 bg-purple-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-indigo-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating innovation elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-20 w-8 h-8 bg-blue-200/15 rounded-full animate-float transform rotate-6" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 right-24 w-6 h-10 bg-purple-200/20 rounded animate-bounce" style={{animationDelay: '1.5s'}}></div>
+          <div className="absolute top-1/3 right-1/4 w-10 h-4 bg-indigo-200/15 rounded-full animate-pulse" style={{animationDelay: '2.5s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Activities</h2>
             <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
@@ -304,8 +337,13 @@ const Incubation = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {incubationData.activity && incubationData.activity.length > 0 ? (
-                incubationData.activity.map((activity) => (
-                  <Card key={activity._id} className="p-6">
+                incubationData.activity.map((activity, index) => (
+                  <Card key={activity._id} className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+                    {/* Decorative corner */}
+                    <div className="absolute top-0 right-0 w-14 h-14 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div className={`absolute bottom-2 left-2 w-2 h-2 rounded-full opacity-40 animate-pulse ${
+                      index % 3 === 0 ? 'bg-blue-400' : index % 3 === 1 ? 'bg-purple-400' : 'bg-indigo-400'
+                    }`} style={{animationDelay: `${index * 0.5}s`}}></div>
                     <div className="flex items-center mb-4">
                       <div className={`w-12 h-12 rounded-lg flex items-center justify-center mr-4 ${getColorClasses(activity.color)}`}>
                         {getIconComponent(activity.icon)}
@@ -336,7 +374,9 @@ const Incubation = () => {
               ) : (
                 // Fallback static content if no dynamic data
                 <>
-                  <Card className="p-6">
+                  <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-blue-50 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-blue-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-2 left-2 w-2 h-2 bg-blue-400 rounded-full opacity-40 animate-pulse"></div>
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
                         <Lightbulb className="w-6 h-6 text-blue-500" />
@@ -351,7 +391,10 @@ const Incubation = () => {
                     </p>
                   </Card>
                   
-                  <Card className="p-6">
+                  <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-green-50 relative overflow-hidden group">
+                    <div className="absolute top-0 left-0 w-10 h-10 bg-gradient-to-br from-green-200 to-transparent opacity-25 group-hover:opacity-35 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-3 right-3 w-2 h-2 bg-green-400 rounded-full opacity-40 animate-bounce" style={{animationDelay: '0.5s'}}></div>
+                    
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
                         <TrendingUp className="w-6 h-6 text-green-600" />
@@ -366,7 +409,10 @@ const Incubation = () => {
                     </p>
                   </Card>
                   
-                  <Card className="p-6">
+                  <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-purple-50 relative overflow-hidden group">
+                    <div className="absolute bottom-0 right-0 w-12 h-12 bg-gradient-to-tl from-purple-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div className="absolute top-2 left-3 w-2 h-2 bg-purple-400 rounded-full opacity-40 animate-float" style={{animationDelay: '1s'}}></div>
+                    
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
                         <Users className="w-6 h-6 text-purple-600" />
@@ -381,7 +427,10 @@ const Incubation = () => {
                     </p>
                   </Card>
                   
-                  <Card className="p-6">
+                  <Card className="p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 bg-gradient-to-br from-white to-red-50 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-14 h-14 bg-gradient-to-bl from-red-200 to-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-300"></div>
+                    <div className="absolute bottom-3 left-2 w-3 h-3 bg-red-400 rounded-full opacity-30 animate-pulse" style={{animationDelay: '1.5s'}}></div>
+                    
                     <div className="flex items-center mb-4">
                       <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
                         <Target className="w-6 h-6 text-red-600" />
@@ -403,8 +452,22 @@ const Incubation = () => {
       </section>
 
       {/* Hierarchy Section */}
-      <section className="section-padding bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="container-max">
+      <section className="section-padding bg-gradient-to-br from-gray-50 via-blue-50 to-green-50 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-16 left-16 w-32 h-32 bg-blue-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-16 right-16 w-28 h-28 bg-green-400 rounded-full blur-2xl"></div>
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-indigo-400 rounded-full blur-4xl transform -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        
+        {/* Floating organizational elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-24 right-20 w-8 h-8 bg-blue-200/15 rounded-full animate-float transform rotate-12" style={{animationDelay: '0s'}}></div>
+          <div className="absolute bottom-32 left-24 w-6 h-10 bg-green-200/20 rounded animate-bounce" style={{animationDelay: '2s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-10 h-4 bg-indigo-200/15 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+        </div>
+        
+        <div className="container-max relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Organizational Hierarchy</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-green-400 rounded mx-auto mb-8"></div>
