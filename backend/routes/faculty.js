@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     }
 
     const faculty = await Faculty.find(query)
-      .sort({ name: 1 })
+      .sort({ createdAt: 1 })
       .skip(skip)
       .limit(limit);
 
