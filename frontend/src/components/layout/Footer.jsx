@@ -7,9 +7,9 @@ import { contactAPI } from '../../services/api'
 const Footer = () => {
   const { 
     siteName, 
-    contactEmail, 
-    contactPhone, 
-    address, 
+    contactEmail,
+    contactPhone,
+    address,
     footerText,
     location: locationSettings
   } = useSettings()

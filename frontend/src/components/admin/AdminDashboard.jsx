@@ -10,7 +10,8 @@ import {
   Building,
   Briefcase,
   FileText,
-  Settings,
+  Eye,
+  EyeOff,
   LogOut,
   Menu,
   X,
@@ -24,10 +25,11 @@ import {
   Target,
   Network,
   UserCheck,
-  Phone
+  Phone,
+  Settings
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
+import { programsAPI, facultyAPI, newsAPI, userManagementAPI } from '../../services/api'
 
 import ProgramsManagement from './ProgramsManagement'
 import FacultyManagement from './FacultyManagement'
@@ -168,276 +170,160 @@ const DashboardHome = () => {
 
 // Placeholder components for remaining sections
 // Placeholder for future InfrastructureManagement component (currently unused)
-const AdminSettings = () => {
-  const [settings, setSettings] = useState({
-    siteName: 'College of Fishery, Jabalpur',
-    siteDescription: 'Excellence in Fishery Education & Research',
-    contactEmail: 'info@fisherycollege.edu',
-    contactPhone: '+91-761-2345678',
-    address: 'College of Fishery, Jabalpur, Madhya Pradesh',
-    established: '2012',
-    affiliatedUniversity: 'JNKVV, Jabalpur',
-    principalName: 'Dr. Principal Name',
-    socialMedia: {
-      facebook: '',
-      twitter: '',
-      linkedin: '',
-      instagram: ''
-    }
-  })
-  
-  const [activeTab, setActiveTab] = useState('general')
+const UserManagement = () => {
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [saving, setSaving] = useState(false)
-  const [loading, setLoading] = useState(true)
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false)
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  useEffect(() => {
-    fetchSettings()
-  }, [])
-
-  const fetchSettings = async () => {
-    try {
-      setLoading(true)
-      const response = await settingsAPI.get()
-      console.log('Settings API response:', response.data)
-      if (response.data.success) {
-        setSettings(response.data.data)
-      }
-    } catch (error) {
-      console.error('Error fetching settings:', error)
-      // Keep default values if fetch fails
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleSubmit = async (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault()
+    
+    if (newPassword !== confirmPassword) {
+      alert('New passwords do not match!')
+      return
+    }
+    
+    if (newPassword.length < 6) {
+      alert('Password must be at least 6 characters long!')
+      return
+    }
+
     setSaving(true)
     try {
-      console.log('Saving settings:', settings)
-      const response = await settingsAPI.update(settings)
-      console.log('Save response:', response.data)
+      const response = await userManagementAPI.changePassword({
+        currentPassword,
+        newPassword
+      })
+      
       if (response.data.success) {
-        alert('Settings saved successfully!')
+        alert('Password changed successfully!')
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmPassword('')
       }
     } catch (error) {
-      console.error('Error saving settings:', error)
-      alert('Failed to save settings: ' + (error.response?.data?.message || error.message))
+      console.error('Error changing password:', error)
+      alert('Failed to change password: ' + (error.response?.data?.message || error.message))
     } finally {
       setSaving(false)
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading settings...</p>
-        </div>
-      </div>
-    )
-  }
-
-  const tabs = [
-    { id: 'general', name: 'General', icon: Settings },
-    { id: 'seo', name: 'SEO & Theme', icon: Globe }
-  ]
-
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Settings</h1>
-        <p className="text-gray-600 mt-2">Manage your college website settings and configuration.</p>
+        <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
+        <p className="text-gray-600 mt-2">Manage your admin account and security settings.</p>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="border-b border-gray-200 mb-8">
-        <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            return (
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h3 className="text-lg font-medium text-gray-900 mb-6">Change Admin Password</h3>
+        
+        <form onSubmit={handlePasswordChange} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Current Password
+            </label>
+            <div className="relative">
+              <input
+                type={showCurrentPassword ? "text" : "password"}
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                placeholder="Enter your current password"
+              />
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
-                  activeTab === tab.id
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
-                <Icon className="h-4 w-4" />
-                <span>{tab.name}</span>
+                {showCurrentPassword ? (
+                  <EyeOff className="h-4 w-4 text-gray-400" />
+                ) : (
+                  <Eye className="h-4 w-4 text-gray-400" />
+                )}
               </button>
-            )
-          })}
-        </nav>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showNewPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                placeholder="Enter new password (min 6 characters)"
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-4 w-4 text-gray-400" />
+                ) : (
+                  <Eye className="h-4 w-4 text-gray-400" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Confirm New Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                placeholder="Confirm new password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4 text-gray-400" />
+                ) : (
+                  <Eye className="h-4 w-4 text-gray-400" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={saving}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            >
+              {saving && (
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+              <span>{saving ? 'Changing Password...' : 'Change Password'}</span>
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* General Settings */}
-        {activeTab === 'general' && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">General Settings</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Site Name
-                </label>
-                <input
-                  type="text"
-                  value={settings.siteName}
-                  onChange={(e) => setSettings({...settings, siteName: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Site Description
-                </label>
-                <textarea
-                  value={settings.siteDescription}
-                  onChange={(e) => setSettings({...settings, siteDescription: e.target.value})}
-                  rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Established Year
-                  </label>
-                  <input
-                    type="text"
-                    value={settings.established}
-                    onChange={(e) => setSettings({...settings, established: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Affiliated University
-                  </label>
-                  <input
-                    type="text"
-                    value={settings.affiliatedUniversity}
-                    onChange={(e) => setSettings({...settings, affiliatedUniversity: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Principal Name
-                </label>
-                <input
-                  type="text"
-                  value={settings.principalName}
-                  onChange={(e) => setSettings({...settings, principalName: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Footer Text
-                </label>
-                <textarea
-                  value={settings.footerText}
-                  onChange={(e) => setSettings({...settings, footerText: e.target.value})}
-                  rows={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* SEO & Theme Settings */}
-        {activeTab === 'seo' && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">SEO & Theme Settings</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  SEO Keywords
-                </label>
-                <input
-                  type="text"
-                  value={Array.isArray(settings.seoKeywords) ? settings.seoKeywords.join(', ') : settings.seoKeywords || ''}
-                  onChange={(e) => setSettings({
-                    ...settings, 
-                    seoKeywords: e.target.value.split(',').map(k => k.trim()).filter(k => k)
-                  })}
-                  placeholder="fisheries, education, research, college, jabalpur"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">Separate keywords with commas</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Primary Color
-                </label>
-                <input
-                  type="color"
-                  value={settings.primaryColor}
-                  onChange={(e) => setSettings({...settings, primaryColor: e.target.value})}
-                  className="h-10 w-20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">Main theme color for the website</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={settings.admissionOpen}
-                    onChange={(e) => setSettings({...settings, admissionOpen: e.target.checked})}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label className="ml-2 text-sm font-medium text-gray-700">
-                    Admissions Open
-                  </label>
-                </div>
-                
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={settings.maintenanceMode}
-                    onChange={(e) => setSettings({...settings, maintenanceMode: e.target.checked})}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label className="ml-2 text-sm font-medium text-gray-700">
-                    Maintenance Mode
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Save Button */}
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={saving}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
-          >
-            {saving && (
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            )}
-            <span>{saving ? 'Saving...' : 'Save Settings'}</span>
-          </button>
-        </div>
-      </form>
     </div>
   )
 }
@@ -461,7 +347,7 @@ const AdminDashboard = () => {
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Farmer Corner', href: '/admin/resources', icon: Tractor },
     { name: 'Contact', href: '/admin/contact', icon: Phone },
-    { name: 'Settings', href: '/admin/settings', icon: Settings }
+    { name: 'User Management', href: '/admin/settings', icon: Settings }
   ]
 
   const handleLogout = () => {
@@ -654,7 +540,7 @@ const AdminDashboard = () => {
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/resources" element={<FarmersResourceManagement />} />
                 <Route path="/contact" element={<ContactManagement />} />
-                <Route path="/settings" element={<AdminSettings />} />
+                <Route path="/settings" element={<UserManagement />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>
             </div>

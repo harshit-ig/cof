@@ -256,10 +256,10 @@ export const slideshowAPI = {
   reorder: (slides) => api.post('/slideshow/reorder', { slides }),
 }
 
-export const settingsAPI = {
-  get: () => api.get('/settings'),
-  update: (settings) => api.put('/settings', settings),
-  getPublic: () => api.get('/settings/public'),
+// Settings API removed - now using hardcoded values
+// User Management API for password changes
+export const userManagementAPI = {
+  changePassword: (data) => api.put('/settings/change-password', data),
 }
 
 export const galleryAPI = {

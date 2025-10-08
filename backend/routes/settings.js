@@ -1,89 +1,61 @@
 const express = require('express');
-const Settings = require('../models/Settings');
+const Admin = require('../models/Admin');
 const { protect, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
 
-// @desc    Get settings
-// @route   GET /api/settings
+// @desc    Change admin password
+// @route   PUT /api/settings/change-password
 // @access  Private/Admin
-router.get('/', protect, adminOnly, async (req, res) => {
+router.put('/change-password', protect, adminOnly, async (req, res) => {
   try {
-    console.log('GET /api/settings - Fetching settings')
-    const settings = await Settings.getSingleton();
-    console.log('Settings fetched:', settings)
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password and new password are required'
+      });
+    }
+    
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'Password must be at least 6 characters long'
+      });
+    }
+    
+    // Find the admin user
+    const admin = await Admin.findById(req.user.id);
+    if (!admin) {
+      return res.status(404).json({
+        success: false,
+        message: 'Admin not found'
+      });
+    }
+    
+    // Check current password
+    const isCurrentPasswordValid = await admin.comparePassword(currentPassword);
+    if (!isCurrentPasswordValid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password is incorrect'
+      });
+    }
+    
+    // Update password
+    admin.password = newPassword;
+    await admin.save();
     
     res.json({
       success: true,
-      data: settings
+      message: 'Password changed successfully'
     });
   } catch (error) {
-    console.error('Get settings error:', error);
+    console.error('Change password error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error fetching settings'
-    });
-  }
-});
-
-// @desc    Get public settings (for frontend)
-// @route   GET /api/settings/public
-// @access  Public
-router.get('/public', async (req, res) => {
-  try {
-    const settings = await Settings.getSingleton();
-    
-    // Only return public settings
-    const publicSettings = {
-      siteName: settings.siteName,
-      siteDescription: settings.siteDescription,
-      established: settings.established,
-      affiliatedUniversity: settings.affiliatedUniversity,
-      principalName: settings.principalName,
-      contactEmail: settings.contactEmail,
-      contactPhone: settings.contactPhone,
-      address: settings.address,
-      location: settings.location, // Add location data for map functionality
-      socialMedia: settings.socialMedia,
-      admissionOpen: settings.admissionOpen,
-      maintenanceMode: settings.maintenanceMode,
-      seoKeywords: settings.seoKeywords,
-      primaryColor: settings.primaryColor,
-      footerText: settings.footerText
-    };
-    
-    res.json({
-      success: true,
-      data: publicSettings
-    });
-  } catch (error) {
-    console.error('Get public settings error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Server error fetching public settings'
-    });
-  }
-});
-
-// @desc    Update settings
-// @route   PUT /api/settings
-// @access  Private/Admin
-router.put('/', protect, adminOnly, async (req, res) => {
-  try {
-    console.log('PUT /api/settings - Updating settings:', req.body)
-    const updatedSettings = await Settings.updateSingleton(req.body);
-    console.log('Settings updated:', updatedSettings)
-    
-    res.json({
-      success: true,
-      data: updatedSettings,
-      message: 'Settings updated successfully'
-    });
-  } catch (error) {
-    console.error('Update settings error:', error);
-    res.status(400).json({
-      success: false,
-      message: error.message || 'Error updating settings'
+      message: 'Server error changing password'
     });
   }
 });
