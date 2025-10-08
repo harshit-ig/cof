@@ -407,5 +407,17 @@ export const jobApplicationAPI = {
   }),
 }
 
+export const contactAPI = {
+  get: () => api.get('/contact'),
+  getPublic: () => api.get('/contact/public'),
+  update: (data) => api.put('/contact', data),
+  addDepartment: (data) => api.post('/contact/department', data),
+  updateDepartment: (id, data) => api.put(`/contact/department/${id}`, data),
+  deleteDepartment: (id) => api.delete(`/contact/department/${id}`),
+  addEmergencyContact: (data) => api.post('/contact/emergency', data),
+  updateEmergencyContact: (id, data) => api.put(`/contact/emergency/${id}`, data),
+  deleteEmergencyContact: (id) => api.delete(`/contact/emergency/${id}`),
+}
+
 export default api
 

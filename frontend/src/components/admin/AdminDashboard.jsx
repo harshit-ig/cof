@@ -23,7 +23,8 @@ import {
   GraduationCap,
   Target,
   Network,
-  UserCheck
+  UserCheck,
+  Phone
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { programsAPI, facultyAPI, newsAPI, settingsAPI } from '../../services/api'
@@ -47,6 +48,7 @@ import ContentManagement from './ContentManagement'
 import ExtensionManagement from './ExtensionManagement'
 import InfrastructureStatic from './InfrastructureStatic'
 import IncubationManagement from './IncubationManagement'
+import ContactManagement from './ContactManagement'
 
 // Admin Page Components
 const DashboardHome = () => {
@@ -239,9 +241,7 @@ const AdminSettings = () => {
 
   const tabs = [
     { id: 'general', name: 'General', icon: Settings },
-    { id: 'contact', name: 'Contact Info', icon: User },
-    { id: 'location', name: 'Location & Map', icon: Globe },
-    { id: 'social', name: 'Social Media', icon: Briefcase }
+    { id: 'seo', name: 'SEO & Theme', icon: Globe }
   ]
 
   return (
@@ -341,47 +341,15 @@ const AdminSettings = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Contact Settings */}
-        {activeTab === 'contact' && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Contact Information</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Contact Email
-                </label>
-                <input
-                  type="email"
-                  value={settings.contactEmail}
-                  onChange={(e) => setSettings({...settings, contactEmail: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Contact Phone
-                </label>
-                <input
-                  type="tel"
-                  value={settings.contactPhone}
-                  onChange={(e) => setSettings({...settings, contactPhone: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Address
+                  Footer Text
                 </label>
                 <textarea
-                  value={settings.address}
-                  onChange={(e) => setSettings({...settings, address: e.target.value})}
-                  rows={3}
+                  value={settings.footerText}
+                  onChange={(e) => setSettings({...settings, footerText: e.target.value})}
+                  rows={2}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -389,207 +357,65 @@ const AdminSettings = () => {
           </div>
         )}
 
-        {/* Location & Map Settings */}
-        {activeTab === 'location' && (
+        {/* SEO & Theme Settings */}
+        {activeTab === 'seo' && (
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Location & Map Settings</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">SEO & Theme Settings</h3>
             <div className="grid grid-cols-1 gap-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Latitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.000001"
-                    value={settings.location?.latitude || 23.1815}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      location: {
-                        ...settings.location,
-                        latitude: parseFloat(e.target.value) || 0
-                      }
-                    })}
-                    placeholder="23.1815"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Decimal degrees (e.g., 23.1815)</p>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Longitude
-                  </label>
-                  <input
-                    type="number"
-                    step="0.000001"
-                    value={settings.location?.longitude || 79.9864}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      location: {
-                        ...settings.location,
-                        longitude: parseFloat(e.target.value) || 0
-                      }
-                    })}
-                    placeholder="79.9864"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Decimal degrees (e.g., 79.9864)</p>
-                </div>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Map Zoom Level
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="20"
-                  value={settings.location?.zoom || 15}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    location: {
-                      ...settings.location,
-                      zoom: parseInt(e.target.value) || 15
-                    }
-                  })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">1-20, where higher numbers show more detail</p>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Map Title
+                  SEO Keywords
                 </label>
                 <input
                   type="text"
-                  value={settings.location?.mapTitle || 'College of Fishery, Jabalpur'}
+                  value={Array.isArray(settings.seoKeywords) ? settings.seoKeywords.join(', ') : settings.seoKeywords || ''}
                   onChange={(e) => setSettings({
-                    ...settings,
-                    location: {
-                      ...settings.location,
-                      mapTitle: e.target.value
-                    }
+                    ...settings, 
+                    seoKeywords: e.target.value.split(',').map(k => k.trim()).filter(k => k)
                   })}
-                  placeholder="College of Fishery, Jabalpur"
+                  placeholder="fisheries, education, research, college, jabalpur"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                <p className="text-xs text-gray-500 mt-1">Separate keywords with commas</p>
               </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Map Description
-                </label>
-                <textarea
-                  value={settings.location?.mapDescription || 'Visit us at our campus in Jabalpur, Madhya Pradesh'}
-                  onChange={(e) => setSettings({
-                    ...settings,
-                    location: {
-                      ...settings.location,
-                      mapDescription: e.target.value
-                    }
-                  })}
-                  rows={3}
-                  placeholder="Visit us at our campus in Jabalpur, Madhya Pradesh"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h4 className="text-sm font-medium text-blue-900 mb-2">📍 How to find coordinates:</h4>
-                <ol className="text-sm text-blue-800 space-y-1">
-                  <li>1. Go to <a href="https://maps.google.com" target="_blank" rel="noopener" className="underline">Google Maps</a></li>
-                  <li>2. Search for your location</li>
-                  <li>3. Right-click on the exact spot</li>
-                  <li>4. Click the coordinates that appear at the top</li>
-                  <li>5. Copy the latitude and longitude values</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Social Media Settings */}
-        {activeTab === 'social' && (
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Social Media Links</h3>
-            <div className="grid grid-cols-1 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Facebook URL
+                  Primary Color
                 </label>
                 <input
-                  type="url"
-                  value={settings.socialMedia?.facebook || ''}
-                  onChange={(e) => setSettings({
-                    ...settings, 
-                    socialMedia: {
-                      ...settings.socialMedia,
-                      facebook: e.target.value
-                    }
-                  })}
-                  placeholder="https://facebook.com/yourpage"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  type="color"
+                  value={settings.primaryColor}
+                  onChange={(e) => setSettings({...settings, primaryColor: e.target.value})}
+                  className="h-10 w-20 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                <p className="text-xs text-gray-500 mt-1">Main theme color for the website</p>
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Twitter URL
-                </label>
-                <input
-                  type="url"
-                  value={settings.socialMedia?.twitter || ''}
-                  onChange={(e) => setSettings({
-                    ...settings, 
-                    socialMedia: {
-                      ...settings.socialMedia,
-                      twitter: e.target.value
-                    }
-                  })}
-                  placeholder="https://twitter.com/yourhandle"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  LinkedIn URL
-                </label>
-                <input
-                  type="url"
-                  value={settings.socialMedia?.linkedin || ''}
-                  onChange={(e) => setSettings({
-                    ...settings, 
-                    socialMedia: {
-                      ...settings.socialMedia,
-                      linkedin: e.target.value
-                    }
-                  })}
-                  placeholder="https://linkedin.com/in/yourprofile"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Instagram URL
-                </label>
-                <input
-                  type="url"
-                  value={settings.socialMedia?.instagram || ''}
-                  onChange={(e) => setSettings({
-                    ...settings, 
-                    socialMedia: {
-                      ...settings.socialMedia,
-                      instagram: e.target.value
-                    }
-                  })}
-                  placeholder="https://instagram.com/yourhandle"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={settings.admissionOpen}
+                    onChange={(e) => setSettings({...settings, admissionOpen: e.target.checked})}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700">
+                    Admissions Open
+                  </label>
+                </div>
+                
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={settings.maintenanceMode}
+                    onChange={(e) => setSettings({...settings, maintenanceMode: e.target.checked})}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label className="ml-2 text-sm font-medium text-gray-700">
+                    Maintenance Mode
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -634,6 +460,7 @@ const AdminDashboard = () => {
     { name: 'Alumni', href: '/admin/alumni', icon: UserCheck },
     { name: 'Content', href: '/admin/content', icon: FileText },
     { name: 'Farmer Corner', href: '/admin/resources', icon: Tractor },
+    { name: 'Contact', href: '/admin/contact', icon: Phone },
     { name: 'Settings', href: '/admin/settings', icon: Settings }
   ]
 
@@ -826,6 +653,7 @@ const AdminDashboard = () => {
                 <Route path="/alumni" element={<AlumniManagement />} />
                 <Route path="/content" element={<ContentManagement />} />
                 <Route path="/resources" element={<FarmersResourceManagement />} />
+                <Route path="/contact" element={<ContactManagement />} />
                 <Route path="/settings" element={<AdminSettings />} />
                 <Route path="*" element={<Navigate to="/admin" replace />} />
               </Routes>

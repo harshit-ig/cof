@@ -1,36 +1,51 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Phone, Mail, MapPin, Clock, Globe, Building } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, Globe, Building, AlertCircle, Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react'
 import Card from '../components/common/Card'
-import { useSettings } from '../context/SettingsContext'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import { contactAPI } from '../services/api'
 
 const Contact = () => {
-  const { 
-    siteName, 
-    contactEmail, 
-    contactPhone, 
-    address,
-    location: locationSettings
-  } = useSettings()
-  
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [contactData, setContactData] = useState(null)
   const location = useLocation()
   const hash = location.hash.substring(1)
 
-  // Generate Google Maps embed URL from location settings
+  useEffect(() => {
+    fetchContactData()
+  }, [])
+
+  const fetchContactData = async () => {
+    try {
+      setLoading(true)
+      const response = await contactAPI.getPublic()
+      if (response.data.success) {
+        setContactData(response.data.data)
+      } else {
+        setError('Failed to load contact information')
+      }
+    } catch (error) {
+      console.error('Error fetching contact data:', error)
+      setError('Failed to load contact information')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Generate Google Maps embed URL from contact data
   const getMapEmbedUrl = () => {
-    // Use default values if settings not loaded yet
-    const latitude = locationSettings?.latitude || 23.1815
-    const longitude = locationSettings?.longitude || 79.9864
-    const zoom = locationSettings?.zoom || 15
+    if (!contactData?.mapConfig) return ''
     
-    // Use a simpler Google Maps embed format
+    const { latitude, longitude, zoom } = contactData.mapConfig
     return `https://maps.google.com/maps?width=100%25&height=600&hl=en&q=${latitude},${longitude}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`
   }
 
   // Generate Google Maps URL for "Open in Google Maps" button
   const getMapUrl = () => {
-    const latitude = locationSettings?.latitude || 23.1815
-    const longitude = locationSettings?.longitude || 79.9864
+    if (!contactData?.mapConfig) return ''
+    
+    const { latitude, longitude } = contactData.mapConfig
     return `https://maps.google.com/?q=${latitude},${longitude}`
   }
 
@@ -55,6 +70,42 @@ const Contact = () => {
     }
   }, [hash])
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    )
+  }
+
+  if (error || !contactData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Unable to load contact information</h2>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button 
+            onClick={fetchContactData}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  const getSocialIcon = (platform) => {
+    switch (platform) {
+      case 'facebook': return Facebook
+      case 'twitter': return Twitter
+      case 'linkedin': return Linkedin
+      case 'instagram': return Instagram
+      case 'youtube': return Youtube
+      default: return Globe
+    }
+  }
+
   return (
     <div className="min-h-screen text-left">
       {/* Hero Section */}
@@ -65,11 +116,12 @@ const Contact = () => {
               Contact Us
             </h1>
             <p className="text-xl text-blue-100 mb-8">
-              Get in Touch with {siteName}
+              Get in Touch with {contactData.contactInfo?.address?.institution || 'College of Fishery'}
             </p>
           </div>
         </div>
       </section>
+
       {/* Contact Details & Google Map */}
       <section id="contact-details" className="section-padding bg-gray-50">
         <div className="container-max">
@@ -81,6 +133,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Contact Details */}
             <div className="space-y-6">
+              {/* Phone Numbers */}
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
@@ -92,12 +145,19 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">{contactPhone}</p>
-                  <p className="text-gray-700 text-sm">Office: +91-761-2681971</p>
-                  <p className="text-gray-700 text-sm">Fax: +91-761-2681970</p>
+                  {contactData.contactInfo?.phone?.main && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.phone.main}</p>
+                  )}
+                  {contactData.contactInfo?.phone?.office && (
+                    <p className="text-gray-700 text-sm">Office: {contactData.contactInfo.phone.office}</p>
+                  )}
+                  {contactData.contactInfo?.phone?.fax && (
+                    <p className="text-gray-700 text-sm">Fax: {contactData.contactInfo.phone.fax}</p>
+                  )}
                 </div>
               </Card>
 
+              {/* Email Addresses */}
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-secondary-100 rounded-lg flex items-center justify-center mr-4">
@@ -109,12 +169,19 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">{contactEmail}</p>
-                  <p className="text-gray-700 text-sm">registrar@ndvsu.ac.in</p>
-                  <p className="text-gray-700 text-sm">info.cof@ndvsu.ac.in</p>
+                  {contactData.contactInfo?.email?.main && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.main}</p>
+                  )}
+                  {contactData.contactInfo?.email?.registrar && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.registrar}</p>
+                  )}
+                  {contactData.contactInfo?.email?.info && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.email.info}</p>
+                  )}
                 </div>
               </Card>
 
+              {/* Address */}
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-accent-100 rounded-lg flex items-center justify-center mr-4">
@@ -126,13 +193,27 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">College of Fishery</p>
-                  <p className="text-gray-700 text-sm">Nanaji Deshmukh Veterinary Science University</p>
-                  <p className="text-gray-700 text-sm">Adhartal, Jabalpur - 482004</p>
-                  <p className="text-gray-700 text-sm">Madhya Pradesh, India</p>
+                  {contactData.contactInfo?.address?.institution && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.address.institution}</p>
+                  )}
+                  {contactData.contactInfo?.address?.university && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.address.university}</p>
+                  )}
+                  {contactData.contactInfo?.address?.street && contactData.contactInfo?.address?.city && (
+                    <p className="text-gray-700 text-sm">
+                      {contactData.contactInfo.address.street}, {contactData.contactInfo.address.city}
+                      {contactData.contactInfo?.address?.pincode && ` - ${contactData.contactInfo.address.pincode}`}
+                    </p>
+                  )}
+                  {contactData.contactInfo?.address?.state && contactData.contactInfo?.address?.country && (
+                    <p className="text-gray-700 text-sm">
+                      {contactData.contactInfo.address.state}, {contactData.contactInfo.address.country}
+                    </p>
+                  )}
                 </div>
               </Card>
 
+              {/* Office Hours */}
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
@@ -144,9 +225,15 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-gray-700 text-sm">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                  <p className="text-gray-700 text-sm">Saturday: 9:00 AM - 1:00 PM</p>
-                  <p className="text-gray-700 text-sm">Sunday: Closed</p>
+                  {contactData.contactInfo?.officeHours?.weekdays && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.weekdays}</p>
+                  )}
+                  {contactData.contactInfo?.officeHours?.saturday && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.saturday}</p>
+                  )}
+                  {contactData.contactInfo?.officeHours?.sunday && (
+                    <p className="text-gray-700 text-sm">{contactData.contactInfo.officeHours.sunday}</p>
+                  )}
                 </div>
               </Card>
             </div>
@@ -160,10 +247,10 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {locationSettings?.mapTitle || 'Location Map'}
+                      {contactData.mapConfig?.title || 'Location Map'}
                     </h3>
                     <p className="text-blue-600 text-sm">
-                      {locationSettings?.mapDescription || 'Find Us Here'}
+                      {contactData.mapConfig?.description || 'Find Us Here'}
                     </p>
                   </div>
                 </div>
@@ -178,7 +265,7 @@ const Contact = () => {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    title={locationSettings?.mapTitle || 'College of Fishery Location'}
+                    title={contactData.mapConfig?.title || 'College Location'}
                   ></iframe>
                 </div>
                 
@@ -195,6 +282,7 @@ const Contact = () => {
                 </div>
               </Card>
 
+              {/* Directions */}
               <Card className="p-6">
                 <div className="flex items-center mb-4">
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
@@ -206,24 +294,117 @@ const Contact = () => {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div>
-                    <p className="font-medium text-gray-900 text-sm">By Road:</p>
-                    <p className="text-gray-700 text-sm">NH 34 from Bhopal (300 km), NH 7 from Nagpur (250 km)</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900 text-sm">By Air:</p>
-                    <p className="text-gray-700 text-sm">Nearest airport: Jabalpur Airport (15 km)</p>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900 text-sm">By Train:</p>
-                    <p className="text-gray-700 text-sm">Jabalpur Railway Station (12 km from campus)</p>
-                  </div>
+                  {contactData.directions?.byRoad && (
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">By Road:</p>
+                      <p className="text-gray-700 text-sm">{contactData.directions.byRoad}</p>
+                    </div>
+                  )}
+                  {contactData.directions?.byAir && (
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">By Air:</p>
+                      <p className="text-gray-700 text-sm">{contactData.directions.byAir}</p>
+                    </div>
+                  )}
+                  {contactData.directions?.byTrain && (
+                    <div>
+                      <p className="font-medium text-gray-900 text-sm">By Train:</p>
+                      <p className="text-gray-700 text-sm">{contactData.directions.byTrain}</p>
+                    </div>
+                  )}
                 </div>
               </Card>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Departments */}
+      {contactData.departments && contactData.departments.length > 0 && (
+        <section id="departments" className="section-padding bg-white">
+          <div className="container-max">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Department Contacts</h2>
+              <div className="w-20 h-1 bg-blue-400 rounded mx-auto mb-6"></div>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Get in touch with specific departments for detailed information and support.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {contactData.departments.map((dept, index) => (
+                <Card key={index} className="p-6">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <Building className="w-6 h-6 text-blue-500" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{dept.name}</h3>
+                  {dept.head && (
+                    <p className="text-sm text-gray-600 mb-3">Head: {dept.head}</p>
+                  )}
+                  {dept.description && (
+                    <p className="text-sm text-gray-700 mb-4">{dept.description}</p>
+                  )}
+                  <div className="space-y-2">
+                    {dept.phone && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Phone className="w-4 h-4 mr-2" />
+                        {dept.phone}
+                      </div>
+                    )}
+                    {dept.email && (
+                      <div className="flex items-center text-sm text-gray-600">
+                        <Mail className="w-4 h-4 mr-2" />
+                        {dept.email}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Emergency Contacts */}
+      {contactData.emergencyContacts && contactData.emergencyContacts.length > 0 && (
+        <section id="emergency" className="section-padding bg-red-50">
+          <div className="container-max">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Emergency Contacts</h2>
+              <div className="w-20 h-1 bg-red-400 rounded mx-auto mb-6"></div>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Important contact numbers for emergency situations and urgent matters.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {contactData.emergencyContacts.map((contact, index) => (
+                <Card key={index} className="p-6 border-l-4 border-red-500">
+                  <div className="flex items-start space-x-4">
+                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <AlertCircle className="w-6 h-6 text-red-500" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{contact.title}</h3>
+                      {contact.name && (
+                        <p className="text-sm text-gray-600 mb-2">Contact: {contact.name}</p>
+                      )}
+                      {contact.phone && (
+                        <p className="text-red-600 font-medium mb-2">📞 {contact.phone}</p>
+                      )}
+                      {contact.description && (
+                        <p className="text-sm text-gray-700">{contact.description}</p>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+   
     </div>
   )
 }

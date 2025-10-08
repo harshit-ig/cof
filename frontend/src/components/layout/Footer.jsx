@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Youtube, ExternalLink, Globe } from 'lucide-react'
 import { useSettings } from '../../context/SettingsContext'
+import { contactAPI } from '../../services/api'
 
 const Footer = () => {
   const { 
@@ -9,19 +10,74 @@ const Footer = () => {
     contactEmail, 
     contactPhone, 
     address, 
-    socialMedia, 
     footerText,
     location: locationSettings
   } = useSettings()
   
+  const [contactData, setContactData] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        const response = await contactAPI.getPublic()
+        if (response.data.success) {
+          setContactData(response.data.data)
+        } else {
+          console.error('Failed to load contact information')
+        }
+      } catch (error) {
+        console.error('Error fetching contact data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchContactData()
+  }, [])
+  
+  // Helper function to format address from contact data
+  const getFormattedAddress = () => {
+    if (contactData?.contactInfo?.address) {
+      const addr = contactData.contactInfo.address
+      return `${addr.institution}, ${addr.university}, ${addr.street}, ${addr.city}, ${addr.state} ${addr.pincode}, ${addr.country}`
+    }
+    return address
+  }
+
+  // Helper function to get phone from contact data
+  const getPhone = () => {
+    if (contactData?.contactInfo?.phone) {
+      return contactData.contactInfo.phone.main || contactData.contactInfo.phone.office || contactPhone
+    }
+    return contactPhone
+  }
+
+  // Helper function to get email from contact data
+  const getEmail = () => {
+    if (contactData?.contactInfo?.email) {
+      return contactData.contactInfo.email.main || contactData.contactInfo.email.info || contactEmail
+    }
+    return contactEmail
+  }
+
   const currentYear = new Date().getFullYear()
 
-  // Generate Google Maps embed URL from location settings
+  // Generate Google Maps embed URL from contact data or location settings
   const getMapEmbedUrl = () => {
-    // Use default values if settings not loaded yet
-    const latitude = locationSettings?.latitude || 23.1815
-    const longitude = locationSettings?.longitude || 79.9864
-    const zoom = locationSettings?.zoom || 15
+    // Use contact data if available, otherwise fall back to settings
+    let latitude, longitude, zoom
+    
+    if (contactData?.mapConfig) {
+      latitude = contactData.mapConfig.latitude
+      longitude = contactData.mapConfig.longitude
+      zoom = contactData.mapConfig.zoom
+    } else {
+      // Fallback to settings
+      latitude = locationSettings?.latitude || 23.1815
+      longitude = locationSettings?.longitude || 79.9864
+      zoom = locationSettings?.zoom || 15
+    }
     
     // Use a simpler Google Maps embed format
     return `https://maps.google.com/maps?width=100%25&height=300&hl=en&q=${latitude},${longitude}&t=&z=${zoom}&ie=UTF8&iwloc=&output=embed`
@@ -29,8 +85,17 @@ const Footer = () => {
 
   // Generate Google Maps URL for "Open in Google Maps" button
   const getMapUrl = () => {
-    const latitude = locationSettings?.latitude || 23.1815
-    const longitude = locationSettings?.longitude || 79.9864
+    // Use contact data if available, otherwise fall back to settings
+    let latitude, longitude
+    
+    if (contactData?.mapConfig) {
+      latitude = contactData.mapConfig.latitude
+      longitude = contactData.mapConfig.longitude
+    } else {
+      latitude = locationSettings?.latitude || 23.1815
+      longitude = locationSettings?.longitude || 79.9864
+    }
+    
     return `https://maps.google.com/?q=${latitude},${longitude}`
   }
 
@@ -99,57 +164,75 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-4">Contact Info</h3>
             <p className="text-gray-300 text-left">
-              {address}<br />
-              Phone: {contactPhone}<br />
-              Email: {contactEmail}
+              {getFormattedAddress()}<br />
+              Phone: {getPhone()}<br />
+              Email: {getEmail()}
             </p>
           </div>
           <div>
             <h3 className="text-xl font-bold mb-4">Follow Us</h3>
             <div className="flex space-x-4 justify-center">
-              {socialMedia.facebook && (
-                <a
-                  href={socialMedia.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
-                >
-                  <Facebook className="w-6 h-6" />
-                </a>
-              )}
-              {socialMedia.twitter && (
-                <a
-                  href={socialMedia.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
-                >
-                  <Twitter className="w-6 h-6" />
-                </a>
-              )}
-              {socialMedia.linkedin && (
-                <a
-                  href={socialMedia.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-blue-400 transition-colors"
-                >
-                  <Linkedin className="w-6 h-6" />
-                </a>
-              )}
-              {socialMedia.instagram && (
-                <a
-                  href={socialMedia.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-300 hover:text-pink-400 transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.017 0C8.396 0 7.931.013 6.727.06 5.525.107 4.73.28 4.088.527a5.82 5.82 0 0 0-2.119 1.442A5.82 5.82 0 0 0 .527 4.088C.28 4.73.107 5.526.06 6.727.013 7.931 0 8.396 0 12.017s.013 4.086.06 5.29c.047 1.201.22 1.997.467 2.64a5.82 5.82 0 0 0 1.442 2.118 5.82 5.82 0 0 0 2.119 1.442c.642.247 1.438.42 2.64.467 1.204.047 1.669.06 5.29.06s4.086-.013 5.29-.06c1.201-.047 1.997-.22 2.64-.467a5.82 5.82 0 0 0 2.118-1.442 5.82 5.82 0 0 0 1.442-2.118c.247-.643.42-1.44.467-2.64.047-1.204.06-1.669.06-5.29s-.013-4.086-.06-5.29c-.047-1.201-.22-1.997-.467-2.64a5.82 5.82 0 0 0-1.442-2.119A5.82 5.82 0 0 0 19.947.527c-.643-.247-1.44-.42-2.64-.467C16.103.013 15.638 0 12.017 0zm0 2.164c3.548 0 3.97.014 5.367.06 1.296.059 2.003.276 2.472.458a4.142 4.142 0 0 1 1.528.993 4.142 4.142 0 0 1 .993 1.528c.182.469.399 1.176.458 2.472.046 1.397.06 1.819.06 5.367s-.014 3.97-.06 5.367c-.059 1.296-.276 2.003-.458 2.472a4.142 4.142 0 0 1-.993 1.528 4.142 4.142 0 0 1-1.528.993c-.469.182-1.176.399-2.472.458-1.397.046-1.819.06-5.367.06s-3.97-.014-5.367-.06c-1.296-.059-2.003-.276-2.472-.458a4.142 4.142 0 0 1-1.528-.993 4.142 4.142 0 0 1-.993-1.528c-.182-.469-.399-1.176-.458-2.472-.046-1.397-.06-1.819-.06-5.367s.014-3.97.06-5.367c.059-1.296.276-2.003.458-2.472a4.142 4.142 0 0 1 .993-1.528A4.142 4.142 0 0 1 4.688 2.682c.469-.182 1.176-.399 2.472-.458 1.397-.046 1.819-.06 5.367-.06z"/>
-                    <path d="M12.017 5.838a6.179 6.179 0 1 0 0 12.358 6.179 6.179 0 0 0 0-12.358zm0 10.194a4.015 4.015 0 1 1 0-8.03 4.015 4.015 0 0 1 0 8.03z"/>
-                    <circle cx="18.407" cy="5.593" r="1.44"/>
-                  </svg>
-                </a>
+              {!loading && contactData?.socialMedia ? (
+                <>
+                  {contactData.socialMedia.facebook && (
+                    <a
+                      href={contactData.socialMedia.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-blue-400 transition-colors"
+                    >
+                      <Facebook className="w-6 h-6" />
+                    </a>
+                  )}
+                  {contactData.socialMedia.twitter && (
+                    <a
+                      href={contactData.socialMedia.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-blue-400 transition-colors"
+                    >
+                      <Twitter className="w-6 h-6" />
+                    </a>
+                  )}
+                  {contactData.socialMedia.linkedin && (
+                    <a
+                      href={contactData.socialMedia.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-blue-400 transition-colors"
+                    >
+                      <Linkedin className="w-6 h-6" />
+                    </a>
+                  )}
+                  {contactData.socialMedia.instagram && (
+                    <a
+                      href={contactData.socialMedia.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-pink-400 transition-colors"
+                    >
+                      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.017 0C8.396 0 7.931.013 6.727.06 5.525.107 4.73.28 4.088.527a5.82 5.82 0 0 0-2.119 1.442A5.82 5.82 0 0 0 .527 4.088C.28 4.73.107 5.526.06 6.727.013 7.931 0 8.396 0 12.017s.013 4.086.06 5.29c.047 1.201.22 1.997.467 2.64a5.82 5.82 0 0 0 1.442 2.118 5.82 5.82 0 0 0 2.119 1.442c.642.247 1.438.42 2.64.467 1.204.047 1.669.06 5.29.06s4.086-.013 5.29-.06c1.201-.047 1.997-.22 2.64-.467a5.82 5.82 0 0 0 2.118-1.442 5.82 5.82 0 0 0 1.442-2.118c.247-.643.42-1.44.467-2.64.047-1.204.06-1.669.06-5.29s-.013-4.086-.06-5.29c-.047-1.201-.22-1.997-.467-2.64a5.82 5.82 0 0 0-1.442-2.119A5.82 5.82 0 0 0 19.947.527c-.643-.247-1.44-.42-2.64-.467C16.103.013 15.638 0 12.017 0zm0 2.164c3.548 0 3.97.014 5.367.06 1.296.059 2.003.276 2.472.458a4.142 4.142 0 0 1 1.528.993 4.142 4.142 0 0 1 .993 1.528c.182.469.399 1.176.458 2.472.046 1.397.06 1.819.06 5.367s-.014 3.97-.06 5.367c-.059 1.296-.276 2.003-.458 2.472a4.142 4.142 0 0 1-.993 1.528 4.142 4.142 0 0 1-1.528.993c-.469.182-1.176.399-2.472.458-1.397.046-1.819.06-5.367.06s-3.97-.014-5.367-.06c-1.296-.059-2.003-.276-2.472-.458a4.142 4.142 0 0 1-1.528-.993 4.142 4.142 0 0 1-.993-1.528c-.182-.469-.399-1.176-.458-2.472-.046-1.397-.06-1.819-.06-5.367s.014-3.97.06-5.367c.059-1.296.276-2.003.458-2.472a4.142 4.142 0 0 1 .993-1.528A4.142 4.142 0 0 1 4.688 2.682c.469-.182 1.176-.399 2.472-.458 1.397-.046 1.819-.06 5.367-.06z"/>
+                        <path d="M12.017 5.838a6.179 6.179 0 1 0 0 12.358 6.179 6.179 0 0 0 0-12.358zm0 10.194a4.015 4.015 0 1 1 0-8.03 4.015 4.015 0 0 1 0 8.03z"/>
+                        <circle cx="18.407" cy="5.593" r="1.44"/>
+                      </svg>
+                    </a>
+                  )}
+                  {contactData.socialMedia.youtube && (
+                    <a
+                      href={contactData.socialMedia.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-300 hover:text-red-400 transition-colors"
+                    >
+                      <Youtube className="w-6 h-6" />
+                    </a>
+                  )}
+                </>
+              ) : (
+                <div className="text-gray-400">
+                  {loading ? 'Loading social links...' : 'Social links not available'}
+                </div>
               )}
             </div>
             

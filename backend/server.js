@@ -86,6 +86,7 @@ app.use('/api/student-corner', require('./routes/studentCorner'));
 app.use('/api/application', require('./routes/application'));
 app.use('/api/job-application', require('./routes/jobApplication'));
 app.use('/api/alumni', require('./routes/alumni'));
+app.use('/api/contact', require('./routes/contact'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
