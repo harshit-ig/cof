@@ -449,13 +449,14 @@ const FacultyManagement = () => {
                 />
               </FormGroup>
 
-              <FormGroup label="Experience (Years)">
+              <FormGroup label="Experience (Years)" required>
                 <Input
                   type="number"
                   name="experience"
                   value={formData.experience}
                   onChange={handleChange}
                   placeholder="Years of experience"
+                  required
                 />
               </FormGroup>
             </div>
@@ -517,12 +518,13 @@ const FacultyManagement = () => {
                 />
               </FormGroup>
 
-              <FormGroup label="Specialization">
+              <FormGroup label="Specialization" required>
                 <Input
                   name="specialization"
                   value={formData.specialization}
                   onChange={handleChange}
                   placeholder="Area of specialization"
+                  required
                 />
               </FormGroup>
 

@@ -290,7 +290,7 @@ const AboutPageManagement = () => {
         {/* Vision */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Vision Statement</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Vision Statement <span className="text-red-500">*</span></h2>
             <button
               onClick={() => saveSection('vision', aboutData.vision, 'Vision Statement')}
               disabled={saving}
@@ -305,13 +305,14 @@ const AboutPageManagement = () => {
             onChange={(e) => handleInputChange('vision', e.target.value)}
             placeholder="Enter vision statement..."
             className="w-full h-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            required
           />
         </div>
 
         {/* Mission */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Mission Statement</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Mission Statement <span className="text-red-500">*</span></h2>
             <button
               onClick={() => saveSection('mission', aboutData.mission, 'Mission Statement')}
               disabled={saving}
@@ -326,6 +327,7 @@ const AboutPageManagement = () => {
             onChange={(e) => handleInputChange('mission', e.target.value)}
             placeholder="Enter mission statement..."
             className="w-full h-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            required
           />
         </div>
       </div>
@@ -333,7 +335,7 @@ const AboutPageManagement = () => {
       {/* History */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">College History</h2>
+          <h2 className="text-lg font-semibold text-gray-900">College History <span className="text-red-500">*</span></h2>
           <button
             onClick={() => saveSection('history', aboutData.history, 'College History')}
             disabled={saving}
@@ -348,6 +350,7 @@ const AboutPageManagement = () => {
           onChange={(e) => handleInputChange('history', e.target.value)}
           placeholder="Enter college history..."
           className="w-full h-40 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          required
         />
       </div>
 

@@ -227,12 +227,13 @@ const AcademicsPageManagement = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Department Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Department Name <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={dept.name}
                       onChange={(e) => handleInputChange('departments', 'name', e.target.value, index)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
                     />
                   </div>
                   
@@ -253,12 +254,13 @@ const AcademicsPageManagement = () => {
                 </div>
                 
                 <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
                   <textarea
                     value={dept.description}
                     onChange={(e) => handleInputChange('departments', 'description', e.target.value, index)}
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
                   />
                 </div>
               </Card>
@@ -293,23 +295,25 @@ const AcademicsPageManagement = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Name <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={event.event}
                       onChange={(e) => handleInputChange('calendar', 'event', e.target.value, index)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       value={event.date}
                       onChange={(e) => handleInputChange('calendar', 'date', e.target.value, index)}
                       placeholder="e.g., June 2025"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
                     />
                   </div>
                 </div>

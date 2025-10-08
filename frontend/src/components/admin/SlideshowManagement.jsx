@@ -196,7 +196,7 @@ const SlideshowManagement = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Slide Image {editingSlide && '(Leave empty to keep current image)'}
+                Slide Image {!editingSlide && <span className="text-red-500">*</span>} {editingSlide && '(Leave empty to keep current image)'}
               </label>
               <input
                 id="slide-image"

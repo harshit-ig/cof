@@ -217,7 +217,7 @@ const WelcomeMessageManagement = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dean's Name
+                Dean's Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -225,12 +225,13 @@ const WelcomeMessageManagement = () => {
                 onChange={(e) => handleInputChange('deanName', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter dean's full name"
+                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dean's Title/Designation
+                Dean's Title/Designation <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -238,6 +239,7 @@ const WelcomeMessageManagement = () => {
                 onChange={(e) => handleInputChange('deanTitle', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="e.g., Dean, College of Fishery"
+                required
               />
             </div>
 
@@ -270,7 +272,7 @@ const WelcomeMessageManagement = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Welcome Message
+                Welcome Message <span className="text-red-500">*</span>
               </label>
               <textarea
                 value={welcomeData.welcomeMessage}
@@ -278,6 +280,7 @@ const WelcomeMessageManagement = () => {
                 rows={6}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter the dean's welcome message..."
+                required
               />
             </div>
 
