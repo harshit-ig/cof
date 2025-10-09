@@ -153,12 +153,32 @@ const CollaborationsManagement = () => {
             <Textarea name="description" defaultValue={editingItem?.description} rows={3} required />
           </FormGroup>
 
-          <FormGroup label="Objectives (one per line)">
-            <Textarea name="objectives" defaultValue={editingItem?.objectives?.join('\n')} rows={4} />
+          <FormGroup>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Objectives (one per line)
+            </label>
+            <textarea
+              name="objectives"
+              defaultValue={editingItem?.objectives?.join('\n')}
+              rows={4}
+              placeholder="Enter objectives, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Enhance research collaboration&#10;• Share best practices&#10;• Develop joint programs"
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white font-mono text-sm"
+              style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
+            />
           </FormGroup>
 
-          <FormGroup label="Activities (one per line)">
-            <Textarea name="activities" defaultValue={editingItem?.activities?.join('\n')} rows={4} />
+          <FormGroup>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Activities (one per line)
+            </label>
+            <textarea
+              name="activities"
+              defaultValue={editingItem?.activities?.join('\n')}
+              rows={4}
+              placeholder="Enter activities, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Joint research projects&#10;• Student exchange programs&#10;• Faculty collaboration"
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white font-mono text-sm"
+              style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
+            />
           </FormGroup>
 
           <FormGroup label="Outcomes">

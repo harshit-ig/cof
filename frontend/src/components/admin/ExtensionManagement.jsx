@@ -643,13 +643,16 @@ const ExtensionManagement = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Training Modules (One per line)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Training Modules (One per line) <span className="text-red-500">*</span>
+                    </label>
                     <textarea
                       value={(formData.modules || []).join('\n')}
                       onChange={(e) => handleArrayInput('modules', e.target.value)}
                       rows={5}
-                      placeholder="Enter training modules, one per line"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter training modules, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Crop Management Techniques&#10;• Soil Health Assessment&#10;• Pest Control Methods"
+                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[120px] bg-white font-mono text-sm"
+                      style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
                     />
                   </div>
                 </>
@@ -696,13 +699,16 @@ const ExtensionManagement = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Activities (One per line)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Activities (One per line) <span className="text-red-500">*</span>
+                    </label>
                     <textarea
                       value={(formData.activities || []).join('\n')}
                       onChange={(e) => handleArrayInput('activities', e.target.value)}
                       rows={5}
-                      placeholder="Enter activities, one per line"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter activities, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Field demonstrations&#10;• Farmer training sessions&#10;• Technology transfer programs"
+                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[120px] bg-white font-mono text-sm"
+                      style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
                     />
                   </div>
                 </>
@@ -735,13 +741,16 @@ const ExtensionManagement = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Features (One per line)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Features (One per line) <span className="text-red-500">*</span>
+                    </label>
                     <textarea
                       value={(formData.features || []).join('\n')}
                       onChange={(e) => handleArrayInput('features', e.target.value)}
                       rows={5}
-                      placeholder="Enter key features, one per line"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter key features, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Climate-controlled environment&#10;• Advanced irrigation system&#10;• Digital monitoring tools"
+                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[120px] bg-white font-mono text-sm"
+                      style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
                     />
                   </div>
 
@@ -818,13 +827,16 @@ const ExtensionManagement = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Impact Points (One per line)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Impact Points (One per line) <span className="text-red-500">*</span>
+                    </label>
                     <textarea
                       value={(formData.impactPoints || []).join('\n')}
                       onChange={(e) => handleArrayInput('impactPoints', e.target.value)}
                       rows={4}
-                      placeholder="Enter impact points, one per line"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter impact points, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• 30% increase in crop yield&#10;• 50% reduction in pesticide use&#10;• Improved farmer income by 25%"
+                      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white font-mono text-sm"
+                      style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
                     />
                   </div>
                 </>
