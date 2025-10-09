@@ -260,17 +260,22 @@ const StudentCornerManagement = () => {
                 placeholder="Brief description of this category"
                 rows={3}
                 required
+                style={{ whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
 
             <FormGroup>
-              <Textarea
-                label="Guidelines (one per line)"
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Guidelines (one per line) <span className="text-red-500">*</span>
+              </label>
+              <textarea
                 value={formData.guidelines}
                 onChange={(e) => setFormData(prev => ({ ...prev, guidelines: e.target.value }))}
-                placeholder="Enter each guideline on a new line"
+                placeholder="Enter each guideline on a new line&#10;Press Enter to create new lines&#10;Example:&#10;• First guideline&#10;• Second guideline&#10;• Third guideline"
                 rows={6}
                 required
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[150px] bg-white font-mono text-sm"
+                style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
             <FormGroup>
@@ -323,6 +328,7 @@ const StudentCornerManagement = () => {
                 placeholder="Brief description of the scholarship"
                 rows={3}
                 required
+                style={{ whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
 
@@ -356,17 +362,22 @@ const StudentCornerManagement = () => {
                 placeholder="Eligibility criteria for this scholarship"
                 rows={3}
                 required
+                style={{ whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
 
             <FormGroup>
-              <Textarea
-                label="Benefits (one per line)"
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Benefits (one per line) <span className="text-red-500">*</span>
+              </label>
+              <textarea
                 value={formData.benefits}
                 onChange={(e) => setFormData(prev => ({ ...prev, benefits: e.target.value }))}
-                placeholder="Enter each benefit on a new line"
+                placeholder="Enter each benefit on a new line&#10;Press Enter to create new lines&#10;Example:&#10;• Monthly stipend&#10;• Tuition fee waiver&#10;• Library access"
                 rows={5}
                 required
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[120px] bg-white font-mono text-sm"
+                style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
             <FormGroup>
@@ -429,28 +440,37 @@ const StudentCornerManagement = () => {
                 placeholder="Brief description of the club"
                 rows={3}
                 required
+                style={{ whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
 
             <FormGroup>
-              <Textarea
-                label="Activities (one per line)"
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Activities (one per line) <span className="text-red-500">*</span>
+              </label>
+              <textarea
                 value={formData.activities}
                 onChange={(e) => setFormData(prev => ({ ...prev, activities: e.target.value }))}
-                placeholder="Enter each activity on a new line"
+                placeholder="Enter each activity on a new line&#10;Press Enter to create new lines&#10;Example:&#10;• Organizing events&#10;• Student mentoring&#10;• Community service"
                 rows={6}
                 required
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[150px] bg-white font-mono text-sm"
+                style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
 
             <FormGroup>
-              <Textarea
-                label="Key Positions (one per line)"
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Key Positions (one per line) <span className="text-red-500">*</span>
+              </label>
+              <textarea
                 value={formData.positions}
                 onChange={(e) => setFormData(prev => ({ ...prev, positions: e.target.value }))}
-                placeholder="Enter each position on a new line"
+                placeholder="Enter each position on a new line&#10;Press Enter to create new lines&#10;Example:&#10;• President&#10;• Vice President&#10;• Secretary"
                 rows={4}
                 required
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white font-mono text-sm"
+                style={{ lineHeight: '1.5', whiteSpace: 'pre-wrap' }}
               />
             </FormGroup>
             <FormGroup>
