@@ -518,13 +518,12 @@ const FacultyManagement = () => {
                 />
               </FormGroup>
 
-              <FormGroup label="Specialization" required>
+              <FormGroup label="Specialization">
                 <Input
                   name="specialization"
                   value={formData.specialization}
                   onChange={handleChange}
-                  placeholder="Area of specialization"
-                  required
+                  placeholder="Area of specialization (optional)"
                 />
               </FormGroup>
 

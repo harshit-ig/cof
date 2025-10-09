@@ -30,7 +30,7 @@ const facultySchema = new mongoose.Schema({
   },
   specialization: {
     type: String,
-    required: [true, 'Specialization is required']
+    trim: true
   },
   experience: {
     type: Number,
