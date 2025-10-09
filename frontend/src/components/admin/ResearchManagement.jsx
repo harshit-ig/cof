@@ -7,7 +7,9 @@ import { getDocumentUrl } from '../../services/files'
 
 const ResearchManagement = () => {
   const [activeTab, setActiveTab] = useState('ongoing-projects')
-  const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [retryCount, setRetryCount] = useState(0)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [researchData, setResearchData] = useState({
@@ -39,10 +41,24 @@ const ResearchManagement = () => {
     fetchResearchData()
   }, [])
 
-  const fetchResearchData = async () => {
+  const fetchResearchData = async (attempt = 1) => {
     try {
       setLoading(true)
-      const response = await researchAPI.getAll()
+      setError(null)
+      
+      console.log(`🔄 Fetching research data (attempt ${attempt}/3)...`)
+      
+      // Add a timeout promise to handle slow requests
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Request timeout')), 15000)
+      )
+      
+      // Race between the API call and timeout
+      const response = await Promise.race([
+        researchAPI.getAll({ all: 'true' }),
+        timeoutPromise
+      ])
+      
       if (response.data.success) {
         const allResearch = response.data.data.research || []
         
@@ -62,12 +78,35 @@ const ResearchManagement = () => {
         })
         
         setResearchData(grouped)
+        setRetryCount(0)
+        console.log(`✅ Loaded ${allResearch.length} research items across ${Object.keys(grouped).length} sections`)
+        
+        if (allResearch.length === 0) {
+          toast.info('No research data found. You can start by adding new research items.')
+        }
       }
     } catch (error) {
       console.error('Error fetching research data:', error)
-      toast.error('Failed to load research data')
+      setError(error)
+      
+      if (attempt < 3) {
+        console.log(`⚠️ Retrying in 2 seconds... (${attempt}/3)`)
+        setTimeout(() => {
+          setRetryCount(attempt)
+          fetchResearchData(attempt + 1)
+        }, 2000)
+        return
+      }
+      
+      if (error.message === 'Request timeout') {
+        toast.error('Research data is taking too long to load. Please check your connection and try again.')
+      } else {
+        toast.error('Failed to load research data after 3 attempts. Please check your connection and try refreshing the page.')
+      }
     } finally {
-      setLoading(false)
+      if (attempt >= 3 || !error) {
+        setLoading(false)
+      }
     }
   }
 
@@ -945,12 +984,58 @@ const ResearchManagement = () => {
     )
   }
 
+  // Error state
+  if (error && !loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="text-red-500 mb-4">
+            <svg className="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to Load Research Data</h3>
+          <p className="text-gray-600 mb-4">
+            {error.message === 'Request timeout' 
+              ? 'The request is taking too long. This might be due to a slow connection or large dataset.'
+              : 'There was an error connecting to the server. Please check your internet connection.'
+            }
+          </p>
+          <div className="space-y-3">
+            <button
+              onClick={() => fetchResearchData()}
+              className="btn-primary px-6 py-2"
+            >
+              Try Again
+            </button>
+            <p className="text-sm text-gray-500">
+              If the problem persists, try refreshing the page or contact support.
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading research data...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 mb-2">
+            Loading research data...
+            {retryCount > 0 && ` (Retry ${retryCount}/3)`}
+          </p>
+          <p className="text-sm text-gray-500">This may take a few moments for large datasets</p>
+          <div className="mt-4 bg-gray-200 rounded-full h-2 w-64 mx-auto">
+            <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
+          </div>
+          {retryCount > 0 && (
+            <p className="text-xs text-orange-600 mt-2">
+              Connection seems slow, retrying automatically...
+            </p>
+          )}
         </div>
       </div>
     )

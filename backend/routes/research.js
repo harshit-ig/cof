@@ -37,11 +37,15 @@ const router = express.Router();
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    let query = { isPublished: true };
+    // Check if this is an admin request (authenticated user)
+    const isAdmin = req.headers.authorization && req.headers.authorization.startsWith('Bearer');
+    
+    let query = {};
+    
+    // For public requests, only show published content
+    if (!isAdmin) {
+      query.isPublished = true;
+    }
     
     if (req.query.type) {
       query.type = req.query.type;
@@ -50,6 +54,31 @@ router.get('/', async (req, res) => {
     if (req.query.status) {
       query.status = req.query.status;
     }
+
+    if (req.query.section) {
+      query.section = req.query.section;
+    }
+
+    // For admin requests or when specifically requested, fetch all data without pagination
+    if (isAdmin || req.query.all === 'true') {
+      const research = await Research.find(query)
+        .select('-__v') // Exclude version field
+        .sort({ section: 1, order: 1, createdAt: -1 })
+        .lean(); // Use lean() for better performance
+
+      return res.json({
+        success: true,
+        data: {
+          research,
+          total: research.length
+        }
+      });
+    }
+
+    // For public requests, use pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
     const research = await Research.find(query)
       .sort({ createdAt: -1 })
