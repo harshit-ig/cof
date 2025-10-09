@@ -229,6 +229,37 @@ router.post('/', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1 }
       }
     }
 
+    // Fix corrupted nested arrays
+    const arrayFields = ['modules', 'activities', 'features', 'impactPoints', 'tags'];
+    arrayFields.forEach(field => {
+      if (Array.isArray(extensionData[field])) {
+        const fixedArray = [];
+        extensionData[field].forEach(item => {
+          if (typeof item === 'string') {
+            try {
+              // If item looks like a JSON string, try to parse it
+              if (item.startsWith('[') && item.endsWith(']')) {
+                const parsed = JSON.parse(item);
+                if (Array.isArray(parsed)) {
+                  fixedArray.push(...parsed);
+                } else {
+                  fixedArray.push(item);
+                }
+              } else {
+                fixedArray.push(item);
+              }
+            } catch (e) {
+              // If parsing fails, keep the original item
+              fixedArray.push(item);
+            }
+          } else {
+            fixedArray.push(item);
+          }
+        });
+        extensionData[field] = fixedArray;
+      }
+    });
+
     // If PDF file is uploaded, add filename and originalName
     // Handle PDF file if present
     if (req.files && req.files.pdf && req.files.pdf[0]) {
@@ -356,6 +387,37 @@ router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1
         cleanData.tags = cleanData.tags.split(',').map(t => t.trim()).filter(t => t);
       }
     }
+
+    // Fix corrupted nested arrays
+    const arrayFields = ['modules', 'activities', 'features', 'impactPoints', 'tags'];
+    arrayFields.forEach(field => {
+      if (Array.isArray(cleanData[field])) {
+        const fixedArray = [];
+        cleanData[field].forEach(item => {
+          if (typeof item === 'string') {
+            try {
+              // If item looks like a JSON string, try to parse it
+              if (item.startsWith('[') && item.endsWith(']')) {
+                const parsed = JSON.parse(item);
+                if (Array.isArray(parsed)) {
+                  fixedArray.push(...parsed);
+                } else {
+                  fixedArray.push(item);
+                }
+              } else {
+                fixedArray.push(item);
+              }
+            } catch (e) {
+              // If parsing fails, keep the original item
+              fixedArray.push(item);
+            }
+          } else {
+            fixedArray.push(item);
+          }
+        });
+        cleanData[field] = fixedArray;
+      }
+    });
 
     // Add updatedBy field
     cleanData.updatedBy = req.admin._id;
