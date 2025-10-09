@@ -215,10 +215,10 @@ const ResearchManagement = () => {
   }
 
   const handleArrayInput = (field, value) => {
-    const items = value.split('\n').filter(item => item.trim() !== '')
+    // Store the raw text value to preserve line breaks and empty lines during editing
     setFormData(prev => ({
       ...prev,
-      [field]: items
+      [field]: value
     }))
   }
 
@@ -275,8 +275,14 @@ const ResearchManagement = () => {
         if (formData.coInvestigators && formData.coInvestigators.length > 0) {
           formDataToSend.append('coInvestigators', JSON.stringify(formData.coInvestigators));
         }
-        if (formData.objectives && formData.objectives.length > 0) {
-          formDataToSend.append('objectives', JSON.stringify(formData.objectives));
+        if (formData.objectives) {
+          // Convert string to array and filter out empty lines
+          const objectivesArray = typeof formData.objectives === 'string' 
+            ? formData.objectives.split('\n').filter(item => item.trim())
+            : formData.objectives
+          if (objectivesArray && objectivesArray.length > 0) {
+            formDataToSend.append('objectives', JSON.stringify(objectivesArray));
+          }
         }
         if (formData.methodology) {
           formDataToSend.append('methodology', formData.methodology);
@@ -327,8 +333,14 @@ const ResearchManagement = () => {
         if (formData.coInvestigators && formData.coInvestigators.length > 0) {
           formDataToSend.append('coInvestigators', JSON.stringify(formData.coInvestigators));
         }
-        if (formData.objectives && formData.objectives.length > 0) {
-          formDataToSend.append('objectives', JSON.stringify(formData.objectives));
+        if (formData.objectives) {
+          // Convert string to array and filter out empty lines
+          const objectivesArray = typeof formData.objectives === 'string' 
+            ? formData.objectives.split('\n').filter(item => item.trim())
+            : formData.objectives
+          if (objectivesArray && objectivesArray.length > 0) {
+            formDataToSend.append('objectives', JSON.stringify(objectivesArray));
+          }
         }
         if (formData.methodology) {
           formDataToSend.append('methodology', formData.methodology);
@@ -692,7 +704,7 @@ const ResearchManagement = () => {
             Objectives (One per line) <span className="text-red-500">*</span>
           </label>
           <textarea
-            value={(formData.objectives || []).join('\n')}
+            value={typeof formData.objectives === 'string' ? formData.objectives : (formData.objectives || []).join('\n')}
             onChange={(e) => handleArrayInput('objectives', e.target.value)}
             rows={4}
             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y min-h-[100px] bg-white font-mono text-sm"

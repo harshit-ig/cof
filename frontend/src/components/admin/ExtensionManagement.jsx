@@ -163,10 +163,10 @@ const ExtensionManagement = () => {
   }
 
   const handleArrayInput = (field, value) => {
-    const array = value.split('\n').filter(item => item.trim())
+    // Store the raw text value to preserve line breaks and empty lines during editing
     setFormData(prev => ({
       ...prev,
-      [field]: array
+      [field]: value
     }))
   }
 
@@ -226,22 +226,40 @@ const ExtensionManagement = () => {
         if (formData.duration) formDataToSend.append('duration', formData.duration)
         if (formData.frequency) formDataToSend.append('frequency', formData.frequency)
         if (formData.participants) formDataToSend.append('participants', formData.participants)
-        if (formData.modules && formData.modules.length > 0) {
-          formDataToSend.append('modules', JSON.stringify(formData.modules))
+        if (formData.modules) {
+          // Convert string to array and filter out empty lines
+          const modulesArray = typeof formData.modules === 'string' 
+            ? formData.modules.split('\n').filter(item => item.trim())
+            : formData.modules
+          if (modulesArray && modulesArray.length > 0) {
+            formDataToSend.append('modules', JSON.stringify(modulesArray))
+          }
         }
       } else if (formData.section === 'ffpo-shg') {
         if (formData.type) formDataToSend.append('type', formData.type)
         if (formData.beneficiaries) formDataToSend.append('beneficiaries', formData.beneficiaries)
         if (formData.impact) formDataToSend.append('impact', formData.impact)
-        if (formData.activities && formData.activities.length > 0) {
-          formDataToSend.append('activities', JSON.stringify(formData.activities))
+        if (formData.activities) {
+          // Convert string to array and filter out empty lines
+          const activitiesArray = typeof formData.activities === 'string'
+            ? formData.activities.split('\n').filter(item => item.trim())
+            : formData.activities
+          if (activitiesArray && activitiesArray.length > 0) {
+            formDataToSend.append('activities', JSON.stringify(activitiesArray))
+          }
         }
       } else if (formData.section === 'demonstrations') {
         if (formData.location) formDataToSend.append('location', formData.location)
         if (formData.area) formDataToSend.append('area', formData.area)
         if (formData.results) formDataToSend.append('results', formData.results)
-        if (formData.features && formData.features.length > 0) {
-          formDataToSend.append('features', JSON.stringify(formData.features))
+        if (formData.features) {
+          // Convert string to array and filter out empty lines
+          const featuresArray = typeof formData.features === 'string'
+            ? formData.features.split('\n').filter(item => item.trim())
+            : formData.features
+          if (featuresArray && featuresArray.length > 0) {
+            formDataToSend.append('features', JSON.stringify(featuresArray))
+          }
         }
       } else if (formData.section === 'success-stories') {
         if (formData.name) formDataToSend.append('name', formData.name)
@@ -249,8 +267,14 @@ const ExtensionManagement = () => {
         if (formData.achievement) formDataToSend.append('achievement', formData.achievement)
         if (formData.story) formDataToSend.append('story', formData.story)
         if (formData.year) formDataToSend.append('year', formData.year)
-        if (formData.impactPoints && formData.impactPoints.length > 0) {
-          formDataToSend.append('impactPoints', JSON.stringify(formData.impactPoints))
+        if (formData.impactPoints) {
+          // Convert string to array and filter out empty lines
+          const impactPointsArray = typeof formData.impactPoints === 'string'
+            ? formData.impactPoints.split('\n').filter(item => item.trim())
+            : formData.impactPoints
+          if (impactPointsArray && impactPointsArray.length > 0) {
+            formDataToSend.append('impactPoints', JSON.stringify(impactPointsArray))
+          }
         }
       }
       
@@ -647,7 +671,7 @@ const ExtensionManagement = () => {
                       Training Modules (One per line) <span className="text-red-500">*</span>
                     </label>
                     <textarea
-                      value={(formData.modules || []).join('\n')}
+                      value={typeof formData.modules === 'string' ? formData.modules : (formData.modules || []).join('\n')}
                       onChange={(e) => handleArrayInput('modules', e.target.value)}
                       rows={5}
                       placeholder="Enter training modules, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Crop Management Techniques&#10;• Soil Health Assessment&#10;• Pest Control Methods"
@@ -703,7 +727,7 @@ const ExtensionManagement = () => {
                       Activities (One per line) <span className="text-red-500">*</span>
                     </label>
                     <textarea
-                      value={(formData.activities || []).join('\n')}
+                      value={typeof formData.activities === 'string' ? formData.activities : (formData.activities || []).join('\n')}
                       onChange={(e) => handleArrayInput('activities', e.target.value)}
                       rows={5}
                       placeholder="Enter activities, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Field demonstrations&#10;• Farmer training sessions&#10;• Technology transfer programs"
@@ -745,7 +769,7 @@ const ExtensionManagement = () => {
                       Features (One per line) <span className="text-red-500">*</span>
                     </label>
                     <textarea
-                      value={(formData.features || []).join('\n')}
+                      value={typeof formData.features === 'string' ? formData.features : (formData.features || []).join('\n')}
                       onChange={(e) => handleArrayInput('features', e.target.value)}
                       rows={5}
                       placeholder="Enter key features, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• Climate-controlled environment&#10;• Advanced irrigation system&#10;• Digital monitoring tools"
@@ -831,7 +855,7 @@ const ExtensionManagement = () => {
                       Impact Points (One per line) <span className="text-red-500">*</span>
                     </label>
                     <textarea
-                      value={(formData.impactPoints || []).join('\n')}
+                      value={typeof formData.impactPoints === 'string' ? formData.impactPoints : (formData.impactPoints || []).join('\n')}
                       onChange={(e) => handleArrayInput('impactPoints', e.target.value)}
                       rows={4}
                       placeholder="Enter impact points, one per line&#10;Press Enter to create new lines&#10;Example:&#10;• 30% increase in crop yield&#10;• 50% reduction in pesticide use&#10;• Improved farmer income by 25%"
