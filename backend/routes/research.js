@@ -99,6 +99,67 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
       createdBy: req.admin._id
     };
 
+    // Handle JSON string fields that should be arrays
+    const arrayFields = ['objectives', 'coInvestigators', 'keyFindings', 'tags'];
+    arrayFields.forEach(field => {
+      if (researchData[field] && typeof researchData[field] === 'string') {
+        try {
+          const parsed = JSON.parse(researchData[field]);
+          // Only use parsed value if it's actually an array
+          if (Array.isArray(parsed)) {
+            researchData[field] = parsed;
+          }
+        } catch (e) {
+          // If parsing fails, leave as-is (might be a regular string)
+          console.log(`Failed to parse ${field} as JSON:`, e.message);
+        }
+      }
+      // Fix corrupted nested arrays (like ["[\"objective1\"]"])
+      if (Array.isArray(researchData[field])) {
+        const fixedArray = [];
+        researchData[field].forEach(item => {
+          if (typeof item === 'string') {
+            try {
+              // If item looks like a JSON string, try to parse it
+              if (item.startsWith('[') && item.endsWith(']')) {
+                const parsed = JSON.parse(item);
+                if (Array.isArray(parsed)) {
+                  fixedArray.push(...parsed);
+                } else {
+                  fixedArray.push(item);
+                }
+              } else {
+                fixedArray.push(item);
+              }
+            } catch (e) {
+              // If parsing fails, keep the original item
+              fixedArray.push(item);
+            }
+          } else {
+            fixedArray.push(item);
+          }
+        });
+        researchData[field] = fixedArray;
+      }
+    });
+
+    // Handle JSON string fields that should be objects
+    const objectFields = ['duration', 'publicationDetails', 'studentDetails', 'collaborationDetails', 'facilityDetails'];
+    objectFields.forEach(field => {
+      if (researchData[field] && typeof researchData[field] === 'string') {
+        try {
+          const parsed = JSON.parse(researchData[field]);
+          // Only use parsed value if it's actually an object (and not an array)
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            researchData[field] = parsed;
+          }
+        } catch (e) {
+          // If parsing fails, leave as-is
+          console.log(`Failed to parse ${field} as JSON:`, e.message);
+        }
+      }
+    });
+
     // If PDF file is uploaded, add filename and originalName like FarmerResource
     if (req.file) {
       researchData.filename = req.file.filename;
@@ -165,6 +226,67 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
     });
 
     console.log('Cleaned data:', JSON.stringify(cleanData, null, 2));
+
+    // Handle JSON string fields that should be arrays
+    const arrayFields = ['objectives', 'coInvestigators', 'keyFindings', 'tags'];
+    arrayFields.forEach(field => {
+      if (cleanData[field] && typeof cleanData[field] === 'string') {
+        try {
+          const parsed = JSON.parse(cleanData[field]);
+          // Only use parsed value if it's actually an array
+          if (Array.isArray(parsed)) {
+            cleanData[field] = parsed;
+          }
+        } catch (e) {
+          // If parsing fails, leave as-is (might be a regular string)
+          console.log(`Failed to parse ${field} as JSON:`, e.message);
+        }
+      }
+      // Fix corrupted nested arrays (like ["[\"objective1\"]"])
+      if (Array.isArray(cleanData[field])) {
+        const fixedArray = [];
+        cleanData[field].forEach(item => {
+          if (typeof item === 'string') {
+            try {
+              // If item looks like a JSON string, try to parse it
+              if (item.startsWith('[') && item.endsWith(']')) {
+                const parsed = JSON.parse(item);
+                if (Array.isArray(parsed)) {
+                  fixedArray.push(...parsed);
+                } else {
+                  fixedArray.push(item);
+                }
+              } else {
+                fixedArray.push(item);
+              }
+            } catch (e) {
+              // If parsing fails, keep the original item
+              fixedArray.push(item);
+            }
+          } else {
+            fixedArray.push(item);
+          }
+        });
+        cleanData[field] = fixedArray;
+      }
+    });
+
+    // Handle JSON string fields that should be objects
+    const objectFields = ['duration', 'publicationDetails', 'studentDetails', 'collaborationDetails', 'facilityDetails'];
+    objectFields.forEach(field => {
+      if (cleanData[field] && typeof cleanData[field] === 'string') {
+        try {
+          const parsed = JSON.parse(cleanData[field]);
+          // Only use parsed value if it's actually an object (and not an array)
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            cleanData[field] = parsed;
+          }
+        } catch (e) {
+          // If parsing fails, leave as-is
+          console.log(`Failed to parse ${field} as JSON:`, e.message);
+        }
+      }
+    });
 
     // If PDF file is uploaded, add filename and originalName like FarmerResource
     if (req.file) {
