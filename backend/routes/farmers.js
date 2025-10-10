@@ -341,34 +341,22 @@ router.post('/training', async (req, res) => {
 // Get all farmer resources (public endpoint)
 router.get('/resources', async (req, res) => {
   try {
-    const { category, limit = 20, page = 1 } = req.query
+    const { category } = req.query
     
     const query = { isActive: true }
     if (category) {
       query.category = category
     }
     
-    const skip = (page - 1) * limit
-    
     const resources = await FarmerResource.find(query)
       .select('title description filename originalName fileSize category createdAt downloadCount')
       .sort({ createdAt: -1 })
-      .limit(parseInt(limit))
-      .skip(skip)
       .populate('uploadedBy', 'name')
-    
-    const total = await FarmerResource.countDocuments(query)
     
     res.json({
       success: true,
       data: {
-        resources,
-        pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        resources
       }
     })
   } catch (error) {
@@ -598,32 +586,20 @@ router.delete('/resources/:id', protect, adminOnly, async (req, res) => {
 // Get all farmer resources for admin (includes inactive)
 router.get('/admin/resources', protect, adminOnly, async (req, res) => {
   try {
-    const { category, limit = 20, page = 1, isActive } = req.query
+    const { category, isActive } = req.query
     
     const query = {}
     if (category) query.category = category
     if (isActive !== undefined && isActive !== '') query.isActive = isActive === 'true'
     
-    const skip = (page - 1) * limit
-    
     const resources = await FarmerResource.find(query)
       .sort({ createdAt: -1 })
-      .limit(parseInt(limit))
-      .skip(skip)
       .populate('uploadedBy', 'name email')
-    
-    const total = await FarmerResource.countDocuments(query)
     
     res.json({
       success: true,
       data: {
-        resources,
-        pagination: {
-          page: parseInt(page),
-          limit: parseInt(limit),
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        resources
       }
     })
   } catch (error) {

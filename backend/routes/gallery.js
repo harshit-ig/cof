@@ -9,24 +9,17 @@ const fs = require('fs').promises;
 // Get all gallery images (public route)
 router.get('/', async (req, res) => {
   try {
-    const { category, limit = 50, page = 1 } = req.query;
+    const { category } = req.query;
     
     const query = { isActive: true };
     if (category && category !== 'all') {
       query.category = category;
     }
 
-    const options = {
-      sort: { order: 1, createdAt: -1 },
-      limit: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit)
-    };
-
-    const images = await Gallery.find(query, null, options)
+    const images = await Gallery.find(query)
       .populate('uploadedBy', 'username')
+      .sort({ order: 1, createdAt: -1 })
       .lean();
-
-    const total = await Gallery.countDocuments(query);
 
     console.log('Public gallery fetch request');
     console.log(`Found ${images.length} images for public`);
@@ -38,13 +31,7 @@ router.get('/', async (req, res) => {
 
     res.json({
       success: true,
-      data: images,
-      pagination: {
-        current: parseInt(page),
-        total: Math.ceil(total / parseInt(limit)),
-        count: images.length,
-        totalItems: total
-      }
+      data: images
     });
   } catch (error) {
     console.error('Error fetching gallery images:', error);
@@ -59,7 +46,7 @@ router.get('/', async (req, res) => {
 router.get('/admin/all', protect, async (req, res) => {
   try {
     console.log('Admin gallery fetch request');
-    const { category, limit = 50, page = 1, status } = req.query;
+    const { category, status } = req.query;
     
     const query = {};
     if (category && category !== 'all') {
@@ -70,17 +57,10 @@ router.get('/admin/all', protect, async (req, res) => {
       query.isActive = status === 'active';
     }
 
-    const options = {
-      sort: { order: 1, createdAt: -1 },
-      limit: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit)
-    };
-
-    const images = await Gallery.find(query, null, options)
+    const images = await Gallery.find(query)
       .populate('uploadedBy', 'username')
+      .sort({ order: 1, createdAt: -1 })
       .lean();
-
-    const total = await Gallery.countDocuments(query);
 
     console.log(`Found ${images.length} images for admin`);
     
@@ -91,13 +71,7 @@ router.get('/admin/all', protect, async (req, res) => {
 
     res.json({
       success: true,
-      data: images,
-      pagination: {
-        current: parseInt(page),
-        total: Math.ceil(total / parseInt(limit)),
-        count: images.length,
-        totalItems: total
-      }
+      data: images
     });
   } catch (error) {
     console.error('Error fetching admin gallery images:', error);

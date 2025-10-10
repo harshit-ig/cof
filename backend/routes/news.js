@@ -29,10 +29,6 @@ router.get('/', [
       });
     }
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
     // Build query
     let query = { isPublished: true };
 
@@ -61,26 +57,16 @@ router.get('/', [
       query.$text = { $search: req.query.search };
     }
 
-    // Get news/events with pagination - use lean() to avoid validation issues with attachments
+    // Get all news/events - use lean() to avoid validation issues with attachments
     const newsEvents = await NewsEvent.find(query)
       .populate('createdBy', 'username')
       .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
       .lean();
-
-    const total = await NewsEvent.countDocuments(query);
 
     res.json({
       success: true,
       data: {
-        newsEvents,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        newsEvents
       }
     });
 

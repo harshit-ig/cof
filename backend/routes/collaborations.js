@@ -9,10 +9,6 @@ const router = express.Router();
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 100;
-    const skip = (page - 1) * limit;
-
     let query = { isPublished: true };
     
     if (req.query.section) {
@@ -24,22 +20,12 @@ router.get('/', async (req, res) => {
     }
 
     const collaborations = await Collaboration.find(query)
-      .sort({ sortOrder: 1, createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Collaboration.countDocuments(query);
+      .sort({ sortOrder: 1, createdAt: -1 });
 
     res.json({
       success: true,
       data: {
-        collaborations,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        collaborations
       }
     });
 

@@ -33,10 +33,6 @@ router.get('/', async (req, res) => {
 // @access  Private (Admin only)
 router.get('/admin', protect, adminOnly, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-
     let query = {};
 
     // Filter by category if provided
@@ -58,22 +54,12 @@ router.get('/admin', protect, adminOnly, async (req, res) => {
     }
 
     const partners = await Partner.find(query)
-      .sort({ order: 1, createdAt: 1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Partner.countDocuments(query);
+      .sort({ order: 1, createdAt: 1 });
 
     res.json({
       success: true,
       data: {
-        partners,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        partners
       }
     });
 

@@ -9,10 +9,6 @@ const router = express.Router();
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
     let query = { isActive: true };
     
     if (req.query.type) {
@@ -20,22 +16,12 @@ router.get('/', async (req, res) => {
     }
 
     const infrastructure = await Infrastructure.find(query)
-      .sort({ name: 1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Infrastructure.countDocuments(query);
+      .sort({ name: 1 });
 
     res.json({
       success: true,
       data: {
-        infrastructure,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        infrastructure
       }
     });
 

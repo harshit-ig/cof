@@ -26,10 +26,6 @@ router.get('/', [
       });
     }
 
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
     // Build query
     let query = { isActive: true };
 
@@ -45,25 +41,15 @@ router.get('/', [
       query.$text = { $search: req.query.search };
     }
 
-    // Get programs with pagination
+    // Get all programs
     const programs = await Program.find(query)
       .populate('createdBy', 'username')
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Program.countDocuments(query);
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
       data: {
-        programs,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        programs
       }
     });
   } catch (error) {

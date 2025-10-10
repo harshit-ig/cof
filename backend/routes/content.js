@@ -216,10 +216,6 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin only)
 router.get('/admin/all', protect, adminOnly, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
-
     let query = {};
 
     if (req.query.section) {
@@ -232,22 +228,12 @@ router.get('/admin/all', protect, adminOnly, async (req, res) => {
 
     const content = await Content.find(query)
       .populate('lastModifiedBy', 'username')
-      .sort({ section: 1, subsection: 1, order: 1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Content.countDocuments(query);
+      .sort({ section: 1, subsection: 1, order: 1 });
 
     res.json({
       success: true,
       data: {
-        content,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        content
       }
     });
 

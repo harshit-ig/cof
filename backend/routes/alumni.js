@@ -10,10 +10,6 @@ const router = express.Router();
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 100;
-    const skip = (page - 1) * limit;
-
     let query = { isPublished: true };
     
     if (req.query.section) {
@@ -21,22 +17,12 @@ router.get('/', async (req, res) => {
     }
 
     const alumni = await Alumni.find(query)
-      .sort({ sortOrder: 1, createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Alumni.countDocuments(query);
+      .sort({ sortOrder: 1, createdAt: -1 });
 
     res.json({
       success: true,
       data: {
-        alumni,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        alumni
       }
     });
 

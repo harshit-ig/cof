@@ -75,28 +75,14 @@ router.get('/', async (req, res) => {
       });
     }
 
-    // For public requests, use pagination
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
+    // For all requests, return all data without pagination
     const research = await Research.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-
-    const total = await Research.countDocuments(query);
+      .sort({ createdAt: -1 });
 
     res.json({
       success: true,
       data: {
-        research,
-        pagination: {
-          page,
-          limit,
-          total,
-          pages: Math.ceil(total / limit)
-        }
+        research
       }
     });
 

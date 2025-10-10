@@ -34,21 +34,15 @@ const upload = multer({
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    const { type, page = 1, limit = 50 } = req.query;
+    const { type } = req.query;
     
     let filter = { isActive: true };
     if (type) {
       filter.type = type;
     }
 
-    const options = {
-      sort: { sortOrder: 1, createdAt: -1 },
-      limit: parseInt(limit),
-      skip: (parseInt(page) - 1) * parseInt(limit)
-    };
-
-    const items = await StudentCorner.find(filter, null, options);
-    const total = await StudentCorner.countDocuments(filter);
+    const items = await StudentCorner.find(filter)
+      .sort({ sortOrder: 1, createdAt: -1 });
 
     // Group by type for easier frontend consumption
     const groupedData = {
@@ -59,13 +53,7 @@ router.get('/', async (req, res) => {
 
     res.json({
       success: true,
-      data: type ? items : groupedData,
-      pagination: {
-        currentPage: parseInt(page),
-        totalPages: Math.ceil(total / parseInt(limit)),
-        totalItems: total,
-        itemsPerPage: parseInt(limit)
-      }
+      data: type ? items : groupedData
     });
 
   } catch (error) {
