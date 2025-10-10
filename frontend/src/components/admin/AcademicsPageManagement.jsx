@@ -69,9 +69,7 @@ const AcademicsPageManagement = () => {
   })
 
   const [activeTab, setActiveTab] = useState('departments')
-  const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [hasChanges, setHasChanges] = useState(false)
 
   // Department modal states
   const [showDepartmentModal, setShowDepartmentModal] = useState(false)
@@ -82,6 +80,32 @@ const AcademicsPageManagement = () => {
     icon: 'building'
   })
   const [submittingDepartment, setSubmittingDepartment] = useState(false)
+
+  // Regulation modal states
+  const [showRegulationModal, setShowRegulationModal] = useState(false)
+  const [editingRegulation, setEditingRegulation] = useState(null)
+  const [regulationFormData, setRegulationFormData] = useState({
+    title: '',
+    description: ''
+  })
+  const [submittingRegulation, setSubmittingRegulation] = useState(false)
+
+  // Calendar modal states
+  const [showCalendarModal, setShowCalendarModal] = useState(false)
+  const [editingCalendarEvent, setEditingCalendarEvent] = useState(null)
+  const [calendarFormData, setCalendarFormData] = useState({
+    event: '',
+    date: ''
+  })
+  const [submittingCalendar, setSubmittingCalendar] = useState(false)
+
+  // Faculty modal states
+  const [showFacultyModal, setShowFacultyModal] = useState(false)
+  const [facultyFormData, setFacultyFormData] = useState({
+    title: '',
+    description: ''
+  })
+  const [submittingFaculty, setSubmittingFaculty] = useState(false)
 
   // Confirmation modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -115,24 +139,6 @@ const AcademicsPageManagement = () => {
     }
   }
 
-  const handleInputChange = (section, field, value, index = null) => {
-    setHasChanges(true)
-    setAcademicsData(prev => {
-      const newData = { ...prev }
-      
-      if (index !== null) {
-        newData[section][index][field] = value
-      } else if (field.includes('.')) {
-        const [parentField, childField] = field.split('.')
-        newData[section][parentField][childField] = value
-      } else {
-        newData[section][field] = value
-      }
-      
-      return newData
-    })
-  }
-
   const addDepartment = () => {
     setEditingDepartment(null)
     setDepartmentFormData({
@@ -159,23 +165,25 @@ const AcademicsPageManagement = () => {
     setSubmittingDepartment(true)
 
     try {
-      setHasChanges(true)
-      
       if (editingDepartment !== null) {
         // Update existing department
-        setAcademicsData(prev => ({
-          ...prev,
-          departments: prev.departments.map((dept, index) => 
+        const updatedData = {
+          ...academicsData,
+          departments: academicsData.departments.map((dept, index) => 
             index === editingDepartment ? departmentFormData : dept
           )
-        }))
+        }
+        setAcademicsData(updatedData)
+        await academicsAPI.updatePage(updatedData)
         toast.success('Department updated successfully')
       } else {
         // Add new department
-        setAcademicsData(prev => ({
-          ...prev,
-          departments: [...prev.departments, departmentFormData]
-        }))
+        const updatedData = {
+          ...academicsData,
+          departments: [...academicsData.departments, departmentFormData]
+        }
+        setAcademicsData(updatedData)
+        await academicsAPI.updatePage(updatedData)
         toast.success('Department added successfully')
       }
 
@@ -195,30 +203,28 @@ const AcademicsPageManagement = () => {
     setShowDeleteModal(true)
   }
 
-  const handleDeleteConfirm = () => {
-    setHasChanges(true)
-    
-    if (deleteTarget.type === 'department') {
-      setAcademicsData(prev => ({
-        ...prev,
-        departments: prev.departments.filter((_, i) => i !== deleteTarget.index)
-      }))
-      toast.success('Department deleted successfully')
-    } else if (deleteTarget.type === 'calendar') {
-      setAcademicsData(prev => ({
-        ...prev,
-        calendar: {
-          ...prev.calendar,
-          events: prev.calendar.events.filter((_, i) => i !== deleteTarget.index)
+  const handleDeleteConfirm = async () => {
+    try {
+      let updatedData = { ...academicsData }
+      
+      if (deleteTarget.type === 'department') {
+        updatedData.departments = academicsData.departments.filter((_, i) => i !== deleteTarget.index)
+        toast.success('Department deleted successfully')
+      } else if (deleteTarget.type === 'calendar') {
+        updatedData.calendar = {
+          ...academicsData.calendar,
+          events: academicsData.calendar.events.filter((_, i) => i !== deleteTarget.index)
         }
-      }))
-      toast.success('Calendar event deleted successfully')
-    } else if (deleteTarget.type === 'regulation') {
-      setAcademicsData(prev => ({
-        ...prev,
-        regulations: prev.regulations.filter((_, i) => i !== deleteTarget.index)
-      }))
-      toast.success('Regulation deleted successfully')
+        toast.success('Calendar event deleted successfully')
+      } else if (deleteTarget.type === 'regulation') {
+        updatedData.regulations = academicsData.regulations.filter((_, i) => i !== deleteTarget.index)
+        toast.success('Regulation deleted successfully')
+      }
+      
+      setAcademicsData(updatedData)
+      await academicsAPI.updatePage(updatedData)
+    } catch (error) {
+      toast.error('Failed to delete item')
     }
     
     setShowDeleteModal(false)
@@ -234,18 +240,170 @@ const AcademicsPageManagement = () => {
     setDepartmentFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const addCalendarEvent = () => {
-    setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      calendar: {
-        ...prev.calendar,
-        events: [
-          ...prev.calendar.events,
-          { event: '', date: '' }
-        ]
+  // Regulation handlers
+  const addRegulation = () => {
+    setEditingRegulation(null)
+    setRegulationFormData({
+      title: '',
+      description: ''
+    })
+    setShowRegulationModal(true)
+  }
+
+  const editRegulation = (index) => {
+    const regulation = academicsData.regulations[index]
+    setEditingRegulation(index)
+    setRegulationFormData({
+      title: regulation.title,
+      description: regulation.description
+    })
+    setShowRegulationModal(true)
+  }
+
+  const handleRegulationSubmit = async (e) => {
+    e.preventDefault()
+    setSubmittingRegulation(true)
+
+    try {
+      if (editingRegulation !== null) {
+        // Update existing regulation
+        setAcademicsData(prev => ({
+          ...prev,
+          regulations: prev.regulations.map((reg, index) => 
+            index === editingRegulation ? regulationFormData : reg
+          )
+        }))
+        await academicsAPI.updatePage({
+          ...academicsData,
+          regulations: academicsData.regulations.map((reg, index) => 
+            index === editingRegulation ? regulationFormData : reg
+          )
+        })
+        toast.success('Regulation updated successfully')
+      } else {
+        // Add new regulation
+        const updatedData = {
+          ...academicsData,
+          regulations: [...academicsData.regulations, regulationFormData]
+        }
+        setAcademicsData(updatedData)
+        await academicsAPI.updatePage(updatedData)
+        toast.success('Regulation added successfully')
       }
-    }))
+
+      setShowRegulationModal(false)
+      setEditingRegulation(null)
+      setRegulationFormData({ title: '', description: '' })
+    } catch (error) {
+      toast.error('Failed to save regulation')
+    } finally {
+      setSubmittingRegulation(false)
+    }
+  }
+
+  const handleRegulationFormChange = (e) => {
+    const { name, value } = e.target
+    setRegulationFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  // Calendar handlers
+  const addCalendarEvent = () => {
+    setEditingCalendarEvent(null)
+    setCalendarFormData({
+      event: '',
+      date: ''
+    })
+    setShowCalendarModal(true)
+  }
+
+  const editCalendarEvent = (index) => {
+    const event = academicsData.calendar.events[index]
+    setEditingCalendarEvent(index)
+    setCalendarFormData({
+      event: event.event,
+      date: event.date
+    })
+    setShowCalendarModal(true)
+  }
+
+  const handleCalendarSubmit = async (e) => {
+    e.preventDefault()
+    setSubmittingCalendar(true)
+
+    try {
+      if (editingCalendarEvent !== null) {
+        // Update existing event
+        const updatedEvents = academicsData.calendar.events.map((evt, index) => 
+          index === editingCalendarEvent ? calendarFormData : evt
+        )
+        const updatedData = {
+          ...academicsData,
+          calendar: { ...academicsData.calendar, events: updatedEvents }
+        }
+        setAcademicsData(updatedData)
+        await academicsAPI.updatePage(updatedData)
+        toast.success('Calendar event updated successfully')
+      } else {
+        // Add new event
+        const updatedData = {
+          ...academicsData,
+          calendar: {
+            ...academicsData.calendar,
+            events: [...academicsData.calendar.events, calendarFormData]
+          }
+        }
+        setAcademicsData(updatedData)
+        await academicsAPI.updatePage(updatedData)
+        toast.success('Calendar event added successfully')
+      }
+
+      setShowCalendarModal(false)
+      setEditingCalendarEvent(null)
+      setCalendarFormData({ event: '', date: '' })
+    } catch (error) {
+      toast.error('Failed to save calendar event')
+    } finally {
+      setSubmittingCalendar(false)
+    }
+  }
+
+  const handleCalendarFormChange = (e) => {
+    const { name, value } = e.target
+    setCalendarFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  // Faculty handlers
+  const editFaculty = () => {
+    setFacultyFormData({
+      title: academicsData.faculty.title,
+      description: academicsData.faculty.description
+    })
+    setShowFacultyModal(true)
+  }
+
+  const handleFacultySubmit = async (e) => {
+    e.preventDefault()
+    setSubmittingFaculty(true)
+
+    try {
+      const updatedData = {
+        ...academicsData,
+        faculty: facultyFormData
+      }
+      setAcademicsData(updatedData)
+      await academicsAPI.updatePage(updatedData)
+      toast.success('Faculty section updated successfully')
+      setShowFacultyModal(false)
+    } catch (error) {
+      toast.error('Failed to save faculty section')
+    } finally {
+      setSubmittingFaculty(false)
+    }
+  }
+
+  const handleFacultyFormChange = (e) => {
+    const { name, value } = e.target
+    setFacultyFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const removeCalendarEvent = (index) => {
@@ -254,50 +412,10 @@ const AcademicsPageManagement = () => {
     setShowDeleteModal(true)
   }
 
-  const addRegulation = () => {
-    setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      regulations: [
-        ...prev.regulations,
-        { title: '', description: '' }
-      ]
-    }))
-  }
-
   const removeRegulation = (index) => {
     const regulation = academicsData.regulations[index]
     setDeleteTarget({ type: 'regulation', index, item: regulation })
     setShowDeleteModal(true)
-  }
-
-  const handleSave = async () => {
-    setSaving(true)
-    try {
-      const response = await academicsAPI.updatePage(academicsData)
-      
-      if (response.data.success) {
-        setHasChanges(false)
-        toast.success('Academics page updated successfully!')
-        
-        // Trigger a custom event to notify other components about the update
-        window.dispatchEvent(new CustomEvent('academicsDataUpdated', {
-          detail: response.data.data
-        }))
-      } else {
-        toast.error(response.data.message || 'Failed to save academics page data')
-      }
-    } catch (error) {
-      console.error('Error saving academics data:', error)
-      toast.error(error.response?.data?.message || 'Failed to save academics page data')
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const previewPage = () => {
-    // Open academics page in new tab
-    window.open('/academics', '_blank')
   }
 
   const renderTabContent = () => {
@@ -379,54 +497,66 @@ const AcademicsPageManagement = () => {
         return (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900">Academic Calendar Events</h3>
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Academic Calendar Events</h3>
+                <p className="text-sm text-gray-600">Manage important academic dates and events</p>
+              </div>
               <button
                 onClick={addCalendarEvent}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
+                <Plus className="w-4 h-4 mr-2" />
                 Add Event
               </button>
             </div>
             
-            {academicsData.calendar.events.map((event, index) => (
-              <Card key={index} className="p-4">
-                <div className="flex justify-between items-start mb-4">
-                  <h4 className="text-md font-medium text-gray-900">Event {index + 1}</h4>
-                  <button
-                    onClick={() => removeCalendarEvent(index)}
-                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
-                    title="Delete Event"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Event Name <span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      value={event.event}
-                      onChange={(e) => handleInputChange('calendar', 'event', e.target.value, index)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Date <span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      value={event.date}
-                      onChange={(e) => handleInputChange('calendar', 'date', e.target.value, index)}
-                      placeholder="e.g., June 2025"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                </div>
-              </Card>
-            ))}
+            {academicsData.calendar.events.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600 mb-4">No calendar events added yet</p>
+                <button
+                  onClick={addCalendarEvent}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Event
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {academicsData.calendar.events.map((event, index) => (
+                  <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                          <Calendar className="w-4 h-4 text-purple-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900">{event.event || 'Untitled Event'}</h4>
+                          <p className="text-xs text-gray-500">{event.date || 'No date set'}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => editCalendarEvent(index)}
+                          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                          title="Edit Event"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => removeCalendarEvent(index)}
+                          className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                          title="Delete Event"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         )
 
@@ -434,78 +564,107 @@ const AcademicsPageManagement = () => {
         return (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900">Academic Regulations</h3>
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Academic Regulations</h3>
+                <p className="text-sm text-gray-600">Manage academic rules and regulations</p>
+              </div>
               <button
                 onClick={addRegulation}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
+                <Plus className="w-4 h-4 mr-2" />
                 Add Regulation
               </button>
             </div>
             
-            {academicsData.regulations.map((regulation, index) => (
-              <Card key={index} className="p-4">
-                <div className="flex justify-between items-start mb-4">
-                  <h4 className="text-md font-medium text-gray-900">Regulation {index + 1}</h4>
-                  <button
-                    onClick={() => removeRegulation(index)}
-                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
-                    title="Delete Regulation"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                    <input
-                      type="text"
-                      value={regulation.title}
-                      onChange={(e) => handleInputChange('regulations', 'title', e.target.value, index)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                    <input
-                      type="text"
-                      value={regulation.description}
-                      onChange={(e) => handleInputChange('regulations', 'description', e.target.value, index)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-              </Card>
-            ))}
+            {academicsData.regulations.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600 mb-4">No regulations added yet</p>
+                <button
+                  onClick={addRegulation}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Regulation
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {academicsData.regulations.map((regulation, index) => (
+                  <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                          <FileText className="w-4 h-4 text-green-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900">{regulation.title || 'Untitled Regulation'}</h4>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => editRegulation(index)}
+                          className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                          title="Edit Regulation"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => removeRegulation(index)}
+                          className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                          title="Delete Regulation"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                      {regulation.description || 'No description provided'}
+                    </p>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         )
 
       case 'additional':
         return (
           <div className="space-y-6">
-            <Card className="p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Faculty Section</h3>
+            <Card className="p-6 hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                    <Users className="w-4 h-4 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">Faculty Section</h3>
+                    <p className="text-sm text-gray-600">Manage faculty section content</p>
+                  </div>
+                </div>
+                <button
+                  onClick={editFaculty}
+                  className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                  title="Edit Faculty Section"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
+              </div>
+              
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                  <input
-                    type="text"
-                    value={academicsData.faculty.title}
-                    onChange={(e) => handleInputChange('faculty', 'title', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <h4 className="font-medium text-gray-700 mb-2">Title</h4>
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {academicsData.faculty.title || 'No title set'}
+                  </p>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                  <textarea
-                    value={academicsData.faculty.description}
-                    onChange={(e) => handleInputChange('faculty', 'description', e.target.value)}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <h4 className="font-medium text-gray-700 mb-2">Description</h4>
+                  <p className="text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
+                    {academicsData.faculty.description || 'No description set'}
+                  </p>
                 </div>
               </div>
             </Card>
@@ -543,41 +702,10 @@ const AcademicsPageManagement = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Academics Page Management</h1>
-            <p className="text-gray-600">Manage the content and sections of the academics page</p>
-          </div>
-          
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={previewPage}
-              className="flex items-center px-4 py-2 text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50"
-            >
-              <Eye className="w-4 h-4 mr-2" />
-              Preview
-            </button>
-            
-            <button
-              onClick={handleSave}
-              disabled={saving || !hasChanges}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saving ? (
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <Save className="w-4 h-4 mr-2" />
-              )}
-              {saving ? 'Saving...' : 'Save Changes'}
-            </button>
-          </div>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Academics Page Management</h1>
+          <p className="text-gray-600">Manage the content and sections of the academics page. Changes are saved automatically.</p>
         </div>
-        
-        {hasChanges && (
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-            <p className="text-sm text-yellow-800">You have unsaved changes</p>
-          </div>
-        )}
       </div>
 
       {/* Tab Navigation */}
@@ -673,6 +801,165 @@ const AcademicsPageManagement = () => {
             </button>
             <SubmitButton isLoading={submittingDepartment}>
               {editingDepartment !== null ? 'Update Department' : 'Add Department'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Regulation Modal */}
+      <Modal
+        isOpen={showRegulationModal}
+        onClose={() => {
+          setShowRegulationModal(false)
+          setEditingRegulation(null)
+          setRegulationFormData({ title: '', description: '' })
+        }}
+        title={editingRegulation !== null ? 'Edit Regulation' : 'Add New Regulation'}
+        size="md"
+      >
+        <Form onSubmit={handleRegulationSubmit}>
+          <div className="space-y-4">
+            <FormGroup label="Title" required>
+              <Input
+                name="title"
+                value={regulationFormData.title}
+                onChange={handleRegulationFormChange}
+                placeholder="Enter regulation title"
+                required
+              />
+            </FormGroup>
+
+            <FormGroup label="Description" required>
+              <Textarea
+                name="description"
+                value={regulationFormData.description}
+                onChange={handleRegulationFormChange}
+                placeholder="Enter regulation description"
+                rows={3}
+                required
+              />
+            </FormGroup>
+          </div>
+
+          <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={() => {
+                setShowRegulationModal(false)
+                setEditingRegulation(null)
+                setRegulationFormData({ title: '', description: '' })
+              }}
+              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <SubmitButton isLoading={submittingRegulation}>
+              {editingRegulation !== null ? 'Update Regulation' : 'Add Regulation'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Calendar Modal */}
+      <Modal
+        isOpen={showCalendarModal}
+        onClose={() => {
+          setShowCalendarModal(false)
+          setEditingCalendarEvent(null)
+          setCalendarFormData({ event: '', date: '' })
+        }}
+        title={editingCalendarEvent !== null ? 'Edit Calendar Event' : 'Add New Calendar Event'}
+        size="md"
+      >
+        <Form onSubmit={handleCalendarSubmit}>
+          <div className="space-y-4">
+            <FormGroup label="Event Name" required>
+              <Input
+                name="event"
+                value={calendarFormData.event}
+                onChange={handleCalendarFormChange}
+                placeholder="Enter event name"
+                required
+              />
+            </FormGroup>
+
+            <FormGroup label="Date" required>
+              <Input
+                name="date"
+                value={calendarFormData.date}
+                onChange={handleCalendarFormChange}
+                placeholder="e.g., June 2025"
+                required
+              />
+            </FormGroup>
+          </div>
+
+          <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={() => {
+                setShowCalendarModal(false)
+                setEditingCalendarEvent(null)
+                setCalendarFormData({ event: '', date: '' })
+              }}
+              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <SubmitButton isLoading={submittingCalendar}>
+              {editingCalendarEvent !== null ? 'Update Event' : 'Add Event'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Faculty Modal */}
+      <Modal
+        isOpen={showFacultyModal}
+        onClose={() => {
+          setShowFacultyModal(false)
+          setFacultyFormData({ title: '', description: '' })
+        }}
+        title="Edit Faculty Section"
+        size="md"
+      >
+        <Form onSubmit={handleFacultySubmit}>
+          <div className="space-y-4">
+            <FormGroup label="Title" required>
+              <Input
+                name="title"
+                value={facultyFormData.title}
+                onChange={handleFacultyFormChange}
+                placeholder="Enter faculty section title"
+                required
+              />
+            </FormGroup>
+
+            <FormGroup label="Description" required>
+              <Textarea
+                name="description"
+                value={facultyFormData.description}
+                onChange={handleFacultyFormChange}
+                placeholder="Enter faculty section description"
+                rows={4}
+                required
+              />
+            </FormGroup>
+          </div>
+
+          <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={() => {
+                setShowFacultyModal(false)
+                setFacultyFormData({ title: '', description: '' })
+              }}
+              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <SubmitButton isLoading={submittingFaculty}>
+              Update Faculty Section
             </SubmitButton>
           </div>
         </Form>
