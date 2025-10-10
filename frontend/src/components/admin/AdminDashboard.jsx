@@ -70,24 +70,25 @@ const DashboardHome = () => {
     try {
       setLoading(true)
       const [programsRes, facultyRes, newsRes] = await Promise.allSettled([
-        programsAPI.getAll({ limit: 1 }),
-        facultyAPI.getAll({ limit: 1 }),
-        newsAPI.getAll({ limit: 1 })
+        programsAPI.getAll(),
+        facultyAPI.getAll(),
+        newsAPI.getAll()
       ])
 
       const newStats = { ...stats }
       
       if (programsRes.status === 'fulfilled' && programsRes.value.data.success) {
-        newStats.programs = programsRes.value.data.data.pagination?.total || 0
+        newStats.programs = programsRes.value.data.data.programs?.length || 0
       }
       
       if (facultyRes.status === 'fulfilled' && facultyRes.value.data.success) {
-        newStats.faculty = facultyRes.value.data.data.pagination?.total || 0
+        newStats.faculty = facultyRes.value.data.data.faculty?.length || 0
       }
       
       if (newsRes.status === 'fulfilled' && newsRes.value.data.success) {
-        newStats.news = newsRes.value.data.data.pagination?.total || 0
-        newStats.events = newsRes.value.data.data.newsEvents?.filter(item => 
+        const allItems = newsRes.value.data.data.newsEvents || []
+        newStats.news = allItems.filter(item => item.type === 'news').length || 0
+        newStats.events = allItems.filter(item => 
           ['event', 'seminar', 'workshop'].includes(item.type)
         ).length || 0
       }

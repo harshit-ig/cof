@@ -34,8 +34,6 @@ const GalleryManagement = () => {
   const [editingImage, setEditingImage] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
   const [viewMode, setViewMode] = useState('grid') // 'grid' or 'list'
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
   
   // Upload form state
   const [uploadForm, setUploadForm] = useState({
@@ -80,27 +78,13 @@ const GalleryManagement = () => {
 
   useEffect(() => {
     fetchImages()
-  }, [currentPage, selectedCategory, selectedStatus])
+  }, [selectedCategory, selectedStatus])
 
   const fetchImages = async () => {
     try {
       setLoading(true)
-      const queryParams = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: '20'
-      })
       
-      if (selectedCategory && selectedCategory !== 'all') {
-        queryParams.append('category', selectedCategory)
-      }
-      
-      if (selectedStatus && selectedStatus !== 'all') {
-        queryParams.append('status', selectedStatus)
-      }
-
       const response = await galleryAPI.getAllAdmin({
-        page: currentPage,
-        limit: 12,
         search: searchTerm,
         category: selectedCategory !== 'all' ? selectedCategory : undefined,
         status: selectedStatus !== 'all' ? selectedStatus : undefined,
@@ -111,7 +95,6 @@ const GalleryManagement = () => {
       
       if (data.success) {
         setImages(data.data)
-        setTotalPages(data.pagination.total)
       } else {
         toast.error(data.error || 'Failed to fetch images')
       }
@@ -602,58 +585,6 @@ const GalleryManagement = () => {
               ))}
             </tbody>
           </table>
-        </div>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center items-center space-x-4 mt-6">
-          <button
-            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
-            className="flex items-center px-3 py-2 text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Previous
-          </button>
-          
-          <div className="flex space-x-1">
-            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let pageNumber
-              if (totalPages <= 5) {
-                pageNumber = i + 1
-              } else if (currentPage <= 3) {
-                pageNumber = i + 1
-              } else if (currentPage >= totalPages - 2) {
-                pageNumber = totalPages - 4 + i
-              } else {
-                pageNumber = currentPage - 2 + i
-              }
-
-              return (
-                <button
-                  key={pageNumber}
-                  onClick={() => setCurrentPage(pageNumber)}
-                  className={`px-3 py-2 text-sm rounded-lg ${
-                    currentPage === pageNumber
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  {pageNumber}
-                </button>
-              )
-            })}
-          </div>
-          
-          <button
-            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
-            className="flex items-center px-3 py-2 text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </button>
         </div>
       )}
 

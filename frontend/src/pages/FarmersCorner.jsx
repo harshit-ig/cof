@@ -9,11 +9,8 @@ const FarmersCorner = () => {
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState({
     category: '',
-    search: '',
-    page: 1,
-    limit: 12
+    search: ''
   })
-  const [pagination, setPagination] = useState({})
 
   const categories = [
     { value: '', label: 'All Categories' },
@@ -35,7 +32,6 @@ const FarmersCorner = () => {
       const response = await farmersAPI.getResources(filters)
       if (response.data.success) {
         setResources(response.data.data.resources)
-        setPagination(response.data.data.pagination)
       }
     } catch (error) {
       console.error('Error fetching resources:', error)
@@ -69,7 +65,7 @@ const FarmersCorner = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
-    setFilters({ ...filters, page: 1 })
+    fetchResources()
   }
 
   return (
@@ -159,7 +155,7 @@ const FarmersCorner = () => {
                 </div>
                 <select
                   value={filters.category}
-                  onChange={(e) => setFilters({ ...filters, category: e.target.value, page: 1 })}
+                  onChange={(e) => setFilters({ ...filters, category: e.target.value})}
                   className="px-4 py-3 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
                 >
                   {categories.map(cat => (
@@ -284,39 +280,12 @@ const FarmersCorner = () => {
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {pagination.pages > 1 && (
-                <div className="flex justify-center items-center gap-4">
-                  <button
-                    onClick={() => setFilters({ ...filters, page: Math.max(1, filters.page - 1) })}
-                    disabled={filters.page === 1}
-                    className="px-6 py-3 bg-white border border-green-200 rounded-xl hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-300 font-medium"
-                  >
-                    Previous
-                  </button>
-                  
-                  <span className="px-6 py-3 text-gray-600 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl border border-green-200/50 font-medium">
-                    Page {pagination.page} of {pagination.pages}
-                  </span>
-                  
-                  <button
-                    onClick={() => setFilters({ ...filters, page: Math.min(pagination.pages, filters.page + 1) })}
-                    disabled={filters.page === pagination.pages}
-                    className="px-6 py-3 bg-white border border-green-200 rounded-xl hover:bg-green-50 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md transition-all duration-300 font-medium"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
+              ))}
+            </div>
             </>
           )}
         </div>
-      </section>
-
-      {/* Call to Action */}
+      </section>      {/* Call to Action */}
       <section className="section-padding bg-gradient-to-r from-green-600 via-blue-600 to-emerald-600 text-white relative overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 opacity-10">

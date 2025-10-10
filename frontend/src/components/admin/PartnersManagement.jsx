@@ -66,8 +66,7 @@ const PartnersManagement = () => {
       const response = await partnersAPI.getAllAdmin({
         search: searchTerm,
         category: selectedCategory !== 'all' ? selectedCategory : undefined,
-        active: selectedStatus !== 'all' ? selectedStatus : undefined,
-        limit: 50
+        active: selectedStatus !== 'all' ? selectedStatus : undefined
       })
 
       if (response.data.success) {

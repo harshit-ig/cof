@@ -17,7 +17,6 @@ const NewsAndEventsManagement = () => {
   const [submitting, setSubmitting] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
   const [uploadingAttachment, setUploadingAttachment] = useState(false)
-  const [pagination, setPagination] = useState({})
   const [activeTab, setActiveTab] = useState('all') // all, news, events
   const [formType, setFormType] = useState('news') // Which form to show in modal
 
@@ -64,7 +63,7 @@ const NewsAndEventsManagement = () => {
   const fetchItems = async () => {
     try {
       setLoading(true)
-      const params = { page: 1, limit: 50 }
+      const params = {}
       if (searchTerm) params.search = searchTerm
 
       const response = await newsAPI.getAll(params)
@@ -83,7 +82,6 @@ const NewsAndEventsManagement = () => {
         }
         
         setItems(filteredItems)
-        setPagination(response.data.data.pagination || {})
       }
     } catch (error) {
       console.error('Error fetching items:', error)

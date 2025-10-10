@@ -69,7 +69,6 @@ const NewsAndEvents = () => {
     try {
       setLoading(true)
       const params = { 
-        limit: 50,
         isPublished: true 
       }
       

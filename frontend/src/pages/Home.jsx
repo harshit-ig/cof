@@ -37,8 +37,8 @@ const Home = () => {
       
       // Fetch essential data only with proper error handling
       const promises = [
-        newsAPI.getAll({ limit: 4, featured: true }).catch(err => ({ error: true, message: err.message })),
-        newsAPI.getAll({ limit: 3, type: 'event,seminar,workshop' }).catch(err => ({ error: true, message: err.message })),
+        newsAPI.getAll({ featured: true }).catch(err => ({ error: true, message: err.message })),
+        newsAPI.getAll({ type: 'event,seminar,workshop' }).catch(err => ({ error: true, message: err.message })),
         contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message })),
         contentAPI.getByKey('important-notices').catch(err => ({ error: true, message: err.message }))
       ]

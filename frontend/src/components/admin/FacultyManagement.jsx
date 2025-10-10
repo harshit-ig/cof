@@ -17,7 +17,6 @@ const FacultyManagement = () => {
   const [deletingFaculty, setDeletingFaculty] = useState(null)
   const [submitting, setSubmitting] = useState(false)
   const [uploadingImage, setUploadingImage] = useState(false)
-  const [pagination, setPagination] = useState({})
 
   const [formData, setFormData] = useState({
     name: '',
@@ -65,13 +64,12 @@ const FacultyManagement = () => {
   const fetchFaculty = async () => {
     try {
       setLoading(true)
-      const params = { page: 1, limit: 20, staffType: activeTab }
+      const params = { staffType: activeTab }
       if (searchTerm) params.search = searchTerm
 
       const response = await facultyAPI.getAll(params)
       if (response.data.success) {
         setFaculty(response.data.data.faculty || [])
-        setPagination(response.data.data.pagination || {})
       }
     } catch (error) {
       console.error('Error fetching faculty:', error)

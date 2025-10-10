@@ -15,7 +15,6 @@ const ProgramsManagement = () => {
   const [editingProgram, setEditingProgram] = useState(null)
   const [deletingProgram, setDeletingProgram] = useState(null)
   const [error, setError] = useState(null)
-  const [pagination, setPagination] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState('basic') // For form tabs
 
@@ -94,7 +93,7 @@ const ProgramsManagement = () => {
       setLoading(true)
       console.log('Fetching programs with search term:', searchTerm)
       
-      const params = { page: 1, limit: 20 }
+      const params = {}
       if (searchTerm) params.search = searchTerm
 
       console.log('API params:', params)
@@ -103,12 +102,10 @@ const ProgramsManagement = () => {
       
       if (response?.data?.success) {
         setPrograms(response.data.data?.programs || [])
-        setPagination(response.data.data?.pagination || {})
         console.log('Programs loaded:', response.data.data?.programs?.length || 0)
       } else {
         console.error('Unexpected API response format:', response)
         setPrograms([])
-        setPagination({})
       }
     }, 'Failed to fetch programs')
     setLoading(false)
