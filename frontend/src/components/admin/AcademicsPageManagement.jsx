@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Save, Eye, RefreshCw, Calendar, Building, FileText, Users, GraduationCap } from 'lucide-react'
+import { Save, Eye, RefreshCw, Calendar, Building, FileText, Users, GraduationCap, Plus, Edit, Trash2, X, Fish, Settings, Leaf, Shield } from 'lucide-react'
 import Card from '../common/Card'
+import Modal, { ConfirmModal } from '../common/Modal'
+import { Form, FormGroup, Input, Textarea, Select, SubmitButton } from '../common/Form'
 import toast from 'react-hot-toast'
 import { academicsAPI } from '../../services/api'
 
 const AcademicsPageManagement = () => {
+  const getIconComponent = (iconName) => {
+    switch (iconName) {
+      case 'fish': return Fish
+      case 'gear': return Settings
+      case 'leaf': return Leaf
+      case 'shield': return Shield
+      case 'building':
+      default: return Building
+    }
+  }
+
   const [academicsData, setAcademicsData] = useState({
     departments: [
       {
@@ -60,6 +73,20 @@ const AcademicsPageManagement = () => {
   const [loading, setLoading] = useState(true)
   const [hasChanges, setHasChanges] = useState(false)
 
+  // Department modal states
+  const [showDepartmentModal, setShowDepartmentModal] = useState(false)
+  const [editingDepartment, setEditingDepartment] = useState(null)
+  const [departmentFormData, setDepartmentFormData] = useState({
+    name: '',
+    description: '',
+    icon: 'building'
+  })
+  const [submittingDepartment, setSubmittingDepartment] = useState(false)
+
+  // Confirmation modal states
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [deleteTarget, setDeleteTarget] = useState({ type: '', index: null, item: null })
+
   const tabs = [
     { id: 'departments', name: 'Departments', icon: Building },
     { id: 'calendar', name: 'Academic Calendar', icon: Calendar },
@@ -107,22 +134,104 @@ const AcademicsPageManagement = () => {
   }
 
   const addDepartment = () => {
+    setEditingDepartment(null)
+    setDepartmentFormData({
+      name: '',
+      description: '',
+      icon: 'building'
+    })
+    setShowDepartmentModal(true)
+  }
+
+  const editDepartment = (index) => {
+    const dept = academicsData.departments[index]
+    setEditingDepartment(index)
+    setDepartmentFormData({
+      name: dept.name,
+      description: dept.description,
+      icon: dept.icon
+    })
+    setShowDepartmentModal(true)
+  }
+
+  const handleDepartmentSubmit = async (e) => {
+    e.preventDefault()
+    setSubmittingDepartment(true)
+
+    try {
+      setHasChanges(true)
+      
+      if (editingDepartment !== null) {
+        // Update existing department
+        setAcademicsData(prev => ({
+          ...prev,
+          departments: prev.departments.map((dept, index) => 
+            index === editingDepartment ? departmentFormData : dept
+          )
+        }))
+        toast.success('Department updated successfully')
+      } else {
+        // Add new department
+        setAcademicsData(prev => ({
+          ...prev,
+          departments: [...prev.departments, departmentFormData]
+        }))
+        toast.success('Department added successfully')
+      }
+
+      setShowDepartmentModal(false)
+      setEditingDepartment(null)
+      setDepartmentFormData({ name: '', description: '', icon: 'building' })
+    } catch (error) {
+      toast.error('Failed to save department')
+    } finally {
+      setSubmittingDepartment(false)
+    }
+  }
+
+  const confirmDeleteDepartment = (index) => {
+    const dept = academicsData.departments[index]
+    setDeleteTarget({ type: 'department', index, item: dept })
+    setShowDeleteModal(true)
+  }
+
+  const handleDeleteConfirm = () => {
     setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      departments: [
-        ...prev.departments,
-        { name: '', description: '', icon: 'building' }
-      ]
-    }))
+    
+    if (deleteTarget.type === 'department') {
+      setAcademicsData(prev => ({
+        ...prev,
+        departments: prev.departments.filter((_, i) => i !== deleteTarget.index)
+      }))
+      toast.success('Department deleted successfully')
+    } else if (deleteTarget.type === 'calendar') {
+      setAcademicsData(prev => ({
+        ...prev,
+        calendar: {
+          ...prev.calendar,
+          events: prev.calendar.events.filter((_, i) => i !== deleteTarget.index)
+        }
+      }))
+      toast.success('Calendar event deleted successfully')
+    } else if (deleteTarget.type === 'regulation') {
+      setAcademicsData(prev => ({
+        ...prev,
+        regulations: prev.regulations.filter((_, i) => i !== deleteTarget.index)
+      }))
+      toast.success('Regulation deleted successfully')
+    }
+    
+    setShowDeleteModal(false)
+    setDeleteTarget({ type: '', index: null, item: null })
   }
 
   const removeDepartment = (index) => {
-    setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      departments: prev.departments.filter((_, i) => i !== index)
-    }))
+    confirmDeleteDepartment(index)
+  }
+
+  const handleDepartmentFormChange = (e) => {
+    const { name, value } = e.target
+    setDepartmentFormData(prev => ({ ...prev, [name]: value }))
   }
 
   const addCalendarEvent = () => {
@@ -140,14 +249,9 @@ const AcademicsPageManagement = () => {
   }
 
   const removeCalendarEvent = (index) => {
-    setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      calendar: {
-        ...prev.calendar,
-        events: prev.calendar.events.filter((_, i) => i !== index)
-      }
-    }))
+    const event = academicsData.calendar.events[index]
+    setDeleteTarget({ type: 'calendar', index, item: event })
+    setShowDeleteModal(true)
   }
 
   const addRegulation = () => {
@@ -162,11 +266,9 @@ const AcademicsPageManagement = () => {
   }
 
   const removeRegulation = (index) => {
-    setHasChanges(true)
-    setAcademicsData(prev => ({
-      ...prev,
-      regulations: prev.regulations.filter((_, i) => i !== index)
-    }))
+    const regulation = academicsData.regulations[index]
+    setDeleteTarget({ type: 'regulation', index, item: regulation })
+    setShowDeleteModal(true)
   }
 
   const handleSave = async () => {
@@ -204,67 +306,72 @@ const AcademicsPageManagement = () => {
         return (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900">Departments</h3>
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Departments</h3>
+                <p className="text-sm text-gray-600">Manage academic departments and their information</p>
+              </div>
               <button
                 onClick={addDepartment}
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
+                <Plus className="w-4 h-4 mr-2" />
                 Add Department
               </button>
             </div>
             
-            {academicsData.departments.map((dept, index) => (
-              <Card key={index} className="p-4">
-                <div className="flex justify-between items-start mb-4">
-                  <h4 className="text-md font-medium text-gray-900">Department {index + 1}</h4>
-                  <button
-                    onClick={() => removeDepartment(index)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    Remove
-                  </button>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Department Name <span className="text-red-500">*</span></label>
-                    <input
-                      type="text"
-                      value={dept.name}
-                      onChange={(e) => handleInputChange('departments', 'name', e.target.value, index)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Icon (optional)</label>
-                    <select
-                      value={dept.icon}
-                      onChange={(e) => handleInputChange('departments', 'icon', e.target.value, index)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="building">Building</option>
-                      <option value="fish">Fish</option>
-                      <option value="gear">Gear</option>
-                      <option value="leaf">Leaf</option>
-                      <option value="shield">Shield</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <div className="mt-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Description <span className="text-red-500">*</span></label>
-                  <textarea
-                    value={dept.description}
-                    onChange={(e) => handleInputChange('departments', 'description', e.target.value, index)}
-                    rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                </div>
-              </Card>
-            ))}
+            {academicsData.departments.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <Building className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600 mb-4">No departments added yet</p>
+                <button
+                  onClick={addDepartment}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Department
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {academicsData.departments.map((dept, index) => {
+                  const IconComponent = getIconComponent(dept.icon)
+                  return (
+                    <Card key={index} className="p-4 hover:shadow-md transition-shadow">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center">
+                          <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            <IconComponent className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900">{dept.name || 'Untitled Department'}</h4>
+                            <p className="text-xs text-gray-500 capitalize">Icon: {dept.icon}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => editDepartment(index)}
+                            className="p-1.5 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded transition-colors"
+                            title="Edit Department"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => confirmDeleteDepartment(index)}
+                            className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                            title="Delete Department"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {dept.description || 'No description provided'}
+                      </p>
+                    </Card>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )
 
@@ -287,9 +394,10 @@ const AcademicsPageManagement = () => {
                   <h4 className="text-md font-medium text-gray-900">Event {index + 1}</h4>
                   <button
                     onClick={() => removeCalendarEvent(index)}
-                    className="text-red-600 hover:text-red-800"
+                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                    title="Delete Event"
                   >
-                    Remove
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
                 
@@ -341,9 +449,10 @@ const AcademicsPageManagement = () => {
                   <h4 className="text-md font-medium text-gray-900">Regulation {index + 1}</h4>
                   <button
                     onClick={() => removeRegulation(index)}
-                    className="text-red-600 hover:text-red-800"
+                    className="p-1.5 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                    title="Delete Regulation"
                   >
-                    Remove
+                    <Trash2 className="w-4 h-4" />
                   </button>
                 </div>
                 
@@ -499,6 +608,93 @@ const AcademicsPageManagement = () => {
           {renderTabContent()}
         </div>
       </div>
+
+      {/* Department Modal */}
+      <Modal
+        isOpen={showDepartmentModal}
+        onClose={() => {
+          setShowDepartmentModal(false)
+          setEditingDepartment(null)
+          setDepartmentFormData({ name: '', description: '', icon: 'building' })
+        }}
+        title={editingDepartment !== null ? 'Edit Department' : 'Add New Department'}
+        size="md"
+      >
+        <Form onSubmit={handleDepartmentSubmit}>
+          <div className="space-y-4">
+            <FormGroup label="Department Name" required>
+              <Input
+                name="name"
+                value={departmentFormData.name}
+                onChange={handleDepartmentFormChange}
+                placeholder="Enter department name"
+                required
+              />
+            </FormGroup>
+
+            <FormGroup label="Icon">
+              <Select
+                name="icon"
+                value={departmentFormData.icon}
+                onChange={handleDepartmentFormChange}
+                options={[
+                  { value: 'building', label: 'Building' },
+                  { value: 'fish', label: 'Fish' },
+                  { value: 'gear', label: 'Gear' },
+                  { value: 'leaf', label: 'Leaf' },
+                  { value: 'shield', label: 'Shield' }
+                ]}
+              />
+            </FormGroup>
+
+            <FormGroup label="Description" required>
+              <Textarea
+                name="description"
+                value={departmentFormData.description}
+                onChange={handleDepartmentFormChange}
+                placeholder="Enter department description"
+                rows={3}
+                required
+              />
+            </FormGroup>
+          </div>
+
+          <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={() => {
+                setShowDepartmentModal(false)
+                setEditingDepartment(null)
+                setDepartmentFormData({ name: '', description: '', icon: 'building' })
+              }}
+              className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <SubmitButton isLoading={submittingDepartment}>
+              {editingDepartment !== null ? 'Update Department' : 'Add Department'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteConfirm}
+        title={`Delete ${deleteTarget.type === 'department' ? 'Department' : deleteTarget.type === 'calendar' ? 'Calendar Event' : deleteTarget.type === 'regulation' ? 'Regulation' : 'Item'}`}
+        message={
+          deleteTarget.type === 'department' 
+            ? `Are you sure you want to delete "${deleteTarget.item?.name}"? This action cannot be undone.`
+            : deleteTarget.type === 'calendar'
+            ? `Are you sure you want to delete the event "${deleteTarget.item?.event}"? This action cannot be undone.`
+            : deleteTarget.type === 'regulation'
+            ? `Are you sure you want to delete the regulation "${deleteTarget.item?.title}"? This action cannot be undone.`
+            : 'Are you sure you want to delete this item? This action cannot be undone.'
+        }
+        type="danger"
+      />
     </div>
   )
 }
