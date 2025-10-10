@@ -94,6 +94,11 @@ const FacultyManagement = () => {
           : formData.researchInterests.split(',').map(s => s.trim()).filter(Boolean)
       }
 
+      // Only include department for teaching staff
+      if (formData.staffType !== 'Teaching Staff') {
+        delete data.department
+      }
+
       console.log('Submitting faculty data:', data)
       console.log('Image field value:', data.image)
 
@@ -206,7 +211,7 @@ const FacultyManagement = () => {
       phone: '',
       designation: '',
       staffType: activeTab,
-      department: '',
+      department: activeTab === 'Teaching Staff' ? '' : '',
       qualification: '',
       specialization: '',
       experience: '',
@@ -235,6 +240,12 @@ const FacultyManagement = () => {
           ...prev.socialLinks,
           [field]: value
         }
+      }))
+    } else if (name === 'staffType') {
+      setFormData(prev => ({ 
+        ...prev, 
+        [name]: value,
+        department: value === 'Teaching Staff' ? prev.department : ''
       }))
     } else {
       setFormData(prev => ({ ...prev, [name]: value }))
@@ -308,9 +319,11 @@ const FacultyManagement = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Designation
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Department
-                </th>
+                {activeTab === 'Teaching Staff' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Department
+                  </th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Experience
                 </th>
@@ -352,9 +365,11 @@ const FacultyManagement = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {member.designation}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {member.department}
-                    </td>
+                    {activeTab === 'Teaching Staff' && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {member.department}
+                      </td>
+                    )}
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {member.experience} years
                     </td>
@@ -491,16 +506,18 @@ const FacultyManagement = () => {
                 />
               </FormGroup>
 
-              <FormGroup label="Department" required>
-                <Select
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  options={departments}
-                  placeholder="Select department"
-                  required
-                />
-              </FormGroup>
+              {formData.staffType === 'Teaching Staff' && (
+                <FormGroup label="Department" required>
+                  <Select
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    options={departments}
+                    placeholder="Select department"
+                    required
+                  />
+                </FormGroup>
+              )}
             </div>
           </div>
 

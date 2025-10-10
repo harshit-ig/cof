@@ -91,7 +91,16 @@ router.get('/:id', async (req, res) => {
 router.post('/', protect, adminOnly, [
   body('name').notEmpty().trim().escape(),
   body('designation').notEmpty().trim(),
-  body('department').notEmpty().trim(),
+  body('staffType').isIn(['Teaching Staff', 'Non-Teaching Staff']),
+  body('department').custom((value, { req }) => {
+    // Department is required only for Teaching Staff
+    if (req.body.staffType === 'Teaching Staff') {
+      if (!value || !value.trim()) {
+        throw new Error('Department is required for Teaching Staff');
+      }
+    }
+    return true;
+  }),
   body('qualification').notEmpty().trim(),
   body('specialization').notEmpty().trim(),
   body('experience').isInt({ min: 0 }),
@@ -146,8 +155,35 @@ router.post('/', protect, adminOnly, [
 // @desc    Update faculty member
 // @route   PUT /api/faculty/:id
 // @access  Private (Admin only)
-router.put('/:id', protect, adminOnly, async (req, res) => {
+router.put('/:id', protect, adminOnly, [
+  body('name').optional().notEmpty().trim().escape(),
+  body('designation').optional().notEmpty().trim(),
+  body('staffType').optional().isIn(['Teaching Staff', 'Non-Teaching Staff']),
+  body('department').optional().custom((value, { req }) => {
+    // Department is required only for Teaching Staff
+    if (req.body.staffType === 'Teaching Staff' || (!req.body.staffType && req.body.department)) {
+      if (!value || !value.trim()) {
+        throw new Error('Department is required for Teaching Staff');
+      }
+    }
+    return true;
+  }),
+    body('qualification').notEmpty().trim(),
+  body('specialization').notEmpty().trim(),
+  body('experience').optional().isInt({ min: 0 }),
+  body('email').optional().isEmail().normalizeEmail()
+], async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
+      return res.status(400).json({
+        success: false,
+        message: 'Validation errors',
+        errors: errors.array()
+      });
+    }
+
     const faculty = await Faculty.findByIdAndUpdate(
       req.params.id,
       req.body,
@@ -212,13 +248,13 @@ router.get('/metadata', async (req, res) => {
     // Get all active faculty
     const faculty = await Faculty.find({ isActive: true }).select('department designation staffType');
     
-    // Extract unique departments
-    const departments = [...new Set(faculty.map(f => f.department).filter(Boolean))].sort();
-    
-    // Extract unique designations by staff type
+    // Extract unique departments only from teaching staff
     const teachingFaculty = faculty.filter(f => f.staffType === 'Teaching Staff');
     const nonTeachingFaculty = faculty.filter(f => f.staffType === 'Non-Teaching Staff');
     
+    const departments = [...new Set(teachingFaculty.map(f => f.department).filter(Boolean))].sort();
+    
+    // Extract unique designations by staff type
     const teachingDesignations = [...new Set(teachingFaculty.map(f => f.designation).filter(Boolean))].sort();
     const nonTeachingDesignations = [...new Set(nonTeachingFaculty.map(f => f.designation).filter(Boolean))].sort();
     

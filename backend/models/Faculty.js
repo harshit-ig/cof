@@ -22,7 +22,20 @@ const facultySchema = new mongoose.Schema({
   },
   department: {
     type: String,
-    required: [true, 'Department is required']
+    required: function() {
+      return this.staffType === 'Teaching Staff';
+    },
+    validate: {
+      validator: function(value) {
+        // If it's teaching staff, department is required
+        if (this.staffType === 'Teaching Staff') {
+          return value && value.trim().length > 0;
+        }
+        // For non-teaching staff, department is optional
+        return true;
+      },
+      message: 'Department is required for Teaching Staff'
+    }
   },
   qualification: {
     type: String,
