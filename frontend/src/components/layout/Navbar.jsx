@@ -376,7 +376,7 @@ const Navbar = () => {
                         setActiveDropdown(null)
                       }}
                       onDoubleClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium rounded-md transition-all duration-200 ${
+                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium rounded-md transition-all duration-200 group ${
                         activeDropdown === index 
                           ? 'bg-white bg-opacity-95 text-blue-900' 
                           : 'text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90'
@@ -391,8 +391,8 @@ const Navbar = () => {
                           e.stopPropagation()
                           setActiveDropdown(activeDropdown === index ? null : index)
                         }}
-                        className={`h-5 w-5 transition-transform duration-200 font-bold hover:text-blue-900 ${
-                          activeDropdown === index ? 'rotate-180 text-blue-900' : 'text-white'
+                        className={`h-5 w-5 transition-transform duration-200 font-bold ${
+                          activeDropdown === index ? 'rotate-180 text-blue-900' : 'text-white group-hover:text-blue-900'
                         }`}
                       />
                     </button>
