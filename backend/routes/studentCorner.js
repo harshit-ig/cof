@@ -6,7 +6,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
 
-// Configure multer for PDF uploads (mirror extension/research pattern)
+// Configure multer for multiple PDF uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/documents/');
@@ -104,7 +104,7 @@ router.get('/:id', async (req, res) => {
 // @desc    Create new student corner item
 // @route   POST /api/student-corner
 // @access  Private (Admin only)
-router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+router.post('/', protect, adminOnly, upload.array('pdfs', 10), async (req, res) => {
   try {
     const {
       type,
@@ -160,6 +160,14 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
       });
     }
 
+    // Process uploaded PDF files
+    const documents = req.files ? req.files.map(file => ({
+      filename: file.filename,
+      originalName: file.originalname,
+      fileSize: file.size,
+      uploadDate: new Date()
+    })) : [];
+
     const studentCornerItem = new StudentCorner({
       type,
       name,
@@ -174,8 +182,12 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
       activities: Array.isArray(activities) ? activities : [],
       positions: Array.isArray(positions) ? positions : [],
       sortOrder: sortOrder || 0,
-      // If PDF file is uploaded, set filename and originalName
-      ...(req.file ? { filename: req.file.filename, originalName: req.file.originalname } : {})
+      documents: documents,
+      // Legacy support - if only one file, also set filename/originalName
+      ...(req.files && req.files.length === 1 ? { 
+        filename: req.files[0].filename, 
+        originalName: req.files[0].originalname 
+      } : {})
     });
 
     const savedItem = await studentCornerItem.save();
@@ -183,7 +195,7 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
     res.status(201).json({
       success: true,
       data: savedItem,
-      message: 'Student corner item created successfully'
+      message: `Student corner item created successfully with ${documents.length} document(s)`
     });
 
   } catch (error) {
@@ -208,7 +220,7 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
 // @desc    Update student corner item
 // @route   PUT /api/student-corner/:id
 // @access  Private (Admin only)
-router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+router.put('/:id', protect, adminOnly, upload.array('pdfs', 10), async (req, res) => {
   try {
     const item = await StudentCorner.findById(req.params.id);
     
@@ -233,7 +245,8 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
       activities,
       positions,
       sortOrder,
-      isActive
+      isActive,
+      removeDocuments
     } = req.body;
 
     // Update fields
@@ -249,20 +262,38 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
     if (role !== undefined) item.role = role;
     if (activities !== undefined) item.activities = Array.isArray(activities) ? activities : [];
     if (positions !== undefined) item.positions = Array.isArray(positions) ? positions : [];
-    // If PDF file is uploaded, update filename and originalName
-    if (req.file) {
-      item.filename = req.file.filename;
-      item.originalName = req.file.originalname;
-    }
     if (sortOrder !== undefined) item.sortOrder = sortOrder;
     if (isActive !== undefined) item.isActive = isActive;
+
+    // Handle document removal
+    if (removeDocuments && Array.isArray(removeDocuments)) {
+      item.documents = item.documents.filter(doc => !removeDocuments.includes(doc._id.toString()));
+    }
+
+    // Add new PDF files
+    if (req.files && req.files.length > 0) {
+      const newDocuments = req.files.map(file => ({
+        filename: file.filename,
+        originalName: file.originalname,
+        fileSize: file.size,
+        uploadDate: new Date()
+      }));
+      
+      item.documents = [...item.documents, ...newDocuments];
+      
+      // Legacy support - if only one document exists, also set filename/originalName
+      if (item.documents.length === 1) {
+        item.filename = item.documents[0].filename;
+        item.originalName = item.documents[0].originalName;
+      }
+    }
 
     const updatedItem = await item.save();
 
     res.json({
       success: true,
       data: updatedItem,
-      message: 'Student corner item updated successfully'
+      message: `Student corner item updated successfully with ${item.documents.length} document(s)`
     });
 
   } catch (error) {
@@ -325,6 +356,118 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error while deleting student corner item'
+    });
+  }
+});
+
+// @desc    Add documents to existing student corner item
+// @route   POST /api/student-corner/:id/documents
+// @access  Private (Admin only)
+router.post('/:id/documents', protect, adminOnly, upload.array('pdfs', 10), async (req, res) => {
+  try {
+    const item = await StudentCorner.findById(req.params.id);
+    
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Student corner item not found'
+      });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No files uploaded'
+      });
+    }
+
+    // Add new documents
+    const newDocuments = req.files.map(file => ({
+      filename: file.filename,
+      originalName: file.originalname,
+      fileSize: file.size,
+      uploadDate: new Date()
+    }));
+
+    item.documents.push(...newDocuments);
+    await item.save();
+
+    res.json({
+      success: true,
+      data: item,
+      message: `${newDocuments.length} document(s) added successfully`
+    });
+
+  } catch (error) {
+    console.error('Error adding documents:', error);
+    
+    if (error.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid item ID'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while adding documents'
+    });
+  }
+});
+
+// @desc    Remove specific document from student corner item
+// @route   DELETE /api/student-corner/:id/documents/:docId
+// @access  Private (Admin only)
+router.delete('/:id/documents/:docId', protect, adminOnly, async (req, res) => {
+  try {
+    const item = await StudentCorner.findById(req.params.id);
+    
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: 'Student corner item not found'
+      });
+    }
+
+    const documentIndex = item.documents.findIndex(doc => doc._id.toString() === req.params.docId);
+    
+    if (documentIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Document not found'
+      });
+    }
+
+    // Remove the document from the array
+    const removedDoc = item.documents.splice(documentIndex, 1)[0];
+    await item.save();
+
+    // TODO: Optionally delete the physical file from uploads/documents/
+    // const fs = require('fs');
+    // const filePath = path.join('uploads/documents/', removedDoc.filename);
+    // if (fs.existsSync(filePath)) {
+    //   fs.unlinkSync(filePath);
+    // }
+
+    res.json({
+      success: true,
+      data: item,
+      message: 'Document removed successfully'
+    });
+
+  } catch (error) {
+    console.error('Error removing document:', error);
+    
+    if (error.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid ID'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while removing document'
     });
   }
 });

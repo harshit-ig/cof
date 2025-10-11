@@ -59,7 +59,33 @@ const studentCornerSchema = new mongoose.Schema({
     trim: true
   }],
   
-  // Optional PDF document attached to the item (same pattern as Research/Extension)
+  // Multiple PDF documents attached to the item
+  documents: [{
+    filename: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    originalName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    fileSize: {
+      type: Number,
+      required: true
+    },
+    uploadDate: {
+      type: Date,
+      default: Date.now
+    },
+    description: {
+      type: String,
+      trim: true
+    }
+  }],
+  
+  // Legacy single PDF support (for backward compatibility)
   filename: {
     type: String,
     trim: true

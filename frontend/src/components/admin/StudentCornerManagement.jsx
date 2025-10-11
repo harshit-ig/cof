@@ -39,7 +39,8 @@ const StudentCornerManagement = () => {
     achievements: [],
     contact: '',
     image: '',
-    pdf: null
+    pdfs: [], // Changed from single pdf to multiple pdfs
+    selectedDocuments: [] // For managing existing documents
   })
 
   const tabs = [
@@ -77,49 +78,43 @@ const StudentCornerManagement = () => {
     try {
       const toArray = (v) => Array.isArray(v) ? v : (typeof v === 'string' ? v.split('\n').filter(Boolean) : [])
 
-      if (formData.pdf) {
-        const fd = new FormData()
-        fd.append('type', activeTab)
-        if (formData.category) fd.append('category', formData.category)
-        if (formData.description) fd.append('description', formData.description)
-        if (formData.name) fd.append('name', formData.name)
-        if (formData.eligibility) fd.append('eligibility', formData.eligibility)
-        if (formData.amount) fd.append('amount', formData.amount)
-        if (formData.duration) fd.append('duration', formData.duration)
-        toArray(formData.benefits).forEach(b => fd.append('benefits', b))
-        toArray(formData.guidelines).forEach(g => fd.append('guidelines', g))
-        if (formData.role) fd.append('role', formData.role)
-        toArray(formData.activities).forEach(a => fd.append('activities', a))
-        toArray(formData.positions).forEach(p => fd.append('positions', p))
-        if (typeof formData.sortOrder === 'number') fd.append('sortOrder', String(formData.sortOrder))
-        if (typeof formData.isActive === 'boolean') fd.append('isActive', String(formData.isActive))
-        fd.append('pdf', formData.pdf)
+      // Always use FormData when dealing with multiple file uploads
+      const fd = new FormData()
+      fd.append('type', activeTab)
+      if (formData.category) fd.append('category', formData.category)
+      if (formData.description) fd.append('description', formData.description)
+      if (formData.name) fd.append('name', formData.name)
+      if (formData.eligibility) fd.append('eligibility', formData.eligibility)
+      if (formData.amount) fd.append('amount', formData.amount)
+      if (formData.duration) fd.append('duration', formData.duration)
+      toArray(formData.benefits).forEach(b => fd.append('benefits', b))
+      toArray(formData.guidelines).forEach(g => fd.append('guidelines', g))
+      if (formData.role) fd.append('role', formData.role)
+      toArray(formData.activities).forEach(a => fd.append('activities', a))
+      toArray(formData.positions).forEach(p => fd.append('positions', p))
+      if (typeof formData.sortOrder === 'number') fd.append('sortOrder', String(formData.sortOrder))
+      if (typeof formData.isActive === 'boolean') fd.append('isActive', String(formData.isActive))
+      
+      // Append multiple PDF files
+      if (formData.pdfs && formData.pdfs.length > 0) {
+        formData.pdfs.forEach(pdf => {
+          fd.append('pdfs', pdf)
+        })
+      }
+      
+      // Handle document removal for editing
+      if (editingItem && formData.selectedDocuments && formData.selectedDocuments.length > 0) {
+        formData.selectedDocuments.forEach(docId => {
+          fd.append('removeDocuments', docId)
+        })
+      }
 
-        if (editingItem) {
-          await studentCornerAPI.update(editingItem._id, fd)
-          toast.success('Item updated successfully')
-        } else {
-          await studentCornerAPI.create(fd)
-          toast.success('Item created successfully')
-        }
+      if (editingItem) {
+        await studentCornerAPI.update(editingItem._id, fd)
+        toast.success('Item updated successfully')
       } else {
-        const data = {
-          ...formData,
-          activities: toArray(formData.activities),
-          positions: toArray(formData.positions),
-          benefits: toArray(formData.benefits),
-          guidelines: toArray(formData.guidelines),
-          achievements: toArray(formData.achievements),
-          type: activeTab
-        }
-
-        if (editingItem) {
-          await studentCornerAPI.update(editingItem._id, data)
-          toast.success('Item updated successfully')
-        } else {
-          await studentCornerAPI.create(data)
-          toast.success('Item created successfully')
-        }
+        await studentCornerAPI.create(fd)
+        toast.success('Item created successfully')
       }
 
       setShowModal(false)
@@ -153,7 +148,8 @@ const StudentCornerManagement = () => {
       achievements: Array.isArray(item.achievements) ? item.achievements.join('\n') : '',
       contact: item.contact || '',
       image: item.image || '',
-      pdf: null
+      pdfs: [], // Reset to empty for new uploads
+      selectedDocuments: [] // Reset document selection
     })
     setShowModal(true)
   }
@@ -214,7 +210,8 @@ const StudentCornerManagement = () => {
       achievements: [],
       contact: '',
       image: '',
-      pdf: null
+      pdfs: [], // Changed from pdf: null to pdfs: []
+      selectedDocuments: [] // Added for document management
     })
     setEditingItem(null)
   }
@@ -279,25 +276,103 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
               <input
                 type="file"
                 accept=".pdf"
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files && e.target.files[0]
-                  if (!file) return
-                  if (file.type !== 'application/pdf') {
-                    toast.error('Please select a PDF file')
+                  const files = Array.from(e.target.files || [])
+                  if (files.length === 0) return
+                  
+                  // Validate all files are PDFs
+                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  if (invalidFiles.length > 0) {
+                    toast.error('Please select only PDF files')
                     return
                   }
-                  setFormData(prev => ({ ...prev, pdf: file }))
+                  
+                  // Check file sizes (10MB limit per file)
+                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  if (oversizedFiles.length > 0) {
+                    toast.error('Some files exceed 10MB limit')
+                    return
+                  }
+                  
+                  setFormData(prev => ({ ...prev, pdfs: [...prev.pdfs, ...files] }))
                 }}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-              {formData.pdf && (
-                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              
+              {/* Display selected new files */}
+              {formData.pdfs.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">New files to upload:</p>
+                  {formData.pdfs.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm text-gray-700">{file.name}</span>
+                        <span className="text-xs text-gray-500">({(file.size / 1024 / 1024).toFixed(1)} MB)</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            pdfs: prev.pdfs.filter((_, i) => i !== index)
+                          }))
+                        }}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
-              {editingItem?.filename && !formData.pdf && (
+              
+              {/* Display existing documents when editing */}
+              {editingItem?.documents && editingItem.documents.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Existing documents:</p>
+                  {editingItem.documents.map((doc) => (
+                    <div key={doc._id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-gray-600" />
+                        <span className="text-sm text-gray-700">{doc.originalName}</span>
+                        <span className="text-xs text-gray-500">({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)</span>
+                        <a 
+                          href={getDocumentUrl(doc.filename)} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-blue-600 hover:text-blue-800 text-xs"
+                        >
+                          <Download className="w-3 h-3" />
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm('Are you sure you want to remove this document?')) {
+                            // Add to removal list
+                            setFormData(prev => ({
+                              ...prev,
+                              selectedDocuments: [...prev.selectedDocuments, doc._id]
+                            }))
+                          }
+                        }}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Legacy single PDF support */}
+              {editingItem?.filename && !editingItem?.documents?.length && (
                 <div className="mt-2 p-2 bg-gray-50 rounded">
                   <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
                   <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
