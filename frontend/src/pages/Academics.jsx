@@ -460,14 +460,14 @@ const Academics = () => {
                     }`} style={{animationDelay: `${index * 0.4}s`}}></div>
                     
                     <div className="flex items-start space-x-4 relative z-10">
-                      <div className={`w-12 h-12 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-md ${
+                      <div className={`w-12 h-12 flex-shrink-0 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-md ${
                         index % 4 === 0 ? 'bg-blue-100' : 
                         index % 4 === 1 ? 'bg-green-100' : 
                         index % 4 === 2 ? 'bg-orange-100' : 'bg-purple-100'
                       }`}>
-                        <IconComponent className={`w-6 h-6 ${getIconColor(index)}`} />
+                        <IconComponent className={`w-6 h-6 flex-shrink-0 ${getIconColor(index)}`} />
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">{dept.name}</h3>
                         <div className={`p-3 rounded-lg border ${
                           index % 4 === 0 ? 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-200/50' : 
