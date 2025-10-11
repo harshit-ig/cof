@@ -803,7 +803,36 @@ const StudentCornerManagement = () => {
                 {item.description}
               </p>
             )}
-            {item.filename && (
+            {/* Multiple PDF Documents Display */}
+            {item.documents && item.documents.length > 0 ? (
+              <div className="mt-3">
+                <p className="text-xs text-gray-500 mb-2">PDF Documents ({item.documents.length}):</p>
+                <div className="space-y-1">
+                  {item.documents.map((doc, index) => (
+                    <div key={index} className="flex items-center gap-2 p-1">
+                      <FileText className="w-3 h-3 text-blue-500 flex-shrink-0" />
+                      <span 
+                        className="text-xs text-gray-700 truncate flex-1" 
+                        title={doc.originalName}
+                        style={{ maxWidth: '150px' }}
+                      >
+                        {doc.originalName}
+                      </span>
+                      <span className="text-xs text-gray-400">({(doc.fileSize / 1024 / 1024).toFixed(1)}MB)</span>
+                      <a
+                        href={getDocumentUrl(doc.filename)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center px-1 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200 flex-shrink-0"
+                      >
+                        <Download className="w-3 h-3" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : item.filename ? (
+              // Legacy single PDF support
               <div className="mt-3">
                 <p className="text-xs text-gray-500 mb-1">PDF Document:</p>
                 <div className="flex items-center gap-2">
@@ -820,7 +849,7 @@ const StudentCornerManagement = () => {
                   </a>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
 
