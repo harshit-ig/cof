@@ -79,10 +79,23 @@ router.get('/', async (req, res) => {
     const research = await Research.find(query)
       .sort({ createdAt: -1 });
 
+    // Sanitize data to prevent corrupted fields from causing performance issues
+    const sanitizedResearch = research.map(item => {
+      const obj = item.toObject();
+      
+      // Check for corrupted duration field (string when it should be object)
+      if (obj.duration && typeof obj.duration === 'string' && obj.duration.length > 1000) {
+        console.warn(`Corrupted duration field detected for research ${obj._id}, sanitizing...`);
+        obj.duration = { startDate: null, endDate: null };
+      }
+      
+      return obj;
+    });
+
     res.json({
       success: true,
       data: {
-        research
+        research: sanitizedResearch
       }
     });
 
