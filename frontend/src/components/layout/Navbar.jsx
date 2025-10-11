@@ -376,8 +376,10 @@ const Navbar = () => {
                         setActiveDropdown(null)
                       }}
                       onDoubleClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90 rounded-md transition-all duration-200 ${
-                        activeDropdown === index ? 'bg-white bg-opacity-25 text-blue-900' : ''
+                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium rounded-md transition-all duration-200 ${
+                        activeDropdown === index 
+                          ? 'bg-white bg-opacity-95 text-blue-900' 
+                          : 'text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90'
                       }`}
                     >
                       <span onClick={(e) => {
@@ -396,12 +398,12 @@ const Navbar = () => {
                     </button>
                     
                     {activeDropdown === index && (
-                      <div className="mt-2 ml-4 space-y-1 bg-white bg-opacity-15 rounded-lg p-3 border-l-4 border-white border-opacity-30">
+                      <div className="mt-2 ml-4 space-y-1 bg-white bg-opacity-95 rounded-lg p-3 border-l-4 border-blue-300">
                         {item.dropdown && item.dropdown.map((dropdownItem) => (
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-3 py-2 text-sm text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90 rounded-md transition-all duration-200 font-medium"
+                            className="block w-full text-left px-3 py-2 text-sm text-blue-900 hover:text-white hover:bg-blue-800 rounded-md transition-all duration-200 font-medium"
                           >
                             {dropdownItem.name}
                           </button>
