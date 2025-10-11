@@ -549,6 +549,58 @@ router.put('/resources/:id', protect, adminOnly, async (req, res) => {
   }
 })
 
+// Update farmer resource with file (admin only)
+router.put('/resources/:id/file', protect, adminOnly, upload.single('pdf'), async (req, res) => {
+  try {
+    const { title, description, category, isActive } = req.body
+    
+    const resource = await FarmerResource.findById(req.params.id)
+    
+    if (!resource) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource not found'
+      })
+    }
+    
+    // Update fields if provided
+    if (title !== undefined) resource.title = title.trim()
+    if (description !== undefined) resource.description = description.trim()
+    if (category !== undefined) resource.category = category
+    if (isActive !== undefined) resource.isActive = isActive
+    
+    // Handle file operations
+    if (req.file) {
+      // New file uploaded - delete old file and update file information
+      const oldFilePath = path.join(__dirname, '../uploads/farmers', resource.filename)
+      if (fs.existsSync(oldFilePath)) {
+        fs.unlinkSync(oldFilePath)
+        console.log('Deleted old file:', resource.filename)
+      }
+      
+      // Update file information
+      resource.filename = req.file.filename
+      resource.originalName = req.file.originalname
+      resource.fileSize = req.file.size
+      resource.mimeType = req.file.mimetype
+    }
+    
+    await resource.save()
+    
+    res.json({
+      success: true,
+      message: 'Farmer resource updated successfully',
+      data: resource
+    })
+  } catch (error) {
+    console.error('Update farmer resource with file error:', error)
+    res.status(500).json({
+      success: false,
+      message: 'Error updating farmer resource'
+    })
+  }
+})
+
 // Delete farmer resource (admin only)
 router.delete('/resources/:id', protect, adminOnly, async (req, res) => {
   try {

@@ -112,18 +112,36 @@ const FarmersResourceManagement = () => {
     try {
       if (editingResource) {
         // Update existing resource
-        const updateData = {
-          title: formData.title,
-          description: formData.description,
-          category: formData.category,
-          isActive: formData.isActive
-        }
-        
-        const response = await farmersAPI.updateResource(editingResource._id, updateData)
-        if (response.data.success) {
-          toast.success('Resource updated successfully')
-          fetchResources()
-          resetForm()
+        if (formData.pdf) {
+          // If new PDF is uploaded, use FormData for file upload
+          const updateData = new FormData()
+          updateData.append('title', formData.title)
+          updateData.append('description', formData.description)
+          updateData.append('category', formData.category)
+          updateData.append('isActive', formData.isActive)
+          updateData.append('pdf', formData.pdf)
+          
+          const response = await farmersAPI.updateResourceWithFile(editingResource._id, updateData)
+          if (response.data.success) {
+            toast.success('Resource updated successfully')
+            fetchResources()
+            resetForm()
+          }
+        } else {
+          // If no new PDF, update only basic fields
+          const updateData = {
+            title: formData.title,
+            description: formData.description,
+            category: formData.category,
+            isActive: formData.isActive
+          }
+          
+          const response = await farmersAPI.updateResource(editingResource._id, updateData)
+          if (response.data.success) {
+            toast.success('Resource updated successfully')
+            fetchResources()
+            resetForm()
+          }
         }
       } else {
         // Create new resource

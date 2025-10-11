@@ -311,6 +311,7 @@ export const farmersAPI = {
   // Admin endpoints
   createResource: (formData) => uploadApi.post('/farmers/resources', formData),
   updateResource: (id, data) => api.put(`/farmers/resources/${id}`, data),
+  updateResourceWithFile: (id, formData) => uploadApi.put(`/farmers/resources/${id}/file`, formData),
   deleteResource: (id) => api.delete(`/farmers/resources/${id}`),
   getAdminResources: (params = {}) => api.get('/farmers/admin/resources', { params }),
   
