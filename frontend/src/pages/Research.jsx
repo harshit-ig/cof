@@ -247,8 +247,17 @@ const Research = () => {
                               <div className="flex items-center text-sm">
                                 <Calendar className="w-4 h-4 mr-2 text-purple-600" />
                                 <span className="text-purple-700 font-medium">
-                                  {project.duration.startDate && new Date(project.duration.startDate).getFullYear()} - 
-                                  {project.duration.endDate ? new Date(project.duration.endDate).getFullYear() : 'Ongoing'}
+                                  {project.duration.startDate && new Date(project.duration.startDate).toLocaleDateString('en-GB', { 
+                                    day: '2-digit', 
+                                    month: 'short', 
+                                    year: 'numeric' 
+                                  })} - 
+                                  {project.duration.endDate ? 
+                                    new Date(project.duration.endDate).toLocaleDateString('en-GB', { 
+                                      day: '2-digit', 
+                                      month: 'short', 
+                                      year: 'numeric' 
+                                    }) : 'Ongoing'}
                                 </span>
                               </div>
                             </div>
@@ -361,12 +370,12 @@ const Research = () => {
                             </div>
                           )}
                           
-                          {publication.publicationDate && (
+                          {publication.publicationDetails?.year && (
                             <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-3 rounded-lg border border-purple-200/50">
                               <div className="flex items-center text-sm">
                                 <Calendar className="w-4 h-4 mr-2 text-purple-600" />
                                 <span className="text-purple-700 font-medium">
-                                  {new Date(publication.publicationDate).getFullYear()}
+                                  {publication.publicationDetails.year}
                                 </span>
                               </div>
                             </div>
@@ -611,8 +620,17 @@ const Research = () => {
                             <div className="flex items-center text-xs">
                               <Calendar className="w-3 h-3 mr-2 text-blue-500" />
                               <span className="text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                                {collaboration.duration.startDate && new Date(collaboration.duration.startDate).getFullYear()} - 
-                                {collaboration.duration.endDate ? new Date(collaboration.duration.endDate).getFullYear() : 'Ongoing'}
+                                {collaboration.duration.startDate && new Date(collaboration.duration.startDate).toLocaleDateString('en-GB', { 
+                                  day: '2-digit', 
+                                  month: 'short', 
+                                  year: 'numeric' 
+                                })} - 
+                                {collaboration.duration.endDate ? 
+                                  new Date(collaboration.duration.endDate).toLocaleDateString('en-GB', { 
+                                    day: '2-digit', 
+                                    month: 'short', 
+                                    year: 'numeric' 
+                                  }) : 'Ongoing'}
                               </span>
                             </div>
                           )}

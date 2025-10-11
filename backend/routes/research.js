@@ -127,68 +127,134 @@ router.post('/', protect, adminOnly, upload.single('pdf'), async (req, res) => {
       createdBy: req.admin._id
     };
 
-    // Handle JSON string fields that should be arrays
+    // Handle individual duration fields
+    if (req.body.duration_startDate || req.body.duration_endDate) {
+      researchData.duration = {
+        startDate: req.body.duration_startDate || null,
+        endDate: req.body.duration_endDate || null
+      };
+      // Remove the individual fields
+      delete researchData.duration_startDate;
+      delete researchData.duration_endDate;
+    }
+
+    // Handle individual publication details fields
+    const publicationFields = ['journal', 'volume', 'issue', 'pages', 'year', 'doi', 'impactFactor', 'authors'];
+    let hasPublicationDetails = false;
+    const publicationDetails = {};
+    
+    publicationFields.forEach(field => {
+      const fieldName = `publicationDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasPublicationDetails = true;
+        if (field === 'authors') {
+          try {
+            publicationDetails[field] = JSON.parse(req.body[fieldName]);
+          } catch (e) {
+            publicationDetails[field] = [];
+          }
+        } else if (field === 'year') {
+          publicationDetails[field] = parseInt(req.body[fieldName]) || null;
+        } else if (field === 'impactFactor') {
+          publicationDetails[field] = parseFloat(req.body[fieldName]) || null;
+        } else {
+          publicationDetails[field] = req.body[fieldName];
+        }
+        delete researchData[fieldName];
+      }
+    });
+    
+    if (hasPublicationDetails) {
+      researchData.publicationDetails = publicationDetails;
+    }
+
+    // Handle individual student details fields
+    const studentFields = ['studentName', 'degree', 'supervisor', 'completionYear'];
+    let hasStudentDetails = false;
+    const studentDetails = {};
+    
+    studentFields.forEach(field => {
+      const fieldName = `studentDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasStudentDetails = true;
+        if (field === 'completionYear') {
+          studentDetails[field] = parseInt(req.body[fieldName]) || null;
+        } else {
+          studentDetails[field] = req.body[fieldName];
+        }
+        delete researchData[fieldName];
+      }
+    });
+    
+    if (hasStudentDetails) {
+      researchData.studentDetails = studentDetails;
+    }
+
+    // Handle individual collaboration details fields
+    const collaborationFields = ['partnerInstitution', 'partnerCountry', 'collaborationType', 'mou'];
+    let hasCollaborationDetails = false;
+    const collaborationDetails = {};
+    
+    collaborationFields.forEach(field => {
+      const fieldName = `collaborationDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasCollaborationDetails = true;
+        if (field === 'mou') {
+          collaborationDetails[field] = req.body[fieldName] === 'true';
+        } else {
+          collaborationDetails[field] = req.body[fieldName];
+        }
+        delete researchData[fieldName];
+      }
+    });
+    
+    if (hasCollaborationDetails) {
+      researchData.collaborationDetails = collaborationDetails;
+    }
+
+    // Handle individual facility details fields
+    const facilityFields = ['type', 'capacity', 'specifications', 'utilizationAreas'];
+    let hasFacilityDetails = false;
+    const facilityDetails = {};
+    
+    facilityFields.forEach(field => {
+      const fieldName = `facilityDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasFacilityDetails = true;
+        if (field === 'utilizationAreas') {
+          try {
+            facilityDetails[field] = JSON.parse(req.body[fieldName]);
+          } catch (e) {
+            facilityDetails[field] = [];
+          }
+        } else {
+          facilityDetails[field] = req.body[fieldName];
+        }
+        delete researchData[fieldName];
+      }
+    });
+    
+    if (hasFacilityDetails) {
+      researchData.facilityDetails = facilityDetails;
+    }
+
+    // Handle array fields (these still need JSON parsing but are safer)
     const arrayFields = ['objectives', 'coInvestigators', 'keyFindings', 'tags'];
     arrayFields.forEach(field => {
       if (researchData[field] && typeof researchData[field] === 'string') {
         try {
           const parsed = JSON.parse(researchData[field]);
-          // Only use parsed value if it's actually an array
           if (Array.isArray(parsed)) {
             researchData[field] = parsed;
           }
         } catch (e) {
-          // If parsing fails, leave as-is (might be a regular string)
           console.log(`Failed to parse ${field} as JSON:`, e.message);
-        }
-      }
-      // Fix corrupted nested arrays (like ["[\"objective1\"]"])
-      if (Array.isArray(researchData[field])) {
-        const fixedArray = [];
-        researchData[field].forEach(item => {
-          if (typeof item === 'string') {
-            try {
-              // If item looks like a JSON string, try to parse it
-              if (item.startsWith('[') && item.endsWith(']')) {
-                const parsed = JSON.parse(item);
-                if (Array.isArray(parsed)) {
-                  fixedArray.push(...parsed);
-                } else {
-                  fixedArray.push(item);
-                }
-              } else {
-                fixedArray.push(item);
-              }
-            } catch (e) {
-              // If parsing fails, keep the original item
-              fixedArray.push(item);
-            }
-          } else {
-            fixedArray.push(item);
-          }
-        });
-        researchData[field] = fixedArray;
-      }
-    });
-
-    // Handle JSON string fields that should be objects
-    const objectFields = ['duration', 'publicationDetails', 'studentDetails', 'collaborationDetails', 'facilityDetails'];
-    objectFields.forEach(field => {
-      if (researchData[field] && typeof researchData[field] === 'string') {
-        try {
-          const parsed = JSON.parse(researchData[field]);
-          // Only use parsed value if it's actually an object (and not an array)
-          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-            researchData[field] = parsed;
-          }
-        } catch (e) {
-          // If parsing fails, leave as-is
-          console.log(`Failed to parse ${field} as JSON:`, e.message);
+          researchData[field] = [];
         }
       }
     });
 
-    // If PDF file is uploaded, add filename and originalName like FarmerResource
+    // If PDF file is uploaded, add filename and originalName
     if (req.file) {
       researchData.filename = req.file.filename;
       researchData.originalName = req.file.originalname;
@@ -255,68 +321,134 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
 
     console.log('Cleaned data:', JSON.stringify(cleanData, null, 2));
 
-    // Handle JSON string fields that should be arrays
+    // Handle individual duration fields
+    if (req.body.duration_startDate || req.body.duration_endDate) {
+      cleanData.duration = {
+        startDate: req.body.duration_startDate || null,
+        endDate: req.body.duration_endDate || null
+      };
+      // Remove the individual fields
+      delete cleanData.duration_startDate;
+      delete cleanData.duration_endDate;
+    }
+
+    // Handle individual publication details fields
+    const publicationFields = ['journal', 'volume', 'issue', 'pages', 'year', 'doi', 'impactFactor', 'authors'];
+    let hasPublicationDetails = false;
+    const publicationDetails = {};
+    
+    publicationFields.forEach(field => {
+      const fieldName = `publicationDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasPublicationDetails = true;
+        if (field === 'authors') {
+          try {
+            publicationDetails[field] = JSON.parse(req.body[fieldName]);
+          } catch (e) {
+            publicationDetails[field] = [];
+          }
+        } else if (field === 'year') {
+          publicationDetails[field] = parseInt(req.body[fieldName]) || null;
+        } else if (field === 'impactFactor') {
+          publicationDetails[field] = parseFloat(req.body[fieldName]) || null;
+        } else {
+          publicationDetails[field] = req.body[fieldName];
+        }
+        delete cleanData[fieldName];
+      }
+    });
+    
+    if (hasPublicationDetails) {
+      cleanData.publicationDetails = publicationDetails;
+    }
+
+    // Handle individual student details fields
+    const studentFields = ['studentName', 'degree', 'supervisor', 'completionYear'];
+    let hasStudentDetails = false;
+    const studentDetails = {};
+    
+    studentFields.forEach(field => {
+      const fieldName = `studentDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasStudentDetails = true;
+        if (field === 'completionYear') {
+          studentDetails[field] = parseInt(req.body[fieldName]) || null;
+        } else {
+          studentDetails[field] = req.body[fieldName];
+        }
+        delete cleanData[fieldName];
+      }
+    });
+    
+    if (hasStudentDetails) {
+      cleanData.studentDetails = studentDetails;
+    }
+
+    // Handle individual collaboration details fields
+    const collaborationFields = ['partnerInstitution', 'partnerCountry', 'collaborationType', 'mou'];
+    let hasCollaborationDetails = false;
+    const collaborationDetails = {};
+    
+    collaborationFields.forEach(field => {
+      const fieldName = `collaborationDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasCollaborationDetails = true;
+        if (field === 'mou') {
+          collaborationDetails[field] = req.body[fieldName] === 'true';
+        } else {
+          collaborationDetails[field] = req.body[fieldName];
+        }
+        delete cleanData[fieldName];
+      }
+    });
+    
+    if (hasCollaborationDetails) {
+      cleanData.collaborationDetails = collaborationDetails;
+    }
+
+    // Handle individual facility details fields
+    const facilityFields = ['type', 'capacity', 'specifications', 'utilizationAreas'];
+    let hasFacilityDetails = false;
+    const facilityDetails = {};
+    
+    facilityFields.forEach(field => {
+      const fieldName = `facilityDetails_${field}`;
+      if (req.body[fieldName] !== undefined) {
+        hasFacilityDetails = true;
+        if (field === 'utilizationAreas') {
+          try {
+            facilityDetails[field] = JSON.parse(req.body[fieldName]);
+          } catch (e) {
+            facilityDetails[field] = [];
+          }
+        } else {
+          facilityDetails[field] = req.body[fieldName];
+        }
+        delete cleanData[fieldName];
+      }
+    });
+    
+    if (hasFacilityDetails) {
+      cleanData.facilityDetails = facilityDetails;
+    }
+
+    // Handle array fields (these still need JSON parsing but are safer)
     const arrayFields = ['objectives', 'coInvestigators', 'keyFindings', 'tags'];
     arrayFields.forEach(field => {
       if (cleanData[field] && typeof cleanData[field] === 'string') {
         try {
           const parsed = JSON.parse(cleanData[field]);
-          // Only use parsed value if it's actually an array
           if (Array.isArray(parsed)) {
             cleanData[field] = parsed;
           }
         } catch (e) {
-          // If parsing fails, leave as-is (might be a regular string)
           console.log(`Failed to parse ${field} as JSON:`, e.message);
-        }
-      }
-      // Fix corrupted nested arrays (like ["[\"objective1\"]"])
-      if (Array.isArray(cleanData[field])) {
-        const fixedArray = [];
-        cleanData[field].forEach(item => {
-          if (typeof item === 'string') {
-            try {
-              // If item looks like a JSON string, try to parse it
-              if (item.startsWith('[') && item.endsWith(']')) {
-                const parsed = JSON.parse(item);
-                if (Array.isArray(parsed)) {
-                  fixedArray.push(...parsed);
-                } else {
-                  fixedArray.push(item);
-                }
-              } else {
-                fixedArray.push(item);
-              }
-            } catch (e) {
-              // If parsing fails, keep the original item
-              fixedArray.push(item);
-            }
-          } else {
-            fixedArray.push(item);
-          }
-        });
-        cleanData[field] = fixedArray;
-      }
-    });
-
-    // Handle JSON string fields that should be objects
-    const objectFields = ['duration', 'publicationDetails', 'studentDetails', 'collaborationDetails', 'facilityDetails'];
-    objectFields.forEach(field => {
-      if (cleanData[field] && typeof cleanData[field] === 'string') {
-        try {
-          const parsed = JSON.parse(cleanData[field]);
-          // Only use parsed value if it's actually an object (and not an array)
-          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-            cleanData[field] = parsed;
-          }
-        } catch (e) {
-          // If parsing fails, leave as-is
-          console.log(`Failed to parse ${field} as JSON:`, e.message);
+          cleanData[field] = [];
         }
       }
     });
 
-    // If PDF file is uploaded, add filename and originalName like FarmerResource
+    // If PDF file is uploaded, add filename and originalName
     if (req.file) {
       cleanData.filename = req.file.filename;
       cleanData.originalName = req.file.originalname;
@@ -328,21 +460,7 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
       cleanData.budget = parseFloat(cleanData.budget) || undefined;
     }
 
-    // Handle nested objects with proper validation
-    if (cleanData.publicationDetails) {
-      if (cleanData.publicationDetails.year && typeof cleanData.publicationDetails.year === 'string') {
-        cleanData.publicationDetails.year = parseInt(cleanData.publicationDetails.year) || undefined;
-      }
-      if (cleanData.publicationDetails.impactFactor && typeof cleanData.publicationDetails.impactFactor === 'string') {
-        cleanData.publicationDetails.impactFactor = parseFloat(cleanData.publicationDetails.impactFactor) || undefined;
-      }
-    }
-
-    if (cleanData.studentDetails && cleanData.studentDetails.completionYear && typeof cleanData.studentDetails.completionYear === 'string') {
-      cleanData.studentDetails.completionYear = parseInt(cleanData.studentDetails.completionYear) || undefined;
-    }
-
-    console.log('Data after type conversion:', JSON.stringify(cleanData, null, 2));
+    console.log('Data after processing:', JSON.stringify(cleanData, null, 2));
 
     // Handle documents separately if they exist
     let research;

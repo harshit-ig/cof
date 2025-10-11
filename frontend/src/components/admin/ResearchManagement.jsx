@@ -193,6 +193,22 @@ const ResearchManagement = () => {
   }
 
   const handleEdit = (item) => {
+    // Helper function to format dates for HTML date inputs (YYYY-MM-DD)
+    const formatDateForInput = (dateValue) => {
+      if (!dateValue) return '';
+      
+      try {
+        const date = new Date(dateValue);
+        if (isNaN(date.getTime())) return '';
+        
+        // Format as YYYY-MM-DD for HTML date input
+        return date.toISOString().split('T')[0];
+      } catch (error) {
+        console.warn('Error formatting date:', error);
+        return '';
+      }
+    };
+
     // Convert item data to form format
     const formattedData = {
       ...item,
@@ -202,7 +218,11 @@ const ResearchManagement = () => {
       tags: item.tags || [],
       documents: item.documents || [],
       pdf: null,
-      duration: item.duration || { startDate: '', endDate: '' },
+      // Properly format duration dates for HTML inputs
+      duration: {
+        startDate: formatDateForInput(item.duration?.startDate),
+        endDate: formatDateForInput(item.duration?.endDate)
+      },
       publicationDetails: item.publicationDetails || {
         journal: '', volume: '', issue: '', pages: '', year: new Date().getFullYear(),
         doi: '', impactFactor: '', authors: []
@@ -333,21 +353,54 @@ const ResearchManagement = () => {
           formDataToSend.append('tags', JSON.stringify(formData.tags));
         }
 
-        // Add section-specific fields
+        // Add section-specific fields - send individual fields instead of stringified objects  
         if (formData.section === 'ongoing-projects') {
           formDataToSend.append('projectType', formData.projectType || 'ICAR');
           formDataToSend.append('status', formData.status || 'ongoing');
           if (formData.fundingAgency) formDataToSend.append('fundingAgency', formData.fundingAgency);
           if (formData.budget) formDataToSend.append('budget', formData.budget);
-          if (formData.duration) formDataToSend.append('duration', JSON.stringify(formData.duration));
+          
+          // Send duration fields individually
+          if (formData.duration) {
+            if (formData.duration.startDate) formDataToSend.append('duration_startDate', formData.duration.startDate);
+            if (formData.duration.endDate) formDataToSend.append('duration_endDate', formData.duration.endDate);
+          }
         } else if (formData.section === 'publications' && formData.publicationDetails) {
-          formDataToSend.append('publicationDetails', JSON.stringify(formData.publicationDetails));
+          // Send publication details individually
+          Object.keys(formData.publicationDetails).forEach(key => {
+            if (formData.publicationDetails[key] !== null && formData.publicationDetails[key] !== undefined && formData.publicationDetails[key] !== '') {
+              if (Array.isArray(formData.publicationDetails[key])) {
+                formDataToSend.append(`publicationDetails_${key}`, JSON.stringify(formData.publicationDetails[key]));
+              } else {
+                formDataToSend.append(`publicationDetails_${key}`, formData.publicationDetails[key]);
+              }
+            }
+          });
         } else if (formData.section === 'student-research' && formData.studentDetails) {
-          formDataToSend.append('studentDetails', JSON.stringify(formData.studentDetails));
+          // Send student details individually
+          Object.keys(formData.studentDetails).forEach(key => {
+            if (formData.studentDetails[key] !== null && formData.studentDetails[key] !== undefined && formData.studentDetails[key] !== '') {
+              formDataToSend.append(`studentDetails_${key}`, formData.studentDetails[key]);
+            }
+          });
         } else if (formData.section === 'collaborations' && formData.collaborationDetails) {
-          formDataToSend.append('collaborationDetails', JSON.stringify(formData.collaborationDetails));
+          // Send collaboration details individually
+          Object.keys(formData.collaborationDetails).forEach(key => {
+            if (formData.collaborationDetails[key] !== null && formData.collaborationDetails[key] !== undefined && formData.collaborationDetails[key] !== '') {
+              formDataToSend.append(`collaborationDetails_${key}`, formData.collaborationDetails[key]);
+            }
+          });
         } else if (formData.section === 'facilities' && formData.facilityDetails) {
-          formDataToSend.append('facilityDetails', JSON.stringify(formData.facilityDetails));
+          // Send facility details individually
+          Object.keys(formData.facilityDetails).forEach(key => {
+            if (formData.facilityDetails[key] !== null && formData.facilityDetails[key] !== undefined && formData.facilityDetails[key] !== '') {
+              if (Array.isArray(formData.facilityDetails[key])) {
+                formDataToSend.append(`facilityDetails_${key}`, JSON.stringify(formData.facilityDetails[key]));
+              } else {
+                formDataToSend.append(`facilityDetails_${key}`, formData.facilityDetails[key]);
+              }
+            }
+          });
         }
 
         await researchAPI.update(editingItem._id, formDataToSend)
@@ -391,21 +444,54 @@ const ResearchManagement = () => {
           formDataToSend.append('tags', JSON.stringify(formData.tags));
         }
 
-        // Add section-specific fields
+        // Add section-specific fields - send individual fields instead of stringified objects
         if (formData.section === 'ongoing-projects') {
           formDataToSend.append('projectType', formData.projectType || 'ICAR');
           formDataToSend.append('status', formData.status || 'ongoing');
           if (formData.fundingAgency) formDataToSend.append('fundingAgency', formData.fundingAgency);
           if (formData.budget) formDataToSend.append('budget', formData.budget);
-          if (formData.duration) formDataToSend.append('duration', JSON.stringify(formData.duration));
+          
+          // Send duration fields individually
+          if (formData.duration) {
+            if (formData.duration.startDate) formDataToSend.append('duration_startDate', formData.duration.startDate);
+            if (formData.duration.endDate) formDataToSend.append('duration_endDate', formData.duration.endDate);
+          }
         } else if (formData.section === 'publications' && formData.publicationDetails) {
-          formDataToSend.append('publicationDetails', JSON.stringify(formData.publicationDetails));
+          // Send publication details individually
+          Object.keys(formData.publicationDetails).forEach(key => {
+            if (formData.publicationDetails[key] !== null && formData.publicationDetails[key] !== undefined && formData.publicationDetails[key] !== '') {
+              if (Array.isArray(formData.publicationDetails[key])) {
+                formDataToSend.append(`publicationDetails_${key}`, JSON.stringify(formData.publicationDetails[key]));
+              } else {
+                formDataToSend.append(`publicationDetails_${key}`, formData.publicationDetails[key]);
+              }
+            }
+          });
         } else if (formData.section === 'student-research' && formData.studentDetails) {
-          formDataToSend.append('studentDetails', JSON.stringify(formData.studentDetails));
+          // Send student details individually
+          Object.keys(formData.studentDetails).forEach(key => {
+            if (formData.studentDetails[key] !== null && formData.studentDetails[key] !== undefined && formData.studentDetails[key] !== '') {
+              formDataToSend.append(`studentDetails_${key}`, formData.studentDetails[key]);
+            }
+          });
         } else if (formData.section === 'collaborations' && formData.collaborationDetails) {
-          formDataToSend.append('collaborationDetails', JSON.stringify(formData.collaborationDetails));
+          // Send collaboration details individually
+          Object.keys(formData.collaborationDetails).forEach(key => {
+            if (formData.collaborationDetails[key] !== null && formData.collaborationDetails[key] !== undefined && formData.collaborationDetails[key] !== '') {
+              formDataToSend.append(`collaborationDetails_${key}`, formData.collaborationDetails[key]);
+            }
+          });
         } else if (formData.section === 'facilities' && formData.facilityDetails) {
-          formDataToSend.append('facilityDetails', JSON.stringify(formData.facilityDetails));
+          // Send facility details individually
+          Object.keys(formData.facilityDetails).forEach(key => {
+            if (formData.facilityDetails[key] !== null && formData.facilityDetails[key] !== undefined && formData.facilityDetails[key] !== '') {
+              if (Array.isArray(formData.facilityDetails[key])) {
+                formDataToSend.append(`facilityDetails_${key}`, JSON.stringify(formData.facilityDetails[key]));
+              } else {
+                formDataToSend.append(`facilityDetails_${key}`, formData.facilityDetails[key]);
+              }
+            }
+          });
         }
 
         console.log('=== FRONTEND SAVE DEBUG ===');
