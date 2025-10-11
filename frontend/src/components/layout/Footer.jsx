@@ -40,7 +40,17 @@ const Footer = () => {
   const getFormattedAddress = () => {
     if (contactData?.contactInfo?.address) {
       const addr = contactData.contactInfo.address
-      return `${addr.institution}, ${addr.university}, ${addr.street}, ${addr.city}, ${addr.state} ${addr.pincode}, ${addr.country}`
+      // Filter out empty/undefined values and join with commas
+      const addressParts = [
+        addr.institution,
+        addr.university,
+        addr.street,
+        addr.city,
+        addr.state && addr.pincode ? `${addr.state} ${addr.pincode}` : addr.state || addr.pincode,
+        addr.country
+      ].filter(part => part && part.trim() !== '')
+      
+      return addressParts.join(', ')
     }
     return address
   }
