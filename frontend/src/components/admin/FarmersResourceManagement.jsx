@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Search, FileText, Download, Eye, EyeOff } from 'lucide-react'
 import { farmersAPI } from '../../services/api'
-import { getDocumentUrl } from '../../services/files'
+import { getImageUrl } from '../../services/files'
 import LoadingSpinner, { LoadingCard } from '../common/LoadingSpinner'
 import Modal, { ConfirmModal } from '../common/Modal'
 import { Form, FormGroup, Input, Textarea, Select, SubmitButton, FileUpload } from '../common/Form'
@@ -296,7 +296,7 @@ const FarmersResourceManagement = () => {
                             <span className="font-medium">{resource.originalName}</span>
                             <span>({formatFileSize(resource.fileSize)})</span>
                             <a
-                              href={getDocumentUrl(resource.filename)}
+                              href={getImageUrl('farmers', resource.filename)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
@@ -420,7 +420,7 @@ const FarmersResourceManagement = () => {
                       <span className="text-sm text-gray-700">{editingResource.originalName}</span>
                       <span className="text-xs text-gray-500">({formatFileSize(editingResource.fileSize)})</span>
                       <a
-                        href={getDocumentUrl(editingResource.filename)}
+                        href={getImageUrl('farmers', editingResource.filename)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"

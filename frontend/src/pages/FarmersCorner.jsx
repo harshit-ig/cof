@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Download, FileText, Calendar, Eye, Search, Filter } from 'lucide-react'
 import { farmersAPI } from '../services/api'
+import { getImageUrl } from '../services/files'
 import Card from '../components/common/Card'
 import toast from 'react-hot-toast'
 
@@ -43,7 +44,7 @@ const FarmersCorner = () => {
 
   const handleDownload = (resource) => {
     // Open download link in new tab
-    window.open(farmersAPI.downloadResource(resource._id), '_blank')
+    window.open(getImageUrl('farmers', resource.filename), '_blank')
   }
 
   const formatFileSize = (bytes) => {
@@ -269,7 +270,7 @@ const FarmersCorner = () => {
                           Download
                         </button>
                         <a
-                          href={farmersAPI.downloadResource(resource._id)}
+                          href={getImageUrl('farmers', resource.filename)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center justify-center px-4 py-3 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-xl hover:from-gray-200 hover:to-gray-300 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Eye, EyeOff, Upload, X } from 'lucide-react'
+import { Eye, EyeOff, Upload, X, FileText } from 'lucide-react'
 
 // Form Container Component
 export const Form = ({ 
@@ -323,7 +323,7 @@ export const FileUpload = ({
           <ul className="space-y-1">
             {files.map((file, index) => (
               <li key={index} className="text-sm text-gray-600 flex items-center">
-                <File className="h-4 w-4 mr-2" />
+                <FileText className="h-4 w-4 mr-2" />
                 {file.name}
                 <button
                   type="button"
