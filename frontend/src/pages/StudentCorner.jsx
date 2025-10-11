@@ -304,7 +304,32 @@ const StudentCorner = () => {
                       </ul>
                     </div>
                   )}
-                  {scholarship.filename && (
+                  
+                  {/* Multiple PDF Downloads */}
+                  {scholarship.documents && scholarship.documents.length > 0 ? (
+                    <div className="mt-4 pt-4 border-t border-gray-200">
+                      <p className="text-sm font-medium text-gray-700 mb-3">Available Documents:</p>
+                      <div className="space-y-2">
+                        {scholarship.documents.map((doc, docIndex) => (
+                          <a
+                            key={docIndex}
+                            href={getDocumentUrl(doc.filename)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center w-full px-3 py-2 bg-yellow-50 text-yellow-700 text-sm rounded-md hover:bg-yellow-100 transition-colors group"
+                          >
+                            <FileText className="w-4 h-4 mr-2 flex-shrink-0" />
+                            <span className="flex-1 text-left truncate">{doc.originalName}</span>
+                            <span className="text-xs text-yellow-500 mr-2">
+                              ({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)
+                            </span>
+                            <Download className="w-4 h-4 flex-shrink-0 group-hover:animate-bounce" />
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  ) : scholarship.filename ? (
+                    // Legacy single PDF support
                     <div className="mt-4 pt-4 border-t border-gray-200">
                       <a
                         href={getDocumentUrl(scholarship.filename)}
@@ -317,7 +342,7 @@ const StudentCorner = () => {
                         Download PDF
                       </a>
                     </div>
-                  )}
+                  ) : null}
                 </Card>
               ))
             ) : (

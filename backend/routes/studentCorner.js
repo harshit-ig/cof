@@ -245,8 +245,7 @@ router.put('/:id', protect, adminOnly, upload.array('pdfs', 10), async (req, res
       activities,
       positions,
       sortOrder,
-      isActive,
-      removeDocuments
+      isActive
     } = req.body;
 
     // Update fields
@@ -266,8 +265,18 @@ router.put('/:id', protect, adminOnly, upload.array('pdfs', 10), async (req, res
     if (isActive !== undefined) item.isActive = isActive;
 
     // Handle document removal
-    if (removeDocuments && Array.isArray(removeDocuments)) {
-      item.documents = item.documents.filter(doc => !removeDocuments.includes(doc._id.toString()));
+    const removeDocuments = req.body.removeDocuments;
+    console.log('Remove documents received:', removeDocuments);
+    console.log('Type of removeDocuments:', typeof removeDocuments);
+    
+    if (removeDocuments) {
+      // Handle both single string and array of strings
+      const docsToRemove = Array.isArray(removeDocuments) ? removeDocuments : [removeDocuments];
+      console.log('Documents to remove:', docsToRemove);
+      console.log('Current documents count:', item.documents.length);
+      
+      item.documents = item.documents.filter(doc => !docsToRemove.includes(doc._id.toString()));
+      console.log('Documents count after removal:', item.documents.length);
     }
 
     // Add new PDF files

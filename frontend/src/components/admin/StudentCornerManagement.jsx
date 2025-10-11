@@ -336,17 +336,25 @@ const StudentCornerManagement = () => {
               {editingItem?.documents && editingItem.documents.length > 0 && (
                 <div className="mt-3 space-y-2">
                   <p className="text-sm font-medium text-gray-700">Existing documents:</p>
-                  {editingItem.documents.map((doc) => (
+                  {editingItem.documents
+                    .filter(doc => !formData.selectedDocuments.includes(doc._id))
+                    .map((doc) => (
                     <div key={doc._id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                      <div className="flex items-center space-x-2">
-                        <FileText className="w-4 h-4 text-gray-600" />
-                        <span className="text-sm text-gray-700">{doc.originalName}</span>
-                        <span className="text-xs text-gray-500">({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)</span>
+                      <div className="flex items-center space-x-2 flex-1 min-w-0">
+                        <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                        <span 
+                          className="text-sm text-gray-700 truncate" 
+                          title={doc.originalName}
+                          style={{ maxWidth: '200px' }}
+                        >
+                          {doc.originalName}
+                        </span>
+                        <span className="text-xs text-gray-500 flex-shrink-0">({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)</span>
                         <a 
                           href={getDocumentUrl(doc.filename)} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="text-blue-600 hover:text-blue-800 text-xs"
+                          className="text-blue-600 hover:text-blue-800 text-xs flex-shrink-0"
                         >
                           <Download className="w-3 h-3" />
                         </a>
@@ -362,7 +370,7 @@ const StudentCornerManagement = () => {
                             }))
                           }
                         }}
-                        className="text-red-600 hover:text-red-800"
+                        className="text-red-600 hover:text-red-800 flex-shrink-0 ml-2"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -456,25 +464,111 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
               <input
                 type="file"
                 accept=".pdf"
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files && e.target.files[0]
-                  if (!file) return
-                  if (file.type !== 'application/pdf') {
-                    toast.error('Please select a PDF file')
+                  const files = Array.from(e.target.files || [])
+                  if (files.length === 0) return
+                  
+                  // Validate all files are PDFs
+                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  if (invalidFiles.length > 0) {
+                    toast.error('Please select only PDF files')
                     return
                   }
-                  setFormData(prev => ({ ...prev, pdf: file }))
+                  
+                  // Check file sizes (10MB limit per file)
+                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  if (oversizedFiles.length > 0) {
+                    toast.error('Some files exceed 10MB limit')
+                    return
+                  }
+                  
+                  setFormData(prev => ({ ...prev, pdfs: [...prev.pdfs, ...files] }))
                 }}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-              {formData.pdf && (
-                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              
+              {/* Display selected new files */}
+              {formData.pdfs.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">New files to upload:</p>
+                  {formData.pdfs.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm text-gray-700">{file.name}</span>
+                        <span className="text-xs text-gray-500">({(file.size / 1024 / 1024).toFixed(1)} MB)</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            pdfs: prev.pdfs.filter((_, i) => i !== index)
+                          }))
+                        }}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
-              {editingItem?.filename && !formData.pdf && (
+              
+              {/* Display existing documents when editing */}
+              {editingItem?.documents && editingItem.documents.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Existing documents:</p>
+                  {editingItem.documents
+                    .filter(doc => !formData.selectedDocuments.includes(doc._id))
+                    .map((doc) => (
+                    <div key={doc._id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                      <div className="flex items-center space-x-2 flex-1 min-w-0">
+                        <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                        <span 
+                          className="text-sm text-gray-700 truncate" 
+                          title={doc.originalName}
+                          style={{ maxWidth: '200px' }}
+                        >
+                          {doc.originalName}
+                        </span>
+                        <span className="text-xs text-gray-500 flex-shrink-0">({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)</span>
+                        <a 
+                          href={getDocumentUrl(doc.filename)} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-blue-600 hover:text-blue-800 text-xs flex-shrink-0"
+                        >
+                          <Download className="w-3 h-3" />
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm('Are you sure you want to remove this document?')) {
+                            // Add to removal list
+                            setFormData(prev => ({
+                              ...prev,
+                              selectedDocuments: [...prev.selectedDocuments, doc._id]
+                            }))
+                          }
+                        }}
+                        className="text-red-600 hover:text-red-800 flex-shrink-0 ml-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Legacy single PDF support */}
+              {editingItem?.filename && !editingItem?.documents?.length && (
                 <div className="mt-2 p-2 bg-gray-50 rounded">
                   <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
                   <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
@@ -549,25 +643,111 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF (optional)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
               <input
                 type="file"
                 accept=".pdf"
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files && e.target.files[0]
-                  if (!file) return
-                  if (file.type !== 'application/pdf') {
-                    toast.error('Please select a PDF file')
+                  const files = Array.from(e.target.files || [])
+                  if (files.length === 0) return
+                  
+                  // Validate all files are PDFs
+                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  if (invalidFiles.length > 0) {
+                    toast.error('Please select only PDF files')
                     return
                   }
-                  setFormData(prev => ({ ...prev, pdf: file }))
+                  
+                  // Check file sizes (10MB limit per file)
+                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  if (oversizedFiles.length > 0) {
+                    toast.error('Some files exceed 10MB limit')
+                    return
+                  }
+                  
+                  setFormData(prev => ({ ...prev, pdfs: [...prev.pdfs, ...files] }))
                 }}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-              {formData.pdf && (
-                <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
+              
+              {/* Display selected new files */}
+              {formData.pdfs.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">New files to upload:</p>
+                  {formData.pdfs.map((file, index) => (
+                    <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+                      <div className="flex items-center space-x-2">
+                        <FileText className="w-4 h-4 text-blue-600" />
+                        <span className="text-sm text-gray-700">{file.name}</span>
+                        <span className="text-xs text-gray-500">({(file.size / 1024 / 1024).toFixed(1)} MB)</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            pdfs: prev.pdfs.filter((_, i) => i !== index)
+                          }))
+                        }}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
               )}
-              {editingItem?.filename && !formData.pdf && (
+              
+              {/* Display existing documents when editing */}
+              {editingItem?.documents && editingItem.documents.length > 0 && (
+                <div className="mt-3 space-y-2">
+                  <p className="text-sm font-medium text-gray-700">Existing documents:</p>
+                  {editingItem.documents
+                    .filter(doc => !formData.selectedDocuments.includes(doc._id))
+                    .map((doc) => (
+                    <div key={doc._id} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                      <div className="flex items-center space-x-2 flex-1 min-w-0">
+                        <FileText className="w-4 h-4 text-gray-600 flex-shrink-0" />
+                        <span 
+                          className="text-sm text-gray-700 truncate" 
+                          title={doc.originalName}
+                          style={{ maxWidth: '200px' }}
+                        >
+                          {doc.originalName}
+                        </span>
+                        <span className="text-xs text-gray-500 flex-shrink-0">({(doc.fileSize / 1024 / 1024).toFixed(1)} MB)</span>
+                        <a 
+                          href={getDocumentUrl(doc.filename)} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-blue-600 hover:text-blue-800 text-xs flex-shrink-0"
+                        >
+                          <Download className="w-3 h-3" />
+                        </a>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (window.confirm('Are you sure you want to remove this document?')) {
+                            // Add to removal list
+                            setFormData(prev => ({
+                              ...prev,
+                              selectedDocuments: [...prev.selectedDocuments, doc._id]
+                            }))
+                          }
+                        }}
+                        className="text-red-600 hover:text-red-800 flex-shrink-0 ml-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Legacy single PDF support */}
+              {editingItem?.filename && !editingItem?.documents?.length && (
                 <div className="mt-2 p-2 bg-gray-50 rounded">
                   <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
                   <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
