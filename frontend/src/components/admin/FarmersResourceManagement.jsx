@@ -1,22 +1,29 @@
-import { useState, useEffect } from 'react'
-import { Plus, Edit2, Trash2, Download, FileText, Eye, X, Upload } from 'lucide-react'
-import toast from 'react-hot-toast'
+import React, { useState, useEffect } from 'react'
+import { Plus, Edit, Trash2, Search, FileText, Download, Eye, EyeOff } from 'lucide-react'
 import { farmersAPI } from '../../services/api'
-import Card from '../common/Card'
+import { getDocumentUrl } from '../../services/files'
+import LoadingSpinner, { LoadingCard } from '../common/LoadingSpinner'
+import Modal, { ConfirmModal } from '../common/Modal'
+import { Form, FormGroup, Input, Textarea, Select, SubmitButton, FileUpload } from '../common/Form'
+import toast from 'react-hot-toast'
 
 const FarmersResourceManagement = () => {
   const [resources, setResources] = useState([])
   const [loading, setLoading] = useState(true)
-  const [showForm, setShowForm] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [editingResource, setEditingResource] = useState(null)
   const [deletingResource, setDeletingResource] = useState(null)
-  const [uploading, setUploading] = useState(false)
 
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     category: 'other',
-    pdf: null
+    pdf: null,
+    isActive: true,
+    selectedDocuments: []
   })
 
   const [filters, setFilters] = useState({
@@ -35,17 +42,17 @@ const FarmersResourceManagement = () => {
 
   useEffect(() => {
     fetchResources()
-  }, [filters])
+  }, [filters, searchTerm])
 
   const fetchResources = async () => {
     try {
       setLoading(true)
-      console.log('Fetching resources with filters:', filters)
-      const response = await farmersAPI.getAdminResources(filters)
-      console.log('API response:', response.data)
+      const params = { ...filters }
+      if (searchTerm) params.search = searchTerm
+      
+      const response = await farmersAPI.getAdminResources(params)
       if (response.data.success) {
         setResources(response.data.data.resources)
-        console.log('Resources set:', response.data.data.resources.length, 'items')
       }
     } catch (error) {
       console.error('Error fetching resources:', error)
@@ -60,34 +67,56 @@ const FarmersResourceManagement = () => {
       title: '',
       description: '',
       category: 'other',
-      pdf: null
+      pdf: null,
+      isActive: true,
+      selectedDocuments: []
     })
     setEditingResource(null)
-    setShowForm(false)
+    setShowModal(false)
+  }
+
+  const openAddModal = () => {
+    resetForm()
+    setShowModal(true)
+  }
+
+  const openEditModal = (resource) => {
+    setEditingResource(resource)
+    setFormData({
+      title: resource.title,
+      description: resource.description,
+      category: resource.category,
+      pdf: null,
+      isActive: resource.isActive,
+      selectedDocuments: []
+    })
+    setShowModal(true)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSubmitting(true)
     
     if (!formData.title.trim() || !formData.description.trim()) {
       toast.error('Please fill in all required fields')
+      setSubmitting(false)
       return
     }
 
     if (!editingResource && !formData.pdf) {
       toast.error('Please select a PDF file')
+      setSubmitting(false)
       return
     }
 
     try {
-      setUploading(true)
-      
       if (editingResource) {
         // Update existing resource
         const updateData = {
           title: formData.title,
           description: formData.description,
-          category: formData.category
+          category: formData.category,
+          isActive: formData.isActive
         }
         
         const response = await farmersAPI.updateResource(editingResource._id, updateData)
@@ -105,19 +134,9 @@ const FarmersResourceManagement = () => {
         submitData.append('pdf', formData.pdf)
         
         const response = await farmersAPI.createResource(submitData)
-        console.log('Create response:', response.data)
         if (response.data.success) {
           toast.success('Resource created successfully')
-          
-          // Add the new resource to the current list to show it immediately
-          const newResource = response.data.data
-          setResources(prevResources => [newResource, ...prevResources])
-          
-          // Also refresh from server to ensure data consistency
-          setTimeout(() => {
-            fetchResources()
-          }, 500)
-          
+          fetchResources()
           resetForm()
         }
       }
@@ -125,19 +144,8 @@ const FarmersResourceManagement = () => {
       console.error('Error saving resource:', error)
       toast.error(error.response?.data?.message || 'Failed to save resource')
     } finally {
-      setUploading(false)
+      setSubmitting(false)
     }
-  }
-
-  const handleEdit = (resource) => {
-    setEditingResource(resource)
-    setFormData({
-      title: resource.title,
-      description: resource.description,
-      category: resource.category,
-      pdf: null
-    })
-    setShowForm(true)
   }
 
   const handleDelete = async () => {
@@ -154,23 +162,10 @@ const FarmersResourceManagement = () => {
       toast.error('Failed to delete resource')
     } finally {
       setDeletingResource(null)
+      setShowDeleteModal(false)
     }
   }
 
-  const toggleResourceStatus = async (resource) => {
-    try {
-      const response = await farmersAPI.updateResource(resource._id, {
-        isActive: !resource.isActive
-      })
-      if (response.data.success) {
-        toast.success(`Resource ${resource.isActive ? 'deactivated' : 'activated'} successfully`)
-        fetchResources()
-      }
-    } catch (error) {
-      console.error('Error updating resource status:', error)
-      toast.error('Failed to update resource status')
-    }
-  }
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes'
@@ -182,37 +177,55 @@ const FarmersResourceManagement = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="spinner"></div>
+      <div className="space-y-6">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Farmers Resource Management</h1>
+          <p className="text-gray-600 mt-2">
+            Manage PDF resources for farmers including advisory services, training materials, and research papers.
+          </p>
+        </div>
+        <div className="grid gap-4">
+          {[...Array(3)].map((_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Farmers Resources Management</h1>
-          <p className="text-gray-600 mt-1">Manage PDF resources for farmers</p>
+          <h1 className="text-2xl font-bold text-gray-900">Farmers Resource Management</h1>
+          <p className="text-gray-600">Manage PDF resources for farmers</p>
         </div>
+        
         <button
-          onClick={() => {
-            resetForm()
-            setShowForm(true)
-          }}
-          className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          onClick={openAddModal}
+          className="w-full sm:w-auto btn-primary flex items-center justify-center"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 mr-2" />
           Add Resource
         </button>
       </div>
 
-      {/* Filters */}
-      <Card className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* Search and Filters */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="md:col-span-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search resources..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+          </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
@@ -225,7 +238,6 @@ const FarmersResourceManagement = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
             <select
               value={filters.isActive}
               onChange={(e) => setFilters({ ...filters, isActive: e.target.value })}
@@ -237,222 +249,256 @@ const FarmersResourceManagement = () => {
             </select>
           </div>
         </div>
-      </Card>
+      </div>
 
-      {/* Resources List */}
-      <div className="grid gap-4">
+      {/* Data Grid */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         {resources.length === 0 ? (
-          <Card className="p-8 text-center">
+          <div className="p-8 text-center">
             <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No resources found</h3>
             <p className="text-gray-600">Start by adding your first farmer resource.</p>
-          </Card>
+          </div>
         ) : (
-          resources.map((resource) => (
-            <Card key={resource._id} className="p-6">
-              <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{resource.title}</h3>
-                      <p className="text-gray-600 mb-3">{resource.description}</p>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <FileText className="w-4 h-4" />
-                          {resource.originalName}
-                        </span>
-                        <span>{formatFileSize(resource.fileSize)}</span>
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
-                          {categories.find(cat => cat.value === resource.category)?.label || resource.category}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Download className="w-4 h-4" />
-                          {resource.downloadCount} downloads
-                        </span>
-                        <span>
-                          Created: {new Date(resource.createdAt).toLocaleDateString()}
-                        </span>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Resource
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Category
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Created
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {resources.map((resource) => (
+                  <tr key={resource._id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0">
+                          <FileText className="h-8 w-8 text-gray-400" />
+                        </div>
+                        <div className="ml-4 flex-1 min-w-0">
+                          <div className="text-sm font-medium text-gray-900">{resource.title}</div>
+                          <div className="text-sm text-gray-500 mb-2">{resource.description}</div>
+                          <div className="flex items-center gap-2 text-xs text-gray-500">
+                            <span className="font-medium">{resource.originalName}</span>
+                            <span>({formatFileSize(resource.fileSize)})</span>
+                            <a
+                              href={getDocumentUrl(resource.filename)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                            >
+                              <Download className="w-3 h-3 mr-1" />
+                              View PDF
+                            </a>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        {categories.find(cat => cat.value === resource.category)?.label || resource.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         resource.isActive 
                           ? 'bg-green-100 text-green-800' 
                           : 'bg-red-100 text-red-800'
                       }`}>
                         {resource.isActive ? 'Active' : 'Inactive'}
                       </span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <a
-                    href={farmersAPI.downloadResource(resource._id)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Download"
-                  >
-                    <Download className="w-4 h-4" />
-                  </a>
-                  <button
-                    onClick={() => handleEdit(resource)}
-                    className="p-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
-                    title="Edit"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => toggleResourceStatus(resource)}
-                    className={`p-2 rounded-lg transition-colors ${
-                      resource.isActive 
-                        ? 'text-red-500 hover:bg-red-50' 
-                        : 'text-green-500 hover:bg-green-50'
-                    }`}
-                    title={resource.isActive ? 'Deactivate' : 'Activate'}
-                  >
-                    {resource.isActive ? <X className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                  <button
-                    onClick={() => setDeletingResource(resource)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </Card>
-          ))
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(resource.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => openEditModal(resource)}
+                          className="text-blue-500 hover:text-blue-600"
+                          title="Edit"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDeletingResource(resource)
+                            setShowDeleteModal(true)
+                          }}
+                          className="text-red-600 hover:text-red-900"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
       {/* Form Modal */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  {editingResource ? 'Edit Resource' : 'Add New Resource'}
-                </h2>
-                <button
-                  onClick={resetForm}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Title *
-                </label>
-                <input
+      <Modal
+        isOpen={showModal}
+        onClose={resetForm}
+        title={editingResource ? 'Edit Resource' : 'Add New Resource'}
+        size="lg"
+        className="max-h-[90vh] overflow-y-auto"
+      >
+        <Form onSubmit={handleSubmit} className="space-y-4">
+          {/* Basic Information Section */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Resource Information</h3>
+            <div className="grid grid-cols-1 gap-3">
+              <FormGroup label="Title" required>
+                <Input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter resource title"
                   required
                 />
-              </div>
+              </FormGroup>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description *
-                </label>
-                <textarea
+              <FormGroup label="Description" required>
+                <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter resource description"
                   required
                 />
-              </div>
+              </FormGroup>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
-                </label>
-                <select
+              <FormGroup label="Category">
+                <Select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  {categories.map(cat => (
-                    <option key={cat.value} value={cat.value}>{cat.label}</option>
-                  ))}
-                </select>
+                  options={categories}
+                  placeholder="Select category"
+                />
+              </FormGroup>
+
+              {/* PDF File Management */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  PDF Document {!editingResource && '(Required)'}
+                </label>
+                
+                {/* File Upload */}
+                <FileUpload
+                  accept=".pdf"
+                  onFileSelect={(file) => setFormData({ ...formData, pdf: file })}
+                  maxSize={10}
+                  allowedTypes={['pdf']}
+                />
+                <p className="text-xs text-gray-500 mt-1">Maximum file size: 10MB</p>
+                
+                {/* Display current file when editing */}
+                {editingResource && editingResource.filename && (
+                  <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Current file:</p>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-blue-500" />
+                      <span className="text-sm text-gray-700">{editingResource.originalName}</span>
+                      <span className="text-xs text-gray-500">({formatFileSize(editingResource.fileSize)})</span>
+                      <a
+                        href={getDocumentUrl(editingResource.filename)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
+                      >
+                        <Download className="w-3 h-3 mr-1" />
+                        View PDF
+                      </a>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Upload a new file to replace the current one
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {!editingResource && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    PDF File *
-                  </label>
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    onChange={(e) => setFormData({ ...formData, pdf: e.target.files[0] })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    required
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Maximum file size: 10MB</p>
-                </div>
+              {/* Status Toggle - only show when editing */}
+              {editingResource && (
+                <FormGroup label="Status">
+                  <div className="flex items-center space-x-4">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="isActive"
+                        checked={formData.isActive === true}
+                        onChange={() => setFormData({ ...formData, isActive: true })}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Active</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="isActive"
+                        checked={formData.isActive === false}
+                        onChange={() => setFormData({ ...formData, isActive: false })}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">Inactive</span>
+                    </label>
+                  </div>
+                </FormGroup>
               )}
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={uploading}
-                  className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {uploading && <Upload className="w-4 h-4 animate-spin" />}
-                  {uploading ? 'Saving...' : (editingResource ? 'Update' : 'Create')}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Delete Confirmation Modal */}
-      {deletingResource && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Confirm Delete</h3>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete "{deletingResource.title}"? This action cannot be undone.
-            </p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setDeletingResource(null)}
-                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleDelete}
-                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-              >
-                Delete
-              </button>
             </div>
           </div>
-        </div>
-      )}
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200">
+            <button
+              type="button"
+              onClick={resetForm}
+              className="w-full sm:w-auto btn-ghost order-2 sm:order-1"
+            >
+              Cancel
+            </button>
+            <SubmitButton 
+              isLoading={submitting}
+              className="w-full sm:w-auto order-1 sm:order-2"
+            >
+              {editingResource ? 'Update Resource' : 'Create Resource'}
+            </SubmitButton>
+          </div>
+        </Form>
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setDeletingResource(null)
+          setShowDeleteModal(false)
+        }}
+        onConfirm={handleDelete}
+        title="Delete Resource"
+        message={`Are you sure you want to delete "${deletingResource?.title}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+      />
     </div>
   )
 }
