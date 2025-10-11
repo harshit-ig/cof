@@ -376,8 +376,8 @@ const Navbar = () => {
                         setActiveDropdown(null)
                       }}
                       onDoubleClick={() => setActiveDropdown(activeDropdown === index ? null : index)}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40 rounded-md transition-all duration-200 ${
-                        activeDropdown === index ? 'bg-white bg-opacity-25' : ''
+                      className={`w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90 rounded-md transition-all duration-200 ${
+                        activeDropdown === index ? 'bg-white bg-opacity-25 text-blue-900' : ''
                       }`}
                     >
                       <span onClick={(e) => {
@@ -390,7 +390,7 @@ const Navbar = () => {
                           setActiveDropdown(activeDropdown === index ? null : index)
                         }}
                         className={`h-4 w-4 transition-transform duration-200 ${
-                          activeDropdown === index ? 'rotate-180 text-gray-900' : 'text-white'
+                          activeDropdown === index ? 'rotate-180 text-blue-900' : 'text-white'
                         }`}
                       />
                     </button>
@@ -401,7 +401,7 @@ const Navbar = () => {
                           <button
                             key={dropdownItem.name}
                             onClick={() => handleNavClick(dropdownItem)}
-                            className="block w-full text-left px-3 py-2 text-sm text-gray-200 hover:text-gray-900 hover:bg-white hover:bg-opacity-40 rounded-md transition-all duration-200 font-medium"
+                            className="block w-full text-left px-3 py-2 text-sm text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90 rounded-md transition-all duration-200 font-medium"
                           >
                             {dropdownItem.name}
                           </button>
@@ -415,7 +415,7 @@ const Navbar = () => {
                     className={`block w-full text-left px-3 py-2 text-base font-medium rounded-md transition-all duration-200 ${
                       isActive(item.href)
                         ? 'text-blue-900 bg-white bg-opacity-90'
-                        : 'text-white hover:text-gray-900 hover:bg-white hover:bg-opacity-40'
+                        : 'text-white hover:text-blue-900 hover:bg-white hover:bg-opacity-90'
                     }`}
                   >
                     {item.name}
