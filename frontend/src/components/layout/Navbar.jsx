@@ -391,7 +391,7 @@ const Navbar = () => {
                           e.stopPropagation()
                           setActiveDropdown(activeDropdown === index ? null : index)
                         }}
-                        className={`h-4 w-4 transition-transform duration-200 ${
+                        className={`h-5 w-5 transition-transform duration-200 font-bold ${
                           activeDropdown === index ? 'rotate-180 text-blue-900' : 'text-white'
                         }`}
                       />
