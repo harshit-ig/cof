@@ -24,7 +24,7 @@ const ResearchManagement = () => {
   const [formData, setFormData] = useState({})
 
   const tabs = [
-    { id: 'ongoing-projects', name: 'Ongoing Projects', icon: FlaskConical, color: 'blue' },
+    { id: 'ongoing-projects', name: 'Ongoing/Completed Projects', icon: FlaskConical, color: 'blue' },
     { id: 'publications', name: 'Publications & Journals', icon: BookOpen, color: 'green' },
     { id: 'student-research', name: 'Student Research', icon: GraduationCap, color: 'orange' },
     { id: 'collaborations', name: 'Research Collaborations', icon: Users, color: 'purple' },

@@ -103,7 +103,7 @@ const StudentCorner = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Students Corner</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Your comprehensive guide to admissions, scholarships, student life, alumni experiences, 
-              and career opportunities at College of Fishery, Jabalpur.
+              and career opportunities at College of Fishery Science, Jabalpur.
             </p>
           </div>
         </div>

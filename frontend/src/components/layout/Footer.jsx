@@ -128,7 +128,7 @@ const Footer = () => {
   ]
 
   const researchLinks = [
-    { name: 'Ongoing Projects', href: '/research' },
+    { name: 'Ongoing/Completed Projects', href: '/research' },
     { name: 'Publications and Journals', href: '/research#publications' },
     { name: 'Student Research', href: '/research#student-research' },
     { name: 'Research Collaborations', href: '/research#collaborations' },

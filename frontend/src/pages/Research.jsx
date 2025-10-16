@@ -108,7 +108,7 @@ const Research = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
               <div className="text-center group">
                 <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stats.ongoingProjects}</div>
-                <div className="text-blue-200 text-sm">Ongoing Projects</div>
+                <div className="text-blue-200 text-sm">Ongoing/Completed Projects</div>
               </div>
               <div className="text-center group">
                 <div className="text-3xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stats.publications}</div>
@@ -176,10 +176,10 @@ const Research = () => {
 
           {!loading && !error && (
             <div className="space-y-16">
-              {/* 1. Ongoing Projects */}
+              {/* 1. Ongoing/Completed Projects */}
               <div id="ongoing-projects">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Ongoing Projects</h2>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">Ongoing/Completed Projects</h2>
                   <p className="text-gray-600 mb-4">ICAR, NFDB, PMMSY, DBT and other funding agencies</p>
                   <div className="w-16 h-1 bg-blue-400 rounded mx-auto"></div>
                 </div>
@@ -320,7 +320,7 @@ const Research = () => {
                   {getDataBySection('ongoing-projects').length === 0 && (
                     <div className="col-span-full text-center py-8">
                       <FlaskConical className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500">No ongoing projects available</p>
+                      <p className="text-gray-500">No Ongoing/Completed Projects available</p>
                     </div>
                   )}
                 </div>

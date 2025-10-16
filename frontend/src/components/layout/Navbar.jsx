@@ -43,7 +43,7 @@ const Navbar = () => {
       name: 'Research',
       href: '/research',
       dropdown: [
-        { name: 'Ongoing Projects', href: '/research', section: 'ongoing-projects' },
+        { name: 'Ongoing/Completed Projects', href: '/research', section: 'ongoing-projects' },
         { name: 'Publications and Journals', href: '/research', section: 'publications' },
         { name: 'Student Research', href: '/research', section: 'student-research' },
         { name: 'Research Collaborations', href: '/research', section: 'collaborations' },
