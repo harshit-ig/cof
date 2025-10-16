@@ -25,7 +25,7 @@ const Incubation = () => {
   const fetchIncubationData = async () => {
     try {
       setLoading(true)
-      const res = await incubationAPI.getIncubation();
+  const res = await incubationAPI.get();
       if (res && res.data && res.data.incubation) {
         setIncubationData(res.data.incubation);
       } else {

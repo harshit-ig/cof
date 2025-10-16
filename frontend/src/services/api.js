@@ -295,6 +295,7 @@ export const incubationAPI = {
       'X-Upload-Category': 'incubation',
     },
   }),
+  get: () => api.get('/incubation'),
 }
 
 export const farmersAPI = {
