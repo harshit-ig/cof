@@ -25,16 +25,23 @@ const Incubation = () => {
   const fetchIncubationData = async () => {
     try {
       setLoading(true)
-  const res = await incubationAPI.get();
-      if (res && res.data && res.data.incubation) {
-        setIncubationData(res.data.incubation);
+      const res = await incubationAPI.get();
+      
+      if (res.data.success && res.data.data && res.data.data.incubation) {
+        setIncubationData(res.data.data.incubation);
       } else {
-        console.error('Failed to fetch incubation data');
-        toast.error('Failed to fetch incubation data');
+        console.error('Invalid response format:', res.data);
+        // Don't show error toast if there's just no data yet
+        if (!res.data.success) {
+          toast.error('Failed to fetch incubation data');
+        }
       }
     } catch (error) {
       console.error('Error fetching incubation data:', error);
-      toast.error('Error fetching incubation data');
+      // Only show error if it's not a 404 (no data) error
+      if (error.response?.status !== 404) {
+        toast.error('Error loading incubation data');
+      }
     } finally {
       setLoading(false);
     }

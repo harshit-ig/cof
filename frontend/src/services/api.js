@@ -290,12 +290,20 @@ export const placementAPI = {
 }
 
 export const incubationAPI = {
+  // Public endpoints
+  get: () => api.get('/incubation'),
   register: (formData) => uploadApi.post('/incubation/register', formData, {
     headers: {
       'X-Upload-Category': 'incubation',
     },
   }),
-  get: () => api.get('/incubation'),
+  
+  // Admin endpoints
+  getAll: (params) => api.get('/incubation/admin', { params }),
+  getById: (id) => api.get(`/incubation/${id}`),
+  create: (data) => api.post('/incubation', data),
+  update: (id, data) => api.put(`/incubation/${id}`, data),
+  delete: (id) => api.delete(`/incubation/${id}`),
 }
 
 export const farmersAPI = {

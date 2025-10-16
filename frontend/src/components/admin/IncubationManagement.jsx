@@ -22,7 +22,7 @@ import {
 import Card from '../common/Card';
 import Modal from '../common/Modal';
 import { Form, FormGroup, Input, Textarea, SubmitButton } from '../common/Form';
-import { uploadAPI } from '../../services/api';
+import { incubationAPI, uploadAPI } from '../../services/api';
 import toast from 'react-hot-toast';
 
 const IncubationManagement = () => {
@@ -89,21 +89,17 @@ const IncubationManagement = () => {
   const fetchIncubationData = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_SERVER_HOST}/incubation/admin`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await incubationAPI.getAll();
 
-      if (response.ok) {
-        const data = await response.json();
-        setIncubationData(data.data.incubation);
+      if (response.data.success) {
+        setIncubationData(response.data.data.incubation);
       } else {
         console.error('Failed to fetch incubation data');
+        toast.error('Failed to fetch incubation data');
       }
     } catch (error) {
       console.error('Error fetching incubation data:', error);
+      toast.error('Error fetching incubation data');
     } finally {
       setLoading(false);
     }
@@ -120,8 +116,6 @@ const IncubationManagement = () => {
     e.preventDefault();
     
     try {
-      const token = localStorage.getItem('token');
-      
       // Prepare data object
       const dataToSend = { ...formData };
       
@@ -143,33 +137,24 @@ const IncubationManagement = () => {
           : dataToSend.tags.split(',').map(item => item.trim());
       }
 
-      const url = editingItem 
-        ? `${import.meta.env.VITE_SERVER_HOST}/incubation/${editingItem._id}`
-        : `${import.meta.env.VITE_SERVER_HOST}/incubation`;
-      
-      const method = editingItem ? 'PUT' : 'POST';
+      let response;
+      if (editingItem) {
+        response = await incubationAPI.update(editingItem._id, dataToSend);
+      } else {
+        response = await incubationAPI.create(dataToSend);
+      }
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToSend)
-      });
-
-      if (response.ok) {
+      if (response.data.success) {
         await fetchIncubationData();
         resetForm();
         toast.success(`Incubation item ${editingItem ? 'updated' : 'created'} successfully`);
       } else {
-        const errorData = await response.json();
-        console.error('Error saving incubation item:', errorData.message);
-        toast.error('Error saving incubation item: ' + errorData.message);
+        console.error('Error saving incubation item:', response.data.message);
+        toast.error('Error saving incubation item: ' + response.data.message);
       }
     } catch (error) {
       console.error('Error saving incubation item:', error);
-      toast.error('Error saving incubation item');
+      toast.error(error.response?.data?.message || 'Error saving incubation item');
     }
   };
 
@@ -206,22 +191,17 @@ const IncubationManagement = () => {
     if (!confirm('Are you sure you want to delete this item?')) return;
     
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.VITE_SERVER_HOST}/incubation/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await incubationAPI.delete(id);
 
-      if (response.ok) {
+      if (response.data.success) {
         await fetchIncubationData();
+        toast.success('Incubation item deleted successfully');
       } else {
-        alert('Error deleting item');
+        toast.error('Error deleting item');
       }
     } catch (error) {
       console.error('Error deleting item:', error);
-      alert('Error deleting item');
+      toast.error(error.response?.data?.message || 'Error deleting item');
     }
   };
 
