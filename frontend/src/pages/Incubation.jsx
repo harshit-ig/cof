@@ -25,18 +25,18 @@ const Incubation = () => {
   const fetchIncubationData = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${import.meta.env.VITE_SERVER_HOST}/incubation`)
-      
-      if (response.ok) {
-        const data = await response.json()
-        setIncubationData(data.data.incubation)
+      const res = await incubationAPI.getIncubation();
+      if (res && res.data && res.data.incubation) {
+        setIncubationData(res.data.incubation);
       } else {
-        console.error('Failed to fetch incubation data')
+        console.error('Failed to fetch incubation data');
+        toast.error('Failed to fetch incubation data');
       }
     } catch (error) {
-      console.error('Error fetching incubation data:', error)
+      console.error('Error fetching incubation data:', error);
+      toast.error('Error fetching incubation data');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
