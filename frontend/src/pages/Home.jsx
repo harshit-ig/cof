@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen, Share2 } from 'lucide-react'
-import { LinkedInEmbed, XEmbed } from 'react-social-media-embed'
 import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
 import LogoSlider from '../components/common/LogoSlider'
+import SocialEmbed from '../components/common/SocialEmbed'
 import { newsAPI, contentAPI, uploadAPI } from '../services/api'
 
 const Home = () => {
@@ -312,17 +312,11 @@ const Home = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {socialMediaLinks.map((link, index) => (
                       <div key={link.id || index} className="social-media-embed-container">
-                        {link.platform === 'linkedin' ? (
-                          <LinkedInEmbed
-                            url={link.url}
-                            width="100%"
-                          />
-                        ) : link.platform === 'twitter' ? (
-                          <XEmbed
-                            url={link.url}
-                            width="100%"
-                          />
-                        ) : null}
+                        <SocialEmbed
+                          platform={link.platform}
+                          url={link.url}
+                          width="100%"
+                        />
                       </div>
                     ))}
                   </div>

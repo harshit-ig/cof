@@ -7,7 +7,17 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
     outDir: 'dist',
-    sourcemap: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
+  optimizeDeps: {
+    include: ['react-social-media-embed'],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
   },
 })
 
