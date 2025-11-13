@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen } from 'lucide-react'
+import { ChevronRight, Bell, FileText, ExternalLink, Calendar, Users, Award, BookOpen, Share2 } from 'lucide-react'
+import { LinkedInEmbed, XEmbed } from 'react-social-media-embed'
 import Card from '../components/common/Card'
 import HeroSlideshow from '../components/common/HeroSlideshow'
 import LogoSlider from '../components/common/LogoSlider'
@@ -11,6 +12,7 @@ const Home = () => {
   const [upcomingEvents, setUpcomingEvents] = useState([])
   const [deanMessage, setDeanMessage] = useState('')
   const [importantNotices, setImportantNotices] = useState([])
+  const [socialMediaLinks, setSocialMediaLinks] = useState([])
   const [welcomeData, setWelcomeData] = useState({
     deanName: '',
     deanTitle: '',
@@ -40,10 +42,11 @@ const Home = () => {
         newsAPI.getAll({ featured: true }).catch(err => ({ error: true, message: err.message })),
         newsAPI.getAll({ type: 'event,seminar,workshop' }).catch(err => ({ error: true, message: err.message })),
         contentAPI.getByKey('dean-welcome-message').catch(err => ({ error: true, message: err.message })),
-        contentAPI.getByKey('important-notices').catch(err => ({ error: true, message: err.message }))
+        contentAPI.getByKey('important-notices').catch(err => ({ error: true, message: err.message })),
+        contentAPI.getByKey('social-media-links').catch(err => ({ error: true, message: err.message }))
       ]
 
-      const [newsResponse, eventsResponse, welcomeResponse, noticesResponse] = await Promise.all(promises)
+      const [newsResponse, eventsResponse, welcomeResponse, noticesResponse, socialResponse] = await Promise.all(promises)
 
       // Process news data with safety checks
       if (newsResponse && !newsResponse.error && newsResponse.data?.success) {
@@ -101,6 +104,24 @@ const Home = () => {
       } else {
         // No notices available
         setImportantNotices([])
+      }
+
+      // Process social media links with safety checks
+      if (socialResponse && !socialResponse.error && socialResponse.data?.success) {
+        try {
+          const contentData = socialResponse.data.data.content
+          const socialData = JSON.parse(contentData.content || contentData)
+          const activeLinks = Array.isArray(socialData) 
+            ? socialData.filter(link => link.isActive) 
+            : []
+          setSocialMediaLinks(activeLinks)
+        } catch (e) {
+          console.warn('Failed to parse social media links')
+          setSocialMediaLinks([])
+        }
+      } else {
+        // No social links available
+        setSocialMediaLinks([])
       }
 
     } catch (error) {
@@ -271,6 +292,42 @@ const Home = () => {
                   </div>
                 )}
               </Card>
+
+              {/* Social Media Section */}
+              {socialMediaLinks.length > 0 && (
+                <Card className="mt-8 bg-gradient-to-r from-white to-indigo-50 border-l-4 border-indigo-500 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                  {/* Decorative corner element */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-indigo-200 to-transparent opacity-30"></div>
+                  <div className="absolute bottom-0 left-0 w-12 h-12 bg-gradient-to-tr from-blue-200 to-transparent opacity-20"></div>
+                  
+                  <div className="flex items-center justify-between mb-6 relative z-10">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
+                        <Share2 className="w-4 h-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900">Follow Us on Social Media</h3>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {socialMediaLinks.map((link, index) => (
+                      <div key={link.id || index} className="social-media-embed-container">
+                        {link.platform === 'linkedin' ? (
+                          <LinkedInEmbed
+                            url={link.url}
+                            width="100%"
+                          />
+                        ) : link.platform === 'twitter' ? (
+                          <XEmbed
+                            url={link.url}
+                            width="100%"
+                          />
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              )}
             </div>
 
             {/* Sidebar */}

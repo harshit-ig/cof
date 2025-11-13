@@ -363,3 +363,22 @@ body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
 }
+
+/* Social Media Embed Styles */
+.social-media-embed-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.social-media-embed-container iframe {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Responsive adjustments for social embeds */
+@media (max-width: 768px) {
+  .social-media-embed-container {
+    margin: 0 auto;
+  }
+}

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, User, Image, Globe, Bell } from 'lucide-react'
+import { Home, User, Image, Globe, Bell, Share2 } from 'lucide-react'
 import WelcomeMessageManagement from './WelcomeMessageManagement'
 import SlideshowManagement from './SlideshowManagement'
 import PartnersManagement from './PartnersManagement'
 import ImportantNoticeManagement from './ImportantNoticeManagement'
+import SocialMediaManagement from './SocialMediaManagement'
 
 const HomePageManagement = () => {
   const location = useLocation()
@@ -32,6 +33,12 @@ const HomePageManagement = () => {
       description: 'Manage important announcements and notices'
     },
     { 
+      id: 'social-media', 
+      name: 'Social Media', 
+      icon: Share2,
+      description: 'LinkedIn and Twitter/X posts'
+    },
+    { 
       id: 'slideshow', 
       name: 'Hero Slideshow', 
       icon: Image,
@@ -56,6 +63,8 @@ const HomePageManagement = () => {
         return <WelcomeMessageManagement />
       case 'notices':
         return <ImportantNoticeManagement />
+      case 'social-media':
+        return <SocialMediaManagement />
       case 'slideshow':
         return <SlideshowManagement />
       case 'partners':
