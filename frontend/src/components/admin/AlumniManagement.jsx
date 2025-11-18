@@ -147,6 +147,20 @@ const AlumniManagement = () => {
     }
   }
 
+  const handleRemoveImage = () => {
+    // Clear the hidden input field
+    const imageInput = document.querySelector('input[name="image"]')
+    if (imageInput) {
+      imageInput.value = ''
+    }
+    // Clear the file input
+    const fileInput = document.querySelector('input[type="file"][accept="image/*"]')
+    if (fileInput) {
+      fileInput.value = ''
+    }
+    toast.success('Image removed')
+  }
+
   const renderForm = () => {
     if (activeTab === 'testimonial') {
       return (
@@ -179,10 +193,28 @@ const AlumniManagement = () => {
             <Input name="company" defaultValue={editingItem?.company} placeholder="e.g., ICAR-CIFE, Mumbai" required />
           </FormGroup>
 
-          <FormGroup label="Profile Image URL">
-            <Input name="image" defaultValue={editingItem?.image} placeholder="Upload or enter image URL" />
-            <input type="file" accept="image/*" onChange={handleImageChange} className="mt-2" disabled={uploading} />
-            {uploading && <p className="text-sm text-blue-600 mt-1">Uploading...</p>}
+          <FormGroup label="Profile Image">
+            <Input name="image" defaultValue={editingItem?.image} placeholder="Image URL (auto-filled on upload)" className="hidden" />
+            <div className="space-y-3">
+              <input type="file" accept="image/*" onChange={handleImageChange} className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" disabled={uploading} />
+              {uploading && <p className="text-sm text-blue-600">Uploading...</p>}
+              {editingItem?.image && (
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <img src={editingItem.image} alt="Current" className="w-16 h-16 object-cover rounded" onError={(e) => e.target.style.display = 'none'} />
+                    <p className="text-sm text-gray-600">Current image</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span className="text-sm">Remove</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </FormGroup>
 
           <FormGroup label="Testimonial" required>

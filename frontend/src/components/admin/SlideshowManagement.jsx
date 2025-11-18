@@ -93,6 +93,13 @@ const SlideshowManagement = () => {
     setShowForm(true)
   }
 
+  const handleRemoveImage = () => {
+    setFormData({...formData, image: null})
+    const fileInput = document.getElementById('slide-image')
+    if (fileInput) fileInput.value = ''
+    toast.success('Image removed')
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this slide?')) {
       return
@@ -196,19 +203,60 @@ const SlideshowManagement = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Slide Image {!editingSlide && <span className="text-red-500">*</span>} {editingSlide && '(Leave empty to keep current image)'}
+                Slide Image {!editingSlide && <span className="text-red-500">*</span>}
               </label>
-              <input
-                id="slide-image"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                required={!editingSlide}
-              />
-              <p className="text-sm text-gray-500 mt-1">
-                Upload a high-quality image for the slideshow. Recommended size: 1920x1080px
-              </p>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="slide-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFormData({...formData, image: e.target.files[0]})}
+                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    required={!editingSlide}
+                  />
+                  {formData.image && (
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="text-red-600 hover:text-red-700 flex items-center space-x-1 flex-shrink-0"
+                    >
+                      <X className="w-4 h-4" />
+                      <span className="text-sm">Remove</span>
+                    </button>
+                  )}
+                </div>
+                {formData.image && (
+                  <p className="text-sm text-green-600">New image selected: {formData.image.name}</p>
+                )}
+                {editingSlide && !formData.image && (
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <img
+                        src={editingSlide.image.startsWith('http') ? editingSlide.image : uploadAPI.getImageUrl(editingSlide.image, 'slideshow')}
+                        alt="Current slide"
+                        className="w-24 h-16 object-cover rounded"
+                        onError={(e) => e.target.style.display = 'none'}
+                      />
+                      <p className="text-sm text-gray-600">Current image</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditingSlide(prev => ({ ...prev, image: null }))
+                        toast.success('Current image will be removed on save')
+                      }}
+                      className="text-red-600 hover:text-red-700 flex items-center space-x-1 flex-shrink-0"
+                    >
+                      <X className="w-4 h-4" />
+                      <span className="text-sm">Remove</span>
+                    </button>
+                  </div>
+                )}
+                <p className="text-sm text-gray-500">
+                  Upload a high-quality image for the slideshow. Recommended size: 1920x1080px
+                </p>
+              </div>
             </div>
 
             <div className="flex items-center">
