@@ -1,49 +1,47 @@
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 // Your MongoDB Atlas connection string
-const remote_url = "mongodb+srv://elite:w73XvGD6XAmS4vT0@spokify.gagpwfj.mongodb.net/";
+const remote_url = process.env.MONGODB_URI;
+const destination_url = "mongodb://localhost:27017/";
 
 async function copyCollections() {
     let client;
-    
+    let destinationClient;
     try {
         // Connect to MongoDB Atlas
         console.log("Connecting to MongoDB Atlas...");
         client = new MongoClient(remote_url, { serverSelectionTimeoutMS: 30000 });
+        destinationClient = new MongoClient(destination_url, { serverSelectionTimeoutMS: 30000 });
         await client.connect();
+        await destinationClient.connect();
         
         // Test the connection
         await client.db("admin").command({ ping: 1 });
-        console.log("✅ Successfully connected to MongoDB Atlas");
+        await destinationClient.db("admin").command({ ping: 1 });
+        console.log("✅ Successfully connected to MongoDB Atlas and local MongoDB");
         
         console.log("Getting collections from fishery_college database...");
 
         // Get the databases from the remote server
-        const source_db = client.db("test");  // Source database
-        const target_db = client.db("fishery_college");  // Target database
+        const source_db = client.db("fishery_college");  // Source database (MongoDB Atlas)
+        const target_db = destinationClient.db("fishery_college");  // Target database (Local MongoDB)
 
         // Get all collection names from fishery_college
-        const collections_to_copy = await target_db.listCollections().toArray();
+        const collections_to_copy = await source_db.listCollections().toArray();
         const collectionNames = collections_to_copy.map(coll => coll.name).filter(name => 
             !['system.indexes', 'system.views', 'system.profile'].includes(name)
         );
 
         console.log(`Found ${collectionNames.length} collections in fishery_college:`, collectionNames);
 
-        console.log("Copying collections from 'test' database to 'fishery_college' database...");
+        console.log("Backing up collections from MongoDB Atlas to local MongoDB...");
 
         for (const coll_name of collectionNames) {
             console.log(`  -> Processing collection: ${coll_name}`);
             
             const source_coll = source_db.collection(coll_name);
             const target_coll = target_db.collection(coll_name);
-            
-            // Check if source collection exists in test database
-            const sourceCollections = await source_db.listCollections({name: coll_name}).toArray();
-            if (sourceCollections.length === 0) {
-                console.log(`     ⚠️  Collection '${coll_name}' not found in test database, skipping...`);
-                continue;
-            }
             
             // Get document count before operation
             const source_count = await source_coll.countDocuments({});
@@ -98,6 +96,10 @@ async function copyCollections() {
     } finally {
         if (client) {
             await client.close();
+            
+        }
+        if (destinationClient) {
+            await destinationClient.close();
         }
     }
 }
