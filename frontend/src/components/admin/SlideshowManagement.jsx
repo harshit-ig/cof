@@ -10,6 +10,7 @@ const SlideshowManagement = () => {
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [editingSlide, setEditingSlide] = useState(null)
+  const [originalSlide, setOriginalSlide] = useState(null)
   const [draggedItem, setDraggedItem] = useState(null)
 
   const [formData, setFormData] = useState({
@@ -57,8 +58,8 @@ const SlideshowManagement = () => {
       
       if (formData.image) {
         submitData.append('image', formData.image)
-      } else if (editingSlide && editingSlide.image && !formData.image) {
-        // If editing and had an image but now it's removed
+      } else if (originalSlide?.image && (!editingSlide?.image || editingSlide?.image === null)) {
+        // If original had an image but now it's been removed
         submitData.append('removeImage', 'true')
       }
 
@@ -89,6 +90,7 @@ const SlideshowManagement = () => {
 
   const handleEdit = (slide) => {
     setEditingSlide(slide)
+    setOriginalSlide({ ...slide })
     setFormData({
       image: null, // Don't set existing image for file input
       isActive: slide.isActive
@@ -124,6 +126,7 @@ const SlideshowManagement = () => {
       isActive: true
     })
     setEditingSlide(null)
+    setOriginalSlide(null)
     setShowForm(false)
     // Reset file input
     const fileInput = document.getElementById('slide-image')

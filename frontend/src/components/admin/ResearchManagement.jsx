@@ -21,6 +21,7 @@ const ResearchManagement = () => {
   })
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
+  const [originalItem, setOriginalItem] = useState(null)
   const [formData, setFormData] = useState({})
 
   const tabs = [
@@ -240,6 +241,7 @@ const ResearchManagement = () => {
     
     setFormData(formattedData)
     setEditingItem(item)
+    setOriginalItem({ ...item })
     setShowAddModal(true)
   }
 
@@ -336,8 +338,8 @@ const ResearchManagement = () => {
         // Add PDF file if selected
         if (formData.pdf) {
           formDataToSend.append('pdf', formData.pdf)
-        } else if (editingItem.filename && !formData.pdf) {
-          // If editing and had a PDF but now it's removed
+        } else if (originalItem?.filename && (!editingItem?.filename || editingItem?.filename === null)) {
+          // If original had a PDF but now it's been removed
           formDataToSend.append('removePdf', 'true')
         }
         
@@ -517,6 +519,7 @@ const ResearchManagement = () => {
       }
 
       setShowAddModal(false)
+      setOriginalItem(null)
       fetchResearchData()
     } catch (error) {
       console.error('Error saving research item:', error)
@@ -1246,7 +1249,10 @@ const ResearchManagement = () => {
                   {editingItem ? 'Edit' : 'Add'} {tabs.find(tab => tab.id === activeTab)?.name.slice(0, -1)}
                 </h3>
                 <button
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false)
+                    setOriginalItem(null)
+                  }}
                   className="text-gray-400 hover:text-gray-600"
                 >
                   <X className="w-6 h-6" />
@@ -1258,7 +1264,10 @@ const ResearchManagement = () => {
               {/* Action Buttons */}
               <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
                 <button
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false)
+                    setOriginalItem(null)
+                  }}
                   className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
