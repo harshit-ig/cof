@@ -744,7 +744,7 @@ const NewsAndEventsManagement = () => {
 
             {/* Options */}
             <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
-              <label className="flex items-center cursor-pointer">
+              <label className="flex items-center cursor-pointer group">
                 <input
                   type="checkbox"
                   name="isFeatured"
@@ -752,7 +752,10 @@ const NewsAndEventsManagement = () => {
                   onChange={handleChange}
                   className="rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                 />
-                <span className="ml-2 text-sm font-medium text-gray-700">Featured Article</span>
+                <span className="ml-2">
+                  <span className="text-sm font-medium text-gray-700">Featured Article</span>
+                  <span className="block text-xs text-gray-500">Show on homepage</span>
+                </span>
               </label>
 
               <label className="flex items-center cursor-pointer">
