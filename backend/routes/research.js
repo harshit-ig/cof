@@ -449,11 +449,34 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
       }
     });
 
+    // Handle PDF removal flag or new upload
+    const existingResearch = await Research.findById(req.params.id);
+    if (!existingResearch) {
+      return res.status(404).json({
+        success: false,
+        message: 'Research not found'
+      });
+    }
+
+    // If removePdf flag is set, delete the PDF
+    if (req.body.removePdf === 'true') {
+      if (existingResearch.filename) {
+        const oldPdfPath = path.join('uploads/documents/', existingResearch.filename);
+        if (fs.existsSync(oldPdfPath)) {
+          try {
+            fs.unlinkSync(oldPdfPath);
+            console.log('Deleted research PDF (user requested removal):', oldPdfPath);
+          } catch (err) {
+            console.error('Error deleting research PDF:', err);
+          }
+        }
+      }
+      cleanData.filename = '';
+      cleanData.originalName = '';
+    }
     // If PDF file is uploaded, add filename and originalName
-    if (req.file) {
-      // Fetch existing research to delete old PDF if it exists
-      const existingResearch = await Research.findById(req.params.id);
-      if (existingResearch && existingResearch.filename) {
+    else if (req.file) {
+      if (existingResearch.filename) {
         const oldPdfPath = path.join('uploads/documents/', existingResearch.filename);
         if (fs.existsSync(oldPdfPath)) {
           try {

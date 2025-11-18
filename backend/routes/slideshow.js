@@ -174,8 +174,24 @@ router.put('/:id', protect, upload.single('image'), async (req, res) => {
       isActive: isActive === 'true' || isActive === true
     };
 
+    // Handle image removal flag
+    if (req.body.removeImage === 'true') {
+      // Delete old image file if it exists
+      if (slide.image) {
+        const oldFilePath = path.join('uploads/slideshow/', path.basename(slide.image));
+        if (fs.existsSync(oldFilePath)) {
+          try {
+            fs.unlinkSync(oldFilePath);
+            console.log('Deleted slideshow image (user requested removal):', oldFilePath);
+          } catch (err) {
+            console.error('Error deleting slideshow image:', err);
+          }
+        }
+      }
+      updateData.image = '';
+    }
     // Update image if new one is uploaded
-    if (req.file) {
+    else if (req.file) {
       // Delete old image file if it exists
       if (slide.image) {
         const oldFilePath = path.join('uploads/slideshow/', path.basename(slide.image));

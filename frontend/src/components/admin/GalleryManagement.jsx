@@ -625,12 +625,24 @@ const GalleryManagement = () => {
                   required
                 />
                 {uploadForm.image && (
-                  <div className="mt-2">
+                  <div className="mt-2 relative">
                     <img
                       src={URL.createObjectURL(uploadForm.image)}
                       alt="Preview"
                       className="w-full h-32 object-cover rounded-lg"
                     />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setUploadForm({ ...uploadForm, image: null })
+                        const fileInput = document.querySelector('input[type="file"][accept="image/*"]')
+                        if (fileInput) fileInput.value = ''
+                      }}
+                      className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                      title="Remove image"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
                 )}
               </div>

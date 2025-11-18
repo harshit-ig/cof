@@ -168,11 +168,19 @@ router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) =
       order: parseInt(req.body.order) || 0
     };
 
-    // Handle logo upload
+    // Fetch existing partner first
+    const existingPartner = await Partner.findById(req.params.id);
+    if (!existingPartner) {
+      return res.status(404).json({
+        success: false,
+        message: 'Partner not found'
+      });
+    }
+
+    // Handle logo upload or removal
     if (req.file) {
-      // Fetch existing partner to get old logo filename
-      const existingPartner = await Partner.findById(req.params.id);
-      if (existingPartner && existingPartner.logo) {
+      // New logo uploaded - delete old one
+      if (existingPartner.logo) {
         const oldFilePath = path.join('uploads/partners/', path.basename(existingPartner.logo));
         if (fs.existsSync(oldFilePath)) {
           try {
@@ -184,8 +192,23 @@ router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) =
         }
       }
       updateData.logo = req.file.filename;
-    } else if (req.body.logo && req.body.logo !== 'undefined') {
+    } else if (req.body.logo && req.body.logo !== 'undefined' && req.body.logo !== '') {
+      // Keep existing logo
       updateData.logo = req.body.logo;
+    } else if (req.body.logo === '') {
+      // Logo was explicitly removed
+      if (existingPartner.logo) {
+        const oldFilePath = path.join('uploads/partners/', path.basename(existingPartner.logo));
+        if (fs.existsSync(oldFilePath)) {
+          try {
+            fs.unlinkSync(oldFilePath);
+            console.log('Deleted partner logo (user requested removal):', oldFilePath);
+          } catch (err) {
+            console.error('Error deleting partner logo:', err);
+          }
+        }
+      }
+      updateData.logo = '';
     }
 
     const partner = await Partner.findByIdAndUpdate(
@@ -193,13 +216,6 @@ router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) =
       updateData,
       { new: true, runValidators: true }
     );
-
-    if (!partner) {
-      return res.status(404).json({
-        success: false,
-        message: 'Partner not found'
-      });
-    }
 
     res.json({
       success: true,

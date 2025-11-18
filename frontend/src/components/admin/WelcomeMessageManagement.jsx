@@ -143,11 +143,15 @@ const WelcomeMessageManagement = () => {
     try {
       setSaving(true)
       
+      // Use welcomeData.deanPhoto as the source of truth (which gets cleared by handleRemovePhoto)
       let photoPath = welcomeData.deanPhoto
+      
+      // Only upload if there's a new file selected
       if (selectedFile) {
         photoPath = await uploadPhoto()
         if (!photoPath) return
       }
+      // If welcomeData.deanPhoto is empty (removed), photoPath will be empty string
 
       const payload = {
         key: 'dean-welcome-message',

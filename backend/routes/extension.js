@@ -337,9 +337,26 @@ router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1
       });
     }
 
+    // Handle PDF removal flag
+    if (req.body.removePdf === 'true') {
+      // Delete old PDF if it exists
+      if (existingExtension.filename) {
+        const oldPdfPath = path.join('uploads/documents/', existingExtension.filename);
+        if (fs.existsSync(oldPdfPath)) {
+          try {
+            fs.unlinkSync(oldPdfPath);
+            console.log('Deleted extension PDF (user requested removal):', oldPdfPath);
+          } catch (err) {
+            console.error('Error deleting extension PDF:', err);
+          }
+        }
+      }
+      cleanData.filename = '';
+      cleanData.originalName = '';
+    }
     // If PDF file is uploaded, add filename and originalName
     // Handle PDF file if present
-    if (req.files && req.files.pdf && req.files.pdf[0]) {
+    else if (req.files && req.files.pdf && req.files.pdf[0]) {
       // Delete old PDF if it exists
       if (existingExtension.filename) {
         const oldPdfPath = path.join('uploads/documents/', existingExtension.filename);
@@ -357,8 +374,24 @@ router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1
       console.log('PDF file uploaded:', req.files.pdf[0].filename);
     }
     
+    // Handle Image removal flag
+    if (req.body.removeImage === 'true') {
+      // Delete old image if it exists
+      if (existingExtension.imagePath) {
+        if (fs.existsSync(existingExtension.imagePath)) {
+          try {
+            fs.unlinkSync(existingExtension.imagePath);
+            console.log('Deleted extension image (user requested removal):', existingExtension.imagePath);
+          } catch (err) {
+            console.error('Error deleting extension image:', err);
+          }
+        }
+      }
+      cleanData.imageUrl = '';
+      cleanData.imagePath = '';
+    }
     // Handle Image file if present
-    if (req.files && req.files.image && req.files.image[0]) {
+    else if (req.files && req.files.image && req.files.image[0]) {
       // Delete old image if it exists
       if (existingExtension.imagePath) {
         if (fs.existsSync(existingExtension.imagePath)) {

@@ -127,6 +127,10 @@ const PartnersManagement = () => {
   const handleRemoveLogo = () => {
     setLogoFile(null)
     setLogoPreview('')
+    // Mark that logo should be removed
+    if (editingPartner) {
+      setEditingPartner(prev => ({ ...prev, logo: '' }))
+    }
     toast.success('Logo removed')
   }
 
@@ -142,9 +146,11 @@ const PartnersManagement = () => {
 
       if (logoFile) {
         submitData.append('logo', logoFile)
-      } else if (editingPartner && !logoFile) {
+      } else if (editingPartner && editingPartner.logo) {
+        // Only keep old logo if it wasn't removed
         submitData.append('logo', editingPartner.logo)
       }
+      // If editingPartner.logo is empty (removed), don't append logo field
 
       let response
       if (editingPartner) {

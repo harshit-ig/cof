@@ -222,11 +222,17 @@ const ExtensionManagement = () => {
       // Add PDF file if selected
       if (formData.pdf) {
         formDataToSend.append('pdf', formData.pdf)
+      } else if (editingItem && editingItem.filename && !formData.pdf) {
+        // If editing and had a PDF but now it's removed
+        formDataToSend.append('removePdf', 'true')
       }
       
       // Add Image file if selected
       if (formData.image) {
         formDataToSend.append('image', formData.image)
+      } else if (editingItem && editingItem.imageUrl && !formData.image) {
+        // If editing and had an image but now it's removed
+        formDataToSend.append('removeImage', 'true')
       }
       
       // Add section-specific fields

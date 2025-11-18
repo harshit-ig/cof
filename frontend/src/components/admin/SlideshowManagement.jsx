@@ -57,6 +57,9 @@ const SlideshowManagement = () => {
       
       if (formData.image) {
         submitData.append('image', formData.image)
+      } else if (editingSlide && editingSlide.image && !formData.image) {
+        // If editing and had an image but now it's removed
+        submitData.append('removeImage', 'true')
       }
 
       console.log('Submitting form data:', {

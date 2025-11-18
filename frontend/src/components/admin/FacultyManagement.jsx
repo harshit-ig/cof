@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Search, User, Mail, Phone, Award } from 'lucide-react'
+import { Plus, Edit, Trash2, Search, User, Mail, Phone, Award, X } from 'lucide-react'
 import { facultyAPI, uploadAPI, academicsAPI } from '../../services/api'
 import LoadingSpinner, { LoadingCard } from '../common/LoadingSpinner'
 import Modal, { ConfirmModal } from '../common/Modal'
@@ -161,6 +161,11 @@ const FacultyManagement = () => {
       console.error('Error deleting faculty:', error)
       toast.error(error.response?.data?.message || 'Failed to delete faculty')
     }
+  }
+
+  const handleRemoveImage = () => {
+    setFormData(prev => ({ ...prev, image: '' }))
+    toast.success('Image removed')
   }
 
   const handleImageUpload = async (e) => {
@@ -573,19 +578,29 @@ const FacultyManagement = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
               <div className="flex-shrink-0">
                 {formData.image ? (
-                  <img
-                    src={uploadAPI.getImageUrl(formData.image, 'faculty')}
-                    alt="Profile"
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-300"
-                    onError={(e) => {
-                      console.error('Image failed to load:', e.target.src)
-                      e.target.style.display = 'none'
-                      e.target.nextSibling.style.display = 'flex'
-                    }}
-                    onLoad={() => {
-                      console.log('Image loaded successfully:', uploadAPI.getImageUrl(formData.image, 'faculty'))
-                    }}
-                  />
+                  <div className="relative">
+                    <img
+                      src={uploadAPI.getImageUrl(formData.image, 'faculty')}
+                      alt="Profile"
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-gray-300"
+                      onError={(e) => {
+                        console.error('Image failed to load:', e.target.src)
+                        e.target.style.display = 'none'
+                        e.target.nextSibling.style.display = 'flex'
+                      }}
+                      onLoad={() => {
+                        console.log('Image loaded successfully:', uploadAPI.getImageUrl(formData.image, 'faculty'))
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute -top-1 -right-1 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                      title="Remove image"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
                 ) : null}
                 
                 {!formData.image && (

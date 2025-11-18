@@ -336,6 +336,9 @@ const ResearchManagement = () => {
         // Add PDF file if selected
         if (formData.pdf) {
           formDataToSend.append('pdf', formData.pdf)
+        } else if (editingItem.filename && !formData.pdf) {
+          // If editing and had a PDF but now it's removed
+          formDataToSend.append('removePdf', 'true')
         }
         
         // Add optional fields
