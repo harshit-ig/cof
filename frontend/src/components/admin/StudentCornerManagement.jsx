@@ -37,11 +37,11 @@ const StudentCornerManagement = () => {
     currentPosition: '',
     testimonial: '',
     achievements: [],
-    contact: '',
-    image: '',
-    pdfs: [], // Changed from single pdf to multiple pdfs
-    selectedDocuments: [] // For managing existing documents
-  })
+      contact: '',
+      image: '',
+      pdfs: [], // Changed from single pdf to multiple pdfs
+      selectedDocuments: [] // For managing existing documents
+    })
 
   const tabs = [
     { id: 'admission', name: 'Admission Guidelines', icon: GraduationCap },
@@ -378,14 +378,6 @@ const StudentCornerManagement = () => {
                   ))}
                 </div>
               )}
-              
-              {/* Legacy single PDF support */}
-              {editingItem?.filename && !editingItem?.documents?.length && (
-                <div className="mt-2 p-2 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
-                </div>
-              )}
             </FormGroup>
           </div>
         )
@@ -568,10 +560,31 @@ const StudentCornerManagement = () => {
               )}
               
               {/* Legacy single PDF support */}
-              {editingItem?.filename && !editingItem?.documents?.length && (
+              {editingItem?.filename && !editingItem?.documents?.length && !formData.removeLegacyPdf && (
                 <div className="mt-2 p-2 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <FileText className="w-4 h-4 text-gray-600" />
+                      <span className="text-sm text-gray-600">{editingItem.originalName || editingItem.filename}</span>
+                      <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
+                        <Download className="w-3 h-3" />
+                      </a>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (window.confirm('Are you sure you want to remove this document?')) {
+                          setFormData(prev => ({
+                            ...prev,
+                            removeLegacyPdf: true
+                          }))
+                        }
+                      }}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               )}
             </FormGroup>
@@ -745,14 +758,6 @@ const StudentCornerManagement = () => {
                   ))}
                 </div>
               )}
-              
-              {/* Legacy single PDF support */}
-              {editingItem?.filename && !editingItem?.documents?.length && (
-                <div className="mt-2 p-2 bg-gray-50 rounded">
-                  <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-                  <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">View Current PDF</a>
-                </div>
-              )}
             </FormGroup>
           </div>
         )
@@ -829,24 +834,6 @@ const StudentCornerManagement = () => {
                       </a>
                     </div>
                   ))}
-                </div>
-              </div>
-            ) : item.filename ? (
-              // Legacy single PDF support
-              <div className="mt-3">
-                <p className="text-xs text-gray-500 mb-1">PDF Document:</p>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-blue-500" />
-                  <span className="text-sm text-gray-700">{item.originalName || item.filename}</span>
-                  <a
-                    href={getDocumentUrl(item.filename)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
-                  >
-                    <Download className="w-3 h-3 mr-1" />
-                    View PDF
-                  </a>
                 </div>
               </div>
             ) : null}

@@ -182,12 +182,7 @@ router.post('/', protect, adminOnly, upload.array('pdfs', 10), async (req, res) 
       activities: Array.isArray(activities) ? activities : [],
       positions: Array.isArray(positions) ? positions : [],
       sortOrder: sortOrder || 0,
-      documents: documents,
-      // Legacy support - if only one file, also set filename/originalName
-      ...(req.files && req.files.length === 1 ? { 
-        filename: req.files[0].filename, 
-        originalName: req.files[0].originalname 
-      } : {})
+      documents: documents
     });
 
     const savedItem = await studentCornerItem.save();
@@ -289,12 +284,6 @@ router.put('/:id', protect, adminOnly, upload.array('pdfs', 10), async (req, res
       }));
       
       item.documents = [...item.documents, ...newDocuments];
-      
-      // Legacy support - if only one document exists, also set filename/originalName
-      if (item.documents.length === 1) {
-        item.filename = item.documents[0].filename;
-        item.originalName = item.documents[0].originalName;
-      }
     }
 
     const updatedItem = await item.save();

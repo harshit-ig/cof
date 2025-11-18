@@ -85,16 +85,6 @@ const studentCornerSchema = new mongoose.Schema({
     }
   }],
   
-  // Legacy single PDF support (for backward compatibility)
-  filename: {
-    type: String,
-    trim: true
-  },
-  originalName: {
-    type: String,
-    trim: true
-  },
-  
   // Common metadata
   isActive: {
     type: Boolean,
