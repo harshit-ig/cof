@@ -175,6 +175,19 @@ router.put('/:id', protect, upload.single('image'), async (req, res) => {
     
     // If new image is uploaded, update the image fields
     if (req.file) {
+      // Delete old image file if it exists
+      const existingGallery = await Gallery.findById(req.params.id);
+      if (existingGallery && existingGallery.imagePath) {
+        if (fs.existsSync(existingGallery.imagePath)) {
+          try {
+            fs.unlinkSync(existingGallery.imagePath);
+            console.log('Deleted old gallery image:', existingGallery.imagePath);
+          } catch (err) {
+            console.error('Error deleting old gallery image:', err);
+          }
+        }
+      }
+      
       // Construct imageUrl based on actual file destination
       const imagePath = req.file.path;
       const pathParts = imagePath.split('\\').join('/').split('/');

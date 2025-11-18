@@ -94,6 +94,16 @@ const WelcomeMessageManagement = () => {
     }
   }
 
+  const handleRemovePhoto = () => {
+    setSelectedFile(null)
+    setPhotoPreview('')
+    setWelcomeData(prev => ({
+      ...prev,
+      deanPhoto: ''
+    }))
+    toast.success('Photo removed')
+  }
+
   const uploadPhoto = async () => {
     if (!selectedFile) return null
 
@@ -255,18 +265,41 @@ const WelcomeMessageManagement = () => {
                   className="hidden"
                   id="dean-photo"
                 />
-                <label
-                  htmlFor="dean-photo"
-                  className="cursor-pointer flex flex-col items-center space-y-2"
-                >
-                  <Upload className="w-8 h-8 text-gray-400" />
-                  <span className="text-sm text-gray-600">
-                    Click to upload dean's photo
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    JPG, PNG up to 2MB
-                  </span>
-                </label>
+                {!photoPreview ? (
+                  <label
+                    htmlFor="dean-photo"
+                    className="cursor-pointer flex flex-col items-center space-y-2"
+                  >
+                    <Upload className="w-8 h-8 text-gray-400" />
+                    <span className="text-sm text-gray-600">
+                      Click to upload dean's photo
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      JPG, PNG up to 2MB
+                    </span>
+                  </label>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600">Photo uploaded</span>
+                      <button
+                        type="button"
+                        onClick={handleRemovePhoto}
+                        className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        <span className="text-sm">Remove</span>
+                      </button>
+                    </div>
+                    <label
+                      htmlFor="dean-photo"
+                      className="cursor-pointer text-sm text-blue-600 hover:text-blue-700 flex items-center justify-center"
+                    >
+                      <Upload className="w-4 h-4 mr-1" />
+                      Change Photo
+                    </label>
+                  </div>
+                )}
               </div>
             </div>
 

@@ -176,6 +176,18 @@ router.put('/:id', protect, upload.single('image'), async (req, res) => {
 
     // Update image if new one is uploaded
     if (req.file) {
+      // Delete old image file if it exists
+      if (slide.image) {
+        const oldFilePath = path.join('uploads/slideshow/', path.basename(slide.image));
+        if (fs.existsSync(oldFilePath)) {
+          try {
+            fs.unlinkSync(oldFilePath);
+            console.log('Deleted old slideshow image:', oldFilePath);
+          } catch (err) {
+            console.error('Error deleting old slideshow image:', err);
+          }
+        }
+      }
       updateData.image = `/uploads/slideshow/${req.file.filename}`;
     }
 

@@ -242,6 +242,14 @@ const IncubationManagement = () => {
     }
   };
 
+  const handleRemoveFile = (fileType) => {
+    setFormData(prev => ({
+      ...prev,
+      [fileType]: ''
+    }));
+    toast.success(`${fileType === 'image' ? 'Image' : 'Document'} removed`);
+  };
+
   const renderForm = () => {
     const currentTab = tabs.find(tab => tab.id === activeTab);
     const isPersonCategory = currentTab?.category === 'governing-body' || currentTab?.category === 'management-committee';
@@ -646,10 +654,20 @@ const IncubationManagement = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
             {formData.image && (
-              <div className="mt-2">
-                <p className="text-sm text-green-600 mb-2">
-                  ✓ Current image: {formData.image}
-                </p>
+              <div className="mt-2 space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm text-green-600">
+                    ✓ Current image: {formData.image}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFile('image')}
+                    className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span className="text-sm">Remove</span>
+                  </button>
+                </div>
                 <img 
                   src={uploadAPI.getImageUrl(formData.image, 'incubation')} 
                   alt="Profile" 
@@ -671,9 +689,19 @@ const IncubationManagement = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
             {formData.document && (
-              <p className="text-sm text-green-600 mt-1">
-                ✓ Current document: {formData.document}
-              </p>
+              <div className="flex items-center justify-between mt-2">
+                <p className="text-sm text-green-600">
+                  ✓ Current document: {formData.document}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFile('document')}
+                  className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span className="text-sm">Remove</span>
+                </button>
+              </div>
             )}
           </FormGroup>
         )}

@@ -451,6 +451,20 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
 
     // If PDF file is uploaded, add filename and originalName
     if (req.file) {
+      // Fetch existing research to delete old PDF if it exists
+      const existingResearch = await Research.findById(req.params.id);
+      if (existingResearch && existingResearch.filename) {
+        const oldPdfPath = path.join('uploads/documents/', existingResearch.filename);
+        if (fs.existsSync(oldPdfPath)) {
+          try {
+            fs.unlinkSync(oldPdfPath);
+            console.log('Deleted old research PDF:', oldPdfPath);
+          } catch (err) {
+            console.error('Error deleting old research PDF:', err);
+          }
+        }
+      }
+      
       cleanData.filename = req.file.filename;
       cleanData.originalName = req.file.originalname;
       console.log('PDF file uploaded:', req.file.filename);

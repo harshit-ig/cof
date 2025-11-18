@@ -124,6 +124,12 @@ const PartnersManagement = () => {
     }
   }
 
+  const handleRemoveLogo = () => {
+    setLogoFile(null)
+    setLogoPreview('')
+    toast.success('Logo removed')
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSaving(true)
@@ -503,25 +509,44 @@ const PartnersManagement = () => {
                     onChange={handleLogoSelect}
                     className="hidden"
                     id="logo-upload"
-                    required={!editingPartner}
+                    required={!editingPartner && !logoPreview}
                   />
-                  <label
-                    htmlFor="logo-upload"
-                    className="cursor-pointer flex flex-col items-center space-y-2"
-                  >
-                    {logoPreview ? (
+                  {!logoPreview ? (
+                    <label
+                      htmlFor="logo-upload"
+                      className="cursor-pointer flex flex-col items-center space-y-2"
+                    >
+                      <Upload className="w-8 h-8 text-gray-400" />
+                      <span className="text-sm text-gray-600">
+                        Click to upload logo
+                      </span>
+                    </label>
+                  ) : (
+                    <div className="space-y-3">
                       <img
                         src={logoPreview}
                         alt="Logo preview"
-                        className="w-24 h-24 object-contain border border-gray-200 rounded-lg"
+                        className="w-24 h-24 object-contain border border-gray-200 rounded-lg mx-auto"
                       />
-                    ) : (
-                      <Upload className="w-8 h-8 text-gray-400" />
-                    )}
-                    <span className="text-sm text-gray-600">
-                      {logoPreview ? 'Click to change logo' : 'Click to upload logo'}
-                    </span>
-                  </label>
+                      <div className="flex items-center justify-center space-x-3">
+                        <label
+                          htmlFor="logo-upload"
+                          className="cursor-pointer text-sm text-blue-600 hover:text-blue-700 flex items-center"
+                        >
+                          <Upload className="w-4 h-4 mr-1" />
+                          Change Logo
+                        </label>
+                        <button
+                          type="button"
+                          onClick={handleRemoveLogo}
+                          className="text-sm text-red-600 hover:text-red-700 flex items-center"
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" />
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

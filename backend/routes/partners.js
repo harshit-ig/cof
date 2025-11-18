@@ -170,6 +170,19 @@ router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) =
 
     // Handle logo upload
     if (req.file) {
+      // Fetch existing partner to get old logo filename
+      const existingPartner = await Partner.findById(req.params.id);
+      if (existingPartner && existingPartner.logo) {
+        const oldFilePath = path.join('uploads/partners/', path.basename(existingPartner.logo));
+        if (fs.existsSync(oldFilePath)) {
+          try {
+            fs.unlinkSync(oldFilePath);
+            console.log('Deleted old partner logo:', oldFilePath);
+          } catch (err) {
+            console.error('Error deleting old partner logo:', err);
+          }
+        }
+      }
       updateData.logo = req.file.filename;
     } else if (req.body.logo && req.body.logo !== 'undefined') {
       updateData.logo = req.body.logo;

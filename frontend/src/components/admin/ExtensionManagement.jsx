@@ -190,6 +190,14 @@ const ExtensionManagement = () => {
     }
   }
 
+  const handleRemoveFile = (type) => {
+    setFormData(prev => ({
+      ...prev,
+      [type]: null
+    }))
+    toast.success(`${type === 'pdf' ? 'PDF' : 'Image'} removed`)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     
@@ -877,10 +885,14 @@ const ExtensionManagement = () => {
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
                   />
                   {formData.image && (
-                    <span className="text-sm text-green-600">Image selected: {formData.image.name}</span>
-                  )}
-                  {editingItem?.imageUrl && !formData.image && (
-                    <span className="text-sm text-gray-600">Current image available</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile('image')}
+                      className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                    >
+                      <X className="w-4 h-4" />
+                      <span className="text-sm">Remove</span>
+                    </button>
                   )}
                 </div>
                 {formData.image && (
@@ -914,12 +926,22 @@ const ExtensionManagement = () => {
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   {formData.pdf && (
-                    <span className="text-sm text-green-600">File selected: {formData.pdf.name}</span>
-                  )}
-                  {editingItem?.filename && !formData.pdf && (
-                    <span className="text-sm text-gray-600">Current: {editingItem.originalName || editingItem.filename}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveFile('pdf')}
+                      className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                    >
+                      <X className="w-4 h-4" />
+                      <span className="text-sm">Remove</span>
+                    </button>
                   )}
                 </div>
+                {formData.pdf && (
+                  <p className="text-sm text-green-600 mt-2">File selected: {formData.pdf.name}</p>
+                )}
+                {editingItem?.filename && !formData.pdf && (
+                  <p className="text-sm text-gray-600 mt-2">Current: {editingItem.originalName || editingItem.filename}</p>
+                )}
               </div>
 
               {/* Tags */}

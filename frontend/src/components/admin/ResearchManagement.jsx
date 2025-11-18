@@ -304,6 +304,14 @@ const ResearchManagement = () => {
     }
   }
 
+  const handleRemovePdf = () => {
+    setFormData(prev => ({
+      ...prev,
+      pdf: null
+    }))
+    toast.success('PDF removed')
+  }
+
   const handleSave = async () => {
     if (!formData.title?.trim() || !formData.description?.trim()) {
       toast.error('Title and description are required')
@@ -841,36 +849,50 @@ const ResearchManagement = () => {
         {/* PDF Upload - Simple like FarmerResource */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDF Document</label>
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={(e) => {
-              const file = e.target.files[0]
-              if (file) {
-                if (file.type !== 'application/pdf') {
-                  toast.error('Please select a PDF file')
-                  return
-                }
-                if (file.size > 10 * 1024 * 1024) {
-                  toast.error('File size should be less than 10MB')
-                  return
-                }
-                handleInputChange('pdf', file)
-              }
-            }}
-            className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
-          {formData.pdf && (
-            <p className="mt-1 text-sm text-gray-600">Selected: {formData.pdf.name}</p>
-          )}
-          {editingItem && editingItem.filename && (
-            <div className="mt-2 p-2 bg-gray-50 rounded">
-              <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-              <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
-                View Current PDF
-              </a>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2">
+              <input
+                type="file"
+                accept=".pdf"
+                onChange={(e) => {
+                  const file = e.target.files[0]
+                  if (file) {
+                    if (file.type !== 'application/pdf') {
+                      toast.error('Please select a PDF file')
+                      return
+                    }
+                    if (file.size > 10 * 1024 * 1024) {
+                      toast.error('File size should be less than 10MB')
+                      return
+                    }
+                    handleInputChange('pdf', file)
+                  }
+                }}
+                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.pdf && (
+                <button
+                  type="button"
+                  onClick={handleRemovePdf}
+                  className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                >
+                  <X className="w-4 h-4" />
+                  <span className="text-sm">Remove</span>
+                </button>
+              )}
             </div>
-          )}
+            {formData.pdf && (
+              <p className="text-sm text-green-600">Selected: {formData.pdf.name}</p>
+            )}
+            {editingItem && editingItem.filename && (
+              <div className="p-2 bg-gray-50 rounded">
+                <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
+                <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
+                  View Current PDF
+                </a>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center">

@@ -328,9 +328,30 @@ router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1
 
     console.log('Cleaned data:', JSON.stringify(cleanData, null, 2));
 
+    // Fetch existing extension to delete old files
+    const existingExtension = await Extension.findById(req.params.id);
+    if (!existingExtension) {
+      return res.status(404).json({
+        success: false,
+        message: 'Extension item not found'
+      });
+    }
+
     // If PDF file is uploaded, add filename and originalName
     // Handle PDF file if present
     if (req.files && req.files.pdf && req.files.pdf[0]) {
+      // Delete old PDF if it exists
+      if (existingExtension.filename) {
+        const oldPdfPath = path.join('uploads/documents/', existingExtension.filename);
+        if (fs.existsSync(oldPdfPath)) {
+          try {
+            fs.unlinkSync(oldPdfPath);
+            console.log('Deleted old extension PDF:', oldPdfPath);
+          } catch (err) {
+            console.error('Error deleting old extension PDF:', err);
+          }
+        }
+      }
       cleanData.filename = req.files.pdf[0].filename;
       cleanData.originalName = req.files.pdf[0].originalname;
       console.log('PDF file uploaded:', req.files.pdf[0].filename);
@@ -338,6 +359,18 @@ router.put('/:id', protect, adminOnly, upload.fields([{ name: 'pdf', maxCount: 1
     
     // Handle Image file if present
     if (req.files && req.files.image && req.files.image[0]) {
+      // Delete old image if it exists
+      if (existingExtension.imagePath) {
+        if (fs.existsSync(existingExtension.imagePath)) {
+          try {
+            fs.unlinkSync(existingExtension.imagePath);
+            console.log('Deleted old extension image:', existingExtension.imagePath);
+          } catch (err) {
+            console.error('Error deleting old extension image:', err);
+          }
+        }
+      }
+      
       const imageFile = req.files.image[0];
       const imagePath = imageFile.path;
       // Extract directory from path to construct URL

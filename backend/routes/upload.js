@@ -199,7 +199,23 @@ router.delete('/:filename', protect, adminOnly, (req, res) => {
     }
 
     // Try to find and delete the file in all upload directories
-    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
+    // Keep this list in sync with middleware/upload.js (add new upload folders here as needed)
+    const uploadDirs = [
+      'uploads/images',
+      'uploads/documents',
+      'uploads/faculty',
+      'uploads/news',
+      'uploads/research',
+      'uploads/dean',
+      'uploads/gallery',
+      'uploads/partners',
+      'uploads/incubation',
+      'uploads/resumes',
+      'uploads/programs',
+      'uploads/farmers',
+      'uploads/infrastructure',
+      'uploads/slideshow'
+    ];
     let fileDeleted = false;
 
     for (const dir of uploadDirs) {
@@ -247,7 +263,23 @@ router.get('/info/:filename', protect, adminOnly, (req, res) => {
     }
 
     const fs = require('fs');
-    const uploadDirs = ['uploads/images', 'uploads/documents', 'uploads/faculty', 'uploads/news', 'uploads/research', 'uploads/dean'];
+    // Keep this list in sync with the delete route above
+    const uploadDirs = [
+      'uploads/images',
+      'uploads/documents',
+      'uploads/faculty',
+      'uploads/news',
+      'uploads/research',
+      'uploads/dean',
+      'uploads/gallery',
+      'uploads/partners',
+      'uploads/incubation',
+      'uploads/resumes',
+      'uploads/programs',
+      'uploads/farmers',
+      'uploads/infrastructure',
+      'uploads/slideshow'
+    ];
     
     for (const dir of uploadDirs) {
       const filePath = path.join(dir, filename);
