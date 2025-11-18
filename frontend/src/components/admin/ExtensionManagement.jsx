@@ -877,71 +877,103 @@ const ExtensionManagement = () => {
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Thumbnail Image (Optional)</label>
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handleFileChange('image', e)}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-                  />
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleFileChange('image', e)}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                    />
+                  </div>
                   {formData.image && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveFile('image')}
-                      className="text-red-600 hover:text-red-700 flex items-center space-x-1"
-                    >
-                      <X className="w-4 h-4" />
-                      <span className="text-sm">Remove</span>
-                    </button>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-green-600">New image selected: {formData.image.name}</p>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveFile('image')}
+                          className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                        >
+                          <X className="w-4 h-4" />
+                          <span className="text-sm">Remove</span>
+                        </button>
+                      </div>
+                      <img
+                        src={URL.createObjectURL(formData.image)}
+                        alt="Preview"
+                        className="w-32 h-32 object-cover rounded-lg border"
+                      />
+                    </div>
+                  )}
+                  {editingItem?.imageUrl && !formData.image && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm text-gray-600">Current image</p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEditingItem(prev => ({ ...prev, imageUrl: null }))
+                            toast.success('Image removed')
+                          }}
+                          className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                        >
+                          <X className="w-4 h-4" />
+                          <span className="text-sm">Remove</span>
+                        </button>
+                      </div>
+                      <img
+                        src={uploadAPI.getImageUrl(editingItem.imageUrl.split('/').pop(), 'images')}
+                        alt="Current image"
+                        className="w-32 h-32 object-cover rounded-lg border"
+                      />
+                    </div>
                   )}
                 </div>
-                {formData.image && (
-                  <div className="mt-3">
-                    <img
-                      src={URL.createObjectURL(formData.image)}
-                      alt="Preview"
-                      className="w-32 h-32 object-cover rounded-lg border"
-                    />
-                  </div>
-                )}
-                {editingItem?.imageUrl && !formData.image && (
-                  <div className="mt-3">
-                    <img
-                      src={uploadAPI.getImageUrl(editingItem.imageUrl.split('/').pop(), 'images')}
-                      alt="Current image"
-                      className="w-32 h-32 object-cover rounded-lg border"
-                    />
-                  </div>
-                )}
               </div>
 
               {/* PDF Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">PDF Document (Optional)</label>
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="file"
-                    accept=".pdf"
-                    onChange={(e) => handleFileChange('pdf', e)}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                  />
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-4">
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => handleFileChange('pdf', e)}
+                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                    />
+                  </div>
                   {formData.pdf && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveFile('pdf')}
-                      className="text-red-600 hover:text-red-700 flex items-center space-x-1"
-                    >
-                      <X className="w-4 h-4" />
-                      <span className="text-sm">Remove</span>
-                    </button>
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-green-600">New file selected: {formData.pdf.name}</p>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFile('pdf')}
+                        className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                      >
+                        <X className="w-4 h-4" />
+                        <span className="text-sm">Remove</span>
+                      </button>
+                    </div>
+                  )}
+                  {editingItem?.filename && !formData.pdf && (
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-gray-600">Current: {editingItem.originalName || editingItem.filename}</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingItem(prev => ({ ...prev, filename: null, originalName: null }))
+                          toast.success('PDF removed')
+                        }}
+                        className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                      >
+                        <X className="w-4 h-4" />
+                        <span className="text-sm">Remove</span>
+                      </button>
+                    </div>
                   )}
                 </div>
-                {formData.pdf && (
-                  <p className="text-sm text-green-600 mt-2">File selected: {formData.pdf.name}</p>
-                )}
-                {editingItem?.filename && !formData.pdf && (
-                  <p className="text-sm text-gray-600 mt-2">Current: {editingItem.originalName || editingItem.filename}</p>
-                )}
               </div>
 
               {/* Tags */}

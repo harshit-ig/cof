@@ -874,7 +874,7 @@ const ResearchManagement = () => {
                 <button
                   type="button"
                   onClick={handleRemovePdf}
-                  className="text-red-600 hover:text-red-700 flex items-center space-x-1"
+                  className="text-red-600 hover:text-red-700 flex items-center space-x-1 flex-shrink-0"
                 >
                   <X className="w-4 h-4" />
                   <span className="text-sm">Remove</span>
@@ -882,14 +882,29 @@ const ResearchManagement = () => {
               )}
             </div>
             {formData.pdf && (
-              <p className="text-sm text-green-600">Selected: {formData.pdf.name}</p>
+              <p className="text-sm text-green-600">New file selected: {formData.pdf.name}</p>
             )}
-            {editingItem && editingItem.filename && (
-              <div className="p-2 bg-gray-50 rounded">
-                <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
-                <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
-                  View Current PDF
-                </a>
+            {editingItem && editingItem.filename && !formData.pdf && (
+              <div className="p-2 bg-gray-50 rounded space-y-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600">Current file: {editingItem.originalName || editingItem.filename}</p>
+                    <a href={getDocumentUrl(editingItem.filename)} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 text-sm">
+                      View Current PDF
+                    </a>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setEditingItem(prev => ({ ...prev, filename: null, originalName: null }))
+                      toast.success('PDF removed')
+                    }}
+                    className="text-red-600 hover:text-red-700 flex items-center space-x-1 flex-shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                    <span className="text-sm">Remove</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
