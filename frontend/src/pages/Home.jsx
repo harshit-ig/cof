@@ -399,7 +399,7 @@ const Home = () => {
                           <h3 className="text-lg font-semibold text-gray-900">{notice.title}</h3>
                         </div>
                         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200/50 mb-4">
-                          <p className="text-gray-700 leading-relaxed">
+                          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                             {notice.message}
                           </p>
                         </div>

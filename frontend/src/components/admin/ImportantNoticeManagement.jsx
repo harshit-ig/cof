@@ -303,7 +303,7 @@ const ImportantNoticeManagement = () => {
               key={notice.id}
               className={`transition-all ${!notice.isActive ? 'opacity-60' : ''}`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:justify-between gap-4">
                 <div className="flex-grow">
                   <div className="flex items-center mb-2">
                     <Bell className="w-5 h-5 text-blue-600 mr-2" />
@@ -317,7 +317,7 @@ const ImportantNoticeManagement = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 ml-4">
+                <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                   <button
                     onClick={() => toggleActive(notice.id)}
                     className={`p-2 rounded-lg ${
