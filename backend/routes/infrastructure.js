@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const Infrastructure = require('../models/Infrastructure');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -71,10 +73,29 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
 
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const infrastructure = await Infrastructure.findByIdAndDelete(req.params.id);
+    const infrastructure = await Infrastructure.findById(req.params.id);
     if (!infrastructure) {
       return res.status(404).json({ success: false, message: 'Infrastructure not found' });
     }
+
+    // Delete all associated image files
+    if (infrastructure.images && infrastructure.images.length > 0) {
+      infrastructure.images.forEach(imagePath => {
+        if (imagePath) {
+          const filePath = path.join('uploads/infrastructure/', path.basename(imagePath));
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted image file:', filePath);
+            } catch (err) {
+              console.error('Error deleting image file:', err);
+            }
+          }
+        }
+      });
+    }
+
+    await Infrastructure.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Infrastructure deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });

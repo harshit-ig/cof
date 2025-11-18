@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const Partner = require('../models/Partner');
 const { protect, adminOnly } = require('../middleware/auth');
 const { upload } = require('../middleware/upload');
@@ -213,7 +215,7 @@ router.put('/:id', protect, adminOnly, upload.single('logo'), async (req, res) =
 // @access  Private (Admin only)
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const partner = await Partner.findByIdAndDelete(req.params.id);
+    const partner = await Partner.findById(req.params.id);
 
     if (!partner) {
       return res.status(404).json({
@@ -221,6 +223,21 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
         message: 'Partner not found'
       });
     }
+
+    // Delete the physical logo file if it exists
+    if (partner.logo) {
+      const filePath = path.join('uploads/partners/', path.basename(partner.logo));
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted file:', filePath);
+        } catch (err) {
+          console.error('Error deleting file:', err);
+        }
+      }
+    }
+
+    await Partner.findByIdAndDelete(req.params.id);
 
     res.json({
       success: true,
@@ -249,6 +266,24 @@ router.delete('/bulk/delete', protect, adminOnly, async (req, res) => {
         message: 'No partner IDs provided'
       });
     }
+
+    // Fetch all partners to delete their files
+    const partners = await Partner.find({ _id: { $in: ids } });
+    
+    // Delete all associated logo files
+    partners.forEach(partner => {
+      if (partner.logo) {
+        const filePath = path.join('uploads/partners/', path.basename(partner.logo));
+        if (fs.existsSync(filePath)) {
+          try {
+            fs.unlinkSync(filePath);
+            console.log('Deleted file:', filePath);
+          } catch (err) {
+            console.error('Error deleting file:', err);
+          }
+        }
+      }
+    });
 
     const result = await Partner.deleteMany({
       _id: { $in: ids }

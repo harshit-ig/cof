@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Research = require('../models/Research');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -549,10 +550,46 @@ router.put('/:id', protect, adminOnly, upload.single('pdf'), async (req, res) =>
 
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const research = await Research.findByIdAndDelete(req.params.id);
+    const research = await Research.findById(req.params.id);
     if (!research) {
       return res.status(404).json({ success: false, message: 'Research not found' });
     }
+
+    // Delete all associated image files
+    if (research.images && research.images.length > 0) {
+      research.images.forEach(imagePath => {
+        if (imagePath) {
+          const filePath = path.join('uploads/research/', path.basename(imagePath));
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted image file:', filePath);
+            } catch (err) {
+              console.error('Error deleting image file:', err);
+            }
+          }
+        }
+      });
+    }
+
+    // Delete all associated document files
+    if (research.documents && research.documents.length > 0) {
+      research.documents.forEach(docPath => {
+        if (docPath) {
+          const filePath = path.join('uploads/documents/', path.basename(docPath));
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted document file:', filePath);
+            } catch (err) {
+              console.error('Error deleting document file:', err);
+            }
+          }
+        }
+      });
+    }
+
+    await Research.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Research deleted successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error' });

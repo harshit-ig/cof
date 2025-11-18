@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const { body, validationResult, query } = require('express-validator');
 const Faculty = require('../models/Faculty');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -203,7 +205,7 @@ router.put('/:id', protect, adminOnly, [
 // @access  Private (Admin only)
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const faculty = await Faculty.findByIdAndDelete(req.params.id);
+    const faculty = await Faculty.findById(req.params.id);
 
     if (!faculty) {
       return res.status(404).json({
@@ -211,6 +213,21 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
         message: 'Faculty member not found'
       });
     }
+
+    // Delete the physical image file if it exists
+    if (faculty.image) {
+      const filePath = path.join('uploads/faculty/', path.basename(faculty.image));
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted file:', filePath);
+        } catch (err) {
+          console.error('Error deleting file:', err);
+        }
+      }
+    }
+
+    await Faculty.findByIdAndDelete(req.params.id);
 
     res.json({
       success: true,

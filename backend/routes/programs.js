@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const { body, validationResult, query } = require('express-validator');
 const Program = require('../models/Program');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -287,6 +289,36 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
       return res.status(404).json({
         success: false,
         message: 'Program not found'
+      });
+    }
+
+    // Delete the physical image file if it exists
+    if (program.image) {
+      const filePath = path.join('uploads/programs/', path.basename(program.image));
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted file:', filePath);
+        } catch (err) {
+          console.error('Error deleting file:', err);
+        }
+      }
+    }
+
+    // Delete any document files if they exist
+    if (program.documents && program.documents.length > 0) {
+      program.documents.forEach(docPath => {
+        if (docPath) {
+          const filePath = path.join('uploads/programs/', path.basename(docPath));
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted document:', filePath);
+            } catch (err) {
+              console.error('Error deleting document:', err);
+            }
+          }
+        }
       });
     }
 

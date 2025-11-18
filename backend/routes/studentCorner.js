@@ -2,6 +2,7 @@ const express = require('express');
 const StudentCorner = require('../models/StudentCorner');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const { protect, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
@@ -270,6 +271,22 @@ router.put('/:id', protect, adminOnly, upload.array('pdfs', 10), async (req, res
       console.log('Documents to remove:', docsToRemove);
       console.log('Current documents count:', item.documents.length);
       
+      // Delete physical files before removing from database
+      docsToRemove.forEach(docId => {
+        const doc = item.documents.find(d => d._id.toString() === docId);
+        if (doc && doc.filename) {
+          const filePath = path.join('uploads/documents/', doc.filename);
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted file:', filePath);
+            } catch (err) {
+              console.error('Error deleting file:', err);
+            }
+          }
+        }
+      });
+      
       item.documents = item.documents.filter(doc => !docsToRemove.includes(doc._id.toString()));
       console.log('Documents count after removal:', item.documents.length);
     }
@@ -331,6 +348,23 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
       return res.status(404).json({
         success: false,
         message: 'Student corner item not found'
+      });
+    }
+
+    // Delete all associated document files
+    if (item.documents && item.documents.length > 0) {
+      item.documents.forEach(doc => {
+        if (doc.filename) {
+          const filePath = path.join('uploads/documents/', doc.filename);
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted file:', filePath);
+            } catch (err) {
+              console.error('Error deleting file:', err);
+            }
+          }
+        }
       });
     }
 
@@ -438,14 +472,21 @@ router.delete('/:id/documents/:docId', protect, adminOnly, async (req, res) => {
 
     // Remove the document from the array
     const removedDoc = item.documents.splice(documentIndex, 1)[0];
+    
+    // Delete the physical file from uploads/documents/
+    if (removedDoc.filename) {
+      const filePath = path.join('uploads/documents/', removedDoc.filename);
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted file:', filePath);
+        } catch (err) {
+          console.error('Error deleting file:', err);
+        }
+      }
+    }
+    
     await item.save();
-
-    // TODO: Optionally delete the physical file from uploads/documents/
-    // const fs = require('fs');
-    // const filePath = path.join('uploads/documents/', removedDoc.filename);
-    // if (fs.existsSync(filePath)) {
-    //   fs.unlinkSync(filePath);
-    // }
 
     res.json({
       success: true,

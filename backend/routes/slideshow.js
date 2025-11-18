@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Slideshow = require('../models/Slideshow');
 const { protect } = require('../middleware/auth');
 
@@ -208,6 +209,19 @@ router.delete('/:id', protect, async (req, res) => {
         success: false,
         message: 'Slide not found'
       });
+    }
+
+    // Delete the physical file if it exists
+    if (slide.image) {
+      const filePath = path.join('uploads/slideshow/', path.basename(slide.image));
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted file:', filePath);
+        } catch (err) {
+          console.error('Error deleting file:', err);
+        }
+      }
     }
 
     await Slideshow.findByIdAndDelete(req.params.id);

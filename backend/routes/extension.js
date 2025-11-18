@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const Extension = require('../models/Extension');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -483,6 +484,31 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
         success: false,
         message: 'Extension item not found'
       });
+    }
+
+    // Delete the physical PDF file if it exists
+    if (extension.filename) {
+      const docPath = path.join('uploads/documents/', extension.filename);
+      if (fs.existsSync(docPath)) {
+        try {
+          fs.unlinkSync(docPath);
+          console.log('Deleted document file:', docPath);
+        } catch (err) {
+          console.error('Error deleting document file:', err);
+        }
+      }
+    }
+
+    // Delete the physical image file if it exists
+    if (extension.imagePath) {
+      if (fs.existsSync(extension.imagePath)) {
+        try {
+          fs.unlinkSync(extension.imagePath);
+          console.log('Deleted image file:', extension.imagePath);
+        } catch (err) {
+          console.error('Error deleting image file:', err);
+        }
+      }
     }
 
     await Extension.findByIdAndDelete(req.params.id);

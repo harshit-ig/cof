@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const nodemailer = require('nodemailer');
 const Alumni = require('../models/Alumni');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -85,10 +87,25 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin)
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const alumniItem = await Alumni.findByIdAndDelete(req.params.id);
+    const alumniItem = await Alumni.findById(req.params.id);
     if (!alumniItem) {
       return res.status(404).json({ success: false, message: 'Alumni item not found' });
     }
+
+    // Delete the physical image file if it exists
+    if (alumniItem.image) {
+      const filePath = path.join('uploads/images/', path.basename(alumniItem.image));
+      if (fs.existsSync(filePath)) {
+        try {
+          fs.unlinkSync(filePath);
+          console.log('Deleted image file:', filePath);
+        } catch (err) {
+          console.error('Error deleting image file:', err);
+        }
+      }
+    }
+
+    await Alumni.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Alumni item deleted successfully' });
   } catch (error) {
     console.error('Delete alumni error:', error);

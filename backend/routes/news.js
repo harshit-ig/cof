@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 const { body, validationResult, query } = require('express-validator');
 const NewsEvent = require('../models/NewsEvent');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -450,6 +451,27 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
       return res.status(404).json({
         success: false,
         message: 'News/Event not found'
+      });
+    }
+
+    // Delete all associated image files
+    if (newsEvent.images && newsEvent.images.length > 0) {
+      newsEvent.images.forEach(imagePath => {
+        if (imagePath) {
+          // Handle both full paths and relative paths
+          const filePathToDelete = imagePath.startsWith('uploads/') 
+            ? imagePath 
+            : path.join('uploads/news/', path.basename(imagePath));
+          
+          if (fs.existsSync(filePathToDelete)) {
+            try {
+              fs.unlinkSync(filePathToDelete);
+              console.log('Deleted file:', filePathToDelete);
+            } catch (err) {
+              console.error('Error deleting file:', err);
+            }
+          }
+        }
       });
     }
 

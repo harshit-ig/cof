@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const nodemailer = require('nodemailer');
 const Incubation = require('../models/Incubation');
 const { protect, adminOnly } = require('../middleware/auth');
@@ -320,6 +321,32 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
         success: false,
         message: 'Incubation item not found'
       });
+    }
+
+    // Delete the physical image file if it exists
+    if (incubationItem.image) {
+      const imagePath = path.join('uploads/images/', path.basename(incubationItem.image));
+      if (fs.existsSync(imagePath)) {
+        try {
+          fs.unlinkSync(imagePath);
+          console.log('Deleted image file:', imagePath);
+        } catch (err) {
+          console.error('Error deleting image file:', err);
+        }
+      }
+    }
+
+    // Delete the physical document file if it exists
+    if (incubationItem.filename) {
+      const docPath = path.join('uploads/incubation/', incubationItem.filename);
+      if (fs.existsSync(docPath)) {
+        try {
+          fs.unlinkSync(docPath);
+          console.log('Deleted document file:', docPath);
+        } catch (err) {
+          console.error('Error deleting document file:', err);
+        }
+      }
     }
 
     await Incubation.findByIdAndDelete(req.params.id);

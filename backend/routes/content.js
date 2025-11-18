@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
 const Content = require('../models/Content');
 const { protect, adminOnly } = require('../middleware/auth');
 
@@ -188,7 +190,7 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin only)
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
-    const content = await Content.findByIdAndDelete(req.params.id);
+    const content = await Content.findById(req.params.id);
 
     if (!content) {
       return res.status(404).json({
@@ -196,6 +198,25 @@ router.delete('/:id', protect, adminOnly, async (req, res) => {
         message: 'Content not found'
       });
     }
+
+    // Delete all associated image files
+    if (content.images && content.images.length > 0) {
+      content.images.forEach(imagePath => {
+        if (imagePath) {
+          const filePath = path.join('uploads/images/', path.basename(imagePath));
+          if (fs.existsSync(filePath)) {
+            try {
+              fs.unlinkSync(filePath);
+              console.log('Deleted image file:', filePath);
+            } catch (err) {
+              console.error('Error deleting image file:', err);
+            }
+          }
+        }
+      });
+    }
+
+    await Content.findByIdAndDelete(req.params.id);
 
     res.json({
       success: true,
