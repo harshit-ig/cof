@@ -17,6 +17,7 @@ const ExtensionManagement = () => {
   const [activeTab, setActiveTab] = useState('farmer-training')
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
+  const [originalItem, setOriginalItem] = useState(null)
   const [formData, setFormData] = useState({})
 
   const tabs = [
@@ -138,6 +139,7 @@ const ExtensionManagement = () => {
       tags: item.tags || []
     }
     setEditingItem(item)
+    setOriginalItem({ ...item }) // Store original for comparison
     setFormData(formattedData)
     setShowAddModal(true)
   }
@@ -222,16 +224,16 @@ const ExtensionManagement = () => {
       // Add PDF file if selected
       if (formData.pdf) {
         formDataToSend.append('pdf', formData.pdf)
-      } else if (editingItem && editingItem.filename && !formData.pdf) {
-        // If editing and had a PDF but now it's removed
+      } else if (originalItem?.filename && (!editingItem?.filename || editingItem?.filename === null)) {
+        // If original had a PDF but now it's been removed (editingItem.filename set to null)
         formDataToSend.append('removePdf', 'true')
       }
       
       // Add Image file if selected
       if (formData.image) {
         formDataToSend.append('image', formData.image)
-      } else if (editingItem && editingItem.imageUrl && !formData.image) {
-        // If editing and had an image but now it's removed
+      } else if (originalItem?.imageUrl && (!editingItem?.imageUrl || editingItem?.imageUrl === null)) {
+        // If original had an image but now it's been removed (editingItem.imageUrl set to null)
         formDataToSend.append('removeImage', 'true')
       }
       
@@ -307,6 +309,7 @@ const ExtensionManagement = () => {
 
       setShowAddModal(false)
       setEditingItem(null)
+      setOriginalItem(null)
       setFormData(getDefaultFormData(activeTab))
       fetchExtensions()
     } catch (error) {
@@ -320,6 +323,7 @@ const ExtensionManagement = () => {
   const handleCloseModal = () => {
     setShowAddModal(false)
     setEditingItem(null)
+    setOriginalItem(null)
     setFormData(getDefaultFormData(activeTab))
   }
 
