@@ -14,6 +14,11 @@ const Partner = require('./models/Partner');
 const FarmerResource = require('./models/FarmerResource');
 const Incubation = require('./models/Incubation');
 const Content = require('./models/Content');
+const StudentCorner = require('./models/StudentCorner');
+const Resource = require('./models/Resource');
+const Infrastructure = require('./models/Infrastructure');
+const Extension = require('./models/Extension');
+const Alumni = require('./models/Alumni');
 
 // Configuration
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
@@ -136,16 +141,70 @@ async function collectReferencedFiles() {
     });
     log(`  ✓ Incubation: ${incubations.length} records`, 'green');
 
-    // Content - images array
-    const contents = await Content.find({}).select('images');
+    // Content - images array and metadata (which may contain image paths)
+    const contents = await Content.find({}).select('images metadata');
     contents.forEach(c => {
       if (c.images && Array.isArray(c.images)) {
         c.images.forEach(img => {
           if (img.url) referencedFiles.add(img.url);
         });
       }
+      // Check metadata for any image references (e.g., dean photo)
+      if (c.metadata && typeof c.metadata === 'object') {
+        Object.values(c.metadata).forEach(value => {
+          if (typeof value === 'string' && (value.includes('uploads/') || value.includes('.jpg') || value.includes('.png') || value.includes('.jpeg'))) {
+            referencedFiles.add(value);
+          }
+        });
+      }
     });
     log(`  ✓ Content: ${contents.length} records`, 'green');
+
+    // StudentCorner - documents array with filename
+    const studentCorners = await StudentCorner.find({}).select('documents');
+    studentCorners.forEach(s => {
+      if (s.documents && Array.isArray(s.documents)) {
+        s.documents.forEach(doc => {
+          if (doc.filename) referencedFiles.add(doc.filename);
+        });
+      }
+    });
+    log(`  ✓ Student Corner: ${studentCorners.length} records`, 'green');
+
+    // Resource - fileUrl and fileName
+    const resources = await Resource.find({}).select('fileUrl fileName');
+    resources.forEach(r => {
+      if (r.fileUrl) referencedFiles.add(r.fileUrl);
+      if (r.fileName) referencedFiles.add(r.fileName);
+    });
+    log(`  ✓ Resources: ${resources.length} records`, 'green');
+
+    // Infrastructure - images array
+    const infrastructures = await Infrastructure.find({}).select('images');
+    infrastructures.forEach(i => {
+      if (i.images && Array.isArray(i.images)) {
+        i.images.forEach(img => {
+          if (img.url) referencedFiles.add(img.url);
+        });
+      }
+    });
+    log(`  ✓ Infrastructure: ${infrastructures.length} records`, 'green');
+
+    // Extension - filename, imageUrl, imagePath
+    const extensions = await Extension.find({}).select('filename imageUrl imagePath');
+    extensions.forEach(e => {
+      if (e.filename) referencedFiles.add(e.filename);
+      if (e.imageUrl) referencedFiles.add(e.imageUrl);
+      if (e.imagePath) referencedFiles.add(e.imagePath);
+    });
+    log(`  ✓ Extension: ${extensions.length} records`, 'green');
+
+    // Alumni - image field
+    const alumni = await Alumni.find({}).select('image');
+    alumni.forEach(a => {
+      if (a.image) referencedFiles.add(a.image);
+    });
+    log(`  ✓ Alumni: ${alumni.length} records`, 'green');
 
     stats.referencedFiles = referencedFiles.size;
     log(`\n✅ Found ${referencedFiles.size} referenced files in database`, 'green');
@@ -205,16 +264,27 @@ async function getAllFiles(dirPath, arrayOfFiles = []) {
 // Check if a file is referenced in the database
 function isFileReferenced(filePath, referencedFiles) {
   const normalized = normalizeFilePath(filePath);
+  const basename = path.basename(filePath);
   
   // Check various formats that might be stored in DB
   const possibleFormats = [
     normalized,
     `/uploads/${normalized}`,
     `uploads/${normalized}`,
-    path.basename(filePath),
+    basename,
     `/${normalized}`,
-    normalized.replace(/\//g, '\\')
+    normalized.replace(/\//g, '\\'),
+    `/uploads/${basename}`,
+    `uploads/${basename}`
   ];
+  
+  // Also check if any referenced file ends with this filename
+  // This catches cases where the path format differs
+  for (const refFile of referencedFiles) {
+    if (refFile.endsWith(basename) || refFile.endsWith(normalized)) {
+      return true;
+    }
+  }
 
   for (const format of possibleFormats) {
     if (referencedFiles.has(format)) {
