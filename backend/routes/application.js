@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const nodemailer = require('nodemailer')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const { queueEmail } = require('../services/emailQueue')
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -36,19 +36,7 @@ const upload = multer({
   }
 })
 
-// Email configuration
-const createTransporter = () => {
-  // Use environment variables for email configuration
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  })
-}
+
 
 // @route   POST /api/application/submit
 // @desc    Submit application form
@@ -180,21 +168,19 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
       `
     }
 
-    // Send emails
+    // Queue emails
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const transporter = createTransporter()
-      
       try {
-        // Send to admin
-        await transporter.sendMail(adminMailOptions)
+        // Queue emails (non-blocking)
+        await Promise.all([
+          queueEmail(adminMailOptions),
+          queueEmail(applicantMailOptions)
+        ])
         
-        // Send confirmation to applicant
-        await transporter.sendMail(applicantMailOptions)
-        
-        console.log('Application emails sent successfully')
+        console.log('Application emails queued successfully')
       } catch (emailError) {
-        console.error('Error sending emails:', emailError)
-        // Continue even if email fails
+        console.error('Error queueing emails:', emailError)
+        // Continue even if email queueing fails
       }
     } else {
       console.log('Email configuration not set up. Application received but emails not sent.')

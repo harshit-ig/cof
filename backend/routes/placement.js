@@ -1,8 +1,8 @@
 const express = require('express')
 const multer = require('multer')
-const nodemailer = require('nodemailer')
 const path = require('path')
 const fs = require('fs')
+const { queueEmail } = require('../services/emailQueue')
 require('dotenv').config()
 
 const router = express.Router()
@@ -50,18 +50,7 @@ const upload = multer({
   fileFilter: fileFilter
 })
 
-// Configure nodemailer
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_SECURE === 'true', // true for 465, false for other ports
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  })
-}
+
 
 // Email templates
 const createEmailTemplate = (type, formData) => {
@@ -395,10 +384,6 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
     console.log('Creating email template for type:', type)
     const adminEmailTemplate = createEmailTemplate(type, req.body)
     const applicantEmailTemplate = createApplicantEmailTemplate(type, req.body)
-    
-    // Create transporter
-    console.log('Creating email transporter...')
-    const transporter = createTransporter()
 
     // Admin email options
     const adminMailOptions = {
@@ -422,11 +407,11 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
       html: applicantEmailTemplate.html
     }
 
-    console.log('Sending emails to HR and applicant...')
-    // Send both emails
+    console.log('Queueing emails to HR and applicant...')
+    // Queue both emails (non-blocking)
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(applicantMailOptions)
+      queueEmail(adminMailOptions),
+      queueEmail(applicantMailOptions)
     ])
     console.log('Emails sent successfully')
 

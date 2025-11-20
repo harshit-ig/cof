@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const nodemailer = require('nodemailer');
 const Incubation = require('../models/Incubation');
 const { protect, adminOnly } = require('../middleware/auth');
+const { queueEmail } = require('../services/emailQueue');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -380,14 +380,7 @@ router.post('/register', upload.single('businessPlan'), async (req, res) => {
       message
     } = req.body;
 
-    // Create email transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+
 
     // Prepare business plan attachment if provided
     const attachments = [];
@@ -580,10 +573,10 @@ router.post('/register', upload.single('businessPlan'), async (req, res) => {
       `
     };
 
-    // Send both emails
+    // Queue both emails
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(applicantMailOptions)
+      queueEmail(adminMailOptions),
+      queueEmail(applicantMailOptions)
     ]);
 
     res.json({

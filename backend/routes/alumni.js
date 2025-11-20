@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const nodemailer = require('nodemailer');
 const Alumni = require('../models/Alumni');
 const { protect, adminOnly } = require('../middleware/auth');
+const { queueEmail } = require('../services/emailQueue');
 
 const router = express.Router();
 
@@ -146,14 +146,7 @@ router.post('/register-event', async (req, res) => {
       });
     }
 
-    // Create email transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
-    });
+
 
     // Admin notification email
     const adminMailOptions = {
@@ -302,10 +295,10 @@ router.post('/register-event', async (req, res) => {
       `
     };
 
-    // Send both emails
+    // Queue both emails
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(applicantMailOptions)
+      queueEmail(adminMailOptions),
+      queueEmail(applicantMailOptions)
     ]);
 
     res.json({

@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const nodemailer = require('nodemailer')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const FarmerResource = require('../models/FarmerResource')
 const { protect, adminOnly } = require('../middleware/auth')
+const { queueEmail } = require('../services/emailQueue')
 
 // Configure multer for PDF uploads
 const storage = multer.diskStorage({
@@ -41,14 +41,7 @@ const upload = multer({
   }
 })
 
-// Create transporter using environment variables
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-})
+
 
 // Advisory Services Endpoint
 router.post('/advisory', async (req, res) => {
@@ -166,10 +159,10 @@ router.post('/advisory', async (req, res) => {
       `
     }
 
-    // Send emails
+    // Queue emails
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(farmerMailOptions)
+      queueEmail(adminMailOptions),
+      queueEmail(farmerMailOptions)
     ])
 
     res.status(200).json({ 
@@ -318,10 +311,10 @@ router.post('/training', async (req, res) => {
       `
     }
 
-    // Send emails
+    // Queue emails
     await Promise.all([
-      transporter.sendMail(adminMailOptions),
-      transporter.sendMail(participantMailOptions)
+      queueEmail(adminMailOptions),
+      queueEmail(participantMailOptions)
     ])
 
     res.status(200).json({ 
