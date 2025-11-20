@@ -409,11 +409,11 @@ router.post('/submit', upload.single('resume'), async (req, res) => {
 
     console.log('Queueing emails to HR and applicant...')
     // Queue both emails (non-blocking)
-    await Promise.all([
+    const [adminJobId, applicantJobId] = await Promise.all([
       queueEmail(adminMailOptions),
       queueEmail(applicantMailOptions)
     ])
-    console.log('Emails sent successfully')
+    console.log(`Emails queued successfully - Admin: ${adminJobId}, Applicant: ${applicantJobId}`)
 
     // Optionally, you can also save the application to a database here
     // For now, we'll just send the email

@@ -10,6 +10,15 @@ const connectDB = require('./config/database');
 // Connect to database
 connectDB();
 
+// Initialize email queue
+try {
+  require('./services/emailQueue');
+  console.log('Email queue initialized');
+} catch (error) {
+  console.error('Failed to initialize email queue:', error.message);
+  console.log('Email functionality will not work without Redis');
+}
+
 const app = express();
 
 // Security middleware
@@ -125,6 +134,18 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM received, closing gracefully...');
+  try {
+    const { closeQueue } = require('./services/emailQueue');
+    await closeQueue();
+  } catch (error) {
+    console.error('Error closing queue:', error);
+  }
+  process.exit(0);
 });
 
 module.exports = app;
