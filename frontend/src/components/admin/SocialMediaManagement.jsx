@@ -272,7 +272,7 @@ const SocialMediaManagement = () => {
                   onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={formData.platform === 'linkedin' 
-                      ? 'https://www.linkedin.com/posts/...'
+                      ? 'https://www.linkedin.com/embed/feed/... ( get it from the embed src )'
                       : formData.platform === 'twitter'
                         ? 'https://twitter.com/.../status/...'
                         : 'https://www.facebook.com/.../posts/...'}
