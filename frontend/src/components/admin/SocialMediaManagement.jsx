@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Save, X, Link as LinkIcon, Twitter, Linkedin } from 'lucide-react'
+import { Plus, Edit, Trash2, Save, X, Link as LinkIcon, Twitter, Linkedin, Facebook } from 'lucide-react'
 import Card from '../common/Card'
 import { contentAPI } from '../../services/api'
 import toast from 'react-hot-toast'
@@ -18,7 +18,8 @@ const SocialMediaManagement = () => {
 
   const platforms = [
     { value: 'linkedin', label: 'LinkedIn', icon: Linkedin, color: 'blue' },
-    { value: 'twitter', label: 'Twitter/X', icon: Twitter, color: 'sky' }
+    { value: 'twitter', label: 'Twitter/X', icon: Twitter, color: 'sky' },
+  { value: 'facebook', label: 'Facebook', icon: Facebook, color: 'indigo' }
   ]
 
   useEffect(() => {
@@ -271,13 +272,16 @@ const SocialMediaManagement = () => {
                   onChange={(e) => setFormData({ ...formData, url: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder={formData.platform === 'linkedin' 
-                    ? 'https://www.linkedin.com/posts/...' 
-                    : 'https://twitter.com/.../status/...'}
+                      ? 'https://www.linkedin.com/posts/...'
+                      : formData.platform === 'twitter'
+                        ? 'https://twitter.com/.../status/...'
+                        : 'https://www.facebook.com/.../posts/...'}
                   required
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Enter the full URL of the {formData.platform === 'linkedin' ? 'LinkedIn' : 'Twitter/X'} post
+                  Enter the full URL of the {formData.platform === 'linkedin' ? 'LinkedIn' : formData.platform === 'twitter' ? 'Twitter/X' : 'Facebook'} post
                 </p>
+                          <p className="text-gray-600">Manage LinkedIn, Twitter/X, and Facebook posts to display on homepage</p>
               </div>
 
               <div className="flex items-center">

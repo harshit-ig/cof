@@ -9,6 +9,10 @@ const XEmbed = lazy(() =>
   import('react-social-media-embed').then(module => ({ default: module.XEmbed }))
 )
 
+const FacebookEmbed = lazy(() =>
+  import('react-social-media-embed').then(module => ({ default: module.FacebookEmbed }))
+)
+
 // Loading fallback
 const EmbedLoader = () => (
   <div className="w-full h-64 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -78,6 +82,12 @@ const SocialEmbed = ({ platform, url, width = '100%', height }) => {
           <XEmbed
             url={url}
             width={width}
+          />
+        ) : platform === 'facebook' ? (
+          <FacebookEmbed
+            url={url}
+            width={width}
+            height={height || 400}
           />
         ) : (
           <EmbedError url={url} platform={platform} />

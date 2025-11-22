@@ -7,7 +7,7 @@ console.log('Connecting to Redis:', redisUrl);
 
 const emailQueue = new Queue('email', redisUrl, {
   redis: {
-    enableOfflineQueue: false, // Fail fast if Redis is not available
+    enableOfflineQueue: true, 
     maxRetriesPerRequest: 3
   }
 });
