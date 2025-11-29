@@ -40,8 +40,10 @@ const JobApplicationModal = ({ isOpen, onClose, positionType = 'faculty' }) => {
     const file = e.target.files[0]
     if (file) {
       // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('File size should not exceed 5MB')
+      const maxFileSize = parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 50 * 1024 * 1024; // 50MB default
+      const maxFileSizeMB = Math.round(maxFileSize / (1024 * 1024));
+      if (file.size > maxFileSize) {
+        toast.error(`File size should not exceed ${maxFileSizeMB}MB`)
         return
       }
       // Validate file type

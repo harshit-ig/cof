@@ -33,7 +33,7 @@ const upload = multer({
       cb(new Error('Only PDF and Word documents (DOC, DOCX) are allowed!'), false);
     }
   },
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+  limits: { fileSize: parseInt(process.env.MAX_FILE_SIZE) || 50 * 1024 * 1024 } // 50MB default
 });
 
 // @desc    Get all student corner data (public endpoint)

@@ -869,12 +869,15 @@ const ResearchManagement = () => {
                       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     ];
                     
+                    const maxFileSize = parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 50 * 1024 * 1024; // 50MB default
+                    const maxFileSizeMB = Math.round(maxFileSize / (1024 * 1024));
+                    
                     if (!allowedTypes.includes(file.type)) {
                       toast.error('Please select a PDF or Word document (DOC, DOCX)')
                       return
                     }
-                    if (file.size > 10 * 1024 * 1024) {
-                      toast.error('File size should be less than 10MB')
+                    if (file.size > maxFileSize) {
+                      toast.error(`File size should be less than ${maxFileSizeMB}MB`)
                       return
                     }
                     handleInputChange('pdf', file)

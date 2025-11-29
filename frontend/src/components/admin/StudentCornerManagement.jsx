@@ -8,6 +8,13 @@ import { Form, FormGroup, Input, Textarea, Select, SubmitButton } from '../commo
 import toast from 'react-hot-toast'
 
 const StudentCornerManagement = () => {
+  // File size utility functions
+  const getMaxFileSize = () => parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 50 * 1024 * 1024; // 50MB default
+  const getMaxFileSizeMB = () => Math.round(getMaxFileSize() / (1024 * 1024));
+  const validateFileSize = (file) => file.size <= getMaxFileSize();
+  const getFileSizeErrorMessage = () => `File size should not exceed ${getMaxFileSizeMB()}MB`;
+  const getMultipleFileSizeErrorMessage = () => `Some files exceed ${getMaxFileSizeMB()}MB limit`;
+  
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [activeTab, setActiveTab] = useState('admission')
@@ -293,10 +300,10 @@ const StudentCornerManagement = () => {
                     return
                   }
                   
-                  // Check file sizes (10MB limit per file)
-                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  // Check file sizes
+                  const oversizedFiles = files.filter(file => !validateFileSize(file))
                   if (oversizedFiles.length > 0) {
-                    toast.error('Some files exceed 10MB limit')
+                    toast.error(getMultipleFileSizeErrorMessage())
                     return
                   }
                   
@@ -474,10 +481,10 @@ const StudentCornerManagement = () => {
                     return
                   }
                   
-                  // Check file sizes (10MB limit per file)
-                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  // Check file sizes
+                  const oversizedFiles = files.filter(file => !validateFileSize(file))
                   if (oversizedFiles.length > 0) {
-                    toast.error('Some files exceed 10MB limit')
+                    toast.error(getMultipleFileSizeErrorMessage())
                     return
                   }
                   
@@ -675,10 +682,10 @@ const StudentCornerManagement = () => {
                     return
                   }
                   
-                  // Check file sizes (10MB limit per file)
-                  const oversizedFiles = files.filter(file => file.size > 10 * 1024 * 1024)
+                  // Check file sizes
+                  const oversizedFiles = files.filter(file => !validateFileSize(file))
                   if (oversizedFiles.length > 0) {
-                    toast.error('Some files exceed 10MB limit')
+                    toast.error(getMultipleFileSizeErrorMessage())
                     return
                   }
                   

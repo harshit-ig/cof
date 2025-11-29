@@ -74,8 +74,10 @@ const Placement = () => {
         return
       }
       // Validate file size (5MB max)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('File size should be less than 5MB')
+      const maxFileSize = parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 50 * 1024 * 1024; // 50MB default
+      const maxFileSizeMB = Math.round(maxFileSize / (1024 * 1024));
+      if (file.size > maxFileSize) {
+        toast.error(`File size should be less than ${maxFileSizeMB}MB`)
         return
       }
 

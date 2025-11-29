@@ -30,8 +30,10 @@ const IncubationModal = ({ isOpen, onClose }) => {
     const file = e.target.files[0]
     if (file) {
       // Validate file size (max 10MB for business plans)
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error('File size should not exceed 10MB')
+      const maxFileSize = parseInt(import.meta.env.VITE_MAX_FILE_SIZE) || 50 * 1024 * 1024; // 50MB default
+      const maxFileSizeMB = Math.round(maxFileSize / (1024 * 1024));
+      if (file.size > maxFileSize) {
+        toast.error(`File size should not exceed ${maxFileSizeMB}MB`)
         return
       }
       // Validate file type
