@@ -204,7 +204,7 @@ const StudentCorner = () => {
                       >
                         <FileText className="w-4 h-4 mr-2" />
                         <Download className="w-4 h-4 mr-2" />
-                        Download PDF
+                        Download Document
                       </a>
                     </div>
                   ) : null}
@@ -339,7 +339,7 @@ const StudentCorner = () => {
                       >
                         <FileText className="w-4 h-4 mr-2" />
                         <Download className="w-4 h-4 mr-2" />
-                        Download PDF
+                        Download Document
                       </a>
                     </div>
                   ) : null}
@@ -442,7 +442,7 @@ const StudentCorner = () => {
                       >
                         <FileText className="w-4 h-4 mr-2" />
                         <Download className="w-4 h-4 mr-2" />
-                        Download PDF
+                        Download Document
                       </a>
                     </div>
                   )}

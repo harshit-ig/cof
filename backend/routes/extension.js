@@ -32,11 +32,16 @@ const upload = multer({
         cb(new Error('Only image files are allowed for image field!'), false);
       }
     } else if (file.fieldname === 'pdf') {
-      // Allow PDFs
-      if (file.mimetype === 'application/pdf') {
+      // Allow PDFs and Word documents
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+      if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new Error('Only PDF files are allowed for pdf field!'), false);
+        cb(new Error('Only PDF and Word documents (DOC, DOCX) are allowed for pdf field!'), false);
       }
     } else {
       cb(new Error('Invalid field name!'), false);

@@ -282,14 +282,14 @@ const Research = () => {
                             <div className="flex flex-wrap gap-2">
                               <a
                                 href={getDocumentUrl(project.filename)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full hover:bg-blue-200 transition-colors"
-                              >
-                                <FileText className="w-3 h-3 mr-1" />
-                                View PDF
-                                <ExternalLink className="w-3 h-3 ml-1" />
-                              </a>
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full hover:bg-indigo-200 transition-colors"
+                            >
+                              <FileText className="w-3 h-3 mr-1" />
+                              View Document
+                              <ExternalLink className="w-3 h-3 ml-1" />
+                            </a>
                             </div>
                           </div>
                         )}
@@ -512,16 +512,16 @@ const Research = () => {
                         {research.filename && (
                           <div className="pt-3 border-t border-gray-100 mt-3">
                             <div className="flex flex-wrap gap-2">
-                              <a
-                                href={getDocumentUrl(research.filename)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full hover:bg-orange-200 transition-colors"
-                              >
-                                <FileText className="w-3 h-3 mr-1" />
-                                View PDF
-                                <ExternalLink className="w-3 h-3 ml-1" />
-                              </a>
+                            <a
+                              href={getDocumentUrl(research.filename)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 text-xs rounded-full hover:bg-orange-200 transition-colors"
+                            >
+                              <FileText className="w-3 h-3 mr-1" />
+                              View Document
+                              <ExternalLink className="w-3 h-3 ml-1" />
+                            </a>
                             </div>
                           </div>
                         )}
@@ -659,7 +659,7 @@ const Research = () => {
                                 className="flex items-center px-3 py-1 bg-purple-100 text-purple-700 text-xs rounded-full hover:bg-purple-200 transition-colors"
                               >
                                 <FileText className="w-3 h-3 mr-1" />
-                                View PDF
+                                View Document
                                 <ExternalLink className="w-3 h-3 ml-1" />
                               </a>
                             </div>
@@ -792,7 +792,7 @@ const Research = () => {
                                 className="flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full hover:bg-indigo-200 transition-colors"
                               >
                                 <FileText className="w-3 h-3 mr-1" />
-                                View PDF
+                                View Document
                                 <ExternalLink className="w-3 h-3 ml-1" />
                               </a>
                             </div>

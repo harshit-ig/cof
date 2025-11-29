@@ -180,7 +180,7 @@ const Extension = () => {
                   </div>
                 )}
 
-                {/* PDF Download */}
+                {/* Document Download */}
                 {program.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
@@ -191,7 +191,7 @@ const Extension = () => {
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />
-                      Download PDF
+                      Download Document
                     </a>
                   </div>
                 )}
@@ -280,7 +280,7 @@ const Extension = () => {
                       </div>
                     )}
 
-                    {/* PDF Download */}
+                    {/* Document Download */}
                     {activity.filename && (
                       <div className="mt-4 pt-4 border-t border-gray-200">
                         <a
@@ -291,7 +291,7 @@ const Extension = () => {
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           <Download className="w-4 h-4 mr-2" />
-                          Download PDF
+                          Download Document
                         </a>
                       </div>
                     )}
@@ -421,7 +421,7 @@ const Extension = () => {
                   </div>
                 )}
 
-                {/* PDF Download */}
+                {/* Document Download */}
                 {demo.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
@@ -432,7 +432,7 @@ const Extension = () => {
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />
-                      Download PDF
+                      Download Document
                     </a>
                   </div>
                 )}
@@ -541,7 +541,7 @@ const Extension = () => {
                   </div>
                 )}
 
-                {/* PDF Download */}
+                {/* Document Download */}
                 {story.filename && (
                   <div className="mt-4 pt-4 border-t border-gray-200">
                     <a
@@ -552,7 +552,7 @@ const Extension = () => {
                     >
                       <FileText className="w-4 h-4 mr-2" />
                       <Download className="w-4 h-4 mr-2" />
-                      Download PDF
+                      Download Document
                     </a>
                   </div>
                 )}

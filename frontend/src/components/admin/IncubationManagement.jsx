@@ -681,10 +681,10 @@ const IncubationManagement = () => {
           </FormGroup>
         ) : (
           // Only document upload for activities
-          <FormGroup label="Document (PDF)">
+          <FormGroup label="Document (PDF/Word)">
             <input
               type="file"
-              accept=".pdf"
+              accept=".pdf,.doc,.docx"
               onChange={(e) => handleFileChange(e, 'document')}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />

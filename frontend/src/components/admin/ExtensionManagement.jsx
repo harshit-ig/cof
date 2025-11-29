@@ -175,7 +175,13 @@ const ExtensionManagement = () => {
   const handleFileChange = (type, e) => {
     const file = e.target.files[0]
     if (file) {
-      if (type === 'pdf' && file.type === 'application/pdf') {
+      const allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+      
+      if (type === 'pdf' && allowedTypes.includes(file.type)) {
         setFormData(prev => ({
           ...prev,
           pdf: file
@@ -186,7 +192,8 @@ const ExtensionManagement = () => {
           image: file
         }))
       } else {
-        toast.error(`Please select a valid ${type === 'pdf' ? 'PDF' : 'image'} file`)
+        const fileTypeText = type === 'pdf' ? 'PDF or Word document (DOC, DOCX)' : 'image';
+        toast.error(`Please select a valid ${fileTypeText} file`)
         e.target.value = ''
       }
     }
@@ -468,7 +475,7 @@ const ExtensionManagement = () => {
                             className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
                           >
                             <Download className="w-3 h-3 mr-1" />
-                            View PDF
+                            View Document
                           </a>
                         </div>
                       </div>
@@ -949,7 +956,7 @@ const ExtensionManagement = () => {
                   <div className="flex items-center space-x-4">
                     <input
                       type="file"
-                      accept=".pdf"
+                      accept=".pdf,.doc,.docx"
                       onChange={(e) => handleFileChange('pdf', e)}
                       className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                     />

@@ -859,12 +859,18 @@ const ResearchManagement = () => {
             <div className="flex items-center space-x-2">
               <input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx"
                 onChange={(e) => {
                   const file = e.target.files[0]
                   if (file) {
-                    if (file.type !== 'application/pdf') {
-                      toast.error('Please select a PDF file')
+                    const allowedTypes = [
+                      'application/pdf',
+                      'application/msword',
+                      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                    ];
+                    
+                    if (!allowedTypes.includes(file.type)) {
+                      toast.error('Please select a PDF or Word document (DOC, DOCX)')
                       return
                     }
                     if (file.size > 10 * 1024 * 1024) {
@@ -1060,7 +1066,7 @@ const ResearchManagement = () => {
                             className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
                           >
                             <Download className="w-3 h-3 mr-1" />
-                            View PDF
+                            View Document
                           </a>
                         </div>
                       </div>

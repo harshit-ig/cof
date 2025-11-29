@@ -276,19 +276,20 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach Documents (multiple files supported)</label>
               <input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx"
                 multiple
                 onChange={(e) => {
                   const files = Array.from(e.target.files || [])
                   if (files.length === 0) return
                   
-                  // Validate all files are PDFs
-                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  // Validate all files are PDFs or Word documents
+                  const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+                  const invalidFiles = files.filter(file => !validTypes.includes(file.type))
                   if (invalidFiles.length > 0) {
-                    toast.error('Please select only PDF files')
+                    toast.error('Please select only PDF or Word documents (DOC, DOCX)')
                     return
                   }
                   
@@ -456,19 +457,20 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach Documents (multiple files supported)</label>
               <input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx"
                 multiple
                 onChange={(e) => {
                   const files = Array.from(e.target.files || [])
                   if (files.length === 0) return
                   
-                  // Validate all files are PDFs
-                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  // Validate all files are PDFs or Word documents
+                  const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+                  const invalidFiles = files.filter(file => !validTypes.includes(file.type))
                   if (invalidFiles.length > 0) {
-                    toast.error('Please select only PDF files')
+                    toast.error('Please select only PDF or Word documents (DOC, DOCX)')
                     return
                   }
                   
@@ -656,19 +658,20 @@ const StudentCornerManagement = () => {
               />
             </FormGroup>
             <FormGroup>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Attach PDFs (multiple files supported)</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Attach Documents (multiple files supported)</label>
               <input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx"
                 multiple
                 onChange={(e) => {
                   const files = Array.from(e.target.files || [])
                   if (files.length === 0) return
                   
-                  // Validate all files are PDFs
-                  const invalidFiles = files.filter(file => file.type !== 'application/pdf')
+                  // Validate all files are PDFs or Word documents
+                  const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+                  const invalidFiles = files.filter(file => !validTypes.includes(file.type))
                   if (invalidFiles.length > 0) {
-                    toast.error('Please select only PDF files')
+                    toast.error('Please select only PDF or Word documents (DOC, DOCX)')
                     return
                   }
                   

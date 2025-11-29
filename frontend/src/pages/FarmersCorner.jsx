@@ -107,7 +107,7 @@ const FarmersCorner = () => {
                   <FileText className="w-8 h-8 text-green-200" />
                 </div>
                 <h3 className="font-semibold mb-2">Technical Guides</h3>
-                <p className="text-sm text-green-100">Download PDF guides and manuals</p>
+                <p className="text-sm text-green-100">Download documents and manuals</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center border border-white/20 hover:bg-white/15 transition-all duration-300 group">
                 <div className="w-12 h-12 mx-auto mb-3 bg-blue-200/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

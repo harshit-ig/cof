@@ -417,15 +417,15 @@ const FarmersResourceManagement = () => {
               {/* PDF File Management */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  PDF Document {!editingResource && '(Required)'}
+                  Document {!editingResource && '(Required)'}
                 </label>
                 
                 {/* File Upload */}
                 <FileUpload
-                  accept=".pdf"
+                  accept=".pdf,.doc,.docx"
                   onFileSelect={(file) => setFormData({ ...formData, pdf: file })}
                   maxSize={10}
-                  allowedTypes={['pdf']}
+                  allowedTypes={['pdf', 'doc', 'docx']}
                 />
                 <p className="text-xs text-gray-500 mt-1">Maximum file size: 10MB</p>
                 
@@ -444,7 +444,7 @@ const FarmersResourceManagement = () => {
                         className="flex items-center px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded hover:bg-blue-200"
                       >
                         <Download className="w-3 h-3 mr-1" />
-                        View PDF
+                        View Document
                       </a>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
