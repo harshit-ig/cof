@@ -155,22 +155,24 @@ const Footer = () => {
             <p className="text-gray-300 mb-4">
               Leading institution in fishery education and research
             </p>
-            <div className="grid grid-cols-2 gap-2 text-sm">
+            <div className="text-center">
+              <div className="text-sm text-gray-300 mb-2">Visitors Count</div>
+            </div>
+            <div className="flex items-center justify-center space-x-2 mb-2">
               <div className="bg-gray-700 rounded px-3 py-2 text-center">
-                <div className="font-bold text-blue-400">50K+</div>
-                <div className="text-xs text-gray-300">Visitors</div>
+                <div className="font-bold text-blue-400 text-xl">5</div>
               </div>
               <div className="bg-gray-700 rounded px-3 py-2 text-center">
-                <div className="font-bold text-green-400">45</div>
-                <div className="text-xs text-gray-300">Faculty</div>
+                <div className="font-bold text-blue-400 text-xl">2</div>
               </div>
               <div className="bg-gray-700 rounded px-3 py-2 text-center">
-                <div className="font-bold text-yellow-400">85</div>
-                <div className="text-xs text-gray-300">Research</div>
+                <div className="font-bold text-blue-400 text-xl">1</div>
               </div>
               <div className="bg-gray-700 rounded px-3 py-2 text-center">
-                <div className="font-bold text-purple-400">2500+</div>
-                <div className="text-xs text-gray-300">Alumni</div>
+                <div className="font-bold text-blue-400 text-xl">6</div>
+              </div>
+              <div className="bg-gray-700 rounded px-3 py-2 text-center">
+                <div className="font-bold text-blue-400 text-xl">0</div>
               </div>
             </div>
           </div>
